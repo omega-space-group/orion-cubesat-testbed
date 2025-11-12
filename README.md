@@ -55,17 +55,17 @@ Ground-based testbed that mirrors actual CubeSat functionality for comprehensive
     │    COMMS    │
     │  (HackRF)   │
     └──────┬──────┘
-           │
+           │ GigE + CAN
     ┌──────┴──────────────────────┐
-    │         C&DH                 │
+    │         C&DH                │
     │  (RPi4/STM32 + Space ROS)   │
     └─┬────────────────────────┬──┘
-      │ CAN                    │ GigE
-┌─────┴─────┐           ┌──────┴──────┐
-│    EPS    │           │   Payload   │
-│  (STM32)  │           │ (Jetson+    │
-│           │           │  FPGA)      │
-└───────────┘           └─────────────┘
+      │ CAN                    │ GigE + CAN
+┌─────┴─────┐           ┌──────┴────────┐
+│    EPS    │           │   Payload     │
+│  (STM32)  │           │ (Jetson/FPGA) │
+│           │           │               │
+└───────────┘           └───────────────┘
 ```
 
 ---
