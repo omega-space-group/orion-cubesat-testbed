@@ -5,7 +5,7 @@
 
 CubeSat flatsat testbed for deploying and testing AI algorithms, end-to-end processing pipelines and avionics SW/HW. Supports on-board processing validation and serves as development platform for university student projects and future open-source CubeSat missions.
 
-**Ω-space Group** | **ORION Lab** | **National Technical University of Athens**
+**Ω-Space Group** | **ORION Lab** | **National Technical University of Athens**
 
 Open-source
 
@@ -173,7 +173,7 @@ GPL-3.0 License - see [LICENSE](LICENSE) for details.
 
 ## 📧 Contact
 
-**Ω-space Group**  
+**Ω-Space Group**  
 **ORION Lab**  
 National Technical University of Athens  
 
