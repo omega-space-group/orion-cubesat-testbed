@@ -182,3 +182,10 @@ Website: [https://orionlab.space.noa.gr/](https://orionlab.space.noa.gr/)
 ---
 
 **Status**: 🔄 Active Development | **Version**: 0.1.0-alpha
+
+### Versioning
+
+We use [Semantic Versioning](https://semver.org/): `MAJOR.MINOR.PATCH-STAGE`
+- Versions `0.x.x` indicate active development
+- Version `1.0.0` will be the first stable release
+- See git tags for release history
