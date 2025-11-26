@@ -19,7 +19,7 @@ This implementation serves as the initial development and testing platform for C
 ## Software Stack
 
 - **OS**: Ubuntu 22.04
-- **ROS**: ROS 2 Humble
+- **Framework**: core Flight System (cFS)
 - **Language**: Python 3.10 / C++17
 - **Dependencies**: Listed in `requirements.txt` and `package.xml`
 
@@ -63,7 +63,6 @@ TBD
 ## Next Steps
 
 - [ ] Setup Environment
-- [ ] Integrate with Space ROS
 - [ ] Setup CAN communication
 - [ ] Setup GigE communication
 - [ ] Implement control SW

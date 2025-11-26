@@ -1,7 +1,7 @@
 # ORION CubeSat Flatsat Testbed
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-[![ROS 2](https://img.shields.io/badge/ROS%202-Humble-blue)]()
+[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 
 CubeSat flatsat testbed for deploying and testing AI algorithms, end-to-end processing pipelines and avionics SW/HW. Supports on-board processing validation and serves as development platform for university student projects and future open-source CubeSat missions.
 
@@ -18,7 +18,7 @@ Ground-based testbed that mirrors actual CubeSat functionality for comprehensive
 ### Key Capabilities
 
 - 🤖 **AI/ML Deployment**: Test algorithms on NVIDIA Jetson and Xilinx FPGA
-- 🛰️ **Full Avionics Stack**: C&DH, EPS, Payload, Communications
+- 🛰️ **Hybrid Architecture**: Flight-proven protocols + modern AI frameworks
 - 🔄 **End-to-End Testing**: From sensor to ground station
 - 🎓 **Educational**: Platform for student projects and learning
 - 🌍 **Open Source**: GPL-3.0, following Libre Space Foundation principles
@@ -27,20 +27,33 @@ Ground-based testbed that mirrors actual CubeSat functionality for comprehensive
 
 ## 🏗️ System Architecture
 
+### Hybrid Architecture Approach
+
+Our testbed implements a **JAXA RACS-inspired hybrid architecture** that combines proven satellite protocols with modern AI capabilities:
+
+- **Satellite Bus (C&DH, EPS)**: Custom flight software inspired by NASA cFS patterns with CubeSat Space Protocol (CSP) over CAN
+- **AI Payload**: SpaceROS (ROS2) internally for rich AI/robotics ecosystem
+- **Communication**: Dual-layer approach
+  - **CSP over CAN**: Control messaging (commands, telemetry, status)
+  - **DDS over GigE**: High-bandwidth data transfer (images, large AI results)
+
 ### Hardware
 
-| Subsystem | Hardware | Software | Communication |
-|-----------|----------|----------|---------------|
-| **C&DH** | Raspberry Pi 4 → STM32 Nucleo | Ubuntu → FreeRTOS | CAN + GigE |
-| **EPS** | STM32 Nucleo | FreeRTOS | CAN |
-| **Payload** | NVIDIA Jetson + Xilinx FPGA | Ubuntu | GigE |
+| Subsystem | Hardware | Software | Primary Protocol |
+|-----------|----------|----------|------------------|
+| **C&DH** | Raspberry Pi 4 → STM32 Nucleo | Ubuntu → FreeRTOS | CSP/CAN |
+| **EPS** | STM32 Nucleo | FreeRTOS | CSP/CAN |
+| **Payload** | NVIDIA Jetson + Xilinx FPGA | Ubuntu + SpaceROS | CSP/CAN + DDS/GigE |
 | **Comms** | HackRF One SDR | GNU Radio | RF Link |
 
 ### Software Stack
 
-- **Operating Systems**: Ubuntu 22.04 (prototype), FreeRTOS (production)
-- **Middleware**: Space ROS 2 (Humble)
-- **Communication**: CAN bus (critical), Gigabit Ethernet (high-bandwidth), CSP protocol
+- **Operating Systems**: Ubuntu 22.04, FreeRTOS
+- **C&DH Middleware**: Custom cFS-inspired architecture with CSP
+- **Payload Middleware**: SpaceROS (ROS2 Humble) 
+- **Communication Protocols**: 
+  - CubeSat Space Protocol (CSP) over CAN bus
+  - DDS over Gigabit Ethernet (payload data)
 - **Ground Segment**: SDR-based (GNU Radio)
 
 ### Block Diagram
@@ -48,25 +61,41 @@ Ground-based testbed that mirrors actual CubeSat functionality for comprehensive
 ```
 ┌─────────────────────┐
 │   Ground Station    │
-│   (HackRF + GUI)    │
+│    (SDR + GUI)      │
 └──────────┬──────────┘
            │ RF
     ┌──────┴──────┐
     │    COMMS    │
-    │  (HackRF)   │
+    │    (SDR)    │
     └──────┬──────┘
-           │ GigE + CAN
+           │ CSP/CAN + GigE
     ┌──────┴──────────────────────┐
-    │         C&DH                │
-    │  (RPi4/STM32 + Space ROS)   │
+    │            C&DH             │
+    │  (RPi4/STM32 + cFS-inspired)│
+    │    CSP/CAN + DDS Subscriber │
     └─┬────────────────────────┬──┘
-      │ CAN                    │ GigE + CAN
-┌─────┴─────┐           ┌──────┴────────┐
-│    EPS    │           │   Payload     │
-│  (STM32)  │           │ (Jetson/FPGA) │
-│           │           │               │
-└───────────┘           └───────────────┘
+      │ CSP/CAN                │ CSP/CAN + DDS/GigE
+┌─────┴─────┐           ┌──────┴────────────┐
+│    EPS    │           │     Payload       │
+│  (STM32)  │           │   (Jetson/FPGA)   │
+│           │           │ SpaceROS Internal │
+│  CSP/CAN  │           │   CSP Interface   │
+└───────────┘           └───────────────────┘
 ```
+
+### Communication Layers
+
+**Control Layer (CSP over CAN)**
+- Telecommands: C&DH → Payload/EPS
+- Telemetry: Payload/EPS → C&DH  
+- Status updates and health monitoring
+- Time synchronization
+
+**High-Bandwidth Layer (DDS over GigE)**
+- Camera images: Payload → C&DH
+- Processed AI results: Payload → C&DH
+- Large data products for ground downlink
+- Inspired by JAXA RACS Extended DDS pattern
 
 ---
 
@@ -76,7 +105,7 @@ Ground-based testbed that mirrors actual CubeSat functionality for comprehensive
 orion-cubesat-testbed/
 ├── flight-software/      # On-board SW (C&DH, EPS, Payload, Comms)
 ├── ground-segment/       # Ground station & mission control
-├── middleware/           # Space ROS & interfaces
+├── middleware/           # Payload-internal SpaceROS interfaces
 ├── hardware/             # HW docs, CAN/GigE configs, BOM
 ├── simulation/           # Testing infrastructure
 ├── tools/                # Build & deployment utilities
@@ -92,7 +121,7 @@ orion-cubesat-testbed/
 
 ```bash
 # Clone repository
-git clone https://github.com/YOUR-USERNAME/orion-cubesat-testbed.git
+git clone https://github.com/omega-space-group/orion-cubesat-testbed.git
 cd orion-cubesat-testbed
 
 # Setup environment
@@ -105,7 +134,9 @@ cd orion-cubesat-testbed
 ./scripts/test.sh
 ```
 
-**Prerequisites**: Ubuntu 22.04, ROS 2 Humble, Python 3.10+
+**Prerequisites**: Ubuntu 22.04, Python 3.10+, libcsp
+
+**For Payload Development**: ROS 2 Humble, CUDA, TensorRT (Jetson only)
 
 
 ---
@@ -114,16 +145,29 @@ cd orion-cubesat-testbed
 
 
 ### 🔄 In Progress
-- C&DH basic functionality (Space ROS on RPi4)
-- CAN bus communication protocol
-- Space ROS integration
-- Payload containerization framework
-- AI model deployment
+- C&DH cFS-inspired software (Python on RPi4)
+- CSP over CAN bus implementation
+- SpaceROS Payload framework (Jetson)
+- AI model deployment and optimization
+- DDS over GigE for high-bandwidth data
 
 ### ⏳ Planned
 - Full subsystem integration (Comms, EPS)
+- STM32 + FreeRTOS migration for C&DH
 - Ground station implementation
-- End-to-end testing
+- End-to-end mission testing
+
+---
+
+## 🎓 Student Thesis Projects
+
+This testbed is being developed through coordinated Master's thesis projects:
+
+1. **Command & Data Handling Software**: cFS-inspired architecture with CSP/CAN
+2. **AI Payload Framework**: SpaceROS with containerization and edge optimization
+3. **Communication Infrastructure**: Hybrid CSP/CAN + DDS/GigE implementation
+
+See [docs/architecture/](docs/architecture/) for detailed thesis descriptions and coordination plans.
 
 ---
 
@@ -148,22 +192,24 @@ GPL-3.0 License - see [LICENSE](LICENSE) for details.
 ## 🔗 Related Projects & Resources
 
 ### Core Technologies
+- [NASA cFS](https://cfs.gsfc.nasa.gov/) - Core Flight System (architectural inspiration)
 - [Space ROS](https://space.ros.org/) - ROS 2 for space applications
 - [ROS 2 Documentation](https://docs.ros.org/en/humble/) - Robot Operating System 2
-- [micro-ROS](https://micro.ros.org/) - ROS 2 for microcontrollers (STM32)
 - [FreeRTOS](https://www.freertos.org/) - Real-time operating system
 
 ### Communication & Protocols
 - [libcsp](https://github.com/libcsp/libcsp) - CubeSat Space Protocol library
 - [SocketCAN](https://www.kernel.org/doc/html/latest/networking/can.html) - Linux CAN bus support
+- [Fast-DDS](https://fast-dds.docs.eprosima.com/) - DDS implementation
+- [CycloneDDS](https://cyclonedds.io/) - Alternative DDS implementation
+
+### Research References
+- [JAXA RACS](https://github.com/jaxa/racs2_extended-dds) - Hybrid ROS/cFS approach
+- [ESA SLED](https://www.esa.int/) - Space Linux Edge Development
 
 ### SDR & Ground Station
 - [GNU Radio](https://www.gnuradio.org/) - Software-defined radio toolkit
 - [HackRF](https://greatscottgadgets.com/hackrf/) - Software-defined radio platform
-
-### Containerization & Deployment
-- [Docker](https://www.docker.com/) - Container platform
-- [NVIDIA Container Toolkit](https://github.com/NVIDIA/nvidia-docker) - GPU support in containers
 
 ### AI/ML on Edge
 - [TensorRT](https://developer.nvidia.com/tensorrt) - NVIDIA inference optimizer
@@ -177,7 +223,10 @@ GPL-3.0 License - see [LICENSE](LICENSE) for details.
 **ORION Lab**  
 National Technical University of Athens  
 
-Website: [https://orionlab.space.noa.gr/](https://orionlab.space.noa.gr/)  
+**Project Leads:**
+- Simon Vellas: svellas@mail.ntua.gr
+- Alexis Apostolakis: alexis.apostolakis@gmail.com
+- Giorgos Athanasiou: georgios.athanasiou.ntua@gmail.com
 
 ---
 

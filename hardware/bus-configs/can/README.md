@@ -4,7 +4,7 @@ CAN bus setup for critical real-time communication.
 
 ## Parameters
 
-- Bitrate: 500 kbps (TBD)
+- Bitrate: 250 kbps (TBD)
 - Protocol: CAN 2.0B
 
 ## Development Status

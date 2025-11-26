@@ -15,7 +15,7 @@ TBD
 
 ## Nodes
 
-Each subsystem runs Space ROS nodes for coordination.
+The Payload subsystem runs spaceROS nodes for AI application deployment.
 
 ## Development Status
 

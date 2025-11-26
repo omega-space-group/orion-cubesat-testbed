@@ -197,6 +197,7 @@ Brief description of changes
 - [Git Tutorial](https://git-scm.com/docs/gittutorial)
 - [ROS 2 Documentation](https://docs.ros.org/)
 - [Space ROS Documentation](https://space.ros.org/)
+- [cFS Documentation](https://etd.gsfc.nasa.gov/capabilities/core-flight-system/)
 
 ## 📋 Project Structure
 
