@@ -2,7 +2,7 @@
 
 ## Overview
 
-The ORION CubeSat FlatSat testbed implements a **hybrid architecture** inspired by JAXA's RACS (ROS and cFS System) initiative, combining traditional satellite protocols with modern AI frameworks.
+The ORION CubeSat FlatSat testbed implements a **hybrid architecture**, combining traditional satellite protocols with modern AI frameworks.
 
 ## Design Philosophy
 
@@ -22,14 +22,6 @@ Our architecture strategically uses different frameworks for different purposes:
    - Rapid development for AI applications
    - Hardware acceleration support
 
-### Inspiration: JAXA RACS
-
-JAXA's Robotic Asteroid eXploration (RACS) project demonstrated that hybrid architectures can successfully combine:
-- **cFS (core Flight System)**: For spacecraft bus management
-- **ROS (Robot Operating System)**: For robotic/AI payload processing
-- **Well-defined interfaces**: Clean separation between domains
-
-**Reference**: H. Kato, D. Hirano, S. Mitani, T. Saito and S. Kawaguchi, "ROS and cFS System (RACS): Easing Space Robotic Development," 2021 IEEE Aerospace Conference.
 
 ## System Architecture
 
@@ -123,16 +115,7 @@ Our architecture uses **two communication layers** for different data types:
 **Implementation**:
 - **Payload**: Publishes to DDS topics from ROS2 nodes (native SpaceROS)
 - **C&DH**: Minimal DDS subscriber (lightweight DDS library, NOT full ROS2)
-- **Inspiration**: JAXA RACS2 Extended DDS pattern
 
-**Why Not Use ROS2 on C&DH?**
-- C&DH doesn't need full ROS2 stack
-- Lightweight DDS subscriber is sufficient
-- Reduces complexity and resource usage
-- Maintains clear separation between bus and payload
-- Easier migration to STM32 + FreeRTOS
-
-**Reference**: JAXA RACS2 Extended DDS - https://github.com/jaxa/racs2_extended-dds
 
 ### Payload-Internal Communication
 
@@ -249,170 +232,6 @@ Sensors ──────┘                         │
 
 **Communication**: CSP/CAN to C&DH for data buffering
 
-## Data Flow Examples
-
-### Example 1: Start AI Application
-
-```
-1. Ground Station sends command via RF
-                    ↓
-2. Comms receives, forwards via CSP/CAN
-                    ↓
-3. C&DH Telecommand Handler validates command
-                    ↓
-4. C&DH routes command via CSP/CAN to Payload
-                    ↓
-5. Payload CSP Interface receives CSP packet
-                    ↓
-6. CSP Interface calls Application Manager (ROS2)
-                    ↓
-7. Application Manager starts AI app ROS2 node
-                    ↓
-8. AI app subscribes to camera topic, begins inference
-                    ↓
-9. Application Manager sends status via CSP Interface
-                    ↓
-10. C&DH receives status via CSP/CAN
-                    ↓
-11. C&DH forwards acknowledgment to ground
-```
-
-### Example 2: Image Processing and Downlink
-
-```
-1. Camera Driver (ROS2 node) captures image
-                    ↓
-2. Publishes to /camera/rgb/image_raw (ROS2 DDS)
-                    ↓
-3. AI App subscribes, runs inference
-                    ↓
-4. AI App publishes results to /ai/output (ROS2 DDS)
-                    ↓
-5. Application Manager receives results
-                    ↓
-        ┌───────────┴───────────┐
-        │                       │
-6a. Small summary via CSP  6b. Full image via DDS/GigE
-    to C&DH CSP interface      to C&DH DDS subscriber
-        │                       │
-        └───────────┬───────────┘
-                    ↓
-7. C&DH stores both for downlink queue
-                    ↓
-8. C&DH schedules downlink via Comms
-                    ↓
-9. Data transmitted to ground station
-```
-
-### Example 3: Housekeeping Telemetry
-
-```
-Every 10 seconds:
-
-1. C&DH Housekeeping module collects system metrics
-   - CPU usage, temperature, memory
-   - CAN bus status
-                    ↓
-2. Sends housekeeping request via CSP/CAN to EPS
-                    ↓
-3. EPS responds with power telemetry (battery, voltage, current)
-                    ↓
-4. Sends housekeeping request via CSP/CAN to Payload
-                    ↓
-5. Payload CSP Interface queries Application Manager (ROS2)
-                    ↓
-6. Application Manager queries Resource Monitor (ROS2 node)
-                    ↓
-7. Resource telemetry sent back via CSP/CAN
-                    ↓
-8. C&DH Telemetry Manager packages all housekeeping
-                    ↓
-9. Stored locally and queued for ground downlink
-```
-
-## Protocol Selection Guidelines
-
-### When to Use CSP over CAN
-
-✅ **Use for**:
-- Commands and telecommands
-- Small telemetry packets (< 1 KB)
-- Status updates and acknowledgments
-- Health monitoring data
-- Configuration updates
-- Inter-subsystem control messaging
-
-❌ **Don't use for**:
-- Large files or images
-- High-rate data streams
-- Bulk data transfer
-
-### When to Use DDS over GigE
-
-✅ **Use for**:
-- Camera images (MB per image)
-- Processed image data
-- Large AI results
-- Bulk data products
-- High-bandwidth data streams
-
-❌ **Don't use for**:
-- Simple commands
-- Small status updates
-- Time-critical control messages
-
-## Technology Choices
-
-### Why cFS Patterns for C&DH?
-
-**Advantages**:
-- 20+ years of flight heritage
-- Modular, proven architecture
-- Table-driven configuration
-- Well-documented patterns
-- Safety-critical design principles
-
-**Our Approach**:
-- Inspired by cFS patterns, not a direct port
-- Python implementation for rapid development (Phase 1)
-- C/C++ port for flight hardware (Phase 2)
-
-### Why SpaceROS for Payload?
-
-**Advantages**:
-- Rich AI/ML ecosystem
-- Hardware acceleration support (CUDA, TensorRT)
-- Extensive robotics libraries
-- Strong community and tooling
-- Rapid development for AI applications
-
-**Limitations Addressed**:
-- Not used for critical bus functions
-- Isolated to payload subsystem
-- Well-defined interface via CSP
-
-### Why CSP Protocol?
-
-**Advantages**:
-- Specifically designed for CubeSats
-- Flight-proven (many missions)
-- Built-in routing and addressing
-- Reliable delivery with ACKs
-- Works over multiple physical layers (CAN, I2C, UART)
-- Open-source implementation (libcsp)
-
-**Alternative Considered**:
-- Raw CAN: No addressing, routing, or reliability
-- Custom protocol: Reinventing the wheel
-
-### Why Dual-Layer Communication?
-
-**Rationale**:
-1. **Right tool for the job**: Different data types need different protocols
-2. **Bandwidth efficiency**: Don't burden CAN with large images
-3. **Proven + Modern**: Combine flight heritage (CSP) with high performance (DDS)
-4. **Flexibility**: Add high-bandwidth as needed, fallback to CSP-only
-5. **JAXA validation**: Similar approach used successfully in RACS
 
 ## Migration Path
 
@@ -477,13 +296,3 @@ Every 10 seconds:
 4. **SpaceROS**: A. Probe et al., "Space ROS: An Open-Source Framework for Space Robotics and Flight Software," AIAA 2023-2709
 
 5. **libcsp**: CubeSat Space Protocol, https://github.com/libcsp/libcsp
-
-## Conclusion
-
-This hybrid architecture strategically combines:
-- **Flight-proven satellite protocols** for reliable, deterministic bus operations
-- **Modern AI frameworks** for rich payload processing capabilities
-- **Well-defined interfaces** for clean separation of concerns
-- **Flexible communication layers** for different data types
-
-The result is a testbed that demonstrates both traditional aerospace engineering and cutting-edge AI technologies, providing an educational platform and validation environment for future CubeSat missions.

@@ -29,10 +29,10 @@ Ground-based testbed that mirrors actual CubeSat functionality for comprehensive
 
 ### Hybrid Architecture Approach
 
-Our testbed implements a **JAXA RACS-inspired hybrid architecture** that combines proven satellite protocols with modern AI capabilities:
+Our testbed implements a **hybrid architecture** that combines proven satellite protocols with modern AI capabilities:
 
 - **Satellite Bus (C&DH, EPS)**: Custom flight software inspired by NASA cFS patterns with CubeSat Space Protocol (CSP) over CAN
-- **AI Payload**: SpaceROS (ROS2) internally for rich AI/robotics ecosystem
+- **AI Payload**: SpaceROS (ROS2) internally
 - **Communication**: Dual-layer approach
   - **CSP over CAN**: Control messaging (commands, telemetry, status)
   - **DDS over GigE**: High-bandwidth data transfer (images, large AI results)
@@ -95,7 +95,6 @@ Our testbed implements a **JAXA RACS-inspired hybrid architecture** that combine
 - Camera images: Payload → C&DH
 - Processed AI results: Payload → C&DH
 - Large data products for ground downlink
-- Inspired by JAXA RACS Extended DDS pattern
 
 ---
 
@@ -156,18 +155,6 @@ cd orion-cubesat-testbed
 - STM32 + FreeRTOS migration for C&DH
 - Ground station implementation
 - End-to-end mission testing
-
----
-
-## 🎓 Student Thesis Projects
-
-This testbed is being developed through coordinated Master's thesis projects:
-
-1. **Command & Data Handling Software**: cFS-inspired architecture with CSP/CAN
-2. **AI Payload Framework**: SpaceROS with containerization and edge optimization
-3. **Communication Infrastructure**: Hybrid CSP/CAN + DDS/GigE implementation
-
-See [docs/architecture/](docs/architecture/) for detailed thesis descriptions and coordination plans.
 
 ---
 
