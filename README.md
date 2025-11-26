@@ -210,8 +210,8 @@ GPL-3.0 License - see [LICENSE](LICENSE) for details.
 **ORION Lab**  
 National Technical University of Athens  
 
-**Project Leads:**
 - Simon Vellas: svellas@mail.ntua.gr
+- Christos Chronis: chronis@hua.gr
 - Alexis Apostolakis: alexis.apostolakis@gmail.com
 - Giorgos Athanasiou: georgios.athanasiou.ntua@gmail.com
 
