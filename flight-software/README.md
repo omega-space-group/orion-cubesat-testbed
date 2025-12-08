@@ -224,11 +224,7 @@ When contributing to flight software:
 
 ## 📖 Related Documentation
 
-- [System Architecture](../docs/architecture/system-overview.md)
-- [CSP Protocol Specification](../docs/architecture/csp-protocol.md)
-- [Zenoh Interface Specification](../docs/architecture/zenoh-interface.md)
-- [Hardware Configuration](../hardware/)
-- [Testing Strategy](../docs/testing-strategy.md)
+- [System Architecture](../docs/architecture/README.md)
 
 ## 📚 Key References
 
