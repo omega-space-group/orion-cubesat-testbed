@@ -43,7 +43,7 @@ Our testbed implements a **hybrid architecture** that combines proven satellite 
 |-----------|----------|----------|------------------|
 | **C&DH** | Raspberry Pi 4 → STM32 Nucleo | Ubuntu → FreeRTOS | CSP/CAN |
 | **EPS** | STM32 Nucleo | FreeRTOS | CSP/CAN |
-| **Payload** | NVIDIA Jetson + Xilinx FPGA | Ubuntu + SpaceROS | CSP/CAN + Zenoh/GigE |
+| **Payload** | NVIDIA Jetson / Xilinx FPGA | Ubuntu + SpaceROS | CSP/CAN + Zenoh/GigE |
 | **Comms** | HackRF One SDR | GNU Radio | RF Link |
 
 ### Software Stack
