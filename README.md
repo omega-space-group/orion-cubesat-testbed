@@ -69,11 +69,11 @@ Our testbed implements a **hybrid architecture** that combines proven satellite 
     │    (SDR)    │
     └──────┬──────┘
            │ CSP/CAN + GigE
-    ┌──────┴──────────────────────┐
-    │            C&DH             │
-    │  (RPi4/STM32 + cFS-inspired)│
-    │    CSP/CAN + Zenoh Subscriber │
-    └─┬────────────────────────┬──┘
+    ┌──────┴───────────────────────┐
+    │            C&DH              │
+    │  (RPi4/STM32 + cFS-inspired) │
+    │   CSP/CAN + Zenoh Subscriber │
+    └─┬────────────────────────┬───┘
       │ CSP/CAN                │ CSP/CAN + Zenoh/GigE
 ┌─────┴─────┐           ┌──────┴────────────┐
 │    EPS    │           │     Payload       │
