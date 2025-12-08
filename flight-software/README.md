@@ -40,7 +40,7 @@ This architecture, inspired by JAXA's RACS initiative, enables both flight-prove
 - ~40-60 kbps effective throughput on 250 kbps CAN
 - Suitable for commands and small telemetry packets
 
-### DDS over Gigabit Ethernet (High-Bandwidth Data)
+### Zenoh over Gigabit Ethernet (High-Bandwidth Data)
 
 **Purpose**: Large data transfer (images, AI results, data products)
 
@@ -49,21 +49,20 @@ This architecture, inspired by JAXA's RACS initiative, enables both flight-prove
 
 **Characteristics:**
 - High bandwidth (up to 1 Gbps)
-- DDS publish/subscribe pattern
-- C&DH uses minimal DDS subscriber (not full ROS2)
+- Publish/subscribe pattern (Zenoh)
+- C&DH uses Zenoh subscriber (using Zenoh client)
 - Payload publishes from ROS2 nodes
-- Inspired by JAXA RACS Extended DDS approach
+- Uses Zenoh for high-bandwidth communication
 
 ### Payload-Internal Communication
 
-**Protocol**: ROS2 DDS
+**Protocol**: ROS2 with Zenoh middleware
 
 **Used Within Payload Only:**
 - Camera nodes → AI application nodes
 - AI application nodes → Application Manager
 - Resource Monitor → Application Manager
 
-**Note**: This is NOT used for inter-subsystem communication.
 
 ## 🏗️ Architecture Principles
 
@@ -79,9 +78,9 @@ This architecture, inspired by JAXA's RACS initiative, enables both flight-prove
 
 | From/To | C&DH | EPS | Payload | Comms |
 |---------|------|-----|---------|-------|
-| **C&DH** | - | CSP/CAN | CSP/CAN + DDS/GigE | CSP/CAN |
+| **C&DH** | - | CSP/CAN | CSP/CAN + Zenoh/GigE | CSP/CAN |
 | **EPS** | CSP/CAN | - | - | - |
-| **Payload** | CSP/CAN + DDS/GigE | - | ROS2 DDS (internal) | - |
+| **Payload** | CSP/CAN + Zenoh/GigE | - | ROS2 with Zenoh middleware (internal) | - |
 | **Comms** | CSP/CAN | - | - | - |
 
 ## 🚀 Development Status
@@ -93,7 +92,7 @@ This architecture, inspired by JAXA's RACS initiative, enables both flight-prove
 - [ ] CSP over CAN interface
 - [ ] Mode management, telecommand handling
 - [ ] Telemetry collection and formatting
-- [ ] Minimal DDS subscriber for payload data
+- [ ] Zenoh subscriber for payload data
 
 **Payload:**
 - [ ] SpaceROS setup on Jetson
@@ -118,7 +117,7 @@ This architecture, inspired by JAXA's RACS initiative, enables both flight-prove
 ### Integration Milestones:
 - [ ] C&DH ↔ EPS via CSP/CAN
 - [ ] C&DH ↔ Payload via CSP/CAN
-- [ ] Payload → C&DH via DDS/GigE (images)
+- [ ] Payload → C&DH via Zenoh/GigE (images)
 - [ ] End-to-end command/telemetry flow
 - [ ] Full subsystem integration test
 
@@ -156,66 +155,34 @@ Detailed build instructions are in each subsystem's README.
 
 ### Unit Tests
 ```bash
-# Test all subsystems
-./test_all.sh
-
-# Test specific subsystem
-cd cdh && pytest tests/
-cd payload && colcon test
+TBD
 ```
 
 ### Integration Tests
 ```bash
-# Test CSP/CAN communication
-./tests/integration/test_csp_can.sh
-
-# Test C&DH ↔ Payload
-./tests/integration/test_cdh_payload.sh
-
-# Test end-to-end flow
-./tests/integration/test_e2e.sh
+TBD
 ```
 
 ### Hardware-in-the-Loop Tests
 ```bash
-# Requires actual hardware connected
-./tests/hil/test_all_subsystems.sh
+TBD
 ```
 
 ## 🛠️ Development Tools
 
 ### CAN Bus Debugging
 ```bash
-# Monitor CAN traffic
-candump can0
-
-# Send test CSP packet
-cansend can0 123#0102030405060708
-
-# CAN statistics
-ip -details -statistics link show can0
+TBD
 ```
 
 ### ROS2 Debugging (Payload)
 ```bash
-# List ROS2 nodes
-ros2 node list
-
-# Monitor topics
-ros2 topic echo /camera/rgb/image_raw
-ros2 topic echo /ai/cloud_detection/output
-
-# Check node graph
-rqt_graph
+TBD
 ```
 
 ### CSP Debugging
 ```bash
-# CSP ping
-csp-client ping <address>
-
-# CSP route table
-csp-client route print
+TBD
 ```
 
 ## ⚙️ Configuration
@@ -235,8 +202,8 @@ csp-client route print
 ### Communication Performance
 - **CSP/CAN Latency**: < 50ms typical
 - **CSP/CAN Throughput**: ~40-60 kbps effective
-- **DDS/GigE Latency**: < 10ms typical  
-- **DDS/GigE Throughput**: Up to 100 MB/s for images
+- **Zenoh/GigE Latency**: < 10ms typical  
+- **Zenoh/GigE Throughput**: Up to 100 MB/s for images
 
 ### Subsystem Performance
 - **C&DH CPU**: < 50% nominal load
@@ -253,13 +220,13 @@ When contributing to flight software:
 - Add comprehensive tests for new features
 - Follow safety-critical coding standards where applicable
 - Ensure real-time constraints are met
-- Use appropriate communication protocol (CSP vs DDS)
+- Use appropriate communication protocol (CSP vs Zenoh)
 
 ## 📖 Related Documentation
 
 - [System Architecture](../docs/architecture/system-overview.md)
 - [CSP Protocol Specification](../docs/architecture/csp-protocol.md)
-- [DDS Interface Specification](../docs/architecture/dds-interface.md)
+- [Zenoh Interface Specification](../docs/architecture/zenoh-interface.md)
 - [Hardware Configuration](../hardware/)
 - [Testing Strategy](../docs/testing-strategy.md)
 
@@ -269,14 +236,4 @@ When contributing to flight software:
 2. **JAXA RACS**: Hybrid ROS/cFS approach - H. Kato et al., IEEE Aerospace 2021
 3. **SpaceROS**: ROS 2 for space applications - https://space.ros.org/
 4. **libcsp**: CubeSat Space Protocol library - https://github.com/libcsp/libcsp
-5. **CycloneDDS**: DDS implementation - https://cyclonedds.io/
-
-## 🎓 Educational Notes
-
-This testbed serves as an educational platform demonstrating:
-- **Traditional aerospace patterns**: cFS architecture, CSP protocol, RTOS
-- **Modern frameworks**: ROS2, DDS, containerization
-- **Hybrid approaches**: Combining proven and cutting-edge technologies
-- **Real-world tradeoffs**: When to use which protocol and framework
-
-Students working on this project learn both established satellite design patterns and emerging technologies, preparing them for the evolving space industry.
+5. **Eclipse Zenoh**: Modern pub/sub middleware - https://zenoh.io/

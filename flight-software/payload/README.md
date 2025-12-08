@@ -18,13 +18,12 @@ This payload implementation uses a **hybrid communication architecture**:
   - Camera drivers as ROS2 nodes
   - AI applications as ROS2 nodes
   - Application Manager as ROS2 node
-  - DDS for internal inter-node communication
+  - Zenoh middleware (rmw_zenoh) for internal inter-node communication
   
 - **External Interface to C&DH**: Dual-layer communication
   - **CSP over CAN**: Commands, telemetry, control (primary)
-  - **DDS over GigE**: High-bandwidth data (images, large results)
+  - **Zenoh over GigE**: High-bandwidth data (images, large results)
 
-This approach, inspired by JAXA's RACS initiative, allows the payload to leverage modern ROS2 tools internally while maintaining compatibility with traditional satellite bus protocols externally.
 
 ## 🖥️ Hardware Platforms
 
@@ -90,7 +89,7 @@ payload/
 - AI result summaries (small data)
 - Health and status updates
 
-**DDS over GigE (High-Bandwidth Data):**
+**Zenoh over GigE (High-Bandwidth Data):**
 - Camera images (raw/processed)
 - Detailed AI processing results
 - Large data products for ground downlink
@@ -147,7 +146,7 @@ payload/
 
 - Dockerize AI applications as alternative deployment
 - Each container includes ROS2 + AI dependencies
-- Containers use `--network=host` for DDS
+- Containers use `--network=host` for Zenoh
 - Application Manager extended with Docker SDK
 - Trade-off analysis: native vs. containerized
 
@@ -155,34 +154,34 @@ payload/
 
 ```
 ┌─────────────────────────────────────────────────┐
-│            Payload Subsystem (Jetson)           │
+│            Payload Subsystem                    │
 │                                                 │
-│  ┌──────────┐         ┌─────────────┐          │
-│  │  Camera  │─DDS/ROS2→│  AI Apps    │          │
-│  │  Driver  │         │  (ROS2 Nodes)│          │
-│  │(ROS2 Node)│         └──────┬──────┘          │
-│  └──────────┘                 │ DDS/ROS2        │
-│                    │           ↓                 │
-│                    │  ┌────────────────┐        │
-│                    └─→│   Application  │        │
-│                       │    Manager     │        │
-│                       │  (ROS2 Node)   │        │
-│                       └────────┬───────┘        │
-│                                │                 │
-│                       ┌────────┴────────┐       │
-│                       │  CSP Interface  │       │
-│                       │   (Python +     │       │
-│                       │    libcsp)      │       │
-│                       └────────┬────────┘       │
-│                                │                 │
-└────────────────────────────────┼─────────────────┘
-                                 │
-                    CSP/CAN      │      DDS/GigE
-                   (Commands)    │      (Images)
-                                 ↓
-                          ┌─────────┐
-                          │  C&DH   │
-                          └─────────┘
+│ ┌───────────┐             ┌──────────────┐      │
+│ │  Camera   │─ROS2+Zenoh──│   AI Apps    │      │
+│ │  Driver   │             │ (ROS2 Nodes) │      │
+│ │(ROS2 Node)│             └──────┬───────┘      │
+│ └───────────┘                    │ ROS2+Zenoh   │
+│                                  │              │
+│                          ┌────────────────┐     │
+│                          │   Application  │     │
+│                          │    Manager     │     │
+│                          │  (ROS2 Node)   │     │
+│                          └────────┬───────┘     │
+│                                   │             │
+│                          ┌────────┴────────┐    │
+│                          │  CSP Interface  │    │
+│                          │   (Python +     │    │
+│                          │    libcsp)      │    │
+│                          └────────┬────────┘    │
+│                                   │             │
+└───────────────────────────────────┼─────────────┘
+                                    │
+                       CSP/CAN      │    Zenoh/GigE
+                      (Commands)    │    (Images)
+                                    │
+                               ┌─────────┐
+                               │  C&DH   │
+                               └─────────┘
 ```
 
 ## 🚀 Development Status
@@ -191,15 +190,12 @@ payload/
 - [ ] SpaceROS installation and setup
 - [ ] CSP Interface implementation
 - [ ] Application Manager (ROS2 node)
-- [ ] Camera driver integration (RGB)
-- [ ] Cloud detection AI app development
-  - [ ] Model training and optimization
-  - [ ] TensorRT conversion
-  - [ ] ROS2 node implementation
+- [ ] Camera driver integration
+- [ ] Custom AI app development
 - [ ] Integration of existing AI app
 - [ ] Resource Monitor implementation
 - [ ] CSP/CAN integration with C&DH
-- [ ] DDS/GigE data publishing
+- [ ] Zenoh/GigE data publishing
 - [ ] End-to-end testing
 
 ### Jetson - Phase 2 (Optional)
@@ -221,92 +217,20 @@ payload/
 ### Phase 1 Setup
 
 ```bash
-# Install SpaceROS (ROS2 Humble)
-# Follow: https://space.ros.org/
-
-# Install CSP library
-git clone https://github.com/libcsp/libcsp.git
-cd libcsp && mkdir build && cd build
-cmake .. && make && sudo make install
-
-# Install AI/ML frameworks
-pip3 install torch torchvision
-# Install TensorRT (comes with JetPack)
-
-# Configure CAN interface
-sudo ip link set can0 type can bitrate 250000
-sudo ip link set up can0
-
-# Build ROS2 workspace
-cd flight-software/payload/jetson
-colcon build
-source install/setup.bash
-
-# Run payload system
-ros2 launch payload_launch full_system.launch.py
+TBD
 ```
 
 ## 🧪 Testing
 
 ### Unit Tests
 ```bash
-cd flight-software/payload/jetson
-pytest tests/unit/
-```
-
-### Integration Tests
-```bash
-# Test CSP interface
-./tests/integration/test_csp_interface.sh
-
-# Test Application Manager
-ros2 run payload_tests test_app_manager
-
-# Test AI application
-ros2 run payload_tests test_cloud_detection
-```
-
-### Performance Testing
-```bash
-# Inference latency
-ros2 run payload_tests benchmark_inference
-
-# Resource usage
-ros2 run payload_tests monitor_resources
-
-# End-to-end latency
-ros2 run payload_tests e2e_latency
+TBD
 ```
 
 ## ⚙️ Configuration
 
-### application_registry.json
 ```json
-{
-  "applications": [
-    {
-      "name": "cloud_detection",
-      "package": "ai_apps",
-      "executable": "cloud_detection_node",
-      "model_path": "/models/cloud_detection/model.trt",
-      "camera_topic": "/camera/rgb/image_raw"
-    },
-    {
-      "name": "existing_app",
-      "package": "ai_apps",
-      "executable": "existing_app_node"
-    }
-  ]
-}
-```
-
-### csp_config.yaml
-```yaml
-csp:
-  address: 3  # Payload address
-  can_interface: can0
-  cdh_address: 1
-  buffer_size: 256
+TBD
 ```
 
 ## 🤖 AI Models
@@ -324,38 +248,6 @@ csp:
 5. Benchmark on Jetson
 6. Deploy as ROS2 node
 
-### Example: Cloud Detection
-```python
-# In cloud_detection_node.py (ROS2 node)
-import rclpy
-from sensor_msgs.msg import Image
-from cv_bridge import CvBridge
-import tensorrt as trt
-
-class CloudDetectionNode(Node):
-    def __init__(self):
-        super().__init__('cloud_detection')
-        self.subscription = self.create_subscription(
-            Image, '/camera/rgb/image_raw', 
-            self.image_callback, 10)
-        self.publisher = self.create_publisher(
-            CloudResult, '/ai/cloud_detection/output', 10)
-        # Load TensorRT engine
-        self.engine = self.load_trt_engine('model.trt')
-        
-    def image_callback(self, msg):
-        # Preprocess, inference, postprocess
-        result = self.run_inference(msg)
-        self.publisher.publish(result)
-```
-
-## 📊 Performance Requirements
-
-- **Inference Latency**: < 100ms for cloud detection
-- **Frame Rate**: 10 fps nominal
-- **Power Consumption**: < 15W nominal
-- **GPU Utilization**: < 80% under nominal load
-- **Memory Usage**: < 4GB
 
 ## 🤝 Contributing
 
@@ -374,12 +266,12 @@ When contributing to Payload:
 - [Application Manager API](../../docs/api/application-manager.md)
 - [AI Model Guidelines](../../docs/tutorials/ai-models.md)
 - [CSP Protocol Interface](../../docs/architecture/csp-protocol.md)
-- [DDS Publishing Guide](../../docs/architecture/dds-publishing.md)
+- [Zenoh Publishing Guide](../../docs/architecture/zenoh-publishing.md)
 - [FPGA Development Guide](../../docs/tutorials/fpga-dev.md) (future)
 
 ## 📚 References
 
 1. JAXA RACS: H. Kato et al., "ROS and cFS System (RACS)", IEEE Aerospace 2021
-2. JAXA RACS Extended DDS: https://github.com/jaxa/racs2_extended-dds
+2. Eclipse Zenoh RMW: https://github.com/ros2/rmw_zenoh
 3. SpaceROS: A. Probe et al., "Space ROS: An Open-Source Framework", AIAA 2023
 4. TensorRT Optimization: https://developer.nvidia.com/tensorrt

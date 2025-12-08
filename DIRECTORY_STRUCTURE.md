@@ -60,7 +60,6 @@ orion-cubesat-testbed/
 └── docs/                        # Project documentation
     ├── architecture/            # System architecture
     ├── getting-started/         # Setup guides
-    ├── api/                     # API documentation
     └── tutorials/               # Learning materials
 ```
 

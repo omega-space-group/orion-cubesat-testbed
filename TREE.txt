@@ -6,8 +6,6 @@
 ./TREE.txt
 ./docs
 ./docs/README.md
-./docs/api
-./docs/api/README.md
 ./docs/architecture
 ./docs/architecture/README.md
 ./docs/getting-started

@@ -70,17 +70,7 @@ Downlink: C&DH → Protocol → Mod → HackRF → RF → Ground
 
 ### Installation
 ```bash
-# Install HackRF tools
-sudo apt install hackrf libhackrf-dev
-
-# Install signal processing libraries
-sudo apt install gnuradio liquid-dsp
-
-# Build comms software
-cd hackrf
-mkdir build && cd build
-cmake ..
-make
+TBD
 ```
 
 ## 📡 Communication Parameters

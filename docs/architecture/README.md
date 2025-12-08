@@ -38,24 +38,25 @@ Our architecture strategically uses different frameworks for different purposes:
                         │  (HackRF)   │
                         └──────┬──────┘
                                │ CSP/CAN + GigE
-              ┌────────────────┴────────────────┐
-              │            C&DH                 │
-              │   (RPi4 → STM32 + FreeRTOS)    │
-              │                                 │
-              │  • cFS-inspired architecture    │
+              ┌────────────────┴───────────────┐
+              │            C&DH                │
+              │   (RPi4 / STM32 + FreeRTOS)    │
+              │                                │
+              │  • cFS-inspired architecture   │
               │  • CSP/CAN for control         │
-              │  • Minimal DDS subscriber      │
+              │  • Zenoh subscriber            │
               └─┬──────────────────────────┬───┘
-                │ CSP/CAN              CSP/CAN + DDS/GigE
-                │                            │
-         ┌──────┴──────┐            ┌────────┴─────────┐
-         │     EPS     │            │     Payload      │
-         │   (STM32)   │            │  (Jetson/FPGA)   │
-         │             │            │                  │
-         │ • FreeRTOS  │            │ • SpaceROS/ROS2  │
-         │ • CSP/CAN   │            │ • CSP interface  │
-         │ • Power mgmt│            │ • DDS publishing │
-         └─────────────┘            └──────────────────┘
+                │                          │
+             CSP/CAN               CSP/CAN + Zenoh/GigE
+                │                          │
+         ┌──────┴──────┐          ┌────────┴──────────┐
+         │     EPS     │          │     Payload       │
+         │   (STM32)   │          │  (Jetson/FPGA)    │
+         │             │          │                   │
+         │ • FreeRTOS  │          │ • SpaceROS/ROS2   │
+         │ • CSP/CAN   │          │ • CSP interface   │
+         │ • Power mgmt│          │ • Zenoh publishing│
+         └─────────────┘          └───────────────────┘
 ```
 
 ## Communication Architecture
@@ -95,12 +96,12 @@ Our architecture uses **two communication layers** for different data types:
 │  Comms  │ CSP/CAN │    -    │    -    │    -    │
 └─────────┴─────────┴─────────┴─────────┴─────────┘
 
-* Payload internal: ROS2 DDS (not CSP)
+* Payload internal: ROS2 with Zenoh middleware (not CSP)
 ```
 
-#### Layer 2: DDS over Gigabit Ethernet (High-Bandwidth Data)
+#### Layer 2: Zenoh over Gigabit Ethernet (High-Bandwidth Data)
 
-**Protocol**: Data Distribution Service (DDS) over Gigabit Ethernet  
+**Protocol**: Eclipse Zenoh over Gigabit Ethernet  
 **Bitrate**: Up to 1 Gbps  
 **Effective Throughput**: ~100 MB/s for image data  
 
@@ -113,20 +114,20 @@ Our architecture uses **two communication layers** for different data types:
 **Direction**: Primarily Payload → C&DH (for eventual downlink via Comms)
 
 **Implementation**:
-- **Payload**: Publishes to DDS topics from ROS2 nodes (native SpaceROS)
-- **C&DH**: Minimal DDS subscriber (lightweight DDS library, NOT full ROS2)
+- **Payload**: Publishes to Zenoh topics from ROS2 nodes (native SpaceROS with rmw_zenoh)
+- **C&DH**: Zenoh subscriber (lightweight Zenoh library, NOT full ROS2)
 
 
 ### Payload-Internal Communication
 
-**Protocol**: ROS2 DDS (via SpaceROS)
+**Protocol**: ROS2 with Zenoh middleware (via SpaceROS)
 
 **Used Within Payload Subsystem Only**:
 ```
 Camera Nodes ─┐
-              ├─► ROS2 DDS ─► AI Application Nodes
+              ├─► ROS2 with Zenoh middleware ─► AI Application Nodes
 Sensors ──────┘                         │
-                                        │ ROS2 DDS
+                                        │ ROS2 with Zenoh middleware
                                         ▼
                             Application Manager
                                         │
@@ -161,7 +162,7 @@ Sensors ──────┘                         │
 
 **Communication Interfaces**:
 - CSP over CAN: Primary protocol (all subsystems)
-- Minimal DDS subscriber: Receive large payload data
+- Zenoh subscriber: Receive large payload data
 - RF link via Comms: Ground station interface
 
 **Design Pattern**: NASA cFS architectural patterns
@@ -177,9 +178,9 @@ Sensors ──────┘                         │
 
 **Hardware**:
 - Primary: NVIDIA Jetson Xavier NX
-- Future: Xilinx FPGA for hardware acceleration
+- Future: Xilinx FPGA
 
-**Software Architecture**: Full SpaceROS (ROS2 Humble)
+**Software Architecture**: Full SpaceROS
 
 **Key Components**:
 1. **Application Manager** (ROS2 node)
@@ -193,12 +194,11 @@ Sensors ──────┘                         │
    - Generates CSP telemetry from ROS2 data
    
 3. **Camera Drivers** (ROS2 nodes)
-   - RGB camera: usb_cam or v4l2_camera
-   - IR camera: Custom driver (future)
+   - RGB camera: TBD
+   - IR camera: TBD
    
 4. **AI Applications** (ROS2 nodes)
-   - Cloud detection (TensorRT-optimized)
-   - Additional apps as needed
+   - Custom + third-party 
    - Containerization option (Phase 2)
    
 5. **Resource Monitor** (ROS2 node)
@@ -207,8 +207,8 @@ Sensors ──────┘                         │
 
 **Communication Interfaces**:
 - **External**: CSP/CAN for commands/telemetry to C&DH
-- **External**: DDS/GigE for publishing images to C&DH
-- **Internal**: ROS2 DDS for inter-node communication
+- **External**: Zenoh/GigE for publishing images to C&DH
+- **Internal**: ROS2 with Zenoh middleware for inter-node communication
 
 ### EPS (Electrical Power System)
 
@@ -245,7 +245,7 @@ Sensors ──────┘                         │
 **Software**:
 - C&DH: Python with cFS patterns
 - Payload: Native ROS2 nodes (no Docker yet)
-- Communication: CSP/CAN + DDS/GigE
+- Communication: CSP/CAN + Zenoh/GigE
 
 **Goals**:
 - Rapid prototyping
@@ -280,7 +280,7 @@ Sensors ──────┘                         │
 | C&DH Language (P2) | C/C++ | Real-time, efficiency |
 | Payload Framework | SpaceROS/ROS2 | AI ecosystem, tooling |
 | Primary Protocol | CSP over CAN | CubeSat flight heritage |
-| High-BW Protocol | DDS over GigE | Images, large data |
+| High-BW Protocol | Zenoh over GigE | Images, large data |
 | RTOS Choice | FreeRTOS | CubeSat dominance |
 | C&DH Hardware (P1) | Raspberry Pi 4 | Development ease |
 | C&DH Hardware (P2) | STM32 | Flight-ready, efficient |
@@ -289,7 +289,7 @@ Sensors ──────┘                         │
 
 1. **JAXA RACS**: H. Kato, D. Hirano, S. Mitani, T. Saito and S. Kawaguchi, "ROS and cFS System (RACS): Easing Space Robotic Development," 2021 IEEE Aerospace Conference, doi: 10.1109/AERO50100.2021.9438288
 
-2. **JAXA RACS Extended DDS**: https://github.com/jaxa/racs2_extended-dds
+2. **Eclipse Zenoh RMW**: https://github.com/ros2/rmw_zenoh
 
 3. **NASA cFS**: Core Flight System, https://cfs.gsfc.nasa.gov/
 

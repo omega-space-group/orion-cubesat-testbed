@@ -32,10 +32,10 @@ Ground-based testbed that mirrors actual CubeSat functionality for comprehensive
 Our testbed implements a **hybrid architecture** that combines proven satellite protocols with modern AI capabilities:
 
 - **Satellite Bus (C&DH, EPS)**: Custom flight software inspired by NASA cFS patterns with CubeSat Space Protocol (CSP) over CAN
-- **AI Payload**: SpaceROS (ROS2) internally
+- **AI Payload**: SpaceROS (ROS2) with Zenoh middleware (rmw_zenoh)
 - **Communication**: Dual-layer approach
   - **CSP over CAN**: Control messaging (commands, telemetry, status)
-  - **DDS over GigE**: High-bandwidth data transfer (images, large AI results)
+  - **Zenoh over GigE**: High-bandwidth data transfer (images, large AI results)
 
 ### Hardware
 
@@ -43,7 +43,7 @@ Our testbed implements a **hybrid architecture** that combines proven satellite 
 |-----------|----------|----------|------------------|
 | **C&DH** | Raspberry Pi 4 → STM32 Nucleo | Ubuntu → FreeRTOS | CSP/CAN |
 | **EPS** | STM32 Nucleo | FreeRTOS | CSP/CAN |
-| **Payload** | NVIDIA Jetson + Xilinx FPGA | Ubuntu + SpaceROS | CSP/CAN + DDS/GigE |
+| **Payload** | NVIDIA Jetson + Xilinx FPGA | Ubuntu + SpaceROS | CSP/CAN + Zenoh/GigE |
 | **Comms** | HackRF One SDR | GNU Radio | RF Link |
 
 ### Software Stack
@@ -53,7 +53,7 @@ Our testbed implements a **hybrid architecture** that combines proven satellite 
 - **Payload Middleware**: SpaceROS (ROS2 Humble) 
 - **Communication Protocols**: 
   - CubeSat Space Protocol (CSP) over CAN bus
-  - DDS over Gigabit Ethernet (payload data)
+  - Zenoh over Gigabit Ethernet (payload data)
 - **Ground Segment**: SDR-based (GNU Radio)
 
 ### Block Diagram
@@ -72,13 +72,13 @@ Our testbed implements a **hybrid architecture** that combines proven satellite 
     ┌──────┴──────────────────────┐
     │            C&DH             │
     │  (RPi4/STM32 + cFS-inspired)│
-    │    CSP/CAN + DDS Subscriber │
+    │    CSP/CAN + Zenoh Subscriber │
     └─┬────────────────────────┬──┘
-      │ CSP/CAN                │ CSP/CAN + DDS/GigE
+      │ CSP/CAN                │ CSP/CAN + Zenoh/GigE
 ┌─────┴─────┐           ┌──────┴────────────┐
 │    EPS    │           │     Payload       │
 │  (STM32)  │           │   (Jetson/FPGA)   │
-│           │           │ SpaceROS Internal │
+│           │           │ SpaceROS + Zenoh  │
 │  CSP/CAN  │           │   CSP Interface   │
 └───────────┘           └───────────────────┘
 ```
@@ -91,7 +91,7 @@ Our testbed implements a **hybrid architecture** that combines proven satellite 
 - Status updates and health monitoring
 - Time synchronization
 
-**High-Bandwidth Layer (DDS over GigE)**
+**High-Bandwidth Layer (Zenoh over GigE)**
 - Camera images: Payload → C&DH
 - Processed AI results: Payload → C&DH
 - Large data products for ground downlink
@@ -148,7 +148,7 @@ cd orion-cubesat-testbed
 - CSP over CAN bus implementation
 - SpaceROS Payload framework (Jetson)
 - AI model deployment and optimization
-- DDS over GigE for high-bandwidth data
+- Zenoh over GigE for high-bandwidth data
 
 ### ⏳ Planned
 - Full subsystem integration (Comms, EPS)
@@ -187,12 +187,12 @@ GPL-3.0 License - see [LICENSE](LICENSE) for details.
 ### Communication & Protocols
 - [libcsp](https://github.com/libcsp/libcsp) - CubeSat Space Protocol library
 - [SocketCAN](https://www.kernel.org/doc/html/latest/networking/can.html) - Linux CAN bus support
-- [Fast-DDS](https://fast-dds.docs.eprosima.com/) - DDS implementation
-- [CycloneDDS](https://cyclonedds.io/) - Alternative DDS implementation
+- [Eclipse Zenoh](https://zenoh.io/) - Zenoh middleware
+- [Zenoh ROS2 Middleware](https://github.com/ros2/rmw_zenoh) - A ROS 2 RMW implementation based on Zenoh
 
 ### Research References
-- [JAXA RACS](https://github.com/jaxa/racs2_extended-dds) - Hybrid ROS/cFS approach
-- [ESA SLED](https://www.esa.int/) - Space Linux Edge Development
+- [JAXA RACS](https://ieeexplore.ieee.org/abstract/document/9438288) - Hybrid ROS/cFS approach
+
 
 ### SDR & Ground Station
 - [GNU Radio](https://www.gnuradio.org/) - Software-defined radio toolkit

@@ -24,12 +24,12 @@ This C&DH implementation follows a **hybrid approach inspired by JAXA's RACS ini
 - **Communication Protocol**: CubeSat Space Protocol (CSP) over CAN bus
   - Primary interface for all subsystem communication (EPS, Payload)
   - Proven flight heritage in CubeSat missions
-- **High-Bandwidth Interface**: Minimal DDS subscriber for large payload data
-  - Lightweight DDS library (CycloneDDS or FastDDS) 
-  - Does NOT require full ROS2 installation
+- **High-Bandwidth Interface**: Zenoh subscriber for large payload data
+  - Lightweight Zenoh library (Eclipse Zenoh) 
+  - Uses lightweight Zenoh Python client
   - Subscribes to payload image/result topics for ground downlink
 
-**Note**: This is NOT a full ROS2 implementation. The C&DH uses proven satellite bus patterns with CSP/CAN as the primary protocol, only adding minimal DDS capability for high-bandwidth payload data when needed.
+**Note**: This is NOT a full ROS2 implementation. The C&DH uses proven satellite bus patterns with CSP/CAN as the primary protocol, only adding Zenoh client capability for high-bandwidth payload data when needed.
 
 ## 🖥️ Hardware Platforms
 
@@ -85,15 +85,15 @@ cdh/
 - Telecommands for satellite operations
 - Configuration updates
 
-### DDS over Gigabit Ethernet (High-Bandwidth Data)
+### Zenoh over Gigabit Ethernet (High-Bandwidth Data)
 **From Payload:**
 - Camera images for ground downlink
 - Large AI processing results
 - Detailed data products
 
 **Implementation:**
-- Minimal DDS subscriber (not full ROS2)
-- Uses CycloneDDS or FastDDS C/Python API
+- Zenoh subscriber (using Zenoh client)
+- Uses Eclipse Zenoh C/Python API
 - Receives data published by Payload's ROS2 nodes
 
 ### Output to Ground
@@ -160,7 +160,7 @@ Ground Station → Comms → [CSP/CAN] → C&DH → [Command Parser] → Subsyst
                                       ↓
 Subsystems → C&DH → [CSP/CAN] → Comms → Ground Station
 
-Payload Images → [DDS/GigE] → C&DH → Store for Downlink
+Payload Images → [Zenoh/GigE] → C&DH → Store for Downlink
 ```
 
 ## 🚀 Development Status
@@ -175,7 +175,7 @@ Payload Images → [DDS/GigE] → C&DH → Store for Downlink
 - [ ] Time Services module
 - [ ] Event System module
 - [ ] Configuration system (YAML tables)
-- [ ] DDS subscriber for payload data (optional)
+- [ ] Zenoh subscriber for payload data (optional)
 - [ ] Integration with EPS subsystem
 - [ ] Integration with Payload subsystem
 - [ ] End-to-end testing
@@ -193,50 +193,13 @@ Payload Images → [DDS/GigE] → C&DH → Store for Downlink
 ### Phase 1 - Raspberry Pi 4
 
 ```bash
-# Install dependencies
-sudo apt-get update
-sudo apt-get install python3.10 python3-pip can-utils
-
-# Install Python libraries
-pip3 install python-can pyyaml psutil
-
-# Install libcsp
-git clone https://github.com/libcsp/libcsp.git
-cd libcsp && mkdir build && cd build
-cmake .. && make && sudo make install
-
-# Configure CAN interface
-sudo ip link set can0 type can bitrate 250000
-sudo ip link set up can0
-
-# Build (if applicable)
-cd flight-software/cdh/rpi4
-./build.sh
-
-# Run C&DH
-python3 src/main.py
+TBD
 ```
 
 ## 🧪 Testing
 
 ```bash
-# Unit tests
-cd flight-software/cdh/rpi4
-pytest tests/
-
-# Integration test with mock subsystems
-./tests/integration/test_cdh_eps.sh
-./tests/integration/test_cdh_payload.sh
-
-# CAN bus testing
-# Terminal 1: Start C&DH
-python3 src/main.py
-
-# Terminal 2: Send test command via CAN
-cansend can0 123#01020304
-
-# Monitor telemetry
-candump can0
+TBD
 ```
 
 ## ⚙️ Configuration
@@ -245,22 +208,12 @@ Configuration files are located in `rpi4/config/`:
 
 **system_config.yaml**: System parameters
 ```yaml
-telemetry_rate_hz: 1
-command_timeout_ms: 100
-mode_transition_rules:
-  safe_to_nominal: [battery_voltage > 7.0, no_critical_errors]
-  nominal_to_payload: [ground_command, battery_voltage > 7.2]
+TBD
 ```
 
 **csp_config.yaml**: CSP network configuration
 ```yaml
-csp:
-  address: 1  # C&DH address
-  can_interface: can0
-  can_bitrate: 250000
-  eps_address: 2
-  payload_address: 3
-  buffer_size: 256
+TBD
 ```
 
 **tables/**: cFS-style table files
