@@ -80,7 +80,7 @@ This architecture, inspired by JAXA's RACS initiative, enables both flight-prove
 |---------|------|-----|---------|-------|
 | **C&DH** | - | CSP/CAN | CSP/CAN + Zenoh/GigE | CSP/CAN |
 | **EPS** | CSP/CAN | - | - | - |
-| **Payload** | CSP/CAN + Zenoh/GigE | - | ROS2 with Zenoh middleware (internal) | - |
+| **Payload** | CSP/CAN + Zenoh/GigE | - | - | - |
 | **Comms** | CSP/CAN | - | - | - |
 
 ## 🚀 Development Status
