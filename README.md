@@ -80,7 +80,7 @@ Our testbed implements a **hybrid architecture** that combines proven satellite 
 ┌─────┴─────┐           ┌──────┴───────┴────┐
 │    EPS    │           │     Payload       │
 │  (STM32)  │           │   (Jetson/FPGA)   │
-│           │           │ SpaceROS + Zenoh  │
+│           │           │       Zenoh       │
 │  CSP/CAN  │           │   CSP Interface   │
 └───────────┘           └───────────────────┘
 ```
