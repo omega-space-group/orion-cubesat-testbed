@@ -17,7 +17,7 @@ Ground-based testbed that mirrors actual CubeSat functionality for comprehensive
 
 ### Key Capabilities
 
-- 🤖 **AI/ML Deployment**: Test algorithms on NVIDIA Jetson and Xilinx FPGA
+- 🤖 **AI/ML Deployment**: Test algorithms on GPUs, FPGAs, Neural/Tensor/Neuromorphic Processors
 - 🛰️ **Hybrid Architecture**: Flight-proven protocols + modern AI frameworks
 - 🔄 **End-to-End Testing**: From sensor to ground station
 - 🎓 **Educational**: Platform for student projects and learning
@@ -32,7 +32,7 @@ Ground-based testbed that mirrors actual CubeSat functionality for comprehensive
 Our testbed implements a **hybrid architecture** that combines proven satellite protocols with modern AI capabilities:
 
 - **Satellite Bus (C&DH, EPS)**: Custom flight software inspired by NASA cFS patterns with CubeSat Space Protocol (CSP) over CAN
-- **AI Payload**: SpaceROS (ROS2) with Zenoh middleware (rmw_zenoh)
+- **AI Payload**: Zenoh middleware for a pub/sub, AI-enabled cognitive payload 
 - **Communication**: Dual-layer approach
   - **CSP over CAN**: Control messaging (commands, telemetry, status)
   - **Zenoh over GigE**: High-bandwidth data transfer (images, large AI results)
@@ -43,14 +43,13 @@ Our testbed implements a **hybrid architecture** that combines proven satellite 
 |-----------|----------|----------|------------------|
 | **C&DH** | Raspberry Pi 4 → STM32 Nucleo | Ubuntu → FreeRTOS | CSP/CAN |
 | **EPS** | STM32 Nucleo | FreeRTOS | CSP/CAN |
-| **Payload** | NVIDIA Jetson / Xilinx FPGA | Ubuntu + SpaceROS | CSP/CAN + Zenoh/GigE |
+| **Payload** | NVIDIA Jetson / Xilinx Ultrascale+ | Ubuntu | CSP/CAN + Zenoh/GigE |
 | **Comms** | HackRF One SDR | GNU Radio | RF Link |
 
 ### Software Stack
 
 - **Operating Systems**: Ubuntu 22.04, FreeRTOS
 - **C&DH Middleware**: Custom cFS-inspired architecture with CSP
-- **Payload Middleware**: SpaceROS (ROS2 Humble) 
 - **Communication Protocols**: 
   - CubeSat Space Protocol (CSP) over CAN bus
   - Zenoh over Gigabit Ethernet (payload data)
@@ -59,23 +58,26 @@ Our testbed implements a **hybrid architecture** that combines proven satellite 
 ### Block Diagram
 
 ```
-┌─────────────────────┐
-│   Ground Station    │
-│    (SDR + GUI)      │
-└──────────┬──────────┘
-           │ RF
-    ┌──────┴──────┐
-    │    COMMS    │
-    │    (SDR)    │
-    └──────┬──────┘
-           │ CSP/CAN + GigE
-    ┌──────┴───────────────────────┐
-    │            C&DH              │
-    │  (RPi4/STM32 + cFS-inspired) │
-    │   CSP/CAN + Zenoh Subscriber │
-    └─┬────────────────────────┬───┘
-      │ CSP/CAN                │ CSP/CAN + Zenoh/GigE
-┌─────┴─────┐           ┌──────┴────────────┐
+                           ┌─────────────────────┐
+                           │   Ground Station    │
+                           │    (SDR + GUI)      │
+                           └──────────┬──────────┘
+                                      │ RF
+                                      |
+                               ┌──────┴───────┐
+                               │     COMMS    │
+                               │     (SDR)    │
+                               └─┬─────┬──────┘
+                                 |     |
+                         CSP/CAN |     |
+                                 |     |
+    ┌──────────────────────────────┐   |
+    │            C&DH              │   | GigE
+    │  (RPi4/STM32 + cFS-inspired) │   |
+    │   CSP/CAN                    │   |
+    └─┬────────────────────────┬───┘   |
+      │ CSP/CAN        CSP/CAN │       |
+┌─────┴─────┐           ┌──────┴───────┴────┐
 │    EPS    │           │     Payload       │
 │  (STM32)  │           │   (Jetson/FPGA)   │
 │           │           │ SpaceROS + Zenoh  │
@@ -104,7 +106,7 @@ Our testbed implements a **hybrid architecture** that combines proven satellite 
 orion-cubesat-testbed/
 ├── flight-software/      # On-board SW (C&DH, EPS, Payload, Comms)
 ├── ground-segment/       # Ground station & mission control
-├── middleware/           # Payload-internal SpaceROS interfaces
+├── middleware/           # Payload-internal interfaces
 ├── hardware/             # HW docs, CAN/GigE configs, BOM
 ├── simulation/           # Testing infrastructure
 ├── tools/                # Build & deployment utilities
@@ -135,7 +137,7 @@ cd orion-cubesat-testbed
 
 **Prerequisites**: Ubuntu 22.04, Python 3.10+, libcsp
 
-**For Payload Development**: ROS 2 Humble, CUDA, TensorRT (Jetson only)
+**For Payload Development**: CUDA, TensorRT (Jetson only), Zenoh
 
 
 ---
@@ -144,9 +146,9 @@ cd orion-cubesat-testbed
 
 
 ### 🔄 In Progress
-- C&DH cFS-inspired software (Python on RPi4)
+- C&DH cFS-inspired software
 - CSP over CAN bus implementation
-- SpaceROS Payload framework (Jetson)
+- Payload framework (Jetson)
 - AI model deployment and optimization
 - Zenoh over GigE for high-bandwidth data
 
@@ -181,7 +183,6 @@ GPL-3.0 License - see [LICENSE](LICENSE) for details.
 ### Core Technologies
 - [NASA cFS](https://cfs.gsfc.nasa.gov/) - Core Flight System (architectural inspiration)
 - [Space ROS](https://space.ros.org/) - ROS 2 for space applications
-- [ROS 2 Documentation](https://docs.ros.org/en/humble/) - Robot Operating System 2
 - [FreeRTOS](https://www.freertos.org/) - Real-time operating system
 
 ### Communication & Protocols
