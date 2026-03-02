@@ -69,61 +69,6 @@ The flight software implements core satellite functionality using a **hybrid arc
 | **Payload** | CSP/CAN | - | - | Zenoh/GigE |
 | **Comms** | CSP/CAN | - | Zenoh/GigE | - |
 
-## 📚 Subsystem Documentation
-
-Each subsystem has detailed documentation:
-- [Command & Data Handling (C&DH)](cdh/README.md) - cFS-inspired architecture
-- [Electrical Power System (EPS)](eps/README.md) - Power management
-- [Payload](payload/README.md) - AI framework
-- [Communications](comms/README.md) - SDR and ground link
-
-
-Detailed build instructions are in each subsystem's README.
-
-## 🧪 Testing
-
-### Unit Tests
-```bash
-TBD
-```
-
-### Integration Tests
-```bash
-TBD
-```
-
-### Hardware-in-the-Loop Tests
-```bash
-TBD
-```
-
-## 🛠️ Development Tools
-
-### CAN Bus Debugging
-```bash
-TBD
-```
-
-### ROS2 Debugging (Payload)
-```bash
-TBD
-```
-
-### CSP Debugging
-```bash
-TBD
-```
-
-
-## 🤝 Contributing
-
-When contributing to flight software:
-- Follow subsystem architectural patterns
-- Test with both simulation and hardware
-- Document all external interfaces
-- Add comprehensive tests for new features
-- Follow safety-critical coding standards where applicable
-- Ensure real-time constraints are met
 
 ## 📖 Related Documentation
 
