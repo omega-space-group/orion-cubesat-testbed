@@ -21,15 +21,3 @@ Start here:
 Reference:
 - [API Documentation](api/)
 - [Contributing Guide](../CONTRIBUTING.md)
-- [Code Standards](architecture/coding-standards.md)
-
-## Building Documentation
-
-```bash
-# Generate documentation
-cd docs
-make html
-
-# View documentation
-open _build/html/index.html
-```
