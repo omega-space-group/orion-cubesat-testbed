@@ -182,7 +182,6 @@ GPL-3.0 License - see [LICENSE](LICENSE) for details.
 
 ### Core Technologies
 - [NASA cFS](https://cfs.gsfc.nasa.gov/) - Core Flight System (architectural inspiration)
-- [Space ROS](https://space.ros.org/) - ROS 2 for space applications
 - [FreeRTOS](https://www.freertos.org/) - Real-time operating system
 
 ### Communication & Protocols
