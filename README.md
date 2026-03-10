@@ -18,10 +18,10 @@ Ground-based testbed that mirrors actual CubeSat functionality for comprehensive
 ### Key Capabilities
 
 - 🤖 **AI/ML Deployment**: Test algorithms on GPUs, FPGAs, Neural/Tensor/Neuromorphic Processors
-- 🛰️ **Hybrid Architecture**: Flight-proven protocols + modern AI frameworks
+- 🛰️ **Hybrid Architecture**: Flight-proven protocols + AI frameworks
 - 🔄 **End-to-End Testing**: From sensor to ground station
 - 🎓 **Educational**: Platform for student projects and learning
-- 🌍 **Open Source**: GPL-3.0, following Libre Space Foundation principles
+- 🌍 **Open Source**: GPL-3.0
 
 ---
 
@@ -73,15 +73,15 @@ Our testbed implements a **hybrid architecture** that combines proven satellite 
                                  |     |
     ┌──────────────────────────────┐   |
     │            C&DH              │   | GigE
-    │  (RPi4/STM32 + cFS-inspired) │   |
-    │   CSP/CAN                    │   |
+    │         RPi4/STM32           │   |
+    │          CSP/CAN             │   |
     └─┬────────────────────────┬───┘   |
       │ CSP/CAN        CSP/CAN │       |
 ┌─────┴─────┐           ┌──────┴───────┴────┐
 │    EPS    │           │     Payload       │
 │  (STM32)  │           │   (Jetson/FPGA)   │
 │           │           │       Zenoh       │
-│  CSP/CAN  │           │   CSP Interface   │
+│  CSP/CAN  │           │   CSP/CAN + GigE  │
 └───────────┘           └───────────────────┘
 ```
 
