@@ -73,15 +73,15 @@ Our testbed implements a **hybrid architecture** that combines proven satellite 
                                  |     |
     ┌──────────────────────────────┐   |
     │            C&DH              │   | GigE
-    │  (RPi4/STM32 + cFS-inspired) │   |
-    │   CSP/CAN                    │   |
+    │        (RPi4/STM32)          │   |
+    │           CSP/CAN            │   |
     └─┬────────────────────────┬───┘   |
       │ CSP/CAN        CSP/CAN │       |
 ┌─────┴─────┐           ┌──────┴───────┴────┐
 │    EPS    │           │     Payload       │
 │  (STM32)  │           │   (Jetson/FPGA)   │
 │           │           │       Zenoh       │
-│  CSP/CAN  │           │   CSP Interface   │
+│  CSP/CAN  │           │     CSP / GigE    │
 └───────────┘           └───────────────────┘
 ```
 
