@@ -1,5 +1,7 @@
-../Core/Src/main.c:71:5:main	7
-../Core/Src/main.c:146:6:SystemClock_Config	4
-../Core/Src/main.c:197:13:MX_USART3_UART_Init	5
-../Core/Src/main.c:245:13:MX_GPIO_Init	1
-../Core/Src/main.c:267:6:Error_Handler	1
+../Core/Src/main.c:67:6:up_highFreqTimerTicks	1
+../Core/Src/main.c:70:7:configureTimerForRunTimeStats	1
+../Core/Src/main.c:74:16:getRunTimeCounterValue	1
+../Core/Src/main.c:83:5:main	7
+../Core/Src/main.c:164:6:SystemClock_Config	4
+../Core/Src/main.c:222:6:HAL_TIM_PeriodElapsedCallback	2
+../Core/Src/main.c:239:6:Error_Handler	1
