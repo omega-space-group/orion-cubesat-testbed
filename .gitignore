@@ -172,3 +172,5 @@ test_results/
 *.bak
 *.backup
 *~
+.venv/
+__pycache__/
