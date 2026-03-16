@@ -25,7 +25,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include <stdio.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -62,6 +62,7 @@ const osThreadAttr_t defaultTask_attributes = {
 
 void StartDefaultTask(void *argument);
 
+extern void MX_USB_DEVICE_Init(void);
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
 /* Hook prototypes */
@@ -70,14 +71,15 @@ unsigned long getRunTimeCounterValue(void);
 
 /* USER CODE BEGIN 1 */
 /* Functions needed when configGENERATE_RUN_TIME_STATS is on */
+extern TIM_HandleTypeDef htim7;
 __weak void configureTimerForRunTimeStats(void)
 {
-
+	HAL_TIM_Base_Start_IT(&htim7);
 }
-
+extern volatile unsigned long ulHighFrequencyTimerTicks;
 __weak unsigned long getRunTimeCounterValue(void)
 {
-return 0;
+return ulHighFrequencyTimerTicks;
 }
 /* USER CODE END 1 */
 
@@ -130,13 +132,17 @@ void MX_FREERTOS_Init(void) {
 /* USER CODE END Header_StartDefaultTask */
 void StartDefaultTask(void *argument)
 {
+  /* init code for USB_DEVICE */
+  MX_USB_DEVICE_Init();
   /* USER CODE BEGIN StartDefaultTask */
   /* Infinite loop */
   for(;;)
   {
 	HAL_GPIO_TogglePin(GPIOE, GPIO_PIN_1);
 	  //HAL_Delay(500);
-    osDelay(500);
+    osDelay(3000);
+    printf("Default Task Running!\n");
+    fflush(stdout);
   }
   /* USER CODE END StartDefaultTask */
 }

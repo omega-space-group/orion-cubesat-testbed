@@ -1,7 +1,9 @@
-../Core/Src/stm32h7xx_it.c:70:6:NMI_Handler	1
-../Core/Src/stm32h7xx_it.c:85:6:HardFault_Handler	1
-../Core/Src/stm32h7xx_it.c:100:6:MemManage_Handler	1
-../Core/Src/stm32h7xx_it.c:115:6:BusFault_Handler	1
-../Core/Src/stm32h7xx_it.c:130:6:UsageFault_Handler	1
-../Core/Src/stm32h7xx_it.c:145:6:DebugMon_Handler	1
-../Core/Src/stm32h7xx_it.c:165:6:TIM6_DAC_IRQHandler	1
+../Core/Src/stm32h7xx_it.c:72:6:NMI_Handler	1
+../Core/Src/stm32h7xx_it.c:87:6:HardFault_Handler	1
+../Core/Src/stm32h7xx_it.c:102:6:MemManage_Handler	1
+../Core/Src/stm32h7xx_it.c:117:6:BusFault_Handler	1
+../Core/Src/stm32h7xx_it.c:132:6:UsageFault_Handler	1
+../Core/Src/stm32h7xx_it.c:147:6:DebugMon_Handler	1
+../Core/Src/stm32h7xx_it.c:167:6:TIM6_DAC_IRQHandler	1
+../Core/Src/stm32h7xx_it.c:181:6:TIM7_IRQHandler	1
+../Core/Src/stm32h7xx_it.c:194:6:OTG_FS_IRQHandler	1

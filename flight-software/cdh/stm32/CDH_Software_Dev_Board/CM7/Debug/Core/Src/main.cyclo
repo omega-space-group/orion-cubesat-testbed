@@ -1,7 +1,5 @@
-../Core/Src/main.c:67:6:up_highFreqTimerTicks	1
-../Core/Src/main.c:70:7:configureTimerForRunTimeStats	1
-../Core/Src/main.c:74:16:getRunTimeCounterValue	1
-../Core/Src/main.c:83:5:main	7
-../Core/Src/main.c:164:6:SystemClock_Config	4
-../Core/Src/main.c:222:6:HAL_TIM_PeriodElapsedCallback	2
-../Core/Src/main.c:239:6:Error_Handler	1
+../Core/Src/main.c:75:5:main	7
+../Core/Src/main.c:157:6:SystemClock_Config	4
+../Core/Src/main.c:230:5:_write	3
+../Core/Src/main.c:260:6:HAL_TIM_PeriodElapsedCallback	2
+../Core/Src/main.c:277:6:Error_Handler	1

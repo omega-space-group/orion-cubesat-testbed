@@ -31,6 +31,9 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_tim_ex.h \
  ../../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart.h \
  ../../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart_ex.h \
+ ../../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pcd.h \
+ ../../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_ll_usb.h \
+ ../../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pcd_ex.h \
  ../../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h \
  ../../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h \
  ../Core/Inc/FreeRTOSConfig.h \
@@ -42,7 +45,17 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../../Middlewares/Third_Party/FreeRTOS/Source/include/task.h \
  ../../Middlewares/Third_Party/FreeRTOS/Source/include/list.h \
  ../../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h \
- ../Core/Inc/usart.h ../Core/Inc/main.h ../Core/Inc/gpio.h
+ ../Core/Inc/tim.h ../Core/Inc/main.h ../Core/Inc/usart.h \
+ ../USB_DEVICE/App/usb_device.h \
+ ../../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_def.h \
+ ../USB_DEVICE/Target/usbd_conf.h ../Core/Inc/gpio.h \
+ ../USB_DEVICE/App/usbd_cdc_if.h \
+ ../../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc/usbd_cdc.h \
+ ../../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ioreq.h \
+ ../../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_def.h \
+ ../../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_core.h \
+ ../../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ioreq.h \
+ ../../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ctlreq.h
 ../Core/Inc/main.h:
 ../../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h:
 ../Core/Inc/stm32h7xx_hal_conf.h:
@@ -76,6 +89,9 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 ../../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_tim_ex.h:
 ../../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart.h:
 ../../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart_ex.h:
+../../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pcd.h:
+../../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_ll_usb.h:
+../../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pcd_ex.h:
 ../../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h:
 ../../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h:
 ../Core/Inc/FreeRTOSConfig.h:
@@ -87,6 +103,17 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 ../../Middlewares/Third_Party/FreeRTOS/Source/include/task.h:
 ../../Middlewares/Third_Party/FreeRTOS/Source/include/list.h:
 ../../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h:
-../Core/Inc/usart.h:
+../Core/Inc/tim.h:
 ../Core/Inc/main.h:
+../Core/Inc/usart.h:
+../USB_DEVICE/App/usb_device.h:
+../../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_def.h:
+../USB_DEVICE/Target/usbd_conf.h:
 ../Core/Inc/gpio.h:
+../USB_DEVICE/App/usbd_cdc_if.h:
+../../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc/usbd_cdc.h:
+../../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ioreq.h:
+../../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_def.h:
+../../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_core.h:
+../../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ioreq.h:
+../../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ctlreq.h:

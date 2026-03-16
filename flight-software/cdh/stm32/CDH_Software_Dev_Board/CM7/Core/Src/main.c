@@ -19,12 +19,16 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "cmsis_os.h"
+#include "tim.h"
 #include "usart.h"
+#include "usb_device.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "usbd_cdc_if.h"
+#include <stdio.h>
+#include <string.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -61,19 +65,7 @@ void MX_FREERTOS_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-//for debugging purposes: Window -> Show View -> FreeRTOS
-extern TIM_HandleTypeDef htim6;
-volatile unsigned long ulHighFrequencyTimerTicks;
-void up_highFreqTimerTicks(){
-	ulHighFrequencyTimerTicks++;
-}
- void configureTimerForRunTimeStats(void) {
-   ulHighFrequencyTimerTicks = 0;
-   HAL_TIM_Base_Start_IT(&htim6);
- }
- unsigned long getRunTimeCounterValue(void) {
-   return ulHighFrequencyTimerTicks;
- }
+
 /* USER CODE END 0 */
 
 /**
@@ -134,8 +126,9 @@ Error_Handler();
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_USART3_UART_Init();
+  MX_TIM7_Init();
   /* USER CODE BEGIN 2 */
-
+  MX_USB_DEVICE_Init();
   /* USER CODE END 2 */
 
   /* Init scheduler */
@@ -165,6 +158,7 @@ void SystemClock_Config(void)
 {
   RCC_OscInitTypeDef RCC_OscInitStruct = {0};
   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
+  RCC_CRSInitTypeDef RCC_CRSInitStruct = {0};
 
   /** Supply configuration update enable
   */
@@ -179,9 +173,10 @@ void SystemClock_Config(void)
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
   */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI48|RCC_OSCILLATORTYPE_HSI;
   RCC_OscInitStruct.HSIState = RCC_HSI_DIV1;
   RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
+  RCC_OscInitStruct.HSI48State = RCC_HSI48_ON;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_NONE;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
   {
@@ -205,10 +200,53 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
+
+  /** Enable the SYSCFG APB clock
+  */
+  __HAL_RCC_CRS_CLK_ENABLE();
+
+  /** Configures CRS
+  */
+  RCC_CRSInitStruct.Prescaler = RCC_CRS_SYNC_DIV1;
+  RCC_CRSInitStruct.Source = RCC_CRS_SYNC_SOURCE_USB2;
+  RCC_CRSInitStruct.Polarity = RCC_CRS_SYNC_POLARITY_RISING;
+  RCC_CRSInitStruct.ReloadValue = __HAL_RCC_CRS_RELOADVALUE_CALCULATE(48000000,1000);
+  RCC_CRSInitStruct.ErrorLimitValue = 34;
+  RCC_CRSInitStruct.HSI48CalibrationValue = 32;
+
+  HAL_RCCEx_CRSConfig(&RCC_CRSInitStruct);
 }
 
 /* USER CODE BEGIN 4 */
+//int _write(int file, char *ptr, int len) {
+//    uint8_t result = CDC_Transmit_FS((uint8_t*)ptr, len);
+//
+//    // If the USB is busy, wait until it's ready to send again
+//    while (result == USBD_BUSY) {
+//        result = CDC_Transmit_FS((uint8_t*)ptr, len);
+//    }
+//    return len;
+//}
+int _write(int file, char *ptr, int len) {
+    // 1. Check if the USB is actually ready
+//    if (hUsbDeviceFS.dev_state != USBD_STATE_CONFIGURED) {
+//        return len; // Drop data silently if USB is not connected
+//    }
 
+    // 2. Try to transmit
+    uint8_t result = CDC_Transmit_FS((uint8_t*)ptr, len);
+
+    // 3. Instead of a hard 'while', wait for a small amount of time
+    // If it's still busy after a short time, just exit to keep the system alive
+    uint32_t timeout = 50;
+    while (result == USBD_BUSY && timeout > 0) {
+        osDelay(1); // Yield to the scheduler!
+        result = CDC_Transmit_FS((uint8_t*)ptr, len);
+        timeout--;
+    }
+
+    return len;
+}
 /* USER CODE END 4 */
 
 /**
