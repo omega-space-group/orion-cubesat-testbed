@@ -109,35 +109,12 @@ orion-cubesat-testbed/
 ├── middleware/           # Payload-internal interfaces
 ├── hardware/             # HW docs, CAN/GigE configs, BOM
 ├── simulation/           # Testing infrastructure
-├── tools/                # Build & deployment utilities
-├── scripts/              # Setup scripts
-├── research/             # Publications & results
+├─X─ tools/                # Build & deployment utilities
+├─X─ scripts/              # Setup scripts
+├─X─ research/             # Publications
 └── docs/                 # Documentation
 ```
-
-
----
-
-## 🚀 Quick Start
-
-```bash
-# Clone repository
-git clone https://github.com/omega-space-group/orion-cubesat-testbed.git
-cd orion-cubesat-testbed
-
-# Setup environment
-./scripts/setup.sh
-
-# Build
-./scripts/build.sh
-
-# Run tests
-./scripts/test.sh
-```
-
-**Prerequisites**: Ubuntu 22.04, Python 3.10+, libcsp
-
-**For Payload Development**: CUDA, TensorRT (Jetson only), Zenoh
+**NOTE**: X-notated directories are planned
 
 
 ---
@@ -147,17 +124,16 @@ cd orion-cubesat-testbed
 
 ### 🔄 In Progress
 - C&DH cFS-inspired software
+
+### ⏳ Planned
 - CSP over CAN bus implementation
 - Payload framework (Jetson)
 - AI model deployment and optimization
 - Zenoh over GigE for high-bandwidth data
-
-### ⏳ Planned
-- Full subsystem integration (Comms, EPS)
-- STM32 + FreeRTOS migration for C&DH
+- COMMS Intagration
+- EPS Integration
 - Ground station implementation
 - End-to-end mission testing
-
 ---
 
 ## 🤝 Contributing
@@ -211,9 +187,6 @@ GPL-3.0 License - see [LICENSE](LICENSE) for details.
 National Technical University of Athens  
 
 - Simon Vellas: svellas@mail.ntua.gr
-- Christos Chronis: chronis@hua.gr
-- Alexis Apostolakis: alexis.apostolakis@gmail.com
-- Giorgos Athanasiou: georgios.athanasiou.ntua@gmail.com
 
 ---
 
