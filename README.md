@@ -41,9 +41,9 @@ Our testbed implements a **hybrid architecture** that combines proven satellite 
 
 | Subsystem | Hardware | Software | Primary Protocol |
 |-----------|----------|----------|------------------|
-| **C&DH** | Raspberry Pi 4 → STM32 Nucleo | Ubuntu → FreeRTOS | CSP/CAN |
+| **C&DH** | STM32 Nucleo | FreeRTOS | CSP/CAN |
 | **EPS** | STM32 Nucleo | FreeRTOS | CSP/CAN |
-| **Payload** | NVIDIA Jetson / Xilinx Ultrascale+ | Ubuntu | CSP/CAN + Zenoh/GigE |
+| **Payload** | NVIDIA Jetson / Xilinx Ultrascale+ / Qualcomm QCS6490 | Ubuntu | CSP/CAN + Zenoh/GigE |
 | **Comms** | HackRF One SDR | GNU Radio | RF Link |
 
 ### Software Stack
@@ -124,10 +124,11 @@ orion-cubesat-testbed/
 
 ### 🔄 In Progress
 - C&DH cFS-inspired software
+- Payload framework (Jetson)
+
 
 ### ⏳ Planned
 - CSP over CAN bus implementation
-- Payload framework (Jetson)
 - AI model deployment and optimization
 - Zenoh over GigE for high-bandwidth data
 - COMMS Intagration
@@ -165,9 +166,6 @@ GPL-3.0 License - see [LICENSE](LICENSE) for details.
 - [SocketCAN](https://www.kernel.org/doc/html/latest/networking/can.html) - Linux CAN bus support
 - [Eclipse Zenoh](https://zenoh.io/) - Zenoh middleware
 - [Zenoh ROS2 Middleware](https://github.com/ros2/rmw_zenoh) - A ROS 2 RMW implementation based on Zenoh
-
-### Research References
-- [JAXA RACS](https://ieeexplore.ieee.org/abstract/document/9438288) - Hybrid ROS/cFS approach
 
 
 ### SDR & Ground Station
