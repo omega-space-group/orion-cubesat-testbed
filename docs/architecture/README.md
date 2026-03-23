@@ -2,13 +2,11 @@
 
 ## Overview
 
-The ORION CubeSat FlatSat testbed implements a **hybrid architecture**, combining traditional satellite protocols with modern AI frameworks.
+The ORION CubeSat FlatSat testbed implements a **hybrid architecture**, combining traditional satellite protocols with AI frameworks.
 
 ## Design Philosophy
 
-### Why Hybrid?
-
-Our architecture strategically uses different frameworks for different purposes:
+Our architecture uses different frameworks for different purposes:
 
 1. **Satellite Bus (C&DH, EPS)**: Traditional aerospace patterns
    - Proven flight heritage
@@ -64,8 +62,6 @@ Our architecture uses **two communication layers** for different data types:
 #### Layer 1: CSP over CAN (Control & Telemetry)
 
 **Protocol**: CubeSat Space Protocol (CSP) over CAN bus  
-**Bitrate**: 250 kbps CAN bus  
-**Effective Throughput**: ~40-60 kbps  
 
 **Used For**:
 - Telecommands (C&DH → Subsystems)
@@ -75,11 +71,11 @@ Our architecture uses **two communication layers** for different data types:
 - Small data packets
 
 **Advantages**:
-- Flight-proven protocol
+- Flight-proven
 - Reliable packet delivery with acknowledgments
 - Addressing and routing built-in
 - Low overhead
-- Deterministic behavior
+- Deterministic
 
 **Communication Matrix**:
 ```
@@ -98,8 +94,6 @@ Our architecture uses **two communication layers** for different data types:
 #### Layer 2: Zenoh over Gigabit Ethernet (High-Bandwidth Data)
 
 **Protocol**: Eclipse Zenoh over Gigabit Ethernet  
-**Bitrate**: Up to 1 Gbps  
-**Effective Throughput**: ~100 MB/s for image data  
 
 **Used For**:
 - Camera images (RGB, IR)
@@ -142,8 +136,7 @@ Sensors ──────┘                         │
 **Purpose**: Central flight computer managing satellite operations
 
 **Hardware**:
-- Phase 1: Raspberry Pi 4 (Ubuntu)
-- Phase 2: STM32 Nucleo (FreeRTOS) ← flight-ready
+- STM32 Nucleo (FreeRTOS) ← flight-ready
 
 **Software Architecture**: cFS-inspired custom Python implementation
 
@@ -165,7 +158,7 @@ TBD
 
 **Hardware**:
 - Primary: NVIDIA Jetson Xavier NX
-- Future: Xilinx FPGA
+- Future: Xilinx FPGA / Qualcomm QCS6490
 
 **Key Components**:
 TBD
