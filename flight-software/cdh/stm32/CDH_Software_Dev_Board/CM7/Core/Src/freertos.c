@@ -25,7 +25,10 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "usbd_cdc_if.h"
 #include <stdio.h>
+#include "fdcan.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -46,6 +49,9 @@
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN Variables */
 
+/* Thread Definition */
+TaskHandle_t Root_Task;
+
 /* USER CODE END Variables */
 /* Definitions for defaultTask */
 osThreadId_t defaultTaskHandle;
@@ -57,6 +63,8 @@ const osThreadAttr_t defaultTask_attributes = {
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
+
+void Root_Task_Handler(void *argument);
 
 /* USER CODE END FunctionPrototypes */
 
@@ -90,7 +98,6 @@ return ulHighFrequencyTimerTicks;
   */
 void MX_FREERTOS_Init(void) {
   /* USER CODE BEGIN Init */
-
   /* USER CODE END Init */
 
   /* USER CODE BEGIN RTOS_MUTEX */
@@ -99,6 +106,7 @@ void MX_FREERTOS_Init(void) {
 
   /* USER CODE BEGIN RTOS_SEMAPHORES */
   /* add semaphores, ... */
+
   /* USER CODE END RTOS_SEMAPHORES */
 
   /* USER CODE BEGIN RTOS_TIMERS */
@@ -115,6 +123,9 @@ void MX_FREERTOS_Init(void) {
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
+
+  xTaskCreate(Root_Task_Handler, "Root_Task_Handler", 128, NULL, 26, &Root_Task);
+
   /* USER CODE END RTOS_THREADS */
 
   /* USER CODE BEGIN RTOS_EVENTS */
@@ -132,23 +143,32 @@ void MX_FREERTOS_Init(void) {
 /* USER CODE END Header_StartDefaultTask */
 void StartDefaultTask(void *argument)
 {
-  /* init code for USB_DEVICE */
-  MX_USB_DEVICE_Init();
   /* USER CODE BEGIN StartDefaultTask */
   /* Infinite loop */
-  for(;;)
-  {
-	HAL_GPIO_TogglePin(GPIOE, GPIO_PIN_1);
-	  //HAL_Delay(500);
-    osDelay(3000);
-    printf("Default Task Running!\n");
-    fflush(stdout);
+  while(1){
+	  		HAL_GPIO_TogglePin(GPIOE, GPIO_PIN_1);
+//	  		FDCAN_Tx();
+	  		osDelay(3000);
+//	  		printf("Default Task Running!\n");
+//	  		fflush(stdout);
   }
   /* USER CODE END StartDefaultTask */
 }
 
 /* Private application code --------------------------------------------------*/
 /* USER CODE BEGIN Application */
+void Root_Task_Handler(void *argument){
 
+	FDCAN_Start();
+	/* Infinite loop */
+	while(1){
+//		HAL_GPIO_TogglePin(GPIOE, GPIO_PIN_1);
+		FDCAN_Tx();
+		osDelay(3000);
+//		vTaskDelay(3000);
+//		printf("Default Task Running!\n");
+//		fflush(stdout);
+  }
+}
 /* USER CODE END Application */
 

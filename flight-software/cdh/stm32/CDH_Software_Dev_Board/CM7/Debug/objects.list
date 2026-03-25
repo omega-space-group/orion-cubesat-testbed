@@ -1,4 +1,5 @@
 "./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o"
+"./Core/Src/fdcan.o"
 "./Core/Src/freertos.o"
 "./Core/Src/gpio.o"
 "./Core/Src/main.o"
@@ -15,6 +16,7 @@
 "./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_dma.o"
 "./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_dma_ex.o"
 "./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_exti.o"
+"./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_fdcan.o"
 "./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_flash.o"
 "./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_flash_ex.o"
 "./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_gpio.o"
