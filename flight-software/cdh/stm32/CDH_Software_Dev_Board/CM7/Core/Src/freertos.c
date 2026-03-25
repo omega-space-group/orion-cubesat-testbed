@@ -28,6 +28,7 @@
 #include "usbd_cdc_if.h"
 #include <stdio.h>
 #include "fdcan.h"
+#include "iwdg.h"
 
 /* USER CODE END Includes */
 
@@ -51,6 +52,7 @@
 
 /* Thread Definition */
 TaskHandle_t Root_Task;
+TaskHandle_t IWDG_Task;
 
 /* USER CODE END Variables */
 /* Definitions for defaultTask */
@@ -65,6 +67,7 @@ const osThreadAttr_t defaultTask_attributes = {
 /* USER CODE BEGIN FunctionPrototypes */
 
 void Root_Task_Handler(void *argument);
+void IWDG_Task_Handler(void *argument);
 
 /* USER CODE END FunctionPrototypes */
 
@@ -125,6 +128,7 @@ void MX_FREERTOS_Init(void) {
   /* add threads, ... */
 
   xTaskCreate(Root_Task_Handler, "Root_Task_Handler", 128, NULL, 26, &Root_Task);
+  xTaskCreate(IWDG_Task_Handler, "IWDG_Task_Handler", 128, NULL, 10, &IWDG_Task);
 
   /* USER CODE END RTOS_THREADS */
 
@@ -143,6 +147,8 @@ void MX_FREERTOS_Init(void) {
 /* USER CODE END Header_StartDefaultTask */
 void StartDefaultTask(void *argument)
 {
+  /* init code for USB_DEVICE */
+//  MX_USB_DEVICE_Init();
   /* USER CODE BEGIN StartDefaultTask */
   /* Infinite loop */
   while(1){
@@ -169,6 +175,13 @@ void Root_Task_Handler(void *argument){
 //		printf("Default Task Running!\n");
 //		fflush(stdout);
   }
+}
+
+void IWDG_Task_Handler(void *argument){
+	while(1){
+		HAL_IWDG_Refresh(&hiwdg1);
+		osDelay(300);
+	}
 }
 /* USER CODE END Application */
 
