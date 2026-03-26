@@ -39,7 +39,9 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-
+#define ROOT_TASK_STACK_SIZE 128
+#define IWDG_TASK_STACK_SIZE 128
+#define DUMMY_TASK_STACK_SIZE 128
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -49,11 +51,14 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN Variables */
+static StackType_t xRootTaskStack[ROOT_TASK_STACK_SIZE];
+static StaticTask_t xRootTaskBuffer;
 
-/* Thread Definition */
-TaskHandle_t Root_Task;
-TaskHandle_t IWDG_Task;
+static StackType_t xIWDGTaskStack[IWDG_TASK_STACK_SIZE];
+static StaticTask_t xIWDGTaskBuffer;
 
+static StackType_t xDummyTaskStack[DUMMY_TASK_STACK_SIZE];
+static StaticTask_t xDummyTaskBuffer;
 /* USER CODE END Variables */
 /* Definitions for defaultTask */
 osThreadId_t defaultTaskHandle;
@@ -68,6 +73,7 @@ const osThreadAttr_t defaultTask_attributes = {
 
 void Root_Task_Handler(void *argument);
 void IWDG_Task_Handler(void *argument);
+void Dummy_Task_Handler(void *argument);
 
 /* USER CODE END FunctionPrototypes */
 
@@ -126,10 +132,9 @@ void MX_FREERTOS_Init(void) {
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
-
-  xTaskCreate(Root_Task_Handler, "Root_Task_Handler", 128, NULL, 26, &Root_Task);
-  xTaskCreate(IWDG_Task_Handler, "IWDG_Task_Handler", 128, NULL, 10, &IWDG_Task);
-
+  xTaskCreateStatic(Root_Task_Handler,"Root_Task_Handler",ROOT_TASK_STACK_SIZE,NULL,30,xRootTaskStack,&xRootTaskBuffer);
+  xTaskCreateStatic(IWDG_Task_Handler,"IWDG_Task_Handler",IWDG_TASK_STACK_SIZE,NULL,26,xIWDGTaskStack,&xIWDGTaskBuffer);
+  xTaskCreateStatic(Dummy_Task_Handler,"Dummy_Task_Handler",DUMMY_TASK_STACK_SIZE,NULL,25,xDummyTaskStack,&xDummyTaskBuffer);
   /* USER CODE END RTOS_THREADS */
 
   /* USER CODE BEGIN RTOS_EVENTS */
@@ -151,36 +156,39 @@ void StartDefaultTask(void *argument)
 //  MX_USB_DEVICE_Init();
   /* USER CODE BEGIN StartDefaultTask */
   /* Infinite loop */
-  while(1){
-	  		HAL_GPIO_TogglePin(GPIOE, GPIO_PIN_1);
-//	  		FDCAN_Tx();
-	  		osDelay(3000);
-//	  		printf("Default Task Running!\n");
-//	  		fflush(stdout);
+	while(1){
+		osDelay(300);
   }
   /* USER CODE END StartDefaultTask */
 }
 
 /* Private application code --------------------------------------------------*/
 /* USER CODE BEGIN Application */
-void Root_Task_Handler(void *argument){
 
+/* Root Task responsible for initializing peripherals and spawning tasks */
+void Root_Task_Handler(void *argument){
 	FDCAN_Start();
 	/* Infinite loop */
 	while(1){
-//		HAL_GPIO_TogglePin(GPIOE, GPIO_PIN_1);
-		FDCAN_Tx();
-		osDelay(3000);
-//		vTaskDelay(3000);
-//		printf("Default Task Running!\n");
-//		fflush(stdout);
+		osDelay(10000);
   }
 }
 
+/* IWDG Task responsible for kicking internal watchdog. Currently set to trigger every 500ms */
 void IWDG_Task_Handler(void *argument){
 	while(1){
 		HAL_IWDG_Refresh(&hiwdg1);
 		osDelay(300);
+	}
+}
+
+void Dummy_Task_Handler(void *argument){
+	while(1){
+  		HAL_GPIO_TogglePin(GPIOE, GPIO_PIN_1);
+	  	FDCAN_Tx();
+  		osDelay(3000);
+//	  		printf("Default Task Running!\n");
+//	  		fflush(stdout);
 	}
 }
 /* USER CODE END Application */
