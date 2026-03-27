@@ -1,0 +1,231 @@
+/* USER CODE BEGIN Header */
+/**
+  ******************************************************************************
+  * File Name          : freertos.c
+  * Description        : Code for freertos applications
+  ******************************************************************************
+  * @attention
+  *
+  * Copyright (c) 2026 STMicroelectronics.
+  * All rights reserved.
+  *
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
+  *
+  ******************************************************************************
+  */
+/* USER CODE END Header */
+
+/* Includes ------------------------------------------------------------------*/
+#include "FreeRTOS.h"
+#include "task.h"
+#include "main.h"
+#include "cmsis_os.h"
+
+/* Private includes ----------------------------------------------------------*/
+/* USER CODE BEGIN Includes */
+#include "usbd_cdc_if.h"
+#include <stdio.h>
+#include "fdcan.h"
+#include "iwdg.h"
+#include "event_groups.h"
+
+/* USER CODE END Includes */
+
+/* Private typedef -----------------------------------------------------------*/
+/* USER CODE BEGIN PTD */
+typedef enum{
+	SAFE      = 1,
+	LOW_POWER = 2,
+	NOMINAL   = 3,
+	PAYLOAD   = 4
+}State_t;
+
+typedef enum{
+	TOPIC_SYSTEM_STATE = 1,
+	TOPIC_SENSOR_DATA  = 2
+}Topic_t;
+
+/* USER CODE END PTD */
+
+/* Private define ------------------------------------------------------------*/
+/* USER CODE BEGIN PD */
+#define ROOT_TASK_STACK_SIZE       128
+#define IWDG_TASK_STACK_SIZE       128
+#define DISPATCHER_TASK_STACK_SIZE 128
+#define DUMMY_TASK_STACK_SIZE      128
+
+/* USER CODE END PD */
+
+/* Private macro -------------------------------------------------------------*/
+/* USER CODE BEGIN PM */
+
+/* USER CODE END PM */
+
+/* Private variables ---------------------------------------------------------*/
+/* USER CODE BEGIN Variables */
+
+/* Task stack and buffer allocation */
+static StackType_t xRootTaskStack[ROOT_TASK_STACK_SIZE];
+static StaticTask_t xRootTaskBuffer;
+
+static StackType_t xIWDGTaskStack[IWDG_TASK_STACK_SIZE];
+static StaticTask_t xIWDGTaskBuffer;
+
+static StackType_t xDispatcherTaskStack[DISPATCHER_TASK_STACK_SIZE];
+static StaticTask_t xDispatcherTaskBuffer;
+
+static StackType_t xDummyTaskStack[DUMMY_TASK_STACK_SIZE];
+static StaticTask_t xDummyTaskBuffer;
+
+/* Event Group Definition */
+EventGroupHandle_t xGlobalEventGroup;
+EventBits_t xGlobalEventBits;
+
+/* USER CODE END Variables */
+/* Definitions for defaultTask */
+osThreadId_t defaultTaskHandle;
+const osThreadAttr_t defaultTask_attributes = {
+  .name = "defaultTask",
+  .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityNormal,
+};
+
+/* Private function prototypes -----------------------------------------------*/
+/* USER CODE BEGIN FunctionPrototypes */
+
+void Root_Task_Handler(void *argument);
+void IWDG_Task_Handler(void *argument);
+void Dispatcher_Task_Handler(void *argument);
+void Dummy_Task_Handler(void *argument);
+
+/* USER CODE END FunctionPrototypes */
+
+void StartDefaultTask(void *argument);
+
+extern void MX_USB_DEVICE_Init(void);
+void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
+
+/* Hook prototypes */
+void configureTimerForRunTimeStats(void);
+unsigned long getRunTimeCounterValue(void);
+
+/* USER CODE BEGIN 1 */
+/* Functions needed when configGENERATE_RUN_TIME_STATS is on */
+extern TIM_HandleTypeDef htim7;
+__weak void configureTimerForRunTimeStats(void)
+{
+	HAL_TIM_Base_Start_IT(&htim7);
+}
+extern volatile unsigned long ulHighFrequencyTimerTicks;
+__weak unsigned long getRunTimeCounterValue(void)
+{
+return ulHighFrequencyTimerTicks;
+}
+/* USER CODE END 1 */
+
+/**
+  * @brief  FreeRTOS initialization
+  * @param  None
+  * @retval None
+  */
+void MX_FREERTOS_Init(void) {
+  /* USER CODE BEGIN Init */
+  /* USER CODE END Init */
+
+  /* USER CODE BEGIN RTOS_MUTEX */
+  /* add mutexes, ... */
+  /* USER CODE END RTOS_MUTEX */
+
+  /* USER CODE BEGIN RTOS_SEMAPHORES */
+  /* add semaphores, ... */
+
+  /* USER CODE END RTOS_SEMAPHORES */
+
+  /* USER CODE BEGIN RTOS_TIMERS */
+  /* start timers, add new ones, ... */
+  /* USER CODE END RTOS_TIMERS */
+
+  /* USER CODE BEGIN RTOS_QUEUES */
+  /* add queues, ... */
+  /* USER CODE END RTOS_QUEUES */
+
+  /* Create the thread(s) */
+  /* creation of defaultTask */
+  defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
+
+  /* USER CODE BEGIN RTOS_THREADS */
+  /* add threads, ... */
+  xTaskCreateStatic(Root_Task_Handler,      "Root_Task_Handler",      ROOT_TASK_STACK_SIZE,      NULL,30,xRootTaskStack,      &xRootTaskBuffer);
+  xTaskCreateStatic(IWDG_Task_Handler,      "IWDG_Task_Handler",      IWDG_TASK_STACK_SIZE,      NULL,26,xIWDGTaskStack,      &xIWDGTaskBuffer);
+  xTaskCreateStatic(Dispatcher_Task_Handler,"Dispatcher_Task_Handler",DISPATCHER_TASK_STACK_SIZE,NULL,27,xDispatcherTaskStack,&xDummyTaskBuffer);
+  xTaskCreateStatic(Dummy_Task_Handler,     "Dummy_Task_Handler",     DUMMY_TASK_STACK_SIZE,     NULL,25,xDummyTaskStack,     &xDummyTaskBuffer);
+  /* USER CODE END RTOS_THREADS */
+
+  /* USER CODE BEGIN RTOS_EVENTS */
+  /* add events, ... */
+  /* USER CODE END RTOS_EVENTS */
+
+}
+
+/* USER CODE BEGIN Header_StartDefaultTask */
+/**
+  * @brief  Function implementing the defaultTask thread.
+  * @param  argument: Not used
+  * @retval None
+  */
+/* USER CODE END Header_StartDefaultTask */
+void StartDefaultTask(void *argument)
+{
+  /* init code for USB_DEVICE */
+//  MX_USB_DEVICE_Init();
+  /* USER CODE BEGIN StartDefaultTask */
+  /* Infinite loop */
+	while(1){
+		osDelay(300);
+  }
+  /* USER CODE END StartDefaultTask */
+}
+
+/* Private application code --------------------------------------------------*/
+/* USER CODE BEGIN Application */
+
+/* Root Task responsible for starting peripherals
+ * (could be used to initialize peripherals and spawn tasks in specific order depending on conditions) */
+void Root_Task_Handler(void *argument){
+	FDCAN_Start();
+	/* Infinite loop */
+	while(1){
+		osDelay(10000);
+  }
+}
+
+/* IWDG Task responsible for kicking internal watchdog. IWDG currently set to trigger every 500ms */
+void IWDG_Task_Handler(void *argument){
+	while(1){
+		HAL_IWDG_Refresh(&hiwdg1);
+		osDelay(300);
+	}
+}
+
+void Dispatcher_Task_Handler(void *argument){
+/*
+ * 1. Block until someone wakes you up (all events should only trigger the dispatcher)
+ * 2. Check reason for waking up
+ * 3. If event than set event group's respective event bit (this action will automatically wake up all "subscribed tasks")
+ * 4. If need for data exchange than get data, look through sub table and push on respective queues
+ * */
+}
+
+void Dummy_Task_Handler(void *argument){
+	while(1){
+  		HAL_GPIO_TogglePin(GPIOE, GPIO_PIN_1);
+	  	FDCAN_Tx();
+  		osDelay(3000);
+//	  		printf("Default Task Running!\n");
+//	  		fflush(stdout);
+	}
+}
+/* USER CODE END Application */
+

@@ -29,19 +29,38 @@
 #include <stdio.h>
 #include "fdcan.h"
 #include "iwdg.h"
+#include "event_groups.h"
+#include "queue.h"
 
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
+typedef enum{
+	SAFE      = 1,
+	LOW_POWER = 2,
+	NOMINAL   = 3,
+	PAYLOAD   = 4
+}State_t;
+
+typedef enum{
+	TOPIC_SYSTEM_STATE = 1,
+	TOPIC_EXAMPLE1     = 2,
+	TOPIC_EXAMPLE2     = 3,
+	TOPIC_EXAMPLE3     = 4
+}Topic_t;
 
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define ROOT_TASK_STACK_SIZE 128
-#define IWDG_TASK_STACK_SIZE 128
-#define DUMMY_TASK_STACK_SIZE 128
+#define ROOT_TASK_STACK_SIZE       128
+#define IWDG_TASK_STACK_SIZE       128
+#define DISPATCHER_TASK_STACK_SIZE 128
+#define DUMMY_TASK_STACK_SIZE      128
+
+#define MAX_SUBS 4
+#define MAX_SUBSCRIBERS_PER_TOPIC 5
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -51,14 +70,38 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN Variables */
+
+/* Task stack and buffer allocation */
 static StackType_t xRootTaskStack[ROOT_TASK_STACK_SIZE];
 static StaticTask_t xRootTaskBuffer;
 
 static StackType_t xIWDGTaskStack[IWDG_TASK_STACK_SIZE];
 static StaticTask_t xIWDGTaskBuffer;
 
+static StackType_t xDispatcherTaskStack[DISPATCHER_TASK_STACK_SIZE];
+static StaticTask_t xDispatcherTaskBuffer;
+
 static StackType_t xDummyTaskStack[DUMMY_TASK_STACK_SIZE];
 static StaticTask_t xDummyTaskBuffer;
+
+/* Event Groups Definition */
+EventGroupHandle_t xGlobalEventGroup;
+EventBits_t xGlobalEventBits;
+
+/* Queues Definition */
+QueueHandle_t xMasterQueue;
+QueueHandle_t xDummyTaskQueue;
+
+/* Subscription Table Definition */
+typedef struct {
+    Topic_t topic;
+    uint8_t subscriber_cnt;
+    QueueHandle_t subscriber_queues[MAX_SUBSCRIBERS_PER_TOPIC];
+} Subscription_t;
+
+Subscription_t sub_table[MAX_SUBS];
+int sub_count = 0;
+
 /* USER CODE END Variables */
 /* Definitions for defaultTask */
 osThreadId_t defaultTaskHandle;
@@ -73,7 +116,10 @@ const osThreadAttr_t defaultTask_attributes = {
 
 void Root_Task_Handler(void *argument);
 void IWDG_Task_Handler(void *argument);
+void Dispatcher_Task_Handler(void *argument);
 void Dummy_Task_Handler(void *argument);
+
+void SubscribeToTopic(Topic_t topic,QueueHandle_t queue);
 
 /* USER CODE END FunctionPrototypes */
 
@@ -123,7 +169,10 @@ void MX_FREERTOS_Init(void) {
   /* USER CODE END RTOS_TIMERS */
 
   /* USER CODE BEGIN RTOS_QUEUES */
-  /* add queues, ... */
+
+	xMasterQueue    = xQueueCreate(10, sizeof(int)); //NEEDS TO BE STATIC!
+	xDummyTaskQueue = xQueueCreate(5, sizeof(int)); //NEEDS TO BE STATIC!
+
   /* USER CODE END RTOS_QUEUES */
 
   /* Create the thread(s) */
@@ -132,13 +181,14 @@ void MX_FREERTOS_Init(void) {
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
-  xTaskCreateStatic(Root_Task_Handler,"Root_Task_Handler",ROOT_TASK_STACK_SIZE,NULL,30,xRootTaskStack,&xRootTaskBuffer);
-  xTaskCreateStatic(IWDG_Task_Handler,"IWDG_Task_Handler",IWDG_TASK_STACK_SIZE,NULL,26,xIWDGTaskStack,&xIWDGTaskBuffer);
-  xTaskCreateStatic(Dummy_Task_Handler,"Dummy_Task_Handler",DUMMY_TASK_STACK_SIZE,NULL,25,xDummyTaskStack,&xDummyTaskBuffer);
+  xTaskCreateStatic(Root_Task_Handler,      "Root_Task_Handler",      ROOT_TASK_STACK_SIZE,      NULL,30,xRootTaskStack,      &xRootTaskBuffer);
+  xTaskCreateStatic(IWDG_Task_Handler,      "IWDG_Task_Handler",      IWDG_TASK_STACK_SIZE,      NULL,26,xIWDGTaskStack,      &xIWDGTaskBuffer);
+  xTaskCreateStatic(Dispatcher_Task_Handler,"Dispatcher_Task_Handler",DISPATCHER_TASK_STACK_SIZE,NULL,27,xDispatcherTaskStack,&xDispatcherTaskBuffer);
+  xTaskCreateStatic(Dummy_Task_Handler,     "Dummy_Task_Handler",     DUMMY_TASK_STACK_SIZE,     NULL,25,xDummyTaskStack,     &xDummyTaskBuffer);
   /* USER CODE END RTOS_THREADS */
 
   /* USER CODE BEGIN RTOS_EVENTS */
-  /* add events, ... */
+  xGlobalEventGroup = xEventGroupCreate(); //NEEDS TO BE STATIC!
   /* USER CODE END RTOS_EVENTS */
 
 }
@@ -165,7 +215,8 @@ void StartDefaultTask(void *argument)
 /* Private application code --------------------------------------------------*/
 /* USER CODE BEGIN Application */
 
-/* Root Task responsible for initializing peripherals and spawning tasks */
+/* Root Task responsible for starting peripherals
+ * (could be used to initialize peripherals and spawn tasks in specific order depending on conditions) */
 void Root_Task_Handler(void *argument){
 	FDCAN_Start();
 	/* Infinite loop */
@@ -174,12 +225,23 @@ void Root_Task_Handler(void *argument){
   }
 }
 
-/* IWDG Task responsible for kicking internal watchdog. Currently set to trigger every 500ms */
+/* IWDG Task responsible for kicking internal watchdog. IWDG currently set to trigger every 500ms */
 void IWDG_Task_Handler(void *argument){
 	while(1){
 		HAL_IWDG_Refresh(&hiwdg1);
 		osDelay(300);
 	}
+}
+
+void Dispatcher_Task_Handler(void *argument){
+	/*
+	 * 1. Block until someone wakes you up (all events should trigger the dispatcher only)
+	 * 2. Check reason for waking up
+	 * 3. If event than set event group's respective event bit (this action will automatically wake up all "subscribed tasks") (not sure yet)
+	 * 4. If need for data exchange than get data, look through sub table and push on respective queues
+	 * */
+
+	xTaskNotifyWait(0,0,NULL,portMAX_DELAY);
 }
 
 void Dummy_Task_Handler(void *argument){
@@ -190,6 +252,15 @@ void Dummy_Task_Handler(void *argument){
 //	  		printf("Default Task Running!\n");
 //	  		fflush(stdout);
 	}
+}
+
+void SubscribeToTopic(Topic_t topic,QueueHandle_t queue){
+	/*
+	 * 1. Check sub table to see if anyone has already subscribed to this topic
+	 * 2. If so, add this queue to topic's list of queues
+	 * 3. If not, add topic and queue to sub table
+	 * */
+
 }
 /* USER CODE END Application */
 
