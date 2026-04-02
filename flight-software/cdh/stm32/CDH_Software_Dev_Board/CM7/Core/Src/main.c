@@ -137,7 +137,7 @@ Error_Handler();
   /* USER CODE BEGIN 2 */
   MX_USB_DEVICE_Init();
   HAL_Delay(5000);
-  MX_IWDG1_Init();
+//  MX_IWDG1_Init();
   /* USER CODE END 2 */
 
   /* Init scheduler */

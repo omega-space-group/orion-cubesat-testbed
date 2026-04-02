@@ -1,0 +1,54 @@
+/*
+ * subscription_table.h
+ *
+ *  Created on: Mar 31, 2026
+ *      Author: adaro
+ */
+
+#ifndef INC_SUBSCRIPTION_TABLE_H_
+#define INC_SUBSCRIPTION_TABLE_H_
+
+#define MAX_SUBS 4
+#define MAX_SUBSCRIBERS_PER_TOPIC 5
+
+extern TaskHandle_t DummyTask,TaskA,TaskB;
+
+typedef enum{
+	SAFE      = 1,
+	LOW_POWER = 2,
+	NOMINAL   = 3,
+	PAYLOAD   = 4
+}State_t;
+
+typedef enum{
+	TOPIC_SYSTEM_STATE = 1,
+	TOPIC_EXAMPLE1     = 2,
+	TOPIC_EXAMPLE2     = 3,
+	TOPIC_EXAMPLE3     = 4
+}Topic_t;
+
+/* Subscription Table Definition */
+typedef struct {
+    Topic_t Topic;
+    uint8_t SubscriberCount;
+    QueueHandle_t SubscriberQueues[MAX_SUBSCRIBERS_PER_TOPIC];
+} Subscription_t;
+
+Subscription_t sub_table[MAX_SUBS];
+
+int sub_count = 0;
+
+typedef struct{
+	Topic_t Topic;
+	uint32_t Data;
+} Message_t;
+
+Message_t DispatcherMsg;
+QueueHandle_t xMasterQueue;
+
+/* Subscription Table Entry Definition */
+typedef struct{
+
+} SubEntry_t;
+
+#endif /* INC_SUBSCRIPTION_TABLE_H_ */

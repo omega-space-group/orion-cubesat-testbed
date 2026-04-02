@@ -1,0 +1,33 @@
+/*
+ * freertos.h
+ *
+ *  Created on: Mar 31, 2026
+ *      Author: adaro
+ */
+
+#ifndef INC_FREERTOS_H_
+#define INC_FREERTOS_H_
+
+#define NORMAL_TASK_STACK_SIZE 256
+#define LARGE_TASK_STACK_SIZE 256*8
+
+/* Task stack and buffer allocation */
+static StackType_t xRootTaskStack[NORMAL_TASK_STACK_SIZE];
+static StaticTask_t xRootTaskBuffer;
+
+static StackType_t xIWDGTaskStack[NORMAL_TASK_STACK_SIZE];
+static StaticTask_t xIWDGTaskBuffer;
+
+static StackType_t xDispatcherTaskStack[LARGE_TASK_STACK_SIZE];
+static StaticTask_t xDispatcherTaskBuffer;
+
+static StackType_t xDummyTaskStack[NORMAL_TASK_STACK_SIZE];
+static StaticTask_t xDummyTaskBuffer;
+
+static StackType_t xTaskAStack[NORMAL_TASK_STACK_SIZE];
+static StaticTask_t xTaskABuffer;
+
+static StackType_t xTaskBStack[NORMAL_TASK_STACK_SIZE];
+static StaticTask_t xTaskBBuffer;
+
+#endif /* INC_FREERTOS_H_ */

@@ -31,34 +31,18 @@
 #include "iwdg.h"
 #include "event_groups.h"
 #include "queue.h"
+#include "subscription_table.h"
 
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-typedef enum{
-	SAFE      = 1,
-	LOW_POWER = 2,
-	NOMINAL   = 3,
-	PAYLOAD   = 4
-}State_t;
-
-typedef enum{
-	TOPIC_SYSTEM_STATE = 1,
-	TOPIC_EXAMPLE1     = 2,
-	TOPIC_EXAMPLE2     = 3,
-	TOPIC_EXAMPLE3     = 4
-}Topic_t;
-
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 #define NORMAL_TASK_STACK_SIZE 256
 #define LARGE_TASK_STACK_SIZE 256*8
-
-#define MAX_SUBS 4
-#define MAX_SUBSCRIBERS_PER_TOPIC 5
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -88,24 +72,6 @@ static StaticTask_t xTaskABuffer;
 static StackType_t xTaskBStack[NORMAL_TASK_STACK_SIZE];
 static StaticTask_t xTaskBBuffer;
 
-/* Subscription Table Definition */
-typedef struct {
-    Topic_t Topic;
-    uint8_t SubscriberCount;
-    QueueHandle_t SubscriberQueues[MAX_SUBSCRIBERS_PER_TOPIC];
-} Subscription_t;
-
-Subscription_t sub_table[MAX_SUBS];
-int sub_count = 0;
-
-typedef struct{
-	Topic_t Topic;
-	uint32_t Data;
-} Message_t;
-
-Message_t DispatcherMsg;
-QueueHandle_t xMasterQueue;
-
 int triggerA, triggerB, triggerDummy;
 /* USER CODE END Variables */
 /* Definitions for defaultTask */
@@ -126,7 +92,7 @@ void Dummy_Task_Handler(void *argument);
 void TaskA_Handler(void *argument);
 void TaskB_Handler(void *argument);
 
-void SubscribeToTopic(Topic_t topic,QueueHandle_t queue);
+void Subscribe(const char* name,QueueHandle_t queue);
 
 /* USER CODE END FunctionPrototypes */
 
@@ -185,12 +151,12 @@ void MX_FREERTOS_Init(void) {
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
-  xTaskCreateStatic(Root_Task_Handler,      "Root_Task_Handler",      NORMAL_TASK_STACK_SIZE,NULL,30,xRootTaskStack,      &xRootTaskBuffer);
-  xTaskCreateStatic(IWDG_Task_Handler,      "IWDG_Task_Handler",      NORMAL_TASK_STACK_SIZE,NULL,26,xIWDGTaskStack,      &xIWDGTaskBuffer);
-  xTaskCreateStatic(Dispatcher_Task_Handler,"Dispatcher_Task_Handler",LARGE_TASK_STACK_SIZE, NULL,27,xDispatcherTaskStack,&xDispatcherTaskBuffer);
-  xTaskCreateStatic(Dummy_Task_Handler,     "Dummy_Task_Handler",     NORMAL_TASK_STACK_SIZE,NULL,25,xDummyTaskStack,     &xDummyTaskBuffer);
-  xTaskCreateStatic(TaskA_Handler,          "TaskA_Handler",          NORMAL_TASK_STACK_SIZE,NULL,25,xTaskAStack,         &xTaskABuffer);
-  xTaskCreateStatic(TaskB_Handler,          "TaskB_Handler",          NORMAL_TASK_STACK_SIZE,NULL,25,xTaskBStack,         &xTaskBBuffer);
+  xTaskCreateStatic(Root_Task_Handler,      "Root_Task_Handler",      NORMAL_TASK_STACK_SIZE,NULL,35,xRootTaskStack,      &xRootTaskBuffer);
+  xTaskCreateStatic(IWDG_Task_Handler,      "IWDG_Task_Handler",      NORMAL_TASK_STACK_SIZE,NULL,34,xIWDGTaskStack,      &xIWDGTaskBuffer);
+  xTaskCreateStatic(Dispatcher_Task_Handler,"Dispatcher_Task_Handler",LARGE_TASK_STACK_SIZE, NULL,33,xDispatcherTaskStack,&xDispatcherTaskBuffer);
+  xTaskCreateStatic(Dummy_Task_Handler,     "Dummy_Task_Handler",     NORMAL_TASK_STACK_SIZE,NULL,32,xDummyTaskStack,     &xDummyTaskBuffer);
+  xTaskCreateStatic(TaskA_Handler,          "TaskA_Handler",          NORMAL_TASK_STACK_SIZE,NULL,31,xTaskAStack,         &xTaskABuffer);
+  xTaskCreateStatic(TaskB_Handler,          "TaskB_Handler",          NORMAL_TASK_STACK_SIZE,NULL,30,xTaskBStack,         &xTaskBBuffer);
   /* USER CODE END RTOS_THREADS */
 
   /* USER CODE BEGIN RTOS_EVENTS */
@@ -224,6 +190,7 @@ void StartDefaultTask(void *argument)
  * (could be used to initialize peripherals and spawn tasks in specific order depending on conditions) */
 void Root_Task_Handler(void *argument){
 	printf("\r\n--- SYSTEM BOOT START ---\r\n");
+	fflush(stdout);
 	FDCAN_Start();
 	/* Infinite loop */
 	while(1){
@@ -232,13 +199,14 @@ void Root_Task_Handler(void *argument){
 }
 
 /* IWDG Task responsible for kicking internal watchdog. IWDG currently set to trigger every 500ms */
+//do we need this if we get an external watchdog?
 void IWDG_Task_Handler(void *argument){
 	while(1){
 		HAL_IWDG_Refresh(&hiwdg1);
 		osDelay(300);
 	}
 }
-int disp_cnt = 0;
+
 void Dispatcher_Task_Handler(void *argument){
 	/*
 	 * 1. Block until someone wakes you up (all events should trigger the dispatcher only)
@@ -255,11 +223,10 @@ void Dispatcher_Task_Handler(void *argument){
 		fflush(stdout);
 		for(int i = 0; i < sub_count; i++){
 			if(newMsg.Topic == sub_table[i].Topic){
-				for(int j = 0; i < sub_table[i].SubscriberCount; j++){
+				for(int j = 0; j < sub_table[i].SubscriberCount; j++){
 					BaseType_t xStatus = xQueueSendToBack(sub_table[i].SubscriberQueues[j],&newMsg,50);
 					if(xStatus != pdPASS){
-						disp_cnt++;
-						printf("Dispatcher queue is full!\r\n");
+						printf("%p queue is full!\r\n",(void*)sub_table[i].SubscriberQueues[j]);
 						fflush(stdout);
 					}
 				}
@@ -269,24 +236,26 @@ void Dispatcher_Task_Handler(void *argument){
 }
 
 void Dummy_Task_Handler(void *argument){
+	//move to separate task that creates the sub table
 	QueueHandle_t xDummyTaskQueue = xQueueCreate(5, sizeof(DispatcherMsg)); //NEEDS TO BE STATIC!
+	Subscribe("Dummy_Task_Handler",xDummyTaskQueue);
 
-	SubscribeToTopic(TOPIC_SYSTEM_STATE,xDummyTaskQueue);
-	SubscribeToTopic(TOPIC_EXAMPLE1,xDummyTaskQueue);
-	SubscribeToTopic(TOPIC_EXAMPLE2,xDummyTaskQueue);
 	while(1){
+		BaseType_t xStatus = xQueueReceive(xDummyTaskQueue,&DispatcherMsg,3000);
+		if(xStatus == pdPASS){
+			printf("%p: Got a new message\r\n",(void*)xDummyTaskQueue);
+			fflush(stdout);
+			//woke up from a msg
+		}
   		HAL_GPIO_TogglePin(GPIOE, GPIO_PIN_1);
 	  	FDCAN_Tx();
-  		osDelay(3000);
 	}
 }
 
 void TaskA_Handler(void *argument){
 	QueueHandle_t xTaskAQueue = xQueueCreate(5, sizeof(DispatcherMsg)); //NEEDS TO BE STATIC!
+	Subscribe("TaskA_Handler",xTaskAQueue);
 
-	SubscribeToTopic(TOPIC_SYSTEM_STATE,xTaskAQueue);
-	SubscribeToTopic(TOPIC_EXAMPLE1,xTaskAQueue);
-	SubscribeToTopic(TOPIC_EXAMPLE2,xTaskAQueue);
 	while(1){
 		BaseType_t xStatus = xQueueReceive(xTaskAQueue,&DispatcherMsg,500);
 		if(xStatus == pdPASS){
@@ -298,10 +267,22 @@ void TaskA_Handler(void *argument){
 			//timer elapsed
 		}
 
-		if(triggerA){
+		if(triggerA == 1){
+			triggerA = 0;
 			Message_t newMsg;
 			newMsg.Topic = TOPIC_SYSTEM_STATE;
 			newMsg.Data = 32;
+			xStatus = xQueueSendToBack(xMasterQueue,&newMsg,200);
+			if(xStatus != pdPASS){
+				printf("Dispatcher queue is full!\r\n");
+				fflush(stdout);
+			}
+		}
+		else if(triggerA == 2){
+			triggerB = 0;
+			Message_t newMsg;
+			newMsg.Topic = TOPIC_EXAMPLE2;
+			newMsg.Data = 27;
 			xStatus = xQueueSendToBack(xMasterQueue,&newMsg,200);
 			if(xStatus != pdPASS){
 				printf("Dispatcher queue is full!\r\n");
@@ -314,23 +295,35 @@ void TaskA_Handler(void *argument){
 
 void TaskB_Handler(void *argument){
 	QueueHandle_t xTaskBQueue = xQueueCreate(5, sizeof(int)); //NEEDS TO BE STATIC!
+	Subscribe("TaskB_Handler",xTaskBQueue);
 
-	SubscribeToTopic(TOPIC_SYSTEM_STATE,xTaskBQueue);
-	SubscribeToTopic(TOPIC_EXAMPLE1,xTaskBQueue);
-	SubscribeToTopic(TOPIC_EXAMPLE2,xTaskBQueue);
 	while(1){
 		BaseType_t xStatus = xQueueReceive(xTaskBQueue,&DispatcherMsg,500);
 		if(xStatus == pdPASS){
+			printf("%p: Got a new message\r\n",(void*)xTaskBQueue);
+			fflush(stdout);
 			//woke up from a msg
 		}
 		else{
 			//timer elapsed
 		}
 
-		if(triggerB){
+		if(triggerB == 1){
+			triggerB = 0;
 			Message_t newMsg;
 			newMsg.Topic = TOPIC_SYSTEM_STATE;
 			newMsg.Data = 5;
+			xStatus = xQueueSendToBack(xMasterQueue,&newMsg,200);
+			if(xStatus != pdPASS){
+				printf("Dispatcher queue is full!\r\n");
+				fflush(stdout);
+			}
+		}
+		else if(triggerB == 2){
+			triggerB = 0;
+			Message_t newMsg;
+			newMsg.Topic = TOPIC_EXAMPLE1;
+			newMsg.Data = 15;
 			xStatus = xQueueSendToBack(xMasterQueue,&newMsg,200);
 			if(xStatus != pdPASS){
 				printf("Dispatcher queue is full!\r\n");
@@ -341,42 +334,59 @@ void TaskB_Handler(void *argument){
 	}
 }
 
-void SubscribeToTopic(Topic_t topic,QueueHandle_t queue){
+void Subscribe(const char* name,QueueHandle_t queue){
 	/*
 	 * 1. Check sub table to see if anyone has already subscribed to this topic
 	 * 2. If so, add this queue to topic's list of queues
 	 * 3. If not, add topic and queue to sub table
 	 * */
-	for(int i = 0; i < sub_count; i++){
-		if(sub_table[i].Topic == topic ){
-			if(sub_table[i].SubscriberCount < MAX_SUBSCRIBERS_PER_TOPIC){
-				sub_table[i].SubscriberQueues[sub_table[i].SubscriberCount++] = queue;
-				printf("Task with local queue %p subscribed to %d successfully!\r\n",
-						(void*)queue, (int)topic);
-				fflush(stdout);
-				return;
+	int lookupTableLength = sizeof(lookupTable)/sizeof(lookupTable[0]);
+	int found = 0;
+
+	for(int i = 0; i < lookupTableLength; i++){
+		if(name == lookupTable[i].name){
+			for(int j = 0; j < lookupTable[i].length; j++){
+				for(int k = 0; k < sub_count; k++){
+					if(sub_table[k].Topic == lookupTable[i].topics[j] ){
+						found = 1;
+						if(sub_table[k].SubscriberCount < MAX_SUBSCRIBERS_PER_TOPIC){
+							sub_table[k].SubscriberQueues[sub_table[k].SubscriberCount++] = queue;
+							printf("%s subscribed to %d successfully!\r\n",
+									name, (int)lookupTable[i].topics[j]);
+							fflush(stdout);
+							break;
+						}
+						printf("%s failed to subscribe to %d. Topic's subscriber queue full!\r\n",
+								name, (int)lookupTable[i].topics[j]);
+						fflush(stdout);
+						break;
+					}
+				}
+				if(sub_count < MAX_SUBS && !found){
+					Subscription_t newSub;
+					newSub.SubscriberCount = 0;
+					newSub.SubscriberQueues[newSub.SubscriberCount++] = queue;
+					newSub.Topic = lookupTable[i].topics[j];
+
+					sub_table[sub_count++] = newSub;
+					printf("%s subscribed to %d successfully!\r\n",
+							name, (int)lookupTable[i].topics[j]);
+					fflush(stdout);
+					continue;
+				}
+				else if(sub_count > MAX_SUBS && !found){
+					printf("%s failed to subscribe to %d. Sub table full!\r\n",
+							name, (int)lookupTable[i].topics[j]);
+					fflush(stdout);
+				}
+				else{
+					found = 0;
+				}
+				continue;
 			}
-			printf("Task with local queue %p failed to subscribe to %d. Topic's subscriber queue full!\r\n",
-					(void*)queue, (int)topic);
-			fflush(stdout);
-			return;
+			break;
 		}
 	}
-	if(sub_count < MAX_SUBS){
-		Subscription_t newSub;
-		newSub.SubscriberCount = 0;
-		newSub.SubscriberQueues[newSub.SubscriberCount++] = queue;
-		newSub.Topic = topic;
-
-		sub_table[sub_count++] = newSub;
-		printf("Task with local queue %p subscribed to %d successfully!\r\n",
-				(void*)queue, (int)topic);
-		fflush(stdout);
-		return;
-	}
-	printf("Task with local queue %p failed to subscribe to %d. Sub table full!\r\n",
-			(void*)queue, (int)topic);
-	fflush(stdout);
 	return;
 }
 /* USER CODE END Application */
