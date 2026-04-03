@@ -1,0 +1,432 @@
+/* USER CODE BEGIN Header */
+/**
+  ******************************************************************************
+  * File Name          : freertos.c
+  * Description        : Code for freertos applications
+  ******************************************************************************
+  * @attention
+  *
+  * Copyright (c) 2026 STMicroelectronics.
+  * All rights reserved.
+  *
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
+  *
+  ******************************************************************************
+  */
+/* USER CODE END Header */
+
+/* Includes ------------------------------------------------------------------*/
+#include "FreeRTOS.h"
+#include "task.h"
+#include "main.h"
+#include "cmsis_os.h"
+
+/* Private includes ----------------------------------------------------------*/
+/* USER CODE BEGIN Includes */
+#include "usbd_cdc_if.h"
+#include <stdio.h>
+#include "fdcan.h"
+#include "iwdg.h"
+#include "event_groups.h"
+#include "queue.h"
+#include "subscription_table.h"
+
+/* USER CODE END Includes */
+
+/* Private typedef -----------------------------------------------------------*/
+/* USER CODE BEGIN PTD */
+/* USER CODE END PTD */
+
+/* Private define ------------------------------------------------------------*/
+/* USER CODE BEGIN PD */
+#define NORMAL_TASK_STACK_SIZE 256
+#define LARGE_TASK_STACK_SIZE  256*8
+#define MASTER_QUEUE_LENGTH    10
+#define LOCAL_QUEUE_LENGTH     5
+#define MSG_SIZE               sizeof(Message_t)
+/* USER CODE END PD */
+
+/* Private macro -------------------------------------------------------------*/
+/* USER CODE BEGIN PM */
+
+/* USER CODE END PM */
+
+/* Private variables ---------------------------------------------------------*/
+/* USER CODE BEGIN Variables */
+
+/* Task stack and buffer allocation ------------------------------------------*/
+static StackType_t xRootTaskStack[NORMAL_TASK_STACK_SIZE];
+static StaticTask_t xRootTaskBuffer;
+
+static StackType_t xIWDGTaskStack[NORMAL_TASK_STACK_SIZE];
+static StaticTask_t xIWDGTaskBuffer;
+
+static StackType_t xDispatcherTaskStack[LARGE_TASK_STACK_SIZE];
+static StaticTask_t xDispatcherTaskBuffer;
+
+static StackType_t xDummyTaskStack[NORMAL_TASK_STACK_SIZE];
+static StaticTask_t xDummyTaskBuffer;
+
+static StackType_t xTaskAStack[NORMAL_TASK_STACK_SIZE];
+static StaticTask_t xTaskABuffer;
+
+static StackType_t xTaskBStack[NORMAL_TASK_STACK_SIZE];
+static StaticTask_t xTaskBBuffer;
+/* ----------------------------------------------------------------------------*/
+
+/* Queue buffer allocation ----------------------------------------------------*/
+static StaticQueue_t xMasterQueueData;
+static uint8_t ucMasterQueueStorageArea[MASTER_QUEUE_LENGTH * MSG_SIZE];
+static QueueHandle_t xMasterQueue;
+
+static StaticQueue_t xDummyTaskQueueData;
+static uint8_t ucDummyTaskQueueStorageArea[LOCAL_QUEUE_LENGTH * MSG_SIZE];
+static QueueHandle_t xDummyTaskQueue;
+
+static StaticQueue_t xTaskAQueueData;
+static uint8_t ucTaskAQueueStorageArea[LOCAL_QUEUE_LENGTH * MSG_SIZE];
+static QueueHandle_t xTaskAQueue;
+
+static StaticQueue_t xTaskBQueueData;
+static uint8_t ucTaskBQueueStorageArea[LOCAL_QUEUE_LENGTH * MSG_SIZE];
+static QueueHandle_t xTaskBQueue;
+
+static Message_t DispatcherMsg;
+/* -----------------------------------------------------------------------------*/
+
+/* Subscription Tables ---------------------------------------------------------*/
+static Topic_t DummyTaskGroup[] = {TOPIC_SYSTEM_STATE,TOPIC_EXAMPLE1};
+static Topic_t TaskAGroup[]     = {TOPIC_SYSTEM_STATE,TOPIC_EXAMPLE1,TOPIC_EXAMPLE2};
+static Topic_t TaskBGroup[]     = {TOPIC_SYSTEM_STATE,TOPIC_EXAMPLE2};
+
+static SubEntries_t lookupTable[] = {
+		{"Dummy_Task_Handler" , 2,DummyTaskGroup},
+		{"TaskA_Handler"      , 3,TaskAGroup},
+		{"TaskB_Handler"      , 2,TaskBGroup}
+};
+
+static Subscription_t sub_table[MAX_SUBS];
+static uint8_t sub_count = 0;
+/* -----------------------------------------------------------------------------*/
+
+int triggerA, triggerB, triggerDummy;
+
+/* USER CODE END Variables */
+/* Definitions for defaultTask */
+osThreadId_t defaultTaskHandle;
+const osThreadAttr_t defaultTask_attributes = {
+  .name = "defaultTask",
+  .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityNormal,
+};
+
+/* Private function prototypes -----------------------------------------------*/
+/* USER CODE BEGIN FunctionPrototypes */
+
+void Root_Task_Handler(void *argument);
+void IWDG_Task_Handler(void *argument);
+void Dispatcher_Task_Handler(void *argument);
+void Dummy_Task_Handler(void *argument);
+void TaskA_Handler(void *argument);
+void TaskB_Handler(void *argument);
+
+void Subscribe(const char* name,QueueHandle_t queue);
+
+/* USER CODE END FunctionPrototypes */
+
+void StartDefaultTask(void *argument);
+
+extern void MX_USB_DEVICE_Init(void);
+void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
+
+/* Hook prototypes */
+void configureTimerForRunTimeStats(void);
+unsigned long getRunTimeCounterValue(void);
+
+/* USER CODE BEGIN 1 */
+/* Functions needed when configGENERATE_RUN_TIME_STATS is on */
+extern TIM_HandleTypeDef htim7;
+__weak void configureTimerForRunTimeStats(void)
+{
+	HAL_TIM_Base_Start_IT(&htim7);
+}
+extern volatile unsigned long ulHighFrequencyTimerTicks;
+__weak unsigned long getRunTimeCounterValue(void)
+{
+return ulHighFrequencyTimerTicks;
+}
+/* USER CODE END 1 */
+
+/**
+  * @brief  FreeRTOS initialization
+  * @param  None
+  * @retval None
+  */
+void MX_FREERTOS_Init(void) {
+  /* USER CODE BEGIN Init */
+  /* USER CODE END Init */
+
+  /* USER CODE BEGIN RTOS_MUTEX */
+  /* add mutexes, ... */
+  /* USER CODE END RTOS_MUTEX */
+
+  /* USER CODE BEGIN RTOS_SEMAPHORES */
+  /* add semaphores, ... */
+
+  /* USER CODE END RTOS_SEMAPHORES */
+
+  /* USER CODE BEGIN RTOS_TIMERS */
+  /* start timers, add new ones, ... */
+  /* USER CODE END RTOS_TIMERS */
+
+  /* USER CODE BEGIN RTOS_QUEUES */
+	xMasterQueue    = xQueueCreateStatic(MASTER_QUEUE_LENGTH, MSG_SIZE, ucMasterQueueStorageArea, &xMasterQueueData);
+	xDummyTaskQueue = xQueueCreateStatic(LOCAL_QUEUE_LENGTH, MSG_SIZE, ucDummyTaskQueueStorageArea, &xDummyTaskQueueData);
+	xTaskAQueue     = xQueueCreateStatic(LOCAL_QUEUE_LENGTH, MSG_SIZE, ucTaskAQueueStorageArea, &xTaskAQueueData);
+	xTaskBQueue     = xQueueCreateStatic(LOCAL_QUEUE_LENGTH, MSG_SIZE, ucTaskBQueueStorageArea, &xTaskBQueueData);
+  /* USER CODE END RTOS_QUEUES */
+
+  /* Create the thread(s) */
+  /* creation of defaultTask */
+  defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
+
+  /* USER CODE BEGIN RTOS_THREADS */
+  /* add threads, ... */
+  xTaskCreateStatic(Root_Task_Handler,      "Root_Task_Handler",      NORMAL_TASK_STACK_SIZE,NULL,                   35,xRootTaskStack,      &xRootTaskBuffer);
+  xTaskCreateStatic(IWDG_Task_Handler,      "IWDG_Task_Handler",      NORMAL_TASK_STACK_SIZE,NULL,                   34,xIWDGTaskStack,      &xIWDGTaskBuffer);
+  xTaskCreateStatic(Dispatcher_Task_Handler,"Dispatcher_Task_Handler",LARGE_TASK_STACK_SIZE ,(void*)xMasterQueue,    33,xDispatcherTaskStack,&xDispatcherTaskBuffer);
+  xTaskCreateStatic(Dummy_Task_Handler,     "Dummy_Task_Handler",     NORMAL_TASK_STACK_SIZE,(void*)xDummyTaskQueue, 32,xDummyTaskStack,     &xDummyTaskBuffer);
+  xTaskCreateStatic(TaskA_Handler,          "TaskA_Handler",          NORMAL_TASK_STACK_SIZE,(void*)xTaskAQueue,     31,xTaskAStack,         &xTaskABuffer);
+  xTaskCreateStatic(TaskB_Handler,          "TaskB_Handler",          NORMAL_TASK_STACK_SIZE,(void*)xTaskBQueue,     30,xTaskBStack,         &xTaskBBuffer);
+  /* USER CODE END RTOS_THREADS */
+
+  /* USER CODE BEGIN RTOS_EVENTS */
+  /* USER CODE END RTOS_EVENTS */
+
+}
+
+/* USER CODE BEGIN Header_StartDefaultTask */
+/**
+  * @brief  Function implementing the defaultTask thread.
+  * @param  argument: Not used
+  * @retval None
+  */
+/* USER CODE END Header_StartDefaultTask */
+void StartDefaultTask(void *argument)
+{
+  /* init code for USB_DEVICE */
+//  MX_USB_DEVICE_Init();
+  /* USER CODE BEGIN StartDefaultTask */
+  /* Infinite loop */
+	while(1){
+		osDelay(300);
+  }
+  /* USER CODE END StartDefaultTask */
+}
+
+/* Private application code --------------------------------------------------*/
+/* USER CODE BEGIN Application */
+
+/* Root Task responsible for starting peripherals
+ * (could be used to initialize peripherals and spawn tasks in specific order depending on conditions) */
+void Root_Task_Handler(void *argument){
+	printf("\r\n--- SYSTEM BOOT START ---\r\n");
+	fflush(stdout);
+	FDCAN_Start();
+	/* Infinite loop */
+	while(1){
+		xTaskNotifyWait(0,0,NULL,portMAX_DELAY);
+	}
+}
+
+/* IWDG Task responsible for kicking internal watchdog. IWDG currently set to trigger every 500ms */
+//do we need this if we get an external watchdog?
+void IWDG_Task_Handler(void *argument){
+	while(1){
+		HAL_IWDG_Refresh(&hiwdg1);
+		osDelay(300);
+	}
+}
+
+void Dispatcher_Task_Handler(void *argument){
+	/*
+	 * 1. Block until someone wakes you up (all events should trigger the dispatcher only)
+	 * 2. Check reason for waking up
+	 * 3. If event than set event group's respective event bit (this action will automatically wake up all "subscribed tasks") (not sure yet)
+	 * 4. If need for data exchange than get data, look through sub table and push on respective queues
+	 * */
+//	EventGroupHandle_t xGlobalEventGroup;
+//	EventBits_t xGlobalEventBits = xEventGroupCreate(); //NEEDS TO BE STATIC!
+	Message_t newMsg;
+	while(1){
+		xQueueReceive((QueueHandle_t)argument,&newMsg,portMAX_DELAY);
+		printf("Dispatcher received a new message!\r\n");
+		fflush(stdout);
+		for(int i = 0; i < sub_count; i++){
+			if(newMsg.Topic == sub_table[i].Topic){
+				for(int j = 0; j < sub_table[i].SubscriberCount; j++){
+					BaseType_t xStatus = xQueueSendToBack(sub_table[i].SubscriberQueues[j],&newMsg,50);
+					if(xStatus != pdPASS){
+						printf("%p queue is full!\r\n",(void*)sub_table[i].SubscriberQueues[j]);
+						fflush(stdout);
+					}
+				}
+			}
+		}
+	}
+}
+
+void Dummy_Task_Handler(void *argument){
+	Subscribe("Dummy_Task_Handler",(QueueHandle_t)argument);
+
+	while(1){
+		BaseType_t xStatus = xQueueReceive((QueueHandle_t)argument,&DispatcherMsg,3000);
+		if(xStatus == pdPASS){
+			printf("%p: Got a new message\r\n",(void*)(QueueHandle_t)argument);
+			fflush(stdout);
+			//woke up from a msg
+		}
+  		HAL_GPIO_TogglePin(GPIOE, GPIO_PIN_1);
+	  	FDCAN_Tx();
+	}
+}
+
+void TaskA_Handler(void *argument){
+	Subscribe("TaskA_Handler",(QueueHandle_t)argument);
+
+	while(1){
+		BaseType_t xStatus = xQueueReceive((QueueHandle_t)argument,&DispatcherMsg,500);
+		if(xStatus == pdPASS){
+			printf("%p: Got a new message\r\n",(void*)(QueueHandle_t)argument);
+			fflush(stdout);
+			//woke up from a msg
+		}
+		else{
+			//timer elapsed
+		}
+
+		if(triggerA == 1){
+			triggerA = 0;
+			Message_t newMsg;
+			newMsg.Topic = TOPIC_SYSTEM_STATE;
+			newMsg.Data = 32;
+			xStatus = xQueueSendToBack(xMasterQueue,&newMsg,200);
+			if(xStatus != pdPASS){
+				printf("Dispatcher queue is full!\r\n");
+				fflush(stdout);
+			}
+		}
+		else if(triggerA == 2){
+			triggerA = 0;
+			Message_t newMsg;
+			newMsg.Topic = TOPIC_EXAMPLE2;
+			newMsg.Data = 27;
+			xStatus = xQueueSendToBack(xMasterQueue,&newMsg,200);
+			if(xStatus != pdPASS){
+				printf("Dispatcher queue is full!\r\n");
+				fflush(stdout);
+			}
+		}
+		osDelay(100);
+	}
+}
+
+void TaskB_Handler(void *argument){
+	Subscribe("TaskB_Handler",(QueueHandle_t)argument);
+
+	while(1){
+		BaseType_t xStatus = xQueueReceive((QueueHandle_t)argument,&DispatcherMsg,500);
+		if(xStatus == pdPASS){
+			printf("%p: Got a new message\r\n",(void*)(QueueHandle_t)argument);
+			fflush(stdout);
+			//woke up from a msg
+		}
+		else{
+			//timer elapsed
+		}
+
+		if(triggerB == 1){
+			triggerB = 0;
+			Message_t newMsg;
+			newMsg.Topic = TOPIC_SYSTEM_STATE;
+			newMsg.Data = 5;
+			xStatus = xQueueSendToBack(xMasterQueue,&newMsg,200);
+			if(xStatus != pdPASS){
+				printf("Dispatcher queue is full!\r\n");
+				fflush(stdout);
+			}
+		}
+		else if(triggerB == 2){
+			triggerB = 0;
+			Message_t newMsg;
+			newMsg.Topic = TOPIC_EXAMPLE1;
+			newMsg.Data = 15;
+			xStatus = xQueueSendToBack(xMasterQueue,&newMsg,200);
+			if(xStatus != pdPASS){
+				printf("Dispatcher queue is full!\r\n");
+				fflush(stdout);
+			}
+		}
+		osDelay(100);
+	}
+}
+
+void Subscribe(const char* name,QueueHandle_t queue){
+	/*
+	 * 1. Check sub table to see if anyone has already subscribed to this topic
+	 * 2. If so, add this queue to topic's list of queues
+	 * 3. If not, add topic and queue to sub table
+	 * */
+	int lookupTableLength = sizeof(lookupTable)/sizeof(lookupTable[0]);
+	int found = 0;
+
+	for(int i = 0; i < lookupTableLength; i++){
+		if(name == lookupTable[i].name){
+			for(int j = 0; j < lookupTable[i].length; j++){
+				for(int k = 0; k < sub_count; k++){
+					if(sub_table[k].Topic == lookupTable[i].topics[j] ){
+						found = 1;
+						if(sub_table[k].SubscriberCount < MAX_SUBSCRIBERS_PER_TOPIC){
+							sub_table[k].SubscriberQueues[sub_table[k].SubscriberCount++] = queue;
+							printf("%s subscribed to %d successfully!\r\n",
+									name, (int)lookupTable[i].topics[j]);
+							fflush(stdout);
+							break;
+						}
+						printf("%s failed to subscribe to %d. Topic's subscriber queue full!\r\n",
+								name, (int)lookupTable[i].topics[j]);
+						fflush(stdout);
+						break;
+					}
+				}
+				if(sub_count < MAX_SUBS && !found){
+					Subscription_t newSub;
+					newSub.SubscriberCount = 0;
+					newSub.SubscriberQueues[newSub.SubscriberCount++] = queue;
+					newSub.Topic = lookupTable[i].topics[j];
+
+					sub_table[sub_count++] = newSub;
+					printf("%s subscribed to %d successfully!\r\n",
+							name, (int)lookupTable[i].topics[j]);
+					fflush(stdout);
+					continue;
+				}
+				else if(sub_count > MAX_SUBS && !found){
+					printf("%s failed to subscribe to %d. Sub table full!\r\n",
+							name, (int)lookupTable[i].topics[j]);
+					fflush(stdout);
+				}
+				else{
+					found = 0;
+				}
+				continue;
+			}
+			break;
+		}
+	}
+	return;
+}
+/* USER CODE END Application */
+

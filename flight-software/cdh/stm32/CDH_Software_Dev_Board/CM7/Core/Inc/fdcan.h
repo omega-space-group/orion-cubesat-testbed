@@ -36,7 +36,6 @@ extern FDCAN_HandleTypeDef hfdcan1;
 
 /* USER CODE BEGIN Private defines */
 
-/* FDCAN1 - MOTOR */
 typedef struct CAN1{
 	FDCAN_FilterTypeDef Filter;
 	FDCAN_TxHeaderTypeDef TxHeader;
