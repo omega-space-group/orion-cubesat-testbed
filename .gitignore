@@ -172,3 +172,13 @@ test_results/
 *.bak
 *.backup
 *~
+
+# Manual Clean-up additions
+**/Debug/
+**/Release/
+*.elf
+*.bin
+*.map
+*.list
+*.o
+*.su
