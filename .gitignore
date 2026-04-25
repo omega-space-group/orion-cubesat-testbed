@@ -173,12 +173,20 @@ test_results/
 *.backup
 *~
 
-# Manual Clean-up additions
+# Eclipse / STM32CubeIDE metadata
+**/.metadata/
+**/RemoteSystemsTempFiles/
+**/.recommenders/
+
+# Build artifacts
 **/Debug/
 **/Release/
-*.elf
-*.bin
-*.map
 *.list
+*.map
 *.o
 *.su
+*.d
+
+# Snapshots and temp workspace files
+*.snap
+*.tree
