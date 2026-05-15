@@ -8,8 +8,14 @@
 #include <App/Tasks/dummy_task.h>
 #include "FreeRTOS.h"
 #include "queue.h"
+#include "fdcan.h"
 
 #include <App/app_config.h>
+#include <App/Services/subscriptions.h>
+#include <App/Services/app_events.h>
+
+#include "usbd_cdc_if.h"
+#include <stdio.h>
 
 static StackType_t xDummyTaskStack[NORMAL_TASK_STACK_SIZE];
 static StaticTask_t xDummyTaskBuffer;
@@ -18,18 +24,25 @@ static StaticQueue_t xDummyTaskQueueData;
 static uint8_t ucDummyTaskQueueStorageArea[LOCAL_QUEUE_LENGTH * MSG_SIZE];
 static QueueHandle_t xDummyTaskQueue;
 
-static void DummyTask_Entry(void *argument) {
-    while(1) {
-        vTaskDelay(1000);
-    }
+static void Dummy_Task_Handler(void *argument){
+	Subscribe("Dummy_Task_Handler",(QueueHandle_t)argument);
+	TaskSync_SetAndWait(DUMMY_BIT);
+	Message_t newMsg;
+	while(1){
+		BaseType_t xStatus = xQueueReceive((QueueHandle_t)argument,&newMsg,3000);
+		if(xStatus == pdPASS){
+			printf("%p: Got a new message\r\n",(void*)(QueueHandle_t)argument);
+			fflush(stdout);
+			//woke up from a msg
+		}
+  		HAL_GPIO_TogglePin(GPIOE, GPIO_PIN_1);
+	  	FDCAN_Tx();
+	}
 }
+
 
 void DummyTask_Init(void) {
 	xDummyTaskQueue = xQueueCreateStatic(LOCAL_QUEUE_LENGTH, MSG_SIZE, ucDummyTaskQueueStorageArea, &xDummyTaskQueueData);
-    xTaskCreateStatic(DummyTask_Entry,"DummyTask_Entry",256,(void*)xDummyTaskQueue, 32,xDummyTaskStack,     &xDummyTaskBuffer);
+	xTaskCreateStatic(Dummy_Task_Handler,"Dummy_Task_Handler",NORMAL_TASK_STACK_SIZE
+			  ,(void*)xDummyTaskQueue,DUMMY_PR,xDummyTaskStack,&xDummyTaskBuffer);
 }
-
-QueueHandle_t DummyTask_GetQueue(void) {
-    return xDummyTaskQueue;
-}
-

@@ -28,13 +28,13 @@
 #include <App/app_config.h>
 #include "usbd_cdc_if.h"
 #include <stdio.h>
-#include "fdcan.h"
 #include "iwdg.h"
 #include "event_groups.h"
 #include "queue.h"
 
 #include <App/Services/subscriptions.h>
-#include <App/Tasks/dummy_task.h>
+#include <App/Tasks/root_task.h>
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -54,51 +54,9 @@
 /* USER CODE BEGIN Variables */
 
 /* Task stack and buffer allocation ------------------------------------------*/
-static StackType_t xRootTaskStack[NORMAL_TASK_STACK_SIZE];
-static StaticTask_t xRootTaskBuffer;
-
 static StackType_t xIWDGTaskStack[NORMAL_TASK_STACK_SIZE];
 static StaticTask_t xIWDGTaskBuffer;
-
-static StackType_t xDispatcherTaskStack[LARGE_TASK_STACK_SIZE];
-static StaticTask_t xDispatcherTaskBuffer;
-
-static StackType_t xDummyTaskStack[NORMAL_TASK_STACK_SIZE];
-static StaticTask_t xDummyTaskBuffer;
-
-static StackType_t xTaskAStack[NORMAL_TASK_STACK_SIZE];
-static StaticTask_t xTaskABuffer;
-
-static StackType_t xTaskBStack[NORMAL_TASK_STACK_SIZE];
-static StaticTask_t xTaskBBuffer;
 /* ----------------------------------------------------------------------------*/
-
-/* Queue buffer allocation ----------------------------------------------------*/
-static StaticQueue_t xMasterQueueData;
-static uint8_t ucMasterQueueStorageArea[MASTER_QUEUE_LENGTH * MSG_SIZE];
-static QueueHandle_t xMasterQueue;
-
-static StaticQueue_t xDummyTaskQueueData;
-static uint8_t ucDummyTaskQueueStorageArea[LOCAL_QUEUE_LENGTH * MSG_SIZE];
-static QueueHandle_t xDummyTaskQueue;
-
-static StaticQueue_t xTaskAQueueData;
-static uint8_t ucTaskAQueueStorageArea[LOCAL_QUEUE_LENGTH * MSG_SIZE];
-static QueueHandle_t xTaskAQueue;
-
-static StaticQueue_t xTaskBQueueData;
-static uint8_t ucTaskBQueueStorageArea[LOCAL_QUEUE_LENGTH * MSG_SIZE];
-static QueueHandle_t xTaskBQueue;
-
-static Message_t DispatcherMsg;
-/* -----------------------------------------------------------------------------*/
-
-/* Event Groups Definitions ----------------------------------------------------*/
-static StaticEventGroup_t xTaskInitEventGroup;
-static EventGroupHandle_t xTaskInitEvent;
-/* -----------------------------------------------------------------------------*/
-
-int triggerA, triggerB, triggerDummy;
 
 /* USER CODE END Variables */
 /* Definitions for defaultTask */
@@ -111,13 +69,7 @@ const osThreadAttr_t defaultTask_attributes = {
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
-
-void Root_Task_Handler(void *argument);
 void IWDG_Task_Handler(void *argument);
-void Dispatcher_Task_Handler(void *argument);
-void Dummy_Task_Handler(void *argument);
-void TaskA_Handler(void *argument);
-void TaskB_Handler(void *argument);
 
 /* USER CODE END FunctionPrototypes */
 
@@ -167,10 +119,6 @@ void MX_FREERTOS_Init(void) {
   /* USER CODE END RTOS_TIMERS */
 
   /* USER CODE BEGIN RTOS_QUEUES */
-	xMasterQueue    = xQueueCreateStatic(MASTER_QUEUE_LENGTH, MSG_SIZE, ucMasterQueueStorageArea, &xMasterQueueData);
-	xDummyTaskQueue = xQueueCreateStatic(LOCAL_QUEUE_LENGTH, MSG_SIZE, ucDummyTaskQueueStorageArea, &xDummyTaskQueueData);
-	xTaskAQueue     = xQueueCreateStatic(LOCAL_QUEUE_LENGTH, MSG_SIZE, ucTaskAQueueStorageArea, &xTaskAQueueData);
-	xTaskBQueue     = xQueueCreateStatic(LOCAL_QUEUE_LENGTH, MSG_SIZE, ucTaskBQueueStorageArea, &xTaskBQueueData);
   /* USER CODE END RTOS_QUEUES */
 
   /* Create the thread(s) */
@@ -179,18 +127,11 @@ void MX_FREERTOS_Init(void) {
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
-  xTaskCreateStatic(Root_Task_Handler,      "Root_Task_Handler",      NORMAL_TASK_STACK_SIZE,NULL,                   35,xRootTaskStack,      &xRootTaskBuffer);
+  Root_Task_Init();
   xTaskCreateStatic(IWDG_Task_Handler,      "IWDG_Task_Handler",      NORMAL_TASK_STACK_SIZE,NULL,                   34,xIWDGTaskStack,      &xIWDGTaskBuffer);
-  xTaskCreateStatic(Dispatcher_Task_Handler,"Dispatcher_Task_Handler",LARGE_TASK_STACK_SIZE ,(void*)xMasterQueue,    33,xDispatcherTaskStack,&xDispatcherTaskBuffer);
-  xTaskCreateStatic(Dummy_Task_Handler,     "Dummy_Task_Handler",     NORMAL_TASK_STACK_SIZE,(void*)xDummyTaskQueue, 32,xDummyTaskStack,     &xDummyTaskBuffer);
-  xTaskCreateStatic(TaskA_Handler,          "TaskA_Handler",          NORMAL_TASK_STACK_SIZE,(void*)xTaskAQueue,     31,xTaskAStack,         &xTaskABuffer);
-  xTaskCreateStatic(TaskB_Handler,          "TaskB_Handler",          NORMAL_TASK_STACK_SIZE,(void*)xTaskBQueue,     30,xTaskBStack,         &xTaskBBuffer);
-
-  DummyTask_Init();
   /* USER CODE END RTOS_THREADS */
 
   /* USER CODE BEGIN RTOS_EVENTS */
-  xTaskInitEvent = xEventGroupCreateStatic(&xTaskInitEventGroup);
   /* USER CODE END RTOS_EVENTS */
 
 }
@@ -216,140 +157,12 @@ void StartDefaultTask(void *argument)
 
 /* Private application code --------------------------------------------------*/
 /* USER CODE BEGIN Application */
-
-/* Root Task responsible for starting peripherals
- * (could be used to initialize peripherals and spawn tasks in specific order depending on conditions) */
-void Root_Task_Handler(void *argument){
-	printf("\r\n--- SYSTEM BOOT START ---\r\n");
-	fflush(stdout);
-	FDCAN_Start();
-	/* Infinite loop */
-	while(1){
-		xTaskNotifyWait(0,0,NULL,portMAX_DELAY);
-	}
-}
-
 /* IWDG Task responsible for kicking internal watchdog. IWDG currently set to trigger every 500ms */
 //do we need this if we get an external watchdog?
 void IWDG_Task_Handler(void *argument){
 	while(1){
 		HAL_IWDG_Refresh(&hiwdg1);
 		osDelay(300);
-	}
-}
-
-void Dispatcher_Task_Handler(void *argument){
-	/*
-	 * 1. Block until someone wakes you up (all events should trigger the dispatcher only)
-	 * 2. Check reason for waking up
-	 * 3. If event than set event group's respective event bit (this action will automatically wake up all "subscribed tasks") (not sure yet)
-	 * 4. If need for data exchange than get data, look through sub table and push on respective queues
-	 * */
-//	EventGroupHandle_t xGlobalEventGroup;
-//	EventBits_t xGlobalEventBits = xEventGroupCreate(); //NEEDS TO BE STATIC!
-	xEventGroupWaitBits(xTaskInitEvent,ALL_TASKS_READY,pdTRUE,pdTRUE,portMAX_DELAY);
-	Message_t newMsg;
-	while(1){
-		xQueueReceive((QueueHandle_t)argument,&newMsg,portMAX_DELAY);
-		printf("Dispatcher received a new message!\r\n");
-		fflush(stdout);
-
-		Publish(newMsg);
-	}
-}
-
-void Dummy_Task_Handler(void *argument){
-	Subscribe("Dummy_Task_Handler",(QueueHandle_t)argument);
-	xEventGroupSync(xTaskInitEvent,DUMMY_BIT,ALL_TASKS_READY,portMAX_DELAY);
-	while(1){
-		BaseType_t xStatus = xQueueReceive((QueueHandle_t)argument,&DispatcherMsg,3000);
-		if(xStatus == pdPASS){
-			printf("%p: Got a new message\r\n",(void*)(QueueHandle_t)argument);
-			fflush(stdout);
-			//woke up from a msg
-		}
-  		HAL_GPIO_TogglePin(GPIOE, GPIO_PIN_1);
-	  	FDCAN_Tx();
-	}
-}
-
-void TaskA_Handler(void *argument){
-	Subscribe("TaskA_Handler",(QueueHandle_t)argument);
-	xEventGroupSync(xTaskInitEvent,TASKA_BIT,ALL_TASKS_READY,portMAX_DELAY);
-	while(1){
-		BaseType_t xStatus = xQueueReceive((QueueHandle_t)argument,&DispatcherMsg,500);
-		if(xStatus == pdPASS){
-			printf("%p: Got a new message\r\n",(void*)(QueueHandle_t)argument);
-			fflush(stdout);
-			//woke up from a msg
-		}
-		else{
-			//timer elapsed
-		}
-
-		if(triggerA == 1){
-			triggerA = 0;
-			Message_t newMsg;
-			newMsg.Topic = TOPIC_SYSTEM_STATE;
-			newMsg.Data = 32;
-			xStatus = xQueueSendToBack(xMasterQueue,&newMsg,200);
-			if(xStatus != pdPASS){
-				printf("Dispatcher queue is full!\r\n");
-				fflush(stdout);
-			}
-		}
-		else if(triggerA == 2){
-			triggerA = 0;
-			Message_t newMsg;
-			newMsg.Topic = TOPIC_EXAMPLE2;
-			newMsg.Data = 27;
-			xStatus = xQueueSendToBack(xMasterQueue,&newMsg,200);
-			if(xStatus != pdPASS){
-				printf("Dispatcher queue is full!\r\n");
-				fflush(stdout);
-			}
-		}
-		osDelay(100);
-	}
-}
-
-void TaskB_Handler(void *argument){
-	Subscribe("TaskB_Handler",(QueueHandle_t)argument);
-	xEventGroupSync(xTaskInitEvent,TASKB_BIT,ALL_TASKS_READY,portMAX_DELAY);
-	while(1){
-		BaseType_t xStatus = xQueueReceive((QueueHandle_t)argument,&DispatcherMsg,500);
-		if(xStatus == pdPASS){
-			printf("%p: Got a new message\r\n",(void*)(QueueHandle_t)argument);
-			fflush(stdout);
-			//woke up from a msg
-		}
-		else{
-			//timer elapsed
-		}
-
-		if(triggerB == 1){
-			triggerB = 0;
-			Message_t newMsg;
-			newMsg.Topic = TOPIC_SYSTEM_STATE;
-			newMsg.Data = 5;
-			xStatus = xQueueSendToBack(xMasterQueue,&newMsg,200);
-			if(xStatus != pdPASS){
-				printf("Dispatcher queue is full!\r\n");
-				fflush(stdout);
-			}
-		}
-		else if(triggerB == 2){
-			triggerB = 0;
-			Message_t newMsg;
-			newMsg.Topic = TOPIC_EXAMPLE1;
-			newMsg.Data = 15;
-			xStatus = xQueueSendToBack(xMasterQueue,&newMsg,200);
-			if(xStatus != pdPASS){
-				printf("Dispatcher queue is full!\r\n");
-				fflush(stdout);
-			}
-		}
-		osDelay(100);
 	}
 }
 /* USER CODE END Application */

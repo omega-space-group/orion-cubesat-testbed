@@ -13,13 +13,21 @@
 
 #define NORMAL_TASK_STACK_SIZE 256
 #define LARGE_TASK_STACK_SIZE  256*8
+
 #define MASTER_QUEUE_LENGTH    10
 #define LOCAL_QUEUE_LENGTH     5
+
+#define ROOT_PR       35
+#define DISPATCHER_PR 33
+#define DUMMY_PR      32
+#define TASKA_PR      31
+#define TASKB_PR      30
 
 #define DUMMY_BIT    (1 << 0)
 #define TASKA_BIT    (1 << 1)
 #define TASKB_BIT    (1 << 2)
 
+//move to app_events (?)
 #define ALL_TASKS_READY (DUMMY_BIT | TASKA_BIT | TASKB_BIT)
 
 #define MAX_SUBS 4
@@ -51,7 +59,7 @@ typedef struct{
 	uint32_t Data;
 } Message_t;
 
-#define MSG_SIZE               sizeof(Message_t)
+#define MSG_SIZE sizeof(Message_t)
 
 /* Tasks - Topics Lookup Table */
 typedef struct{
