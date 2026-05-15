@@ -25,14 +25,16 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include <App/app_config.h>
 #include "usbd_cdc_if.h"
 #include <stdio.h>
 #include "fdcan.h"
 #include "iwdg.h"
 #include "event_groups.h"
 #include "queue.h"
-#include "subscription_table.h"
 
+#include <App/Services/subscriptions.h>
+#include <App/Tasks/dummy_task.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -41,17 +43,6 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define NORMAL_TASK_STACK_SIZE 256
-#define LARGE_TASK_STACK_SIZE  256*8
-#define MASTER_QUEUE_LENGTH    10
-#define LOCAL_QUEUE_LENGTH     5
-#define MSG_SIZE               sizeof(Message_t)
-
-#define DUMMY_BIT    (1 << 0)
-#define TASKA_BIT    (1 << 1)
-#define TASKB_BIT    (1 << 2)
-
-#define ALL_TASKS_READY (DUMMY_BIT | TASKA_BIT | TASKB_BIT)
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -107,21 +98,6 @@ static StaticEventGroup_t xTaskInitEventGroup;
 static EventGroupHandle_t xTaskInitEvent;
 /* -----------------------------------------------------------------------------*/
 
-/* Subscription Tables ---------------------------------------------------------*/
-static Topic_t DummyTaskGroup[] = {TOPIC_SYSTEM_STATE,TOPIC_EXAMPLE1};
-static Topic_t TaskAGroup[]     = {TOPIC_SYSTEM_STATE,TOPIC_EXAMPLE1,TOPIC_EXAMPLE2};
-static Topic_t TaskBGroup[]     = {TOPIC_SYSTEM_STATE,TOPIC_EXAMPLE2};
-
-static SubEntries_t lookupTable[] = {
-		{"Dummy_Task_Handler" , 2,DummyTaskGroup},
-		{"TaskA_Handler"      , 3,TaskAGroup},
-		{"TaskB_Handler"      , 2,TaskBGroup}
-};
-
-static Subscription_t sub_table[MAX_SUBS];
-static uint8_t sub_count = 0;
-/* -----------------------------------------------------------------------------*/
-
 int triggerA, triggerB, triggerDummy;
 
 /* USER CODE END Variables */
@@ -142,8 +118,6 @@ void Dispatcher_Task_Handler(void *argument);
 void Dummy_Task_Handler(void *argument);
 void TaskA_Handler(void *argument);
 void TaskB_Handler(void *argument);
-
-void Subscribe(const char* name,QueueHandle_t queue);
 
 /* USER CODE END FunctionPrototypes */
 
@@ -211,6 +185,8 @@ void MX_FREERTOS_Init(void) {
   xTaskCreateStatic(Dummy_Task_Handler,     "Dummy_Task_Handler",     NORMAL_TASK_STACK_SIZE,(void*)xDummyTaskQueue, 32,xDummyTaskStack,     &xDummyTaskBuffer);
   xTaskCreateStatic(TaskA_Handler,          "TaskA_Handler",          NORMAL_TASK_STACK_SIZE,(void*)xTaskAQueue,     31,xTaskAStack,         &xTaskABuffer);
   xTaskCreateStatic(TaskB_Handler,          "TaskB_Handler",          NORMAL_TASK_STACK_SIZE,(void*)xTaskBQueue,     30,xTaskBStack,         &xTaskBBuffer);
+
+  DummyTask_Init();
   /* USER CODE END RTOS_THREADS */
 
   /* USER CODE BEGIN RTOS_EVENTS */
@@ -277,17 +253,8 @@ void Dispatcher_Task_Handler(void *argument){
 		xQueueReceive((QueueHandle_t)argument,&newMsg,portMAX_DELAY);
 		printf("Dispatcher received a new message!\r\n");
 		fflush(stdout);
-		for(int i = 0; i < sub_count; i++){
-			if(newMsg.Topic == sub_table[i].Topic){
-				for(int j = 0; j < sub_table[i].SubscriberCount; j++){
-					BaseType_t xStatus = xQueueSendToBack(sub_table[i].SubscriberQueues[j],&newMsg,50);
-					if(xStatus != pdPASS){
-						printf("%p queue is full!\r\n",(void*)sub_table[i].SubscriberQueues[j]);
-						fflush(stdout);
-					}
-				}
-			}
-		}
+
+		Publish(newMsg);
 	}
 }
 
@@ -384,62 +351,6 @@ void TaskB_Handler(void *argument){
 		}
 		osDelay(100);
 	}
-}
-
-void Subscribe(const char* name,QueueHandle_t queue){
-	/*
-	 * 1. Check sub table to see if anyone has already subscribed to this topic
-	 * 2. If so, add this queue to topic's list of queues
-	 * 3. If not, add topic and queue to sub table
-	 * */
-	int lookupTableLength = sizeof(lookupTable)/sizeof(lookupTable[0]);
-	int found = 0;
-
-	for(int i = 0; i < lookupTableLength; i++){
-		if(name == lookupTable[i].name){
-			for(int j = 0; j < lookupTable[i].length; j++){
-				for(int k = 0; k < sub_count; k++){
-					if(sub_table[k].Topic == lookupTable[i].topics[j] ){
-						found = 1;
-						if(sub_table[k].SubscriberCount < MAX_SUBSCRIBERS_PER_TOPIC){
-							sub_table[k].SubscriberQueues[sub_table[k].SubscriberCount++] = queue;
-							printf("%s subscribed to %d successfully!\r\n",
-									name, (int)lookupTable[i].topics[j]);
-							fflush(stdout);
-							break;
-						}
-						printf("%s failed to subscribe to %d. Topic's subscriber queue full!\r\n",
-								name, (int)lookupTable[i].topics[j]);
-						fflush(stdout);
-						break;
-					}
-				}
-				if(sub_count < MAX_SUBS && !found){
-					Subscription_t newSub;
-					newSub.SubscriberCount = 0;
-					newSub.SubscriberQueues[newSub.SubscriberCount++] = queue;
-					newSub.Topic = lookupTable[i].topics[j];
-
-					sub_table[sub_count++] = newSub;
-					printf("%s subscribed to %d successfully!\r\n",
-							name, (int)lookupTable[i].topics[j]);
-					fflush(stdout);
-					continue;
-				}
-				else if(sub_count > MAX_SUBS && !found){
-					printf("%s failed to subscribe to %d. Sub table full!\r\n",
-							name, (int)lookupTable[i].topics[j]);
-					fflush(stdout);
-				}
-				else{
-					found = 0;
-				}
-				continue;
-			}
-			break;
-		}
-	}
-	return;
 }
 /* USER CODE END Application */
 
