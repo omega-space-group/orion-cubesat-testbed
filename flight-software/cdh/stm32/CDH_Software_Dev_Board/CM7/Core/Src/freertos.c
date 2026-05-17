@@ -25,14 +25,6 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include <App/app_config.h>
-#include "usbd_cdc_if.h"
-#include <stdio.h>
-#include "iwdg.h"
-#include "event_groups.h"
-#include "queue.h"
-
-#include <App/Services/subscriptions.h>
 #include <App/Tasks/root_task.h>
 
 /* USER CODE END Includes */
@@ -52,12 +44,6 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN Variables */
-
-/* Task stack and buffer allocation ------------------------------------------*/
-static StackType_t xIWDGTaskStack[NORMAL_TASK_STACK_SIZE];
-static StaticTask_t xIWDGTaskBuffer;
-/* ----------------------------------------------------------------------------*/
-
 /* USER CODE END Variables */
 /* Definitions for defaultTask */
 osThreadId_t defaultTaskHandle;
@@ -128,7 +114,6 @@ void MX_FREERTOS_Init(void) {
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
   Root_Task_Init();
-  xTaskCreateStatic(IWDG_Task_Handler,      "IWDG_Task_Handler",      NORMAL_TASK_STACK_SIZE,NULL,                   34,xIWDGTaskStack,      &xIWDGTaskBuffer);
   /* USER CODE END RTOS_THREADS */
 
   /* USER CODE BEGIN RTOS_EVENTS */
@@ -157,13 +142,5 @@ void StartDefaultTask(void *argument)
 
 /* Private application code --------------------------------------------------*/
 /* USER CODE BEGIN Application */
-/* IWDG Task responsible for kicking internal watchdog. IWDG currently set to trigger every 500ms */
-//do we need this if we get an external watchdog?
-void IWDG_Task_Handler(void *argument){
-	while(1){
-		HAL_IWDG_Refresh(&hiwdg1);
-		osDelay(300);
-	}
-}
 /* USER CODE END Application */
 

@@ -24,7 +24,7 @@ static QueueHandle_t xTaskBQueue;
 
 int triggerB;
 
-void TaskB_Handler(void *argument){
+static void TaskB_Handler(void *argument){
 	Subscribe("TaskB_Handler",(QueueHandle_t)argument);
 	TaskSync_SetAndWait(TASKB_BIT);
 	Message_t newMsgRsc;

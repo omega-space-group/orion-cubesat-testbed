@@ -1,0 +1,47 @@
+AR = ['arm-none-eabi-ar']
+ARFLAGS = ['rcs']
+BINDIR = '/home/caxaho/Documents/libcsp/install/bin'
+CC = ['arm-none-eabi-gcc', '-mcpu=cortex-m7', '-mfpu=fpv5-sp-d16', '-mfloat-abi=hard']
+CCLNK_SRC_F = []
+CCLNK_TGT_F = ['-o']
+CC_NAME = 'gcc'
+CC_SRC_F = []
+CC_TGT_F = ['-c', '-o']
+CC_VERSION = ('10', '3', '1')
+CFLAGS = ['-std=gnu99', '-g', '-Os', '-Wall', '-Wextra', '-Wshadow', '-Wcast-align', '-Wwrite-strings', '-Wno-unused-parameter', '-Werror']
+CFLAGS_MACBUNDLE = ['-fPIC']
+CFLAGS_cshlib = ['-fPIC']
+COMPILER_CC = 'gcc'
+CPPPATH_ST = '-I%s'
+DEFINES = []
+DEFINES_ST = '-D%s'
+DEFINE_COMMENTS = {'GIT_REV': '', 'CSP_FREERTOS': '', 'CSP_POSIX': '', 'CSP_WINDOWS': '', 'CSP_MACOSX': '', 'CSP_DEBUG': '', 'CSP_DEBUG_TIMESTAMP': '', 'CSP_USE_RDP': '', 'CSP_USE_RDP_FAST_CLOSE': '', 'CSP_USE_CRC32': '', 'CSP_USE_HMAC': '', 'CSP_USE_XTEA': '', 'CSP_USE_PROMISC': '', 'CSP_USE_QOS': '', 'CSP_USE_DEDUP': '', 'CSP_USE_EXTERNAL_DEBUG': '', 'CSP_LOG_LEVEL_DEBUG': '', 'CSP_LOG_LEVEL_INFO': '', 'CSP_LOG_LEVEL_WARN': '', 'CSP_LOG_LEVEL_ERROR': '', 'CSP_LITTLE_ENDIAN': '', 'CSP_BIG_ENDIAN': '', 'LIBCSP_VERSION': ''}
+DEST_BINFMT = 'elf'
+DEST_CPU = 'thumb'
+DEST_OS = 'linux'
+ENABLE_EXAMPLES = None
+FEATURES = ['c', 'cstlib']
+FILES_CSP = ['src/*.c', 'src/external/**/*.c', 'src/transport/**/*.c', 'src/crypto/**/*.c', 'src/interfaces/**/*.c', 'src/arch/*.c', 'src/arch/freertos/**/*.c', 'src/rtable/csp_rtable.c', 'src/rtable/csp_rtable_static.c']
+INCLUDES_CSP = ['include', '/home/caxaho/STM32CubeIDE/workspace_1.12.0/FreeRTOS-CSP-Test/Middlewares/Third_Party/FreeRTOS/Source/include', '/home/caxaho/STM32CubeIDE/workspace_1.12.0/FreeRTOS-CSP-Test/Core/Inc', '/home/caxaho/STM32CubeIDE/workspace_1.12.0/FreeRTOS-CSP-Test/Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM7/r0p1']
+LIBCSP_SHLIB = True
+LIBDIR = '/home/caxaho/Documents/libcsp/install/lib'
+LIBPATH_ST = '-L%s'
+LIB_ST = '-l%s'
+LINKFLAGS_MACBUNDLE = ['-bundle', '-undefined', 'dynamic_lookup']
+LINKFLAGS_cshlib = ['-shared']
+LINKFLAGS_cstlib = ['-Wl,-Bstatic']
+LINK_CC = ['arm-none-eabi-gcc', '-mcpu=cortex-m7', '-mfpu=fpv5-sp-d16', '-mfloat-abi=hard']
+OS = ['freertos']
+PREFIX = '/home/caxaho/Documents/libcsp/install'
+RPATH_ST = '-Wl,-rpath,%s'
+SHLIB_MARKER = '-Wl,-Bdynamic'
+SONAME_ST = '-Wl,-h,%s'
+STLIBPATH_ST = '-L%s'
+STLIB_MARKER = '-Wl,-Bstatic'
+STLIB_ST = '-l%s'
+cfg_files = ['/home/caxaho/Documents/libcsp/build/include/csp/csp_autoconfig.h']
+cprogram_PATTERN = '%s'
+cshlib_PATTERN = 'lib%s.so'
+cstlib_PATTERN = 'lib%s.a'
+define_key = []
+macbundle_PATTERN = '%s.bundle'

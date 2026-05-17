@@ -34,6 +34,11 @@
 #include "fdcan.h"
 #include "tim.h"
 #include "usart.h"
+
+//#include <csp/csp.h>
+//#include <csp/csp_conn.h>
+//#include <csp/csp_promisc.h>
+//#include "../../CAN Driver/include/can_stm32.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -137,7 +142,48 @@ Error_Handler();
   /* USER CODE BEGIN 2 */
   MX_USB_DEVICE_Init();
   HAL_Delay(5000);
-//  MX_IWDG1_Init();
+  /* Setting the debug level. Only debugging statements up to 'debug_level' will be printed to the debug terminal. */
+//  csp_debug_level_t debug_level = CSP_INFO;
+//  csp_debug_level_t debug_level = CSP_PACKET;
+//  for (csp_debug_level_t i = 0; i <= CSP_LOCK; ++i) {
+//	  csp_debug_set_level(i, (i <= debug_level) ? true: false);
+//  }
+//
+//  /* Initialising CSP */
+//  csp_log_info("Initialising CSP");
+//  csp_conf_t csp_conf;
+//  csp_conf_get_defaults(&csp_conf);
+//  uint8_t csp_address = 255;
+//  csp_conf.address = csp_address;
+//  int error = csp_init(&csp_conf);
+//  if (error != CSP_ERR_NONE) {
+//	  csp_log_error("csp_init() failed, error: %d", error);
+//  }
+//  /* Add interface(s) */
+//  csp_iface_t CSP_IF_CAN = {
+//		  .name = "CSP IF CAN",
+//		  .driver_data = &hfdcan1,
+////		  .nexthop = csp_can_tx_stm32,
+//		  .mtu = 64,
+//  };
+//  csp_iface_t *can_iface = &CSP_IF_CAN;
+//  error = csp_can_stm32_open_and_add_interface(CSP_IF_CAN.name, &can_iface, 0);
+//  if (error != CSP_ERR_NONE) {
+//	  csp_log_error("csp_can_stm32_open_and_add_interface() failed, error: %d", error);
+//  }
+//  /* Setting route table */
+//  if (can_iface) {
+////	  csp_rtable_set(CSP_DEFAULT_ROUTE, 0, can_iface, CSP_NO_VIA_ADDRESS);
+//	  csp_route_set(CSP_DEFAULT_ROUTE, can_iface, CSP_NO_VIA_ADDRESS);
+//  } else {
+//	  csp_log_info("Couldn't set route table");
+////	  server_address = csp_address;
+//  }
+//  /* Start router task with 1000 bytes of stack (priority is only supported on FreeRTOS) */
+//  if(csp_route_start_task(1000, 1) != CSP_ERR_NONE){
+//	  csp_log_warn("Failed to start router!");
+//  }
+  MX_IWDG1_Init();
   /* USER CODE END 2 */
 
   /* Init scheduler */

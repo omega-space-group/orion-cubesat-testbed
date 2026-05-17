@@ -13,6 +13,7 @@
 
 #include <App/app_config.h>
 #include <App/Services/app_events.h>
+#include <App/Tasks/iwdg_task.h>
 #include <App/Tasks/dummy_task.h>
 #include <App/Tasks/taskA_task.h>
 #include <App/Tasks/taskB_task.h>
@@ -22,13 +23,14 @@ static StackType_t xRootTaskStack[NORMAL_TASK_STACK_SIZE];
 static StaticTask_t xRootTaskBuffer;
 
 /* Root Task responsible for starting peripherals and spawn tasks */
-void Root_Task_Handler(void *argument){
+static void Root_Task_Handler(void *argument){
 	printf("\r\n--- SYSTEM BOOT START ---\r\n");
 	fflush(stdout);
 	FDCAN_Start();
 
 	TaskSync_Init();
 
+	IWDG_Task_Init();
 	Dispatcher_Task_Init();
 	DummyTask_Init();
 	TaskA_Task_Init();

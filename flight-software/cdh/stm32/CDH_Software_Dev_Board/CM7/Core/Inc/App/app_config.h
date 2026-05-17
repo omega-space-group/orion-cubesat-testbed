@@ -19,16 +19,18 @@
 
 #define ROOT_PR       35
 #define DISPATCHER_PR 33
-#define DUMMY_PR      32
-#define TASKA_PR      31
-#define TASKB_PR      30
+#define STATE_PR      32
+#define DUMMY_PR      31
+#define TASKA_PR      30
+#define TASKB_PR      29
 
-#define DUMMY_BIT    (1 << 0)
-#define TASKA_BIT    (1 << 1)
-#define TASKB_BIT    (1 << 2)
+#define DUMMY_BIT (1 << 0)
+#define TASKA_BIT (1 << 1)
+#define TASKB_BIT (1 << 2)
+#define STATE_BIT (1 << 3)
 
 //move to app_events (?)
-#define ALL_TASKS_READY (DUMMY_BIT | TASKA_BIT | TASKB_BIT)
+#define ALL_TASKS_READY (DUMMY_BIT | TASKA_BIT | TASKB_BIT | STATE_BIT)
 
 #define MAX_SUBS 4
 #define MAX_SUBSCRIBERS_PER_TOPIC 5
