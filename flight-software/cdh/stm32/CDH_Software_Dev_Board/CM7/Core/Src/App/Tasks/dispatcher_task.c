@@ -12,6 +12,9 @@
 #include <App/Services/subscriptions.h>
 #include <App/Services/app_events.h>
 
+#include "usbd_cdc_if.h"
+#include <stdio.h>
+
 static StackType_t xDispatcherTaskStack[LARGE_TASK_STACK_SIZE];
 static StaticTask_t xDispatcherTaskBuffer;
 
@@ -19,23 +22,18 @@ static StaticQueue_t xMasterQueueData;
 static uint8_t ucMasterQueueStorageArea[MASTER_QUEUE_LENGTH * MSG_SIZE];
 static QueueHandle_t xMasterQueue;
 
+/*
+ * 1. Block until someone wakes you up (all events should trigger the dispatcher only)
+ * 2. Check reason for waking up
+ * 3. If event than set event group's respective event bit (this action will automatically wake up all "subscribed tasks") (not sure yet)
+ * 4. If need for data exchange than get data, look through sub table and push on respective queues
+ * */
 static void Dispatcher_Task_Handler(void *argument){
-	/*
-	 * 1. Block until someone wakes you up (all events should trigger the dispatcher only)
-	 * 2. Check reason for waking up
-	 * 3. If event than set event group's respective event bit (this action will automatically wake up all "subscribed tasks") (not sure yet)
-	 * 4. If need for data exchange than get data, look through sub table and push on respective queues
-	 * */
-//	EventGroupHandle_t xGlobalEventGroup;
-//	EventBits_t xGlobalEventBits = xEventGroupCreate(); //NEEDS TO BE STATIC!
 	TaskSync_WaitForAll();
 	Message_t newMsg;
 	while(1){
-		xQueueReceive((QueueHandle_t)argument,&newMsg,portMAX_DELAY);
-//		printf("Dispatcher received a new message!\r\n");
-//		fflush(stdout);
-
-		Publish(newMsg);
+		SleepUntil((QueueHandle_t)argument,&newMsg,portMAX_DELAY);
+		DispatcherSend(newMsg);
 	}
 }
 

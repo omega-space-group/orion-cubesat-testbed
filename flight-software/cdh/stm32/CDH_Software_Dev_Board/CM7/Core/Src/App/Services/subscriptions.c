@@ -7,6 +7,9 @@
 #include "FreeRTOS.h"
 #include "queue.h"
 #include <App/app_config.h>
+#include <App/Services/subscriptions.h>
+#include <App/Tasks/dispatcher_task.h>
+
 #include "usbd_cdc_if.h"
 #include <stdio.h>
 #include <string.h>
@@ -15,14 +18,16 @@ static Subscription_t sub_table[MAX_SUBS];
 static uint8_t sub_count = 0;
 
 /* Subscription Tables ---------------------------------------------------------*/
-static Topic_t DummyTaskGroup[] = {TOPIC_SYSTEM_STATE,TOPIC_EXAMPLE1};
-static Topic_t TaskAGroup[]     = {TOPIC_SYSTEM_STATE,TOPIC_EXAMPLE1,TOPIC_EXAMPLE2};
-static Topic_t TaskBGroup[]     = {TOPIC_SYSTEM_STATE,TOPIC_EXAMPLE2};
+static Topic_t DummyTaskGroup[]   = {SYSTEM_STATE,EXAMPLE1};
+static Topic_t TaskAGroup[]       = {SYSTEM_STATE,EXAMPLE1,EXAMPLE2};
+static Topic_t TaskBGroup[]       = {SYSTEM_STATE,EXAMPLE2};
+static Topic_t ModeManagerGroup[] = {CHANGE_SYSTEM_STATE};
 
 static SubEntries_t lookupTable[] = {
-		{"Dummy_Task_Handler" , 2,DummyTaskGroup},
-		{"TaskA_Handler"      , 3,TaskAGroup},
-		{"TaskB_Handler"      , 2,TaskBGroup}
+		{"Dummy_Task_Handler"  , 2,DummyTaskGroup},
+		{"TaskA_Handler"       , 3,TaskAGroup},
+		{"TaskB_Handler"       , 2,TaskBGroup},
+		{"ModeManager_Handler" , 1,ModeManagerGroup}
 };
 
 void Subscribe(const char* name,QueueHandle_t queue){
@@ -82,6 +87,19 @@ void Subscribe(const char* name,QueueHandle_t queue){
 }
 
 void Publish(Message_t newMsg){
+	xQueueSendToBack(DispatcherTask_GetQueue(),&newMsg,200);
+}
+
+WakeupReason_t SleepUntil(QueueHandle_t queue, Message_t *newMsgRsc, TickType_t xTicksToWait){
+	if (xQueueReceive(queue,newMsgRsc,xTicksToWait) == pdPASS) {
+		printf("%p: Got a new message\r\n",(void*)queue);
+		fflush(stdout);
+	    return NEW_MSG;
+	}
+	return TIMEOUT;
+}
+
+void DispatcherSend(Message_t newMsg){
 	for(int i = 0; i < sub_count; i++){
 		if(newMsg.Topic == sub_table[i].Topic){
 			for(int j = 0; j < sub_table[i].SubscriberCount; j++){

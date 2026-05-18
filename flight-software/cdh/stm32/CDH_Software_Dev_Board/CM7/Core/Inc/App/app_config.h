@@ -11,7 +11,7 @@
 #include "FreeRTOS.h"
 #include "queue.h"
 
-#define NORMAL_TASK_STACK_SIZE 256
+#define NORMAL_TASK_STACK_SIZE 256*8
 #define LARGE_TASK_STACK_SIZE  256*8
 
 #define MASTER_QUEUE_LENGTH    10
@@ -19,7 +19,7 @@
 
 #define ROOT_PR       35
 #define DISPATCHER_PR 33
-#define STATE_PR      32
+#define MODE_PR      32
 #define DUMMY_PR      31
 #define TASKA_PR      30
 #define TASKB_PR      29
@@ -27,10 +27,10 @@
 #define DUMMY_BIT (1 << 0)
 #define TASKA_BIT (1 << 1)
 #define TASKB_BIT (1 << 2)
-#define STATE_BIT (1 << 3)
+#define MODE_BIT (1 << 3)
 
 //move to app_events (?)
-#define ALL_TASKS_READY (DUMMY_BIT | TASKA_BIT | TASKB_BIT | STATE_BIT)
+#define ALL_TASKS_READY (DUMMY_BIT | TASKA_BIT | TASKB_BIT | MODE_BIT)
 
 #define MAX_SUBS 4
 #define MAX_SUBSCRIBERS_PER_TOPIC 5
@@ -43,10 +43,11 @@ typedef enum{
 }State_t;
 
 typedef enum{
-	TOPIC_SYSTEM_STATE = 1,
-	TOPIC_EXAMPLE1     = 2,
-	TOPIC_EXAMPLE2     = 3,
-	TOPIC_EXAMPLE3     = 4
+	SYSTEM_STATE        = 1,
+	EXAMPLE1            = 2,
+	EXAMPLE2            = 3,
+	EXAMPLE3            = 4,
+	CHANGE_SYSTEM_STATE = 5
 }Topic_t;
 
 /* Subscription Table Definition */
@@ -58,7 +59,10 @@ typedef struct {
 
 typedef struct{
 	Topic_t Topic;
-	uint32_t Data;
+	union{
+		State_t mode;
+		uint32_t rawData;
+	}Data;
 } Message_t;
 
 #define MSG_SIZE sizeof(Message_t)

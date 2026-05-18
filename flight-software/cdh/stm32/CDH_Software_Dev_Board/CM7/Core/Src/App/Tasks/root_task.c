@@ -18,6 +18,7 @@
 #include <App/Tasks/taskA_task.h>
 #include <App/Tasks/taskB_task.h>
 #include <App/Tasks/dispatcher_task.h>
+#include <App/Tasks/modeManager_task.h>
 
 static StackType_t xRootTaskStack[NORMAL_TASK_STACK_SIZE];
 static StaticTask_t xRootTaskBuffer;
@@ -35,6 +36,7 @@ static void Root_Task_Handler(void *argument){
 	DummyTask_Init();
 	TaskA_Task_Init();
 	TaskB_Init();
+	ModeManager_Task_Init();
 	/* Infinite loop */
 	while(1){
 		xTaskNotifyWait(0,0,NULL,portMAX_DELAY);

@@ -29,37 +29,21 @@ static void TaskB_Handler(void *argument){
 	TaskSync_SetAndWait(TASKB_BIT);
 	Message_t newMsgRsc;
 	while(1){
-		BaseType_t xStatus = xQueueReceive((QueueHandle_t)argument,&newMsgRsc,500);
-		if(xStatus == pdPASS){
-			printf("%p: Got a new message\r\n",(void*)(QueueHandle_t)argument);
-			fflush(stdout);
-			//woke up from a msg
-		}
-		else{
-			//timer elapsed
-		}
+		SleepUntil((QueueHandle_t)argument,&newMsgRsc,500);
 
 		if(triggerB == 1){
 			triggerB = 0;
 			Message_t newMsg;
-			newMsg.Topic = TOPIC_SYSTEM_STATE;
-			newMsg.Data = 5;
-			xStatus = xQueueSendToBack(DispatcherTask_GetQueue(),&newMsg,200);
-			if(xStatus != pdPASS){
-				printf("Dispatcher queue is full!\r\n");
-				fflush(stdout);
-			}
+			newMsg.Topic = CHANGE_SYSTEM_STATE;
+			newMsg.Data.mode = PAYLOAD;
+			Publish(newMsg);
 		}
 		else if(triggerB == 2){
 			triggerB = 0;
 			Message_t newMsg;
-			newMsg.Topic = TOPIC_EXAMPLE1;
-			newMsg.Data = 15;
-			xStatus = xQueueSendToBack(DispatcherTask_GetQueue(),&newMsg,200);
-			if(xStatus != pdPASS){
-				printf("Dispatcher queue is full!\r\n");
-				fflush(stdout);
-			}
+			newMsg.Topic = EXAMPLE1;
+			newMsg.Data.rawData = 15;
+			Publish(newMsg);
 		}
 		vTaskDelay(100);
 	}

@@ -183,7 +183,7 @@ Error_Handler();
 //  if(csp_route_start_task(1000, 1) != CSP_ERR_NONE){
 //	  csp_log_warn("Failed to start router!");
 //  }
-  MX_IWDG1_Init();
+//  MX_IWDG1_Init();
   /* USER CODE END 2 */
 
   /* Init scheduler */

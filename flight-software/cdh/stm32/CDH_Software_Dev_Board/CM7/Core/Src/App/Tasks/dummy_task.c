@@ -29,12 +29,7 @@ static void Dummy_Task_Handler(void *argument){
 	TaskSync_SetAndWait(DUMMY_BIT);
 	Message_t newMsg;
 	while(1){
-		BaseType_t xStatus = xQueueReceive((QueueHandle_t)argument,&newMsg,3000);
-		if(xStatus == pdPASS){
-			printf("%p: Got a new message\r\n",(void*)(QueueHandle_t)argument);
-			fflush(stdout);
-			//woke up from a msg
-		}
+		SleepUntil((QueueHandle_t)argument,&newMsg,5000);
   		HAL_GPIO_TogglePin(GPIOE, GPIO_PIN_1);
 	  	FDCAN_Tx();
 	}

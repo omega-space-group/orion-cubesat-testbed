@@ -5,13 +5,13 @@
  *      Author: adaro
  */
 
-#include <App/Tasks/stateManager_task.h>
 #include "FreeRTOS.h"
 #include "task.h"
 
 #include <App/app_config.h>
 #include <App/Services/subscriptions.h>
 #include <App/Services/app_events.h>
+#include <App/Tasks/modeManager_task.h>
 
 static StackType_t xTaskStack[NORMAL_TASK_STACK_SIZE];
 static StaticTask_t xTaskBuffer;
