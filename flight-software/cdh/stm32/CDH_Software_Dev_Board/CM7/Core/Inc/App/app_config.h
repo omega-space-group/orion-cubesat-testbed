@@ -19,18 +19,24 @@
 
 #define ROOT_PR       35
 #define DISPATCHER_PR 33
-#define MODE_PR      32
-#define DUMMY_PR      31
-#define TASKA_PR      30
-#define TASKB_PR      29
+#define MODE_PR       32
+#define CANRX_PR      31
+#define HM_PR         30
+#define DUMMY_PR      29
+#define TASKA_PR      28
+#define TASKB_PR      27
+//Keep in mind PR = 24 is being used by the auto-generated default task
 
 #define DUMMY_BIT (1 << 0)
 #define TASKA_BIT (1 << 1)
 #define TASKB_BIT (1 << 2)
-#define MODE_BIT (1 << 3)
+#define MODE_BIT  (1 << 3)
+#define HM_BIT    (1 << 4)
+#define DISPATCHER_BIT (1 << 5)
 
 //move to app_events (?)
-#define ALL_TASKS_READY (DUMMY_BIT | TASKA_BIT | TASKB_BIT | MODE_BIT)
+#define ALL_TASKS_READY (DUMMY_BIT | TASKA_BIT | TASKB_BIT | MODE_BIT | HM_BIT)
+#define ALL_TASKS_OK (ALL_TASKS_READY | DISPATCHER_BIT)
 
 #define MAX_SUBS 4
 #define MAX_SUBSCRIBERS_PER_TOPIC 5

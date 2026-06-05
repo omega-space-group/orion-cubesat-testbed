@@ -23,3 +23,15 @@ void TaskSync_SetAndWait(EventBits_t taskBit) {
 void TaskSync_WaitForAll(void) {
 	xEventGroupWaitBits(xSysSyncEvent,ALL_TASKS_READY,pdTRUE,pdTRUE,portMAX_DELAY);
 }
+
+void TaskHealth_SetBit(EventBits_t bit){
+	xEventGroupSetBits(xSysSyncEvent,bit);
+}
+
+void TaskHealth_ClearAll(void){
+	xEventGroupClearBits(xSysSyncEvent,0xFF);
+}
+
+EventBits_t TaskHealth_Read(void){
+	return xEventGroupGetBits(xSysSyncEvent);
+}

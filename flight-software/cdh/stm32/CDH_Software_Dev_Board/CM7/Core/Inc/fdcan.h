@@ -36,12 +36,15 @@ extern FDCAN_HandleTypeDef hfdcan1;
 
 /* USER CODE BEGIN Private defines */
 
-typedef struct CAN1{
-	FDCAN_FilterTypeDef Filter;
-	FDCAN_TxHeaderTypeDef TxHeader;
-	FDCAN_RxHeaderTypeDef RxHeader;
-	uint8_t TxData[8], RxData[8];
-}CanStruct;
+typedef struct {
+    FDCAN_TxHeaderTypeDef Header;
+    uint8_t               Data[8];
+} CAN_TxPacket;
+
+typedef struct {
+    FDCAN_RxHeaderTypeDef Header;
+    uint8_t               Data[8];
+} CAN_RxPacket;
 
 /* USER CODE END Private defines */
 

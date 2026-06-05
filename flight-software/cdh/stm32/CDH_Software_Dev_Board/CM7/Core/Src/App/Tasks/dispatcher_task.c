@@ -34,6 +34,8 @@ static void Dispatcher_Task_Handler(void *argument){
 	while(1){
 		SleepUntil((QueueHandle_t)argument,&newMsg,portMAX_DELAY);
 		DispatcherSend(newMsg);
+
+		TaskHealth_SetBit(DISPATCHER_BIT);
 	}
 }
 

@@ -21,8 +21,13 @@
 #include "fdcan.h"
 
 /* USER CODE BEGIN 0 */
+#include "FreeRTOS.h"
+#include "queue.h"
 
-CanStruct CAN1;
+#include <App/Tasks/can_rx_task.h>
+
+static CAN_TxPacket CAN1_Tx;
+static CAN_RxPacket CAN1_Rx;
 
 /* USER CODE END 0 */
 
@@ -153,33 +158,34 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
 	if((RxFifo0ITs & FDCAN_IT_RX_FIFO0_NEW_MESSAGE) != RESET)
 	  {
 		if(hfdcan->Instance == FDCAN1){
-				if (HAL_FDCAN_GetRxMessage(hfdcan, FDCAN_RX_FIFO0, &CAN1.RxHeader,CAN1.RxData) != HAL_OK)
+				if (HAL_FDCAN_GetRxMessage(hfdcan, FDCAN_RX_FIFO0, &CAN1_Rx.Header,CAN1_Rx.Data) != HAL_OK)
 				{
 					Error_Handler();
 				}
+				xQueueSendToBack(CAN_RX_Task_GetQueue(),&CAN1_Rx,200);
 			}
 	  }
 }
 
 void FDCAN_Tx(){
-	CAN1.TxHeader.Identifier = 0x300;
-	CAN1.TxHeader.DataLength = FDCAN_DLC_BYTES_6;
-	CAN1.TxData[0] = 1;
-	CAN1.TxData[0] |= 1<<1;
-	CAN1.TxData[0] |= 1<<2;
-	CAN1.TxData[0] |= 1<<3;
-	CAN1.TxData[0] |= 1<<4;
-	CAN1.TxData[0] |= 1<<5;
-	CAN1.TxData[0] |= 1<<6;
+	CAN1_Tx.Header.Identifier = 0x300;
+	CAN1_Tx.Header.DataLength = FDCAN_DLC_BYTES_6;
+	CAN1_Tx.Data[0] = 1;
+	CAN1_Tx.Data[0] |= 1<<1;
+	CAN1_Tx.Data[0] |= 1<<2;
+	CAN1_Tx.Data[0] |= 1<<3;
+	CAN1_Tx.Data[0] |= 1<<4;
+	CAN1_Tx.Data[0] |= 1<<5;
+	CAN1_Tx.Data[0] |= 1<<6;
 
-	CAN1.TxData[1] = 1;
-	CAN1.TxData[2] = 1;
-	CAN1.TxData[4] = 1;
-	CAN1.TxData[5] = 1;
+	CAN1_Tx.Data[1] = 1;
+	CAN1_Tx.Data[2] = 1;
+	CAN1_Tx.Data[4] = 1;
+	CAN1_Tx.Data[5] = 1;
 
 	if (HAL_FDCAN_GetTxFifoFreeLevel(&hfdcan1) > 0)
 	{
-		HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1,&CAN1.TxHeader,CAN1.TxData);
+		HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1,&CAN1_Tx.Header,CAN1_Tx.Data);
 	}
 	else
 	{

@@ -45,6 +45,7 @@ static void TaskB_Handler(void *argument){
 			newMsg.Data.rawData = 15;
 			Publish(newMsg);
 		}
+		TaskHealth_SetBit(TASKB_BIT);
 		vTaskDelay(100);
 	}
 }

@@ -44,6 +44,7 @@ static void TaskA_Handler(void *argument){
 			newMsg.Data.mode = SAFE;
 			Publish(newMsg);
 		}
+		TaskHealth_SetBit(TASKA_BIT);
 		vTaskDelay(100);
 	}
 }

@@ -14,5 +14,8 @@
 void TaskSync_Init(void);
 void TaskSync_SetAndWait(EventBits_t taskBit);
 void TaskSync_WaitForAll(void);
+void TaskHealth_SetBit(EventBits_t bit);
+void TaskHealth_ClearAll(void);
+EventBits_t TaskHealth_Read(void);
 
 #endif /* INC_APP_SERVICES_APP_EVENTS_H_ */

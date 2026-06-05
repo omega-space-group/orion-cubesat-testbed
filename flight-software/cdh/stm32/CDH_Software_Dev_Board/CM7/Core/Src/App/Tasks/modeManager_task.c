@@ -67,6 +67,7 @@ static void ModeManager_Handler(void *argument){
 				break;
 			}
 		}
+		TaskHealth_SetBit(MODE_BIT);
 		vTaskDelay(100);
 	}
 }
