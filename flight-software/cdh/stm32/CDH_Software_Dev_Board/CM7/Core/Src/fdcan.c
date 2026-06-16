@@ -152,9 +152,7 @@ void HAL_FDCAN_MspDeInit(FDCAN_HandleTypeDef* fdcanHandle)
 }
 
 /* USER CODE BEGIN 1 */
-int cnt = 0;
 void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs){
-	cnt++;
 	if((RxFifo0ITs & FDCAN_IT_RX_FIFO0_NEW_MESSAGE) != RESET)
 	  {
 		if(hfdcan->Instance == FDCAN1){
@@ -162,7 +160,7 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
 				{
 					Error_Handler();
 				}
-				xQueueSendToBack(CAN_RX_Task_GetQueue(),&CAN1_Rx,200);
+				xQueueSendToBackFromISR(CAN_RX_Task_GetQueue(),&CAN1_Rx,NULL);
 			}
 	  }
 }

@@ -27,14 +27,15 @@ static void HealthMonitor_Handler(void *argument){
 	TaskSync_SetAndWait(HM_BIT);
 	/* Infinite loop */
 	while(1){
-		vTaskDelay(1000);
-		if((int)TaskHealth_Read == ALL_TASKS_OK){
+		vTaskDelay(2000);
+		if(TaskHealth_Check() == TASKS_OK){
 			cntHealth++;
 		}
-		else{
+		else if(TaskHealth_Check() == TIME_EXPIRED){
 			problem++;
 		}
 		TaskHealth_ClearAll();
+		TaskHealth_SetBit(HM_BIT);
 	}
 }
 

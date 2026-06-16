@@ -35,3 +35,12 @@ void TaskHealth_ClearAll(void){
 EventBits_t TaskHealth_Read(void){
 	return xEventGroupGetBits(xSysSyncEvent);
 }
+
+EventWakeupReason_t TaskHealth_Check(void){
+	if((int)xEventGroupWaitBits(xSysSyncEvent,ALL_TASKS_OK,pdTRUE,pdTRUE,1000) == ALL_TASKS_OK){
+		return TASKS_OK;
+	}
+	else{
+		return TIME_EXPIRED;
+	}
+}

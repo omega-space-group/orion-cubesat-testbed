@@ -11,8 +11,8 @@
 #include "FreeRTOS.h"
 #include "queue.h"
 
-#define NORMAL_TASK_STACK_SIZE 256*8
-#define LARGE_TASK_STACK_SIZE  256*8
+#define NORMAL_TASK_STACK_SIZE 256*10
+#define LARGE_TASK_STACK_SIZE  256*10
 
 #define MASTER_QUEUE_LENGTH    10
 #define LOCAL_QUEUE_LENGTH     5
@@ -21,10 +21,10 @@
 #define DISPATCHER_PR 33
 #define MODE_PR       32
 #define CANRX_PR      31
-#define HM_PR         30
+#define TASKB_PR      30
 #define DUMMY_PR      29
 #define TASKA_PR      28
-#define TASKB_PR      27
+#define HM_PR         27
 //Keep in mind PR = 24 is being used by the auto-generated default task
 
 #define DUMMY_BIT (1 << 0)
@@ -36,9 +36,9 @@
 
 //move to app_events (?)
 #define ALL_TASKS_READY (DUMMY_BIT | TASKA_BIT | TASKB_BIT | MODE_BIT | HM_BIT)
-#define ALL_TASKS_OK (ALL_TASKS_READY | DISPATCHER_BIT)
+#define ALL_TASKS_OK (ALL_TASKS_READY)
 
-#define MAX_SUBS 4
+#define MAX_SUBS 10
 #define MAX_SUBSCRIBERS_PER_TOPIC 5
 
 typedef enum{
