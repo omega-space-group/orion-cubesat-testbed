@@ -47,9 +47,9 @@ void Subscribe(const char* name,QueueHandle_t queue){
 						found = 1;
 						if(sub_table[k].SubscriberCount < MAX_SUBSCRIBERS_PER_TOPIC){
 							sub_table[k].SubscriberQueues[sub_table[k].SubscriberCount++] = queue;
-							printf("%s subscribed to %d successfully!\r\n",
-									name, (int)lookupTable[i].topics[j]);
-							fflush(stdout);
+//							printf("%s subscribed to %d successfully!\r\n",
+//									name, (int)lookupTable[i].topics[j]);
+//							fflush(stdout);
 							break;
 						}
 						printf("%s failed to subscribe to %d. Topic's subscriber queue full!\r\n",
@@ -65,15 +65,15 @@ void Subscribe(const char* name,QueueHandle_t queue){
 					newSub.Topic = lookupTable[i].topics[j];
 
 					sub_table[sub_count++] = newSub;
-					printf("%s subscribed to %d successfully!\r\n",
-							name, (int)lookupTable[i].topics[j]);
-					fflush(stdout);
+//					printf("%s subscribed to %d successfully!\r\n",
+//							name, (int)lookupTable[i].topics[j]);
+//					fflush(stdout);
 					continue;
 				}
 				else if(sub_count > MAX_SUBS && !found){
-					printf("%s failed to subscribe to %d. Sub table full!\r\n",
-							name, (int)lookupTable[i].topics[j]);
-					fflush(stdout);
+//					printf("%s failed to subscribe to %d. Sub table full!\r\n",
+//							name, (int)lookupTable[i].topics[j]);
+//					fflush(stdout);
 				}
 				else{
 					found = 0;
@@ -92,8 +92,8 @@ void Publish(Message_t newMsg){
 
 WakeupReason_t SleepUntil(QueueHandle_t queue, Message_t *newMsgRsc, TickType_t xTicksToWait){
 	if (xQueueReceive(queue,newMsgRsc,xTicksToWait) == pdPASS) {
-		printf("%p: Got a new message\r\n",(void*)queue);
-		fflush(stdout);
+//		printf("%p: Got a new message\r\n",(void*)queue);
+//		fflush(stdout);
 	    return NEW_MSG;
 	}
 	return TIMEOUT;
@@ -105,8 +105,8 @@ void DispatcherSend(Message_t newMsg){
 			for(int j = 0; j < sub_table[i].SubscriberCount; j++){
 				BaseType_t xStatus = xQueueSendToBack(sub_table[i].SubscriberQueues[j],&newMsg,50);
 				if(xStatus != pdPASS){
-					printf("%p queue is full!\r\n",(void*)sub_table[i].SubscriberQueues[j]);
-					fflush(stdout);
+//					printf("%p queue is full!\r\n",(void*)sub_table[i].SubscriberQueues[j]);
+//					fflush(stdout);
 				}
 			}
 		}

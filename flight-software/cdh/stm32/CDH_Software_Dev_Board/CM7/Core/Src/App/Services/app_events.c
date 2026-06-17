@@ -12,6 +12,9 @@
 static StaticEventGroup_t xSysSyncEventGroup;
 static EventGroupHandle_t xSysSyncEvent;
 
+static StaticEventGroup_t xTaskHealthEventGroup;
+static EventGroupHandle_t xTaskHealthEvent;
+
 void TaskSync_Init(void) {
 	xSysSyncEvent = xEventGroupCreateStatic(&xSysSyncEventGroup);
 }
@@ -24,23 +27,18 @@ void TaskSync_WaitForAll(void) {
 	xEventGroupWaitBits(xSysSyncEvent,ALL_TASKS_READY,pdTRUE,pdTRUE,portMAX_DELAY);
 }
 
+void TaskHealth_Init(void) {
+	xTaskHealthEvent = xEventGroupCreateStatic(&xTaskHealthEventGroup);
+}
+
 void TaskHealth_SetBit(EventBits_t bit){
-	xEventGroupSetBits(xSysSyncEvent,bit);
+	xEventGroupSetBits(xTaskHealthEvent,bit);
 }
 
 void TaskHealth_ClearAll(void){
-	xEventGroupClearBits(xSysSyncEvent,0xFF);
+	xEventGroupClearBits(xTaskHealthEvent,0xFF);
 }
 
 EventBits_t TaskHealth_Read(void){
-	return xEventGroupGetBits(xSysSyncEvent);
-}
-
-EventWakeupReason_t TaskHealth_Check(void){
-	if((int)xEventGroupWaitBits(xSysSyncEvent,ALL_TASKS_OK,pdTRUE,pdTRUE,1000) == ALL_TASKS_OK){
-		return TASKS_OK;
-	}
-	else{
-		return TIME_EXPIRED;
-	}
+	return xEventGroupGetBits(xTaskHealthEvent);
 }

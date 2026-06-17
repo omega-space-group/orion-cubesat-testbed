@@ -27,11 +27,12 @@ static StaticTask_t xRootTaskBuffer;
 
 /* Root Task responsible for starting peripherals and spawn tasks */
 static void Root_Task_Handler(void *argument){
-	printf("\r\n--- SYSTEM BOOT START ---\r\n");
-	fflush(stdout);
+//	printf("\r\n--- SYSTEM BOOT START ---\r\n");
+//	fflush(stdout);
 	FDCAN_Start();
 
 	TaskSync_Init();
+	TaskHealth_Init();
 
 	IWDG_Task_Init();
 	Dispatcher_Task_Init();

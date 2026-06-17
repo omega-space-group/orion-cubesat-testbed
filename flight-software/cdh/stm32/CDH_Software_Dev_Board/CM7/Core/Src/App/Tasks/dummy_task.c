@@ -14,9 +14,6 @@
 #include <App/Services/subscriptions.h>
 #include <App/Services/app_events.h>
 
-#include "usbd_cdc_if.h"
-#include <stdio.h>
-
 static StackType_t xDummyTaskStack[NORMAL_TASK_STACK_SIZE];
 static StaticTask_t xDummyTaskBuffer;
 
@@ -29,7 +26,7 @@ static void Dummy_Task_Handler(void *argument){
 	TaskSync_SetAndWait(DUMMY_BIT);
 	Message_t newMsg;
 	while(1){
-		SleepUntil((QueueHandle_t)argument,&newMsg,5000);
+		SleepUntil((QueueHandle_t)argument,&newMsg,1000);
   		HAL_GPIO_TogglePin(GPIOE, GPIO_PIN_1);
 	  	FDCAN_Tx();
 

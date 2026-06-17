@@ -12,9 +12,6 @@
 #include <App/Services/subscriptions.h>
 #include <App/Services/app_events.h>
 
-#include "usbd_cdc_if.h"
-#include <stdio.h>
-
 static StackType_t xDispatcherTaskStack[LARGE_TASK_STACK_SIZE];
 static StaticTask_t xDispatcherTaskBuffer;
 

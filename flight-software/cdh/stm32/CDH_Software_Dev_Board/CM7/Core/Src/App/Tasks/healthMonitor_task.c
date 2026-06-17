@@ -7,6 +7,7 @@
 
 #include "FreeRTOS.h"
 #include "task.h"
+#include "semphr.h"
 
 #include <App/app_config.h>
 #include <App/Services/subscriptions.h>
@@ -27,15 +28,14 @@ static void HealthMonitor_Handler(void *argument){
 	TaskSync_SetAndWait(HM_BIT);
 	/* Infinite loop */
 	while(1){
-		vTaskDelay(2000);
-		if(TaskHealth_Check() == TASKS_OK){
+		vTaskDelay(5000);
+		if(TaskHealth_Read() == ALL_TASKS_OK){
 			cntHealth++;
 		}
-		else if(TaskHealth_Check() == TIME_EXPIRED){
+		else{
 			problem++;
 		}
 		TaskHealth_ClearAll();
-		TaskHealth_SetBit(HM_BIT);
 	}
 }
 
