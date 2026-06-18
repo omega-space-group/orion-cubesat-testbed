@@ -21,14 +21,17 @@ static uint8_t ucxCAN_RXQueueStorageArea[LOCAL_QUEUE_LENGTH * sizeof(CAN_Rx)];
 static QueueHandle_t xCAN_RXQueue;
 
 
-int cnt = 0;
+int cnt1,cnt2 = 0;
 
 static void CAN_RX_Handler(void *argument){
 	while(1){
 		if(xQueueReceive((QueueHandle_t)argument,&CAN_Rx,portMAX_DELAY) == pdPASS){
 			switch(CAN_Rx.Header.Identifier){
 			case 0x300:
-				cnt++;
+				cnt1++;
+				break;
+			case 0x400:
+				cnt2++;
 				break;
 			default:
 				break;

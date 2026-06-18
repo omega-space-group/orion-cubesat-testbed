@@ -46,7 +46,7 @@ void MX_FDCAN1_Init(void)
   /* USER CODE END FDCAN1_Init 1 */
   hfdcan1.Instance = FDCAN1;
   hfdcan1.Init.FrameFormat = FDCAN_FRAME_CLASSIC;
-  hfdcan1.Init.Mode = FDCAN_MODE_EXTERNAL_LOOPBACK;
+  hfdcan1.Init.Mode = FDCAN_MODE_NORMAL;
   hfdcan1.Init.AutoRetransmission = DISABLE;
   hfdcan1.Init.TransmitPause = DISABLE;
   hfdcan1.Init.ProtocolException = DISABLE;
@@ -165,21 +165,46 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
 	  }
 }
 
+int counter = 1;
 void FDCAN_Tx(){
-	CAN1_Tx.Header.Identifier = 0x300;
-	CAN1_Tx.Header.DataLength = FDCAN_DLC_BYTES_6;
-	CAN1_Tx.Data[0] = 1;
-	CAN1_Tx.Data[0] |= 1<<1;
-	CAN1_Tx.Data[0] |= 1<<2;
-	CAN1_Tx.Data[0] |= 1<<3;
-	CAN1_Tx.Data[0] |= 1<<4;
-	CAN1_Tx.Data[0] |= 1<<5;
-	CAN1_Tx.Data[0] |= 1<<6;
-
-	CAN1_Tx.Data[1] = 1;
-	CAN1_Tx.Data[2] = 1;
-	CAN1_Tx.Data[4] = 1;
-	CAN1_Tx.Data[5] = 1;
+	switch(counter){
+	case 1:
+		CAN1_Tx.Header.Identifier = 0x001;
+		CAN1_Tx.Header.DataLength = FDCAN_DLC_BYTES_0;
+		counter++;
+		break;
+	case 2:
+		CAN1_Tx.Header.Identifier = 0x002;
+		CAN1_Tx.Header.DataLength = FDCAN_DLC_BYTES_0;
+		counter++;
+		break;
+	case 3:
+		CAN1_Tx.Header.Identifier = 0x003;
+		CAN1_Tx.Header.DataLength = FDCAN_DLC_BYTES_0;
+		counter++;
+		break;
+	case 4:
+		CAN1_Tx.Header.Identifier = 0x004;
+		CAN1_Tx.Header.DataLength = FDCAN_DLC_BYTES_0;
+		counter = 1;
+		break;
+	default:
+		break;
+	}
+//	CAN1_Tx.Header.Identifier = 0x300;
+//	CAN1_Tx.Header.DataLength = FDCAN_DLC_BYTES_6;
+//	CAN1_Tx.Data[0] = 1;
+//	CAN1_Tx.Data[0] |= 1<<1;
+//	CAN1_Tx.Data[0] |= 1<<2;
+//	CAN1_Tx.Data[0] |= 1<<3;
+//	CAN1_Tx.Data[0] |= 1<<4;
+//	CAN1_Tx.Data[0] |= 1<<5;
+//	CAN1_Tx.Data[0] |= 1<<6;
+//
+//	CAN1_Tx.Data[1] = 1;
+//	CAN1_Tx.Data[2] = 1;
+//	CAN1_Tx.Data[4] = 1;
+//	CAN1_Tx.Data[5] = 1;
 
 	if (HAL_FDCAN_GetTxFifoFreeLevel(&hfdcan1) > 0)
 	{
