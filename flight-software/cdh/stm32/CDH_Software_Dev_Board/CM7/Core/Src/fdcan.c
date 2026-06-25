@@ -26,7 +26,6 @@
 
 #include <App/Tasks/can_rx_task.h>
 
-static CAN_TxPacket CAN1_Tx;
 static CAN_RxPacket CAN1_Rx;
 
 /* USER CODE END 0 */
@@ -77,7 +76,6 @@ void MX_FDCAN1_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN FDCAN1_Init 2 */
-
   /* USER CODE END FDCAN1_Init 2 */
 
 }
@@ -152,6 +150,7 @@ void HAL_FDCAN_MspDeInit(FDCAN_HandleTypeDef* fdcanHandle)
 }
 
 /* USER CODE BEGIN 1 */
+BaseType_t xHigherPriorityTaskWoken = pdFALSE;
 void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs){
 	if((RxFifo0ITs & FDCAN_IT_RX_FIFO0_NEW_MESSAGE) != RESET)
 	  {
@@ -160,52 +159,14 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
 				{
 					Error_Handler();
 				}
-				xQueueSendToBackFromISR(CAN_RX_Task_GetQueue(),&CAN1_Rx,NULL);
+				if(xQueueSendToBackFromISR(CAN_RX_Task_GetQueue(),&CAN1_Rx,&xHigherPriorityTaskWoken) == pdPASS){
+					portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+				}
 			}
 	  }
 }
 
-int counter = 1;
-void FDCAN_Tx(){
-	switch(counter){
-	case 1:
-		CAN1_Tx.Header.Identifier = 0x001;
-		CAN1_Tx.Header.DataLength = FDCAN_DLC_BYTES_0;
-		counter++;
-		break;
-	case 2:
-		CAN1_Tx.Header.Identifier = 0x002;
-		CAN1_Tx.Header.DataLength = FDCAN_DLC_BYTES_0;
-		counter++;
-		break;
-	case 3:
-		CAN1_Tx.Header.Identifier = 0x003;
-		CAN1_Tx.Header.DataLength = FDCAN_DLC_BYTES_0;
-		counter++;
-		break;
-	case 4:
-		CAN1_Tx.Header.Identifier = 0x004;
-		CAN1_Tx.Header.DataLength = FDCAN_DLC_BYTES_0;
-		counter = 1;
-		break;
-	default:
-		break;
-	}
-//	CAN1_Tx.Header.Identifier = 0x300;
-//	CAN1_Tx.Header.DataLength = FDCAN_DLC_BYTES_6;
-//	CAN1_Tx.Data[0] = 1;
-//	CAN1_Tx.Data[0] |= 1<<1;
-//	CAN1_Tx.Data[0] |= 1<<2;
-//	CAN1_Tx.Data[0] |= 1<<3;
-//	CAN1_Tx.Data[0] |= 1<<4;
-//	CAN1_Tx.Data[0] |= 1<<5;
-//	CAN1_Tx.Data[0] |= 1<<6;
-//
-//	CAN1_Tx.Data[1] = 1;
-//	CAN1_Tx.Data[2] = 1;
-//	CAN1_Tx.Data[4] = 1;
-//	CAN1_Tx.Data[5] = 1;
-
+void FDCAN_Tx(CAN_TxPacket CAN1_Tx){
 	if (HAL_FDCAN_GetTxFifoFreeLevel(&hfdcan1) > 0)
 	{
 		HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1,&CAN1_Tx.Header,CAN1_Tx.Data);

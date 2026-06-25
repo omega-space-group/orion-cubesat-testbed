@@ -8,8 +8,10 @@
 #include "FreeRTOS.h"
 #include "queue.h"
 #include "fdcan.h"
+#include <string.h>
 
 #include <App/app_config.h>
+#include <App/Services/subscriptions.h>
 
 static StackType_t xTaskStack[NORMAL_TASK_STACK_SIZE];
 static StaticTask_t xTaskBuffer;
@@ -24,19 +26,45 @@ static QueueHandle_t xCAN_RXQueue;
 int cnt1,cnt2 = 0;
 
 static void CAN_RX_Handler(void *argument){
+	Message_t newMsg;
 	while(1){
-		if(xQueueReceive((QueueHandle_t)argument,&CAN_Rx,portMAX_DELAY) == pdPASS){
+//		if(xQueueReceive((QueueHandle_t)argument,&CAN_Rx,portMAX_DELAY) == pdPASS){
+		xQueueReceive((QueueHandle_t)argument,&CAN_Rx,portMAX_DELAY);
 			switch(CAN_Rx.Header.Identifier){
-			case 0x300:
+			//COMMS HB
+			case 0x103:
 				cnt1++;
+//				newMsg.Topic = SUBSYSTEM_STATUS;
+//				newMsg.Data.canPacket.Header.Identifier = CAN_Rx.Header.Identifier;
+//				memcpy(newMsg.Data.canPacket.Data, CAN_Rx.Data, sizeof(CAN_Rx.Data));
+//				Publish(newMsg);
 				break;
-			case 0x400:
+			//EPS HB
+			case 0x204:
 				cnt2++;
+//				newMsg.Topic = SUBSYSTEM_STATUS;
+//				newMsg.Data.canPacket.Header.Identifier = CAN_Rx.Header.Identifier;
+//				memcpy(newMsg.Data.canPacket.Data, CAN_Rx.Data, sizeof(CAN_Rx.Data));
+//				Publish(newMsg);
+				break;
+			//ADCS HB
+			case 0x304:
+//				newMsg.Topic = SUBSYSTEM_STATUS;
+//				newMsg.Data.canPacket.Header.Identifier = CAN_Rx.Header.Identifier;
+//				memcpy(newMsg.Data.canPacket.Data, CAN_Rx.Data, sizeof(CAN_Rx.Data));
+//				Publish(newMsg);
+				break;
+			//PL HB
+			case 0x404:
+//				newMsg.Topic = SUBSYSTEM_STATUS;
+//				newMsg.Data.canPacket.Header.Identifier = CAN_Rx.Header.Identifier;
+//				memcpy(newMsg.Data.canPacket.Data, CAN_Rx.Data, sizeof(CAN_Rx.Data));
+//				Publish(newMsg);
 				break;
 			default:
 				break;
 			}
-		}
+//		}
 	}
 }
 

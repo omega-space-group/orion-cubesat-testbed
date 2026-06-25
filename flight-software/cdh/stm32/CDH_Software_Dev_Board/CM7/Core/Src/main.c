@@ -140,6 +140,7 @@ Error_Handler();
   MX_FDCAN1_Init();
 //  MX_IWDG1_Init();
   /* USER CODE BEGIN 2 */
+
   MX_USB_DEVICE_Init();
   HAL_Delay(5000);
   /* Setting the debug level. Only debugging statements up to 'debug_level' will be printed to the debug terminal. */

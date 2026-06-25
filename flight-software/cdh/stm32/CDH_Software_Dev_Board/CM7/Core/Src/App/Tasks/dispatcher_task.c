@@ -29,7 +29,9 @@ static void Dispatcher_Task_Handler(void *argument){
 	TaskSync_WaitForAll();
 	Message_t newMsg;
 	while(1){
+		TaskHealth_SetBit(DISPATCHER_BIT);
 		SleepUntil((QueueHandle_t)argument,&newMsg,portMAX_DELAY);
+		TaskHealth_ClearBit(DISPATCHER_BIT);
 		DispatcherSend(newMsg);
 
 		TaskHealth_SetBit(DISPATCHER_BIT);

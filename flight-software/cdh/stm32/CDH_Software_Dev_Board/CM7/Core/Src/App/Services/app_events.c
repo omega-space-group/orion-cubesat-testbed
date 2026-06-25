@@ -35,8 +35,12 @@ void TaskHealth_SetBit(EventBits_t bit){
 	xEventGroupSetBits(xTaskHealthEvent,bit);
 }
 
+void TaskHealth_ClearBit(EventBits_t bit){
+	xEventGroupClearBits(xTaskHealthEvent,bit);
+}
+
 void TaskHealth_ClearAll(void){
-	xEventGroupClearBits(xTaskHealthEvent,0xFF);
+	xEventGroupClearBits(xTaskHealthEvent,ALL_TASKS_READY);
 }
 
 EventBits_t TaskHealth_Read(void){

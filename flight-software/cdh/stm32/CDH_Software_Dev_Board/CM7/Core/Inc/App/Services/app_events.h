@@ -21,6 +21,7 @@ void TaskSync_SetAndWait(EventBits_t taskBit);
 void TaskSync_WaitForAll(void);
 void TaskHealth_Init(void);
 void TaskHealth_SetBit(EventBits_t bit);
+void TaskHealth_ClearBit(EventBits_t bit);
 void TaskHealth_ClearAll(void);
 EventBits_t TaskHealth_Read(void);
 

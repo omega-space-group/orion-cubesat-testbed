@@ -15,11 +15,10 @@
 #include <App/Services/app_events.h>
 #include <App/Tasks/iwdg_task.h>
 #include <App/Tasks/dummy_task.h>
-#include <App/Tasks/taskA_task.h>
-#include <App/Tasks/taskB_task.h>
 #include <App/Tasks/dispatcher_task.h>
 #include <App/Tasks/modeManager_task.h>
 #include <App/Tasks/healthMonitor_task.h>
+#include <App/Tasks/subsystemMonitoring_task.h>
 #include <App/Tasks/can_rx_task.h>
 
 static StackType_t xRootTaskStack[NORMAL_TASK_STACK_SIZE];
@@ -37,10 +36,9 @@ static void Root_Task_Handler(void *argument){
 	IWDG_Task_Init();
 	Dispatcher_Task_Init();
 	DummyTask_Init();
-	TaskA_Task_Init();
-	TaskB_Init();
 	ModeManager_Task_Init();
 	HealthMonitor_Init();
+	SubsystemMonitor_Init();
 	CAN_RX_Task_Init();
 	/* Infinite loop */
 	while(1){
