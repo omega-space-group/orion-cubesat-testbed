@@ -27,7 +27,7 @@ static void Dummy_Task_Handler(void *argument){
 	Message_t newMsg;
 	while(1){
 		SleepUntil((QueueHandle_t)argument,&newMsg,1000);
-  		HAL_GPIO_TogglePin(GPIOE, GPIO_PIN_1);
+//  		HAL_GPIO_TogglePin(GPIOE, GPIO_PIN_1);
 //	  	FDCAN_Tx();
 
 	  	TaskHealth_SetBit(DUMMY_BIT);

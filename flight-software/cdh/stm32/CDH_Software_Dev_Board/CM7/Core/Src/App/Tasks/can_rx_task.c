@@ -23,10 +23,10 @@ static uint8_t ucxCAN_RXQueueStorageArea[LOCAL_QUEUE_LENGTH * sizeof(CAN_Rx)];
 static QueueHandle_t xCAN_RXQueue;
 
 
-int cnt1,cnt2 = 0;
-
+volatile int cnt1 = 0,cnt2 = 0;
+Message_t newMsg;
 static void CAN_RX_Handler(void *argument){
-	Message_t newMsg;
+
 	while(1){
 //		if(xQueueReceive((QueueHandle_t)argument,&CAN_Rx,portMAX_DELAY) == pdPASS){
 		xQueueReceive((QueueHandle_t)argument,&CAN_Rx,portMAX_DELAY);
@@ -40,7 +40,7 @@ static void CAN_RX_Handler(void *argument){
 //				Publish(newMsg);
 				break;
 			//EPS HB
-			case 0x204:
+			case 0x205:
 				cnt2++;
 //				newMsg.Topic = SUBSYSTEM_STATUS;
 //				newMsg.Data.canPacket.Header.Identifier = CAN_Rx.Header.Identifier;
@@ -48,14 +48,14 @@ static void CAN_RX_Handler(void *argument){
 //				Publish(newMsg);
 				break;
 			//ADCS HB
-			case 0x304:
+			case 0x305:
 //				newMsg.Topic = SUBSYSTEM_STATUS;
 //				newMsg.Data.canPacket.Header.Identifier = CAN_Rx.Header.Identifier;
 //				memcpy(newMsg.Data.canPacket.Data, CAN_Rx.Data, sizeof(CAN_Rx.Data));
 //				Publish(newMsg);
 				break;
 			//PL HB
-			case 0x404:
+			case 0x405:
 //				newMsg.Topic = SUBSYSTEM_STATUS;
 //				newMsg.Data.canPacket.Header.Identifier = CAN_Rx.Header.Identifier;
 //				memcpy(newMsg.Data.canPacket.Data, CAN_Rx.Data, sizeof(CAN_Rx.Data));
@@ -69,7 +69,7 @@ static void CAN_RX_Handler(void *argument){
 }
 
 void CAN_RX_Task_Init(void){
-	xCAN_RXQueue = xQueueCreateStatic(LOCAL_QUEUE_LENGTH, MSG_SIZE, ucxCAN_RXQueueStorageArea, &xxCAN_RXQueueData);
+	xCAN_RXQueue = xQueueCreateStatic(LOCAL_QUEUE_LENGTH, sizeof(CAN_Rx), ucxCAN_RXQueueStorageArea, &xxCAN_RXQueueData);
 	xTaskCreateStatic(CAN_RX_Handler,"CAN_RX_Handler",NORMAL_TASK_STACK_SIZE,(void*)xCAN_RXQueue,CANRX_PR,xTaskStack,&xTaskBuffer);
 }
 
