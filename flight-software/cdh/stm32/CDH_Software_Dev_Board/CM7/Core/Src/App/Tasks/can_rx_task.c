@@ -13,6 +13,9 @@
 #include <App/app_config.h>
 #include <App/Services/subscriptions.h>
 
+#include "usbd_cdc_if.h"
+#include <stdio.h>
+
 static StackType_t xTaskStack[NORMAL_TASK_STACK_SIZE];
 static StaticTask_t xTaskBuffer;
 
@@ -22,49 +25,25 @@ static StaticQueue_t xxCAN_RXQueueData;
 static uint8_t ucxCAN_RXQueueStorageArea[LOCAL_QUEUE_LENGTH * sizeof(CAN_Rx)];
 static QueueHandle_t xCAN_RXQueue;
 
+const char *subsystems[] = {
+        "COMMS",
+        "EPS",
+        "PAYLOAD",
+        "ADCS",
+    };
 
-volatile int cnt1 = 0,cnt2 = 0;
+void Subsystem_HB_Parser(CAN_RxPacket packet);
+int Subsystem_HB_Print(uint8_t data, const char *subsystem);
+
 Message_t newMsg;
-static void CAN_RX_Handler(void *argument){
 
+static void CAN_RX_Handler(void *argument){
 	while(1){
-//		if(xQueueReceive((QueueHandle_t)argument,&CAN_Rx,portMAX_DELAY) == pdPASS){
-		xQueueReceive((QueueHandle_t)argument,&CAN_Rx,portMAX_DELAY);
-			switch(CAN_Rx.Header.Identifier){
-			//COMMS HB
-			case 0x103:
-				cnt1++;
-//				newMsg.Topic = SUBSYSTEM_STATUS;
-//				newMsg.Data.canPacket.Header.Identifier = CAN_Rx.Header.Identifier;
-//				memcpy(newMsg.Data.canPacket.Data, CAN_Rx.Data, sizeof(CAN_Rx.Data));
-//				Publish(newMsg);
-				break;
-			//EPS HB
-			case 0x205:
-				cnt2++;
-//				newMsg.Topic = SUBSYSTEM_STATUS;
-//				newMsg.Data.canPacket.Header.Identifier = CAN_Rx.Header.Identifier;
-//				memcpy(newMsg.Data.canPacket.Data, CAN_Rx.Data, sizeof(CAN_Rx.Data));
-//				Publish(newMsg);
-				break;
-			//ADCS HB
-			case 0x305:
-//				newMsg.Topic = SUBSYSTEM_STATUS;
-//				newMsg.Data.canPacket.Header.Identifier = CAN_Rx.Header.Identifier;
-//				memcpy(newMsg.Data.canPacket.Data, CAN_Rx.Data, sizeof(CAN_Rx.Data));
-//				Publish(newMsg);
-				break;
-			//PL HB
-			case 0x405:
-//				newMsg.Topic = SUBSYSTEM_STATUS;
-//				newMsg.Data.canPacket.Header.Identifier = CAN_Rx.Header.Identifier;
-//				memcpy(newMsg.Data.canPacket.Data, CAN_Rx.Data, sizeof(CAN_Rx.Data));
-//				Publish(newMsg);
-				break;
-			default:
-				break;
+		if(xQueueReceive((QueueHandle_t)argument,&CAN_Rx,portMAX_DELAY) == pdPASS){
+			if(CAN_Rx.Header.Identifier == 0x103 || 0x204 || 0x304 || 0x404){
+				Subsystem_HB_Parser(CAN_Rx);
 			}
-//		}
+		}
 	}
 }
 
@@ -75,4 +54,67 @@ void CAN_RX_Task_Init(void){
 
 QueueHandle_t CAN_RX_Task_GetQueue(void) {
     return xCAN_RXQueue;
+}
+
+void Subsystem_HB_Parser(CAN_RxPacket packet){
+	switch(packet.Header.Identifier){
+	//COMMS HB
+	case 0x103:
+		Subsystem_HB_Print(*packet.Data, subsystems[0]);
+		break;
+	case 0x104:
+		printf("COMMS in SAFE MODE (ACK)\r\n");
+		fflush(stdout);
+		break;
+	case 0x101:
+		newMsg.Topic = CHANGE_SYSTEM_STATE;
+		newMsg.Data.mode = NOMINAL;
+		Publish(newMsg);
+		break;
+	//EPS HB
+	case 0x204:
+		Subsystem_HB_Print(*packet.Data, subsystems[1]);
+		break;
+	case 0x203:
+        newMsg.Topic = SUBSYSTEM_STATUS;
+        memcpy(&newMsg.Data.canPacket,&packet, sizeof(packet));
+        Publish(newMsg);
+		break;
+	case 0x201:
+		printf("EPS in SAFE MODE (ACK)\r\n");
+		fflush(stdout);
+		break;
+	//ADCS HB
+	case 0x304:
+		Subsystem_HB_Print(*packet.Data, subsystems[3]);
+		break;
+	//PL HB
+	case 0x404:
+		Subsystem_HB_Print(*packet.Data, subsystems[2]);
+		break;
+	default:
+		break;
+	}
+}
+
+int Subsystem_HB_Print(uint8_t data, const char *subsystem){
+	//Depending on the subsystem STATUS take action accordingly
+	switch(data){
+	case 1:
+		//system in BOOT
+		printf("%s in BOOT\r\n", subsystem);
+		fflush(stdout);
+		return 0;
+	case 2:
+		//system OK
+		printf("%s OK\r\n", subsystem);
+		fflush(stdout);
+		return 1;
+	case 3:
+		//system ERROR
+		printf("%s CRITICAL ERROR\r\n", subsystem);
+		fflush(stdout);
+		return 2;
+	}
+	return -1;
 }

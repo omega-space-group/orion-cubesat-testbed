@@ -7,6 +7,7 @@
 
 #include "FreeRTOS.h"
 #include "task.h"
+#include "fdcan.h"
 
 #include <App/app_config.h>
 #include <App/Services/subscriptions.h>
@@ -20,12 +21,15 @@ static StaticQueue_t xTaskQueueData;
 static uint8_t ucTaskQueueStorageArea[LOCAL_QUEUE_LENGTH * MSG_SIZE];
 static QueueHandle_t xTaskQueue;
 
+State_t CurrentMode = SAFE;
+
 /* Task priority and Task sync bit (if used) defined in app_config.h */
 static void ModeManager_Handler(void *argument){
+	CAN_TxPacket CAN1_Tx;
+	Message_t newMsg;
 	Subscribe("ModeManager_Handler",(QueueHandle_t)argument);
 	TaskSync_SetAndWait(MODE_BIT);
 	Message_t newMsgRsc;
-	State_t CurrentMode = SAFE;
 	while(1){
 		if(SleepUntil((QueueHandle_t)argument,&newMsgRsc,500) == NEW_MSG){
 			switch((int)newMsgRsc.Topic){
@@ -57,7 +61,10 @@ static void ModeManager_Handler(void *argument){
 				        	NewMode = CurrentMode;
 				            break;
 				    	}
-		        Message_t newMsg;
+				CAN1_Tx.Header.Identifier = 0x002;
+				CAN1_Tx.Header.DataLength = FDCAN_DLC_BYTES_0;
+				FDCAN_Tx(CAN1_Tx);
+
 		        newMsg.Topic = SYSTEM_STATE;
 		        newMsg.Data.mode = NewMode;
 		        Publish(newMsg);
