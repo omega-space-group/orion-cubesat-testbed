@@ -9,7 +9,6 @@
 #include "task.h"
 
 #include <App/app_config.h>
-#include <App/Services/subscriptions.h>
 #include <App/Services/app_events.h>
 #include <App/Tasks/healthMonitor_task.h>
 
@@ -23,7 +22,6 @@ static QueueHandle_t xTaskQueue;
 int cntHealth,problem = 0;
 /* Task sync bit (if used) and task priority defined in app_config.h */
 static void HealthMonitor_Handler(void *argument){
-	Subscribe("HealthMonitor_Handler",(QueueHandle_t)argument);
 	TaskSync_SetAndWait(HM_BIT);
 	/* Infinite loop */
 	while(1){

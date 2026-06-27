@@ -61,14 +61,16 @@ static void ModeManager_Handler(void *argument){
 				        	NewMode = CurrentMode;
 				            break;
 				    	}
-				CAN1_Tx.Header.Identifier = 0x002;
+				if(NewMode == SAFE)CAN1_Tx.Header.Identifier = 0x002;
+				else if(NewMode == NOMINAL) CAN1_Tx.Header.Identifier = 0x003;
+
 				CAN1_Tx.Header.DataLength = FDCAN_DLC_BYTES_0;
 				FDCAN_Tx(CAN1_Tx);
 
-		        newMsg.Topic = SYSTEM_STATE;
-		        newMsg.Data.mode = NewMode;
-		        Publish(newMsg);
-		        break;
+				newMsg.Topic = SYSTEM_STATE;
+				newMsg.Data.mode = NewMode;
+				Publish(newMsg);
+				break;
 			}
 			default:
 				break;

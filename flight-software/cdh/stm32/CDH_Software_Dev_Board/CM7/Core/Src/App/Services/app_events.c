@@ -40,7 +40,7 @@ void TaskHealth_ClearBit(EventBits_t bit){
 }
 
 void TaskHealth_ClearAll(void){
-	xEventGroupClearBits(xTaskHealthEvent,ALL_TASKS_READY);
+	xEventGroupClearBits(xTaskHealthEvent,PERIODIC_TASKS);
 }
 
 EventBits_t TaskHealth_Read(void){

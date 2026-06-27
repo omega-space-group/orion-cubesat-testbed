@@ -35,10 +35,13 @@
 #define MODE_BIT       (1 << 2)
 #define HM_BIT         (1 << 3)
 #define SUBM_BIT       (1 << 4)
+#define SUBC_BIT       (1 << 5)
 
 //move to app_events (?)
-#define ALL_TASKS_READY (DUMMY_BIT | MODE_BIT | HM_BIT | SUBM_BIT)
-#define ALL_TASKS_OK (DISPATCHER_BIT | DUMMY_BIT | MODE_BIT | HM_BIT | SUBM_BIT)
+#define PERIODIC_TASKS (DUMMY_BIT | MODE_BIT | HM_BIT | SUBM_BIT)
+
+#define ALL_TASKS_READY (DUMMY_BIT | MODE_BIT | HM_BIT | SUBM_BIT | SUBC_BIT)
+#define ALL_TASKS_OK (DISPATCHER_BIT | DUMMY_BIT | MODE_BIT | HM_BIT | SUBM_BIT | SUBC_BIT)
 
 #define MAX_SUBS 10
 #define MAX_SUBSCRIBERS_PER_TOPIC 10

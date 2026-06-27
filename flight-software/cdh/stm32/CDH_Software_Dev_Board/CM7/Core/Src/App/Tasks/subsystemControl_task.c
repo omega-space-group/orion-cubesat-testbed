@@ -23,18 +23,19 @@ static StaticQueue_t xTaskQueueData;
 static uint8_t ucTaskQueueStorageArea[LOCAL_QUEUE_LENGTH * MSG_SIZE];
 static QueueHandle_t xTaskQueue;
 
-/* 0: comms, 1: eps, 2: pl, 3: adcs */
-static uint8_t comms_cnt, eps_cnt, pl_cnt, adcs_cnt = 0;
+static uint8_t eps_cnt, pl_cnt, adcs_cnt = 0;
 
 /* --- SYS-OBC-REL-04 ---*/
 
 /* Task sync bit (if used) and task priority defined in app_config.h */
 static void SubsystemControl_Handler(void *argument){
 	Subscribe("SubsystemControl_Handler",(QueueHandle_t)argument);
-//	TaskSync_SetAndWait(SUBM_BIT);
+	TaskSync_SetAndWait(SUBC_BIT);
 	Message_t newMsg;
 	while(1){
+		TaskHealth_SetBit(SUBC_BIT);
 		SleepUntil((QueueHandle_t)argument,&newMsg,portMAX_DELAY);
+		TaskHealth_ClearBit(SUBC_BIT);
 
 		switch(newMsg.Data.canPacket.Header.Identifier){
 		case 0x203:
@@ -49,8 +50,32 @@ static void SubsystemControl_Handler(void *argument){
 				Publish(newMsg);
 			}
 			break;
+		case 0x303:
+			adcs_cnt++;
+			if(adcs_cnt > 3){
+				//subsystem hasn't sent a HB in over 15s
+				adcs_cnt = 0;
+				printf("SYSTEM COMMAND: ENTER SAFE MODE\r\n");
+				fflush(stdout);
+				newMsg.Topic = CHANGE_SYSTEM_STATE;
+				newMsg.Data.mode = SAFE;
+				Publish(newMsg);
+			}
+			break;
+		case 0x403:
+			pl_cnt++;
+			if(pl_cnt > 3){
+				//subsystem hasn't sent a HB in over 15s
+				pl_cnt = 0;
+				printf("SYSTEM COMMAND: ENTER SAFE MODE\r\n");
+				fflush(stdout);
+				newMsg.Topic = CHANGE_SYSTEM_STATE;
+				newMsg.Data.mode = SAFE;
+				Publish(newMsg);
+			}
+			break;
 		}
-		TaskHealth_SetBit(SUBM_BIT);
+		TaskHealth_SetBit(SUBC_BIT);
 	}
 }
 

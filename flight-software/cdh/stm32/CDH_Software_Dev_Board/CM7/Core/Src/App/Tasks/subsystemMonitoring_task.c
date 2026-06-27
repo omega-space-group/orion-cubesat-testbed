@@ -30,9 +30,7 @@ static uint8_t comms_cnt, eps_cnt, pl_cnt, adcs_cnt = 0;
 
 /* Task sync bit (if used) and task priority defined in app_config.h */
 static void SubsystemMonitor_Handler(void *argument){
-//	Subscribe("SubsystemMonitor_Handler",(QueueHandle_t)argument);
 	TaskSync_SetAndWait(SUBM_BIT);
-	Message_t newMsg;
 	while(1){
 		vTaskDelay(2000);
 
@@ -45,6 +43,42 @@ static void SubsystemMonitor_Handler(void *argument){
 				printf("COMMS COMMAND: RESET\r\n");
 				fflush(stdout);
 				comms_cnt = 0;
+			}
+		}
+
+		if(GetSubsystemStatus(EPS)){
+			SetSubsystemStatus(EPS,0);
+		}
+		else{
+			eps_cnt++;
+			if(eps_cnt >= 3){
+				printf("EPS COMMAND: RESET\r\n");
+				fflush(stdout);
+				eps_cnt = 0;
+			}
+		}
+
+		if(GetSubsystemStatus(ADCS)){
+			SetSubsystemStatus(ADCS,0);
+		}
+		else{
+			adcs_cnt++;
+			if(adcs_cnt >= 3){
+				printf("ADCS COMMAND: RESET\r\n");
+				fflush(stdout);
+				adcs_cnt = 0;
+			}
+		}
+
+		if(GetSubsystemStatus(PL)){
+			SetSubsystemStatus(PL,0);
+		}
+		else{
+			pl_cnt++;
+			if(pl_cnt >= 3){
+				printf("PAYLOAD COMMAND: RESET\r\n");
+				fflush(stdout);
+				pl_cnt = 0;
 			}
 		}
 

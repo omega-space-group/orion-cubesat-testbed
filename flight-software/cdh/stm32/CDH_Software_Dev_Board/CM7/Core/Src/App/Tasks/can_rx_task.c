@@ -36,14 +36,15 @@ void Subsystem_HB_Parser(CAN_RxPacket packet);
 int Subsystem_HB_Print(uint8_t data, const char *subsystem);
 
 Message_t newMsg;
-static int status[4] = {-1};
+static int status[4] = {0};
 
 static void CAN_RX_Handler(void *argument){
 	while(1){
 		if(xQueueReceive((QueueHandle_t)argument,&CAN_Rx,portMAX_DELAY) == pdPASS){
-			if(CAN_Rx.Header.Identifier == 0x103 || 0x204 || 0x304 || 0x404){
-				Subsystem_HB_Parser(CAN_Rx);
-			}
+			Subsystem_HB_Parser(CAN_Rx);
+//			if(CAN_Rx.Header.Identifier == 0x103 || 0x204 || 0x304 || 0x404){
+//
+//			}
 		}
 	}
 }
@@ -78,8 +79,21 @@ void Subsystem_HB_Parser(CAN_RxPacket packet){
 		printf("SYSTEM COMMAND ACK: COMMS in SAFE MODE\r\n");
 		fflush(stdout);
 		break;
+	case 0x105:
+		printf("SYSTEM COMMAND ACK: COMMS in NOMINAL MODE\r\n");
+		fflush(stdout);
+		break;
 	//EPS HB
+	case 0x201:
+		printf("SYSTEM COMMAND ACK: EPS in SAFE MODE\r\n");
+		fflush(stdout);
+		break;
+	case 0x202:
+		printf("SYSTEM COMMAND ACK: EPS in NOMINAL MODE\r\n");
+		fflush(stdout);
+		break;
 	case 0x204:
+		SetSubsystemStatus(EPS, 1);
 		Subsystem_HB_Print(*packet.Data, subsystems[1]);
 		break;
 	case 0x203:
@@ -87,16 +101,40 @@ void Subsystem_HB_Parser(CAN_RxPacket packet){
         memcpy(&newMsg.Data.canPacket,&packet, sizeof(packet));
         Publish(newMsg);
 		break;
-	case 0x201:
-		printf("SYSTEM COMMAND ACK: EPS in SAFE MODE\r\n");
+	//ADCS HB
+	case 0x301:
+		printf("SYSTEM COMMAND ACK: ADCS in SAFE MODE\r\n");
 		fflush(stdout);
 		break;
-	//ADCS HB
+	case 0x302:
+		printf("SYSTEM COMMAND ACK: ADCS in NOMINAL MODE\r\n");
+		fflush(stdout);
+		break;
+	case 0x303:
+        newMsg.Topic = SUBSYSTEM_STATUS;
+        memcpy(&newMsg.Data.canPacket,&packet, sizeof(packet));
+        Publish(newMsg);
+		break;
 	case 0x304:
+		SetSubsystemStatus(ADCS, 1);
 		Subsystem_HB_Print(*packet.Data, subsystems[3]);
 		break;
 	//PL HB
+	case 0x401:
+		printf("SYSTEM COMMAND ACK: PAYLOAD in NOMINAL MODE\r\n");
+		fflush(stdout);
+		break;
+	case 0x402:
+		printf("SYSTEM COMMAND ACK: PAYLOAD in SAFE MODE\r\n");
+		fflush(stdout);
+		break;
+	case 0x403:
+        newMsg.Topic = SUBSYSTEM_STATUS;
+        memcpy(&newMsg.Data.canPacket,&packet, sizeof(packet));
+        Publish(newMsg);
+		break;
 	case 0x404:
+		SetSubsystemStatus(PL, 1);
 		Subsystem_HB_Print(*packet.Data, subsystems[2]);
 		break;
 	default:
