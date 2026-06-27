@@ -20,12 +20,12 @@ static uint8_t sub_count = 0;
 /* Subscription Tables ---------------------------------------------------------*/
 static Topic_t DummyTaskGroup[]        = {SYSTEM_STATE};
 static Topic_t ModeManagerGroup[]      = {CHANGE_SYSTEM_STATE};
-static Topic_t SubsystemMonitorGroup[] = {SUBSYSTEM_STATUS};
+static Topic_t SubsystemControlGroup[] = {SUBSYSTEM_STATUS};
 
 static SubEntries_t lookupTable[] = {
 		{"Dummy_Task_Handler"       , 1,DummyTaskGroup},
 		{"ModeManager_Handler"      , 1,ModeManagerGroup},
-		{"SubsystemMonitor_Handler" , 1,SubsystemMonitorGroup}
+		{"SubsystemControl_Handler" , 1,SubsystemControlGroup}
 };
 
 void Subscribe(const char* name,QueueHandle_t queue){

@@ -36,6 +36,7 @@ void Subsystem_HB_Parser(CAN_RxPacket packet);
 int Subsystem_HB_Print(uint8_t data, const char *subsystem);
 
 Message_t newMsg;
+static int status[4] = {-1};
 
 static void CAN_RX_Handler(void *argument){
 	while(1){
@@ -59,17 +60,23 @@ QueueHandle_t CAN_RX_Task_GetQueue(void) {
 void Subsystem_HB_Parser(CAN_RxPacket packet){
 	switch(packet.Header.Identifier){
 	//COMMS HB
-	case 0x103:
-		Subsystem_HB_Print(*packet.Data, subsystems[0]);
-		break;
-	case 0x104:
-		printf("COMMS in SAFE MODE (ACK)\r\n");
-		fflush(stdout);
+	case 0x100:
+		newMsg.Topic = CHANGE_SYSTEM_STATE;
+		newMsg.Data.mode = SAFE;
+		Publish(newMsg);
 		break;
 	case 0x101:
 		newMsg.Topic = CHANGE_SYSTEM_STATE;
 		newMsg.Data.mode = NOMINAL;
 		Publish(newMsg);
+		break;
+	case 0x103:
+		SetSubsystemStatus(COMMS, 1);
+		Subsystem_HB_Print(*packet.Data, subsystems[0]);
+		break;
+	case 0x104:
+		printf("SYSTEM COMMAND ACK: COMMS in SAFE MODE\r\n");
+		fflush(stdout);
 		break;
 	//EPS HB
 	case 0x204:
@@ -81,7 +88,7 @@ void Subsystem_HB_Parser(CAN_RxPacket packet){
         Publish(newMsg);
 		break;
 	case 0x201:
-		printf("EPS in SAFE MODE (ACK)\r\n");
+		printf("SYSTEM COMMAND ACK: EPS in SAFE MODE\r\n");
 		fflush(stdout);
 		break;
 	//ADCS HB
@@ -117,4 +124,12 @@ int Subsystem_HB_Print(uint8_t data, const char *subsystem){
 		return 2;
 	}
 	return -1;
+}
+
+int GetSubsystemStatus(subsystemName sub){
+	return status[sub];
+}
+
+void SetSubsystemStatus(subsystemName sub, int stat){
+	status[sub] = stat;
 }

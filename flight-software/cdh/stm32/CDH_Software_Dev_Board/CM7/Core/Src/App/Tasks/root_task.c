@@ -19,6 +19,7 @@
 #include <App/Tasks/modeManager_task.h>
 #include <App/Tasks/healthMonitor_task.h>
 #include <App/Tasks/subsystemMonitoring_task.h>
+#include <App/Tasks/subsystemControl_task.h>
 #include <App/Tasks/can_rx_task.h>
 
 static StackType_t xRootTaskStack[NORMAL_TASK_STACK_SIZE];
@@ -39,6 +40,7 @@ static void Root_Task_Handler(void *argument){
 	ModeManager_Task_Init();
 	HealthMonitor_Init();
 	SubsystemMonitor_Init();
+	SubsystemControl_Init();
 	CAN_RX_Task_Init();
 	/* Infinite loop */
 	while(1){

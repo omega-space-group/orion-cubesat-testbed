@@ -25,6 +25,7 @@
 #define DUMMY_PR      29
 #define HM_PR         27
 #define SUBM_PR       26
+#define SUBC_PR		  25
 
 
 //Keep in mind PR = 24 is being used by the auto-generated default task in freertos.c
