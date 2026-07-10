@@ -15,7 +15,7 @@ Thank you for your interest in contributing to the ORION CubeSat Testbed! This d
 - Clearly describe the feature and its benefits
 - Explain why this enhancement would be useful to the project
 
-### Code Contributions
+### Code Contributions (from contributors)
 1. **Fork the repository**
 2. **Create a feature branch** from `main`
 3. **Make your changes** with clear, descriptive commits
@@ -29,8 +29,7 @@ Thank you for your interest in contributing to the ORION CubeSat Testbed! This d
 ## 🙏 Recognition
 
 Contributors will be:
-- Listed in the project README
-- Acknowledged in research publications (where applicable)
 - Credited in release notes
+- Acknowledged in research publications (where applicable)
 
-Thank you for contributing to open-source space technology! 🚀
+Thank you!

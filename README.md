@@ -18,10 +18,10 @@ Ground-based testbed that mirrors actual CubeSat functionality for comprehensive
 ### Key Capabilities
 
 - 🤖 **AI/ML Deployment**: Test algorithms on GPUs, FPGAs, Neural/Tensor/Neuromorphic Processors
-- 🛰️ **Hybrid Architecture**: Flight-proven protocols + modern AI frameworks
+- 🛰️ **Hybrid Architecture**: Flight-proven protocols + AI frameworks
 - 🔄 **End-to-End Testing**: From sensor to ground station
 - 🎓 **Educational**: Platform for student projects and learning
-- 🌍 **Open Source**: GPL-3.0, following Libre Space Foundation principles
+- 🌍 **Open Source**: GPL-3.0
 
 ---
 
@@ -41,9 +41,9 @@ Our testbed implements a **hybrid architecture** that combines proven satellite 
 
 | Subsystem | Hardware | Software | Primary Protocol |
 |-----------|----------|----------|------------------|
-| **C&DH** | Raspberry Pi 4 → STM32 Nucleo | Ubuntu → FreeRTOS | CSP/CAN |
+| **C&DH** | STM32 Nucleo | FreeRTOS | CSP/CAN |
 | **EPS** | STM32 Nucleo | FreeRTOS | CSP/CAN |
-| **Payload** | NVIDIA Jetson / Xilinx Ultrascale+ | Ubuntu | CSP/CAN + Zenoh/GigE |
+| **Payload** | NVIDIA Jetson / Xilinx Ultrascale+ / Qualcomm QCS6490 | Ubuntu | CSP/CAN + Zenoh/GigE |
 | **Comms** | HackRF One SDR | GNU Radio | RF Link |
 
 ### Software Stack
@@ -73,15 +73,15 @@ Our testbed implements a **hybrid architecture** that combines proven satellite 
                                  |     |
     ┌──────────────────────────────┐   |
     │            C&DH              │   | GigE
-    │  (RPi4/STM32 + cFS-inspired) │   |
-    │   CSP/CAN                    │   |
+    │         RPi4/STM32           │   |
+    │          CSP/CAN             │   |
     └─┬────────────────────────┬───┘   |
       │ CSP/CAN        CSP/CAN │       |
 ┌─────┴─────┐           ┌──────┴───────┴────┐
 │    EPS    │           │     Payload       │
 │  (STM32)  │           │   (Jetson/FPGA)   │
 │           │           │       Zenoh       │
-│  CSP/CAN  │           │   CSP Interface   │
+│  CSP/CAN  │           │   CSP/CAN + GigE  │
 └───────────┘           └───────────────────┘
 ```
 
@@ -109,35 +109,12 @@ orion-cubesat-testbed/
 ├── middleware/           # Payload-internal interfaces
 ├── hardware/             # HW docs, CAN/GigE configs, BOM
 ├── simulation/           # Testing infrastructure
-├── tools/                # Build & deployment utilities
-├── scripts/              # Setup scripts
-├── research/             # Publications & results
+├─X─ tools/                # Build & deployment utilities
+├─X─ scripts/              # Setup scripts
+├─X─ research/             # Publications
 └── docs/                 # Documentation
 ```
-
-
----
-
-## 🚀 Quick Start
-
-```bash
-# Clone repository
-git clone https://github.com/omega-space-group/orion-cubesat-testbed.git
-cd orion-cubesat-testbed
-
-# Setup environment
-./scripts/setup.sh
-
-# Build
-./scripts/build.sh
-
-# Run tests
-./scripts/test.sh
-```
-
-**Prerequisites**: Ubuntu 22.04, Python 3.10+, libcsp
-
-**For Payload Development**: CUDA, TensorRT (Jetson only), Zenoh
+**NOTE**: X-notated directories are planned
 
 
 ---
@@ -147,17 +124,17 @@ cd orion-cubesat-testbed
 
 ### 🔄 In Progress
 - C&DH cFS-inspired software
-- CSP over CAN bus implementation
 - Payload framework (Jetson)
-- AI model deployment and optimization
-- Zenoh over GigE for high-bandwidth data
+
 
 ### ⏳ Planned
-- Full subsystem integration (Comms, EPS)
-- STM32 + FreeRTOS migration for C&DH
+- CSP over CAN bus implementation
+- AI model deployment and optimization
+- Zenoh over GigE for high-bandwidth data
+- COMMS Intagration
+- EPS Integration
 - Ground station implementation
 - End-to-end mission testing
-
 ---
 
 ## 🤝 Contributing
@@ -190,9 +167,6 @@ GPL-3.0 License - see [LICENSE](LICENSE) for details.
 - [Eclipse Zenoh](https://zenoh.io/) - Zenoh middleware
 - [Zenoh ROS2 Middleware](https://github.com/ros2/rmw_zenoh) - A ROS 2 RMW implementation based on Zenoh
 
-### Research References
-- [JAXA RACS](https://ieeexplore.ieee.org/abstract/document/9438288) - Hybrid ROS/cFS approach
-
 
 ### SDR & Ground Station
 - [GNU Radio](https://www.gnuradio.org/) - Software-defined radio toolkit
@@ -211,9 +185,6 @@ GPL-3.0 License - see [LICENSE](LICENSE) for details.
 National Technical University of Athens  
 
 - Simon Vellas: svellas@mail.ntua.gr
-- Christos Chronis: chronis@hua.gr
-- Alexis Apostolakis: alexis.apostolakis@gmail.com
-- Giorgos Athanasiou: georgios.athanasiou.ntua@gmail.com
 
 ---
 
