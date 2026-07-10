@@ -26,6 +26,8 @@
 #define HM_PR         27
 #define SUBM_PR       26
 #define SUBC_PR		  25
+#define TC_PR	      24
+#define HK_PR	      23
 
 
 //Keep in mind PR = 24 is being used by the auto-generated default task in freertos.c
@@ -36,12 +38,14 @@
 #define HM_BIT         (1 << 3)
 #define SUBM_BIT       (1 << 4)
 #define SUBC_BIT       (1 << 5)
+#define TC_BIT 		   (1 << 6)
+#define HK_BIT 		   (1 << 7)
 
 //move to app_events (?)
-#define PERIODIC_TASKS (DUMMY_BIT | MODE_BIT | HM_BIT | SUBM_BIT)
+#define PERIODIC_TASKS (DUMMY_BIT | MODE_BIT | HM_BIT | SUBM_BIT | HK_BIT)
 
-#define ALL_TASKS_READY (DUMMY_BIT | MODE_BIT | HM_BIT | SUBM_BIT | SUBC_BIT)
-#define ALL_TASKS_OK (DISPATCHER_BIT | DUMMY_BIT | MODE_BIT | HM_BIT | SUBM_BIT | SUBC_BIT)
+#define ALL_TASKS_READY (DUMMY_BIT | MODE_BIT | HM_BIT | SUBM_BIT | SUBC_BIT | TC_BIT | HK_BIT)
+#define ALL_TASKS_OK (DISPATCHER_BIT | DUMMY_BIT | MODE_BIT | HM_BIT | SUBM_BIT | SUBC_BIT | TC_BIT | HK_BIT)
 
 #define MAX_SUBS 10
 #define MAX_SUBSCRIBERS_PER_TOPIC 10
@@ -56,7 +60,15 @@ typedef enum{
 typedef enum{
 	SYSTEM_STATE        = 1,
 	CHANGE_SYSTEM_STATE = 2,
-	SUBSYSTEM_STATUS    = 3,
+	TELECOMMAND,
+	EPS_MSG,
+	EPS_TM,
+	COMMS_MSG,
+	COMMS_TM,
+	ADCS_MSG,
+	ADCS_TM,
+	PL_MSG,
+	PL_TM,
 }Topic_t;
 
 /* Subscription Table Definition */

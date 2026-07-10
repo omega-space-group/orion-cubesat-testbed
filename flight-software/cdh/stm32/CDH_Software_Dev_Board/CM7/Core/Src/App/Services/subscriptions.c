@@ -18,14 +18,18 @@ static Subscription_t sub_table[MAX_SUBS];
 static uint8_t sub_count = 0;
 
 /* Subscription Tables ---------------------------------------------------------*/
-static Topic_t DummyTaskGroup[]        = {SYSTEM_STATE};
-static Topic_t ModeManagerGroup[]      = {CHANGE_SYSTEM_STATE};
-static Topic_t SubsystemControlGroup[] = {SUBSYSTEM_STATUS};
+static Topic_t DummyTaskGroup[]          = {SYSTEM_STATE};
+static Topic_t ModeManagerGroup[]        = {CHANGE_SYSTEM_STATE};
+static Topic_t SubsystemControlGroup[]   = {EPS_MSG,COMMS_MSG,ADCS_MSG,PL_MSG};
+static Topic_t TelecommandHandlerGroup[] = {TELECOMMAND};
+static Topic_t HousekeepingGroup[]       = {EPS_TM,COMMS_TM,ADCS_TM,PL_TM};
 
 static SubEntries_t lookupTable[] = {
-		{"Dummy_Task_Handler"       , 1,DummyTaskGroup},
-		{"ModeManager_Handler"      , 1,ModeManagerGroup},
-		{"SubsystemControl_Handler" , 1,SubsystemControlGroup}
+		{"Dummy_Task_Handler"       , 1, DummyTaskGroup},
+		{"ModeManager_Handler"      , 1, ModeManagerGroup},
+		{"SubsystemControl_Handler" , 4, SubsystemControlGroup},
+		{"Telecommand_Handler"      , 1, TelecommandHandlerGroup},
+		{"Housekeeping_Handler"     , 4, HousekeepingGroup}
 };
 
 void Subscribe(const char* name,QueueHandle_t queue){

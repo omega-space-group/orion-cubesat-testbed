@@ -62,12 +62,12 @@ void Subsystem_HB_Parser(CAN_RxPacket packet){
 	switch(packet.Header.Identifier){
 	//COMMS HB
 	case 0x100:
-		newMsg.Topic = CHANGE_SYSTEM_STATE;
+		newMsg.Topic = TELECOMMAND;
 		newMsg.Data.mode = SAFE;
 		Publish(newMsg);
 		break;
 	case 0x101:
-		newMsg.Topic = CHANGE_SYSTEM_STATE;
+		newMsg.Topic = TELECOMMAND;
 		newMsg.Data.mode = NOMINAL;
 		Publish(newMsg);
 		break;
@@ -97,7 +97,7 @@ void Subsystem_HB_Parser(CAN_RxPacket packet){
 		Subsystem_HB_Print(*packet.Data, subsystems[1]);
 		break;
 	case 0x203:
-        newMsg.Topic = SUBSYSTEM_STATUS;
+        newMsg.Topic = EPS_MSG;
         memcpy(&newMsg.Data.canPacket,&packet, sizeof(packet));
         Publish(newMsg);
 		break;
@@ -111,7 +111,7 @@ void Subsystem_HB_Parser(CAN_RxPacket packet){
 		fflush(stdout);
 		break;
 	case 0x303:
-        newMsg.Topic = SUBSYSTEM_STATUS;
+        newMsg.Topic = ADCS_MSG;
         memcpy(&newMsg.Data.canPacket,&packet, sizeof(packet));
         Publish(newMsg);
 		break;
@@ -129,7 +129,7 @@ void Subsystem_HB_Parser(CAN_RxPacket packet){
 		fflush(stdout);
 		break;
 	case 0x403:
-        newMsg.Topic = SUBSYSTEM_STATUS;
+        newMsg.Topic = PL_MSG;
         memcpy(&newMsg.Data.canPacket,&packet, sizeof(packet));
         Publish(newMsg);
 		break;

@@ -8,6 +8,8 @@
 #include "FreeRTOS.h"
 #include "task.h"
 #include "fdcan.h"
+#include "usbd_cdc_if.h"
+#include <stdio.h>
 
 #include <App/app_config.h>
 #include <App/Services/subscriptions.h>
@@ -61,8 +63,17 @@ static void ModeManager_Handler(void *argument){
 				        	NewMode = CurrentMode;
 				            break;
 				    	}
-				if(NewMode == SAFE)CAN1_Tx.Header.Identifier = 0x002;
-				else if(NewMode == NOMINAL) CAN1_Tx.Header.Identifier = 0x003;
+				if(NewMode == SAFE){
+					CAN1_Tx.Header.Identifier = 0x002;
+					printf("SYSTEM COMMAND: ENTER SAFE MODE\r\n");
+					fflush(stdout);
+				}
+				else if(NewMode == NOMINAL) {
+					CAN1_Tx.Header.Identifier = 0x003;
+					CAN1_Tx.Header.Identifier = 0x002;
+					printf("SYSTEM COMMAND: ENTER NOMINAL MODE\r\n");
+					fflush(stdout);
+				}
 
 				CAN1_Tx.Header.DataLength = FDCAN_DLC_BYTES_0;
 				FDCAN_Tx(CAN1_Tx);

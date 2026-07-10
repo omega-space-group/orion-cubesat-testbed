@@ -21,6 +21,8 @@
 #include <App/Tasks/subsystemMonitoring_task.h>
 #include <App/Tasks/subsystemControl_task.h>
 #include <App/Tasks/can_rx_task.h>
+#include <App/Tasks/telecommandHandler_task.h>
+#include <App/Tasks/housekeeping_task.h>
 
 static StackType_t xRootTaskStack[NORMAL_TASK_STACK_SIZE];
 static StaticTask_t xRootTaskBuffer;
@@ -42,6 +44,8 @@ static void Root_Task_Handler(void *argument){
 	SubsystemMonitor_Init();
 	SubsystemControl_Init();
 	CAN_RX_Task_Init();
+	TelecommandHandler_Init();
+	HousekeepingHandler_Init();
 	/* Infinite loop */
 	while(1){
 		xTaskNotifyWait(0,0,NULL,portMAX_DELAY);
