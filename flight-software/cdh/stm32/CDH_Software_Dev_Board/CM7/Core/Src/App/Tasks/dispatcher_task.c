@@ -4,6 +4,11 @@
  *  Created on: May 15, 2026
  *      Author: adaro
  */
+
+/**
+ * @file dispatcher_task.c
+ * @brief Implementation of the dispatcher and master queue logic.
+ */
 #include <App/Tasks/dispatcher_task.h>
 #include "FreeRTOS.h"
 #include "queue.h"
@@ -20,11 +25,15 @@ static uint8_t ucMasterQueueStorageArea[MASTER_QUEUE_LENGTH * MSG_SIZE];
 static QueueHandle_t xMasterQueue;
 
 /*
- * 1. Block until someone wakes you up (all events should trigger the dispatcher only)
- * 2. Check reason for waking up
- * 3. If event than set event group's respective event bit (this action will automatically wake up all "subscribed tasks") (not sure yet)
- * 4. If need for data exchange than get data, look through sub table and push on respective queues
- * */
+ * @brief  Main task loop for the system dispatcher.
+ * @note   This is an internal task handler managed strictly by FreeRTOS.
+ * * @details This task orchestrates system events by implementing the following pipeline:
+ * 1. Blocks indefinitely until a new message arrives via the master queue.
+ * 2. Temporarily clears the health monitoring status during execution.
+ * 3. Forwards the received `Message_t` packet to sub-tables via DispatcherSend().
+ * 4. Sets the health bit high again before reverting back to a blocked state.
+ * * @param  argument: A pointer to the Master Queue handle (`QueueHandle_t`).
+ */
 static void Dispatcher_Task_Handler(void *argument){
 	TaskSync_WaitForAll();
 	Message_t newMsg;

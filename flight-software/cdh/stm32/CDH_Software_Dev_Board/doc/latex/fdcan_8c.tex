@@ -1,0 +1,66 @@
+\doxysection{CM7/\+\+Core/\+\+Src/\+fdcan.c File Reference}
+\hypertarget{fdcan_8c}{}\label{fdcan_8c}\index{CM7/Core/Src/fdcan.c@{CM7/Core/Src/fdcan.c}}
+
+
+This file provides code for the configuration of the FDCAN instances.  
+
+
+{\ttfamily \+\#include "{}fdcan.\+h"{}}\newline
+{\ttfamily \+\#include "{}Free\+RTOS.\+h"{}}\newline
+{\ttfamily \+\#include "{}queue.\+h"{}}\newline
+{\ttfamily \+\#include $<$App/\+\+Tasks/\+can\+\_\+rx\+\_\+task.\+h$>$}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{fdcan_8c_af122e1c28b11c5b8771e82328e10fa2c}\label{fdcan_8c_af122e1c28b11c5b8771e82328e10fa2c} 
+void {\bfseries MX\+\_\+\+FDCAN1\+\_\+\+Init} (void)
+\begin{DoxyCompactList}\small\item\em FDCAN Initialization Function. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{fdcan_8c_a37d92c0f4f667c4dd4cbc9c3b5d5dad4}{HAL\+\_\+\+FDCAN\+\_\+\+Rx\+Fifo0\+Callback}} (FDCAN\+\_\+\+Handle\+Type\+Def \texorpdfstring{$\ast$}{*}hfdcan, uint32\+\_\+t Rx\+Fifo0\+ITs)
+\begin{DoxyCompactList}\small\item\em Function Called by the FDCAN IRQ Handler. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{fdcan_8c_acb1a2ebd043af21a56094e47f2e7797d}{FDCAN\+\_\+\+Tx}} (CAN\+\_\+\+Tx\+Packet CAN1\+\_\+\+Tx)
+\begin{DoxyCompactList}\small\item\em Function called to send a message on the FDCAN bus. \end{DoxyCompactList}\item 
+\Hypertarget{fdcan_8c_a52b806723c5e7d7675e615c1764bf03b}\label{fdcan_8c_a52b806723c5e7d7675e615c1764bf03b} 
+void {\bfseries FDCAN\+\_\+\+Start} ()
+\begin{DoxyCompactList}\small\item\em Function called to start the FDCAN peripheral. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This file provides code for the configuration of the FDCAN instances. 
+
+
+
+\label{fdcan_8c_doc-func-members}
+\Hypertarget{fdcan_8c_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{fdcan_8c_acb1a2ebd043af21a56094e47f2e7797d}\index{fdcan.c@{fdcan.c}!FDCAN\_Tx@{FDCAN\_Tx}}
+\index{FDCAN\_Tx@{FDCAN\_Tx}!fdcan.c@{fdcan.c}}
+\doxysubsubsection{\texorpdfstring{FDCAN\_Tx()}{FDCAN\_Tx()}}
+{\footnotesize\ttfamily \label{fdcan_8c_acb1a2ebd043af21a56094e47f2e7797d} 
+void FDCAN\+\_\+\+Tx (\begin{DoxyParamCaption}\item[{CAN\+\_\+\+Tx\+Packet}]{CAN1\+\_\+\+Tx}{}\end{DoxyParamCaption})}
+
+
+
+Function called to send a message on the FDCAN bus. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em CAN1\+\_\+\+Tx} & \\
+\hline
+\end{DoxyParams}
+\Hypertarget{fdcan_8c_a37d92c0f4f667c4dd4cbc9c3b5d5dad4}\index{fdcan.c@{fdcan.c}!HAL\_FDCAN\_RxFifo0Callback@{HAL\_FDCAN\_RxFifo0Callback}}
+\index{HAL\_FDCAN\_RxFifo0Callback@{HAL\_FDCAN\_RxFifo0Callback}!fdcan.c@{fdcan.c}}
+\doxysubsubsection{\texorpdfstring{HAL\_FDCAN\_RxFifo0Callback()}{HAL\_FDCAN\_RxFifo0Callback()}}
+{\footnotesize\ttfamily \label{fdcan_8c_a37d92c0f4f667c4dd4cbc9c3b5d5dad4} 
+void HAL\+\_\+\+FDCAN\+\_\+\+Rx\+Fifo0\+Callback (\begin{DoxyParamCaption}\item[{FDCAN\+\_\+\+Handle\+Type\+Def \texorpdfstring{$\ast$}{*}}]{hfdcan}{, }\item[{uint32\+\_\+t}]{Rx\+Fifo0\+ITs}{}\end{DoxyParamCaption})}
+
+
+
+Function Called by the FDCAN IRQ Handler. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em hfdcan} & \\
+\hline
+{\em Rx\+Fifo0\+ITs} & \\
+\hline
+\end{DoxyParams}

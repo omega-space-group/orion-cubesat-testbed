@@ -1,0 +1,123 @@
+\doxysection{subscriptions.\+c}
+\hypertarget{subscriptions_8c_source}{}\label{subscriptions_8c_source}\index{CM7/Core/Src/App/Services/subscriptions.c@{CM7/Core/Src/App/Services/subscriptions.c}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00001}00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00002}00002\ \textcolor{comment}{\ *\ subscriptions.c}}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00003}00003\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00004}00004\ \textcolor{comment}{\ *\ \ Created\ on:\ May\ 15,\ 2026}}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00005}00005\ \textcolor{comment}{\ *\ \ \ \ \ \ Author:\ adaro}}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00006}00006\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00007}00007\ \textcolor{preprocessor}{\#include\ "{}FreeRTOS.h"{}}}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00008}00008\ \textcolor{preprocessor}{\#include\ "{}queue.h"{}}}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00009}00009\ \textcolor{preprocessor}{\#include\ <App/app\_config.h>}}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00010}00010\ \textcolor{preprocessor}{\#include\ <App/Services/subscriptions.h>}}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00011}00011\ \textcolor{preprocessor}{\#include\ <App/Tasks/dispatcher\_task.h>}}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00012}00012\ }
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00013}00013\ \textcolor{preprocessor}{\#include\ "{}usbd\_cdc\_if.h"{}}}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00014}00014\ \textcolor{preprocessor}{\#include\ <stdio.h>}}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00015}00015\ \textcolor{preprocessor}{\#include\ <string.h>}}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00016}00016\ }
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00017}00017\ \textcolor{keyword}{static}\ Subscription\_t\ sub\_table[MAX\_SUBS];}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00018}00018\ \textcolor{keyword}{static}\ uint8\_t\ sub\_count\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00019}00019\ }
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00020}00020\ \textcolor{comment}{/*\ Subscription\ Tables\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00021}00021\ \textcolor{keyword}{static}\ Topic\_t\ DummyTaskGroup[]\ \ \ \ \ \ \ \ \ \ =\ \{SYSTEM\_STATE\};}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00022}00022\ \textcolor{keyword}{static}\ Topic\_t\ ModeManagerGroup[]\ \ \ \ \ \ \ \ =\ \{CHANGE\_SYSTEM\_STATE\};}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00023}00023\ \textcolor{keyword}{static}\ Topic\_t\ SubsystemControlGroup[]\ \ \ =\ \{EPS\_MSG,COMMS\_MSG,ADCS\_MSG,PL\_MSG\};}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00024}00024\ \textcolor{keyword}{static}\ Topic\_t\ TelecommandHandlerGroup[]\ =\ \{TELECOMMAND\};}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00025}00025\ \textcolor{keyword}{static}\ Topic\_t\ HousekeepingGroup[]\ \ \ \ \ \ \ =\ \{EPS\_TM,COMMS\_TM,ADCS\_TM,PL\_TM\};}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00026}00026\ }
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00027}00027\ \textcolor{keyword}{static}\ SubEntries\_t\ lookupTable[]\ =\ \{}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00028}00028\ \ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}Dummy\_Task\_Handler"{}}\ \ \ \ \ \ \ ,\ 1,\ DummyTaskGroup\},}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00029}00029\ \ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}ModeManager\_Handler"{}}\ \ \ \ \ \ ,\ 1,\ ModeManagerGroup\},}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00030}00030\ \ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}SubsystemControl\_Handler"{}}\ ,\ 4,\ SubsystemControlGroup\},}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00031}00031\ \ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}Telecommand\_Handler"{}}\ \ \ \ \ \ ,\ 1,\ TelecommandHandlerGroup\},}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00032}00032\ \ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}Housekeeping\_Handler"{}}\ \ \ \ \ ,\ 4,\ HousekeepingGroup\}}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00033}00033\ \};}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00034}00034\ }
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00035}00035\ \textcolor{keywordtype}{void}\ Subscribe(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ name,QueueHandle\_t\ queue)\{}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00036}00036\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00037}00037\ \textcolor{comment}{\ \ \ \ \ *\ 1.\ Check\ sub\ table\ to\ see\ if\ anyone\ has\ already\ subscribed\ to\ this\ topic}}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00038}00038\ \textcolor{comment}{\ \ \ \ \ *\ 2.\ If\ so,\ add\ this\ queue\ to\ topic's\ list\ of\ queues}}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00039}00039\ \textcolor{comment}{\ \ \ \ \ *\ 3.\ If\ not,\ add\ topic\ and\ queue\ to\ sub\ table}}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00040}00040\ \textcolor{comment}{\ \ \ \ \ *\ */}}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00041}00041\ \ \ \ \ \textcolor{keywordtype}{int}\ lookupTableLength\ =\ \textcolor{keyword}{sizeof}(lookupTable)/\textcolor{keyword}{sizeof}(lookupTable[0]);}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00042}00042\ \ \ \ \ \textcolor{keywordtype}{int}\ found\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00043}00043\ }
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00044}00044\ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ lookupTableLength;\ i++)\{}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00045}00045\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (strcmp(name,\ lookupTable[i].name)\ ==\ 0)\{}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00046}00046\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ j\ =\ 0;\ j\ <\ lookupTable[i].length;\ j++)\{}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00047}00047\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ k\ =\ 0;\ k\ <\ sub\_count;\ k++)\{}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00048}00048\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(sub\_table[k].Topic\ ==\ lookupTable[i].topics[j]\ )\{}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00049}00049\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ found\ =\ 1;}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00050}00050\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(sub\_table[k].SubscriberCount\ <\ MAX\_SUBSCRIBERS\_PER\_TOPIC)\{}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00051}00051\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ sub\_table[k].SubscriberQueues[sub\_table[k].SubscriberCount++]\ =\ queue;}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00052}00052\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ printf("{}\%s\ subscribed\ to\ \%d\ successfully!\(\backslash\)r\(\backslash\)n"{},}}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00053}00053\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ name,\ (int)lookupTable[i].topics[j]);}}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00054}00054\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ fflush(stdout);}}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00055}00055\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00056}00056\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00057}00057\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}\%s\ failed\ to\ subscribe\ to\ \%d.\ Topic's\ subscriber\ queue\ full!\(\backslash\)r\(\backslash\)n"{}},}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00058}00058\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ name,\ (\textcolor{keywordtype}{int})lookupTable[i].topics[j]);}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00059}00059\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ fflush(stdout);}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00060}00060\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00061}00061\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00062}00062\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00063}00063\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(sub\_count\ <\ MAX\_SUBS\ \&\&\ !found)\{}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00064}00064\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Subscription\_t\ newSub;}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00065}00065\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ newSub.SubscriberCount\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00066}00066\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ newSub.SubscriberQueues[newSub.SubscriberCount++]\ =\ queue;}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00067}00067\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ newSub.Topic\ =\ lookupTable[i].topics[j];}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00068}00068\ }
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00069}00069\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ sub\_table[sub\_count++]\ =\ newSub;}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00070}00070\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ printf("{}\%s\ subscribed\ to\ \%d\ successfully!\(\backslash\)r\(\backslash\)n"{},}}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00071}00071\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ name,\ (int)lookupTable[i].topics[j]);}}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00072}00072\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ fflush(stdout);}}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00073}00073\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00074}00074\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00075}00075\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}(sub\_count\ >\ MAX\_SUBS\ \&\&\ !found)\{}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00076}00076\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ printf("{}\%s\ failed\ to\ subscribe\ to\ \%d.\ Sub\ table\ full!\(\backslash\)r\(\backslash\)n"{},}}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00077}00077\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ name,\ (int)lookupTable[i].topics[j]);}}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00078}00078\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ fflush(stdout);}}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00079}00079\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00080}00080\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\{}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00081}00081\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ found\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00082}00082\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00083}00083\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00084}00084\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00085}00085\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00086}00086\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00087}00087\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00088}00088\ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00089}00089\ \}}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00090}00090\ }
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00091}00091\ \textcolor{keywordtype}{void}\ Publish(Message\_t\ newMsg)\{}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00092}00092\ \ \ \ \ xQueueSendToBack(DispatcherTask\_GetQueue(),\&newMsg,200);}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00093}00093\ \}}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00094}00094\ }
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00095}00095\ WakeupReason\_t\ SleepUntil(QueueHandle\_t\ queue,\ Message\_t\ *newMsgRsc,\ TickType\_t\ xTicksToWait)\{}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00096}00096\ \ \ \ \ \textcolor{keywordflow}{if}\ (xQueueReceive(queue,newMsgRsc,xTicksToWait)\ ==\ pdPASS)\ \{}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00097}00097\ \textcolor{comment}{//\ \ \ \ \ \ printf("{}\%p:\ Got\ a\ new\ message\(\backslash\)r\(\backslash\)n"{},(void*)queue);}}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00098}00098\ \textcolor{comment}{//\ \ \ \ \ \ fflush(stdout);}}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00099}00099\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ NEW\_MSG;}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00100}00100\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00101}00101\ \ \ \ \ \textcolor{keywordflow}{return}\ TIMEOUT;}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00102}00102\ \}}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00103}00103\ }
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00104}00104\ \textcolor{keywordtype}{void}\ DispatcherSend(Message\_t\ newMsg)\{}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00105}00105\ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ sub\_count;\ i++)\{}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00106}00106\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(newMsg.Topic\ ==\ sub\_table[i].Topic)\{}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00107}00107\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ j\ =\ 0;\ j\ <\ sub\_table[i].SubscriberCount;\ j++)\{}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00108}00108\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ BaseType\_t\ xStatus\ =\ xQueueSendToBack(sub\_table[i].SubscriberQueues[j],\&newMsg,50);}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00109}00109\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(xStatus\ !=\ pdPASS)\{}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00110}00110\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ printf("{}\%p\ queue\ is\ full!\(\backslash\)r\(\backslash\)n"{},(void*)sub\_table[i].SubscriberQueues[j]);}}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00111}00111\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ fflush(stdout);}}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00112}00112\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00113}00113\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00114}00114\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00115}00115\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00116}00116\ \}}
+\DoxyCodeLine{\Hypertarget{subscriptions_8c_source_l00117}00117\ }
+
+\end{DoxyCode}

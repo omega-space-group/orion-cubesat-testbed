@@ -5,6 +5,10 @@
  *      Author: adaro
  */
 
+/**
+ * @file housekeeping_task.c
+ * @brief Implementation of the telemetry data acquisition and log/downlink.
+ */
 #include "FreeRTOS.h"
 #include "task.h"
 

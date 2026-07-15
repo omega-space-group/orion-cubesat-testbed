@@ -1,0 +1,101 @@
+\doxysection{subsystem\+Monitoring\+\_\+task.\+c}
+\hypertarget{subsystem_monitoring__task_8c_source}{}\label{subsystem_monitoring__task_8c_source}\index{CM7/Core/Src/App/Tasks/subsystemMonitoring\_task.c@{CM7/Core/Src/App/Tasks/subsystemMonitoring\_task.c}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00001}00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00002}00002\ \textcolor{comment}{\ *\ subsystemMonitoring\_task.c}}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00003}00003\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00004}00004\ \textcolor{comment}{\ *\ \ Created\ on:\ Jun\ 23,\ 2026}}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00005}00005\ \textcolor{comment}{\ *\ \ \ \ \ \ Author:\ adaro}}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00006}00006\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00007}00007\ }
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00008}00008\ \textcolor{preprocessor}{\#include\ "{}FreeRTOS.h"{}}}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00009}00009\ \textcolor{preprocessor}{\#include\ "{}task.h"{}}}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00010}00010\ }
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00011}00011\ \textcolor{preprocessor}{\#include\ <App/app\_config.h>}}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00012}00012\ \textcolor{preprocessor}{\#include\ <App/Services/app\_events.h>}}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00013}00013\ \textcolor{preprocessor}{\#include\ <App/Tasks/subsystemMonitoring\_task.h>}}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00014}00014\ \textcolor{preprocessor}{\#include\ <App/Tasks/can\_rx\_task.h>}}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00015}00015\ }
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00016}00016\ \textcolor{preprocessor}{\#include\ "{}usbd\_cdc\_if.h"{}}}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00017}00017\ \textcolor{preprocessor}{\#include\ <stdio.h>}}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00018}00018\ }
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00019}00019\ \textcolor{keyword}{static}\ StackType\_t\ xTaskStack[NORMAL\_TASK\_STACK\_SIZE];}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00020}00020\ \textcolor{keyword}{static}\ StaticTask\_t\ xTaskBuffer;}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00021}00021\ }
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00022}00022\ \textcolor{keyword}{static}\ StaticQueue\_t\ xTaskQueueData;}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00023}00023\ \textcolor{keyword}{static}\ uint8\_t\ ucTaskQueueStorageArea[LOCAL\_QUEUE\_LENGTH\ *\ MSG\_SIZE];}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00024}00024\ \textcolor{keyword}{static}\ QueueHandle\_t\ xTaskQueue;}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00025}00025\ }
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00026}00026\ \textcolor{comment}{/*\ 0:\ comms,\ 1:\ eps,\ 2:\ pl,\ 3:\ adcs\ */}}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00027}00027\ \textcolor{keyword}{static}\ uint8\_t\ comms\_cnt,\ eps\_cnt,\ pl\_cnt,\ adcs\_cnt\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00028}00028\ }
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00029}00029\ \textcolor{comment}{/*\ -\/-\/-\/\ SYS-\/OBC-\/REL-\/04\ -\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00030}00030\ }
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00031}00031\ \textcolor{comment}{/*\ Task\ sync\ bit\ (if\ used)\ and\ task\ priority\ defined\ in\ app\_config.h\ */}}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00032}00032\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ SubsystemMonitor\_Handler(\textcolor{keywordtype}{void}\ *argument)\{}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00033}00033\ \ \ \ \ TaskSync\_SetAndWait(SUBM\_BIT);}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00034}00034\ \ \ \ \ \textcolor{keywordflow}{while}(1)\{}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00035}00035\ \ \ \ \ \ \ \ \ vTaskDelay(2000);}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00036}00036\ }
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00037}00037\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(GetSubsystemStatus(COMMS))\{}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00038}00038\ \ \ \ \ \ \ \ \ \ \ \ \ SetSubsystemStatus(COMMS,0);}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00039}00039\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00040}00040\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\{}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00041}00041\ \ \ \ \ \ \ \ \ \ \ \ \ comms\_cnt++;}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00042}00042\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(comms\_cnt\ >=\ 3)\{}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00043}00043\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}COMMS\ COMMAND:\ RESET\(\backslash\)r\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00044}00044\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ fflush(stdout);}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00045}00045\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ comms\_cnt\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00046}00046\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00047}00047\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00048}00048\ }
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00049}00049\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(GetSubsystemStatus(EPS))\{}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00050}00050\ \ \ \ \ \ \ \ \ \ \ \ \ SetSubsystemStatus(EPS,0);}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00051}00051\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00052}00052\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\{}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00053}00053\ \ \ \ \ \ \ \ \ \ \ \ \ eps\_cnt++;}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00054}00054\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(eps\_cnt\ >=\ 3)\{}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00055}00055\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}EPS\ COMMAND:\ RESET\(\backslash\)r\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00056}00056\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ fflush(stdout);}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00057}00057\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ eps\_cnt\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00058}00058\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00059}00059\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00060}00060\ }
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00061}00061\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(GetSubsystemStatus(ADCS))\{}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00062}00062\ \ \ \ \ \ \ \ \ \ \ \ \ SetSubsystemStatus(ADCS,0);}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00063}00063\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00064}00064\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\{}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00065}00065\ \ \ \ \ \ \ \ \ \ \ \ \ adcs\_cnt++;}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00066}00066\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(adcs\_cnt\ >=\ 3)\{}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00067}00067\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}ADCS\ COMMAND:\ RESET\(\backslash\)r\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00068}00068\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ fflush(stdout);}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00069}00069\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ adcs\_cnt\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00070}00070\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00071}00071\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00072}00072\ }
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00073}00073\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(GetSubsystemStatus(PL))\{}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00074}00074\ \ \ \ \ \ \ \ \ \ \ \ \ SetSubsystemStatus(PL,0);}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00075}00075\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00076}00076\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\{}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00077}00077\ \ \ \ \ \ \ \ \ \ \ \ \ pl\_cnt++;}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00078}00078\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(pl\_cnt\ >=\ 3)\{}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00079}00079\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}PAYLOAD\ COMMAND:\ RESET\(\backslash\)r\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00080}00080\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ fflush(stdout);}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00081}00081\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ pl\_cnt\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00082}00082\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00083}00083\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00084}00084\ }
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00085}00085\ \ \ \ \ \ \ \ \ TaskHealth\_SetBit(SUBM\_BIT);}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00086}00086\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00087}00087\ \}}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00088}00088\ }
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00089}00089\ \textcolor{keywordtype}{void}\ SubsystemMonitor\_Init(\textcolor{keywordtype}{void})\ \{}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00090}00090\ \ \ \ \ xTaskQueue\ =\ xQueueCreateStatic(LOCAL\_QUEUE\_LENGTH,\ MSG\_SIZE,\ ucTaskQueueStorageArea,\ \&xTaskQueueData);}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00091}00091\ \ \ \ \ xTaskCreateStatic(SubsystemMonitor\_Handler,\textcolor{stringliteral}{"{}SubsystemMonitor\_Handler"{}},NORMAL\_TASK\_STACK\_SIZE}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00092}00092\ \ \ \ \ \ \ \ \ \ \ \ \ ,(\textcolor{keywordtype}{void}*)xTaskQueue,SUBM\_PR,xTaskStack,\&xTaskBuffer);}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00093}00093\ \}}
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00094}00094\ }
+\DoxyCodeLine{\Hypertarget{subsystem_monitoring__task_8c_source_l00095}00095\ }
+
+\end{DoxyCode}

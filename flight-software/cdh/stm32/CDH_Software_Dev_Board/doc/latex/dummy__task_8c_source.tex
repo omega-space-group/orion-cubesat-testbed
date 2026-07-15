@@ -1,0 +1,48 @@
+\doxysection{dummy\+\_\+task.\+c}
+\hypertarget{dummy__task_8c_source}{}\label{dummy__task_8c_source}\index{CM7/Core/Src/App/Tasks/dummy\_task.c@{CM7/Core/Src/App/Tasks/dummy\_task.c}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{dummy__task_8c_source_l00001}00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{dummy__task_8c_source_l00002}00002\ \textcolor{comment}{\ *\ dummy\_tasks.c}}
+\DoxyCodeLine{\Hypertarget{dummy__task_8c_source_l00003}00003\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{\Hypertarget{dummy__task_8c_source_l00004}00004\ \textcolor{comment}{\ *\ \ Created\ on:\ May\ 14,\ 2026}}
+\DoxyCodeLine{\Hypertarget{dummy__task_8c_source_l00005}00005\ \textcolor{comment}{\ *\ \ \ \ \ \ Author:\ adaro}}
+\DoxyCodeLine{\Hypertarget{dummy__task_8c_source_l00006}00006\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{dummy__task_8c_source_l00007}00007\ }
+\DoxyCodeLine{\Hypertarget{dummy__task_8c_source_l00008}00008\ \textcolor{preprocessor}{\#include\ <App/Tasks/dummy\_task.h>}}
+\DoxyCodeLine{\Hypertarget{dummy__task_8c_source_l00009}00009\ \textcolor{preprocessor}{\#include\ "{}FreeRTOS.h"{}}}
+\DoxyCodeLine{\Hypertarget{dummy__task_8c_source_l00010}00010\ \textcolor{preprocessor}{\#include\ "{}queue.h"{}}}
+\DoxyCodeLine{\Hypertarget{dummy__task_8c_source_l00011}00011\ \textcolor{preprocessor}{\#include\ "{}fdcan.h"{}}}
+\DoxyCodeLine{\Hypertarget{dummy__task_8c_source_l00012}00012\ }
+\DoxyCodeLine{\Hypertarget{dummy__task_8c_source_l00013}00013\ \textcolor{preprocessor}{\#include\ <App/app\_config.h>}}
+\DoxyCodeLine{\Hypertarget{dummy__task_8c_source_l00014}00014\ \textcolor{preprocessor}{\#include\ <App/Services/subscriptions.h>}}
+\DoxyCodeLine{\Hypertarget{dummy__task_8c_source_l00015}00015\ \textcolor{preprocessor}{\#include\ <App/Services/app\_events.h>}}
+\DoxyCodeLine{\Hypertarget{dummy__task_8c_source_l00016}00016\ }
+\DoxyCodeLine{\Hypertarget{dummy__task_8c_source_l00017}00017\ \textcolor{keyword}{static}\ StackType\_t\ xDummyTaskStack[NORMAL\_TASK\_STACK\_SIZE];}
+\DoxyCodeLine{\Hypertarget{dummy__task_8c_source_l00018}00018\ \textcolor{keyword}{static}\ StaticTask\_t\ xDummyTaskBuffer;}
+\DoxyCodeLine{\Hypertarget{dummy__task_8c_source_l00019}00019\ }
+\DoxyCodeLine{\Hypertarget{dummy__task_8c_source_l00020}00020\ \textcolor{keyword}{static}\ StaticQueue\_t\ xDummyTaskQueueData;}
+\DoxyCodeLine{\Hypertarget{dummy__task_8c_source_l00021}00021\ \textcolor{keyword}{static}\ uint8\_t\ ucDummyTaskQueueStorageArea[LOCAL\_QUEUE\_LENGTH\ *\ MSG\_SIZE];}
+\DoxyCodeLine{\Hypertarget{dummy__task_8c_source_l00022}00022\ \textcolor{keyword}{static}\ QueueHandle\_t\ xDummyTaskQueue;}
+\DoxyCodeLine{\Hypertarget{dummy__task_8c_source_l00023}00023\ }
+\DoxyCodeLine{\Hypertarget{dummy__task_8c_source_l00024}00024\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ Dummy\_Task\_Handler(\textcolor{keywordtype}{void}\ *argument)\{}
+\DoxyCodeLine{\Hypertarget{dummy__task_8c_source_l00025}00025\ \ \ \ \ Subscribe(\textcolor{stringliteral}{"{}Dummy\_Task\_Handler"{}},(QueueHandle\_t)argument);}
+\DoxyCodeLine{\Hypertarget{dummy__task_8c_source_l00026}00026\ \ \ \ \ TaskSync\_SetAndWait(DUMMY\_BIT);}
+\DoxyCodeLine{\Hypertarget{dummy__task_8c_source_l00027}00027\ \ \ \ \ Message\_t\ newMsg;}
+\DoxyCodeLine{\Hypertarget{dummy__task_8c_source_l00028}00028\ \ \ \ \ \textcolor{keywordflow}{while}(1)\{}
+\DoxyCodeLine{\Hypertarget{dummy__task_8c_source_l00029}00029\ \ \ \ \ \ \ \ \ SleepUntil((QueueHandle\_t)argument,\&newMsg,1000);}
+\DoxyCodeLine{\Hypertarget{dummy__task_8c_source_l00030}00030\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ HAL\_GPIO\_TogglePin(GPIOE,\ GPIO\_PIN\_1);}}
+\DoxyCodeLine{\Hypertarget{dummy__task_8c_source_l00031}00031\ \textcolor{comment}{//\ \ \ \ \ \ FDCAN\_Tx();}}
+\DoxyCodeLine{\Hypertarget{dummy__task_8c_source_l00032}00032\ }
+\DoxyCodeLine{\Hypertarget{dummy__task_8c_source_l00033}00033\ \ \ \ \ \ \ \ \ TaskHealth\_SetBit(DUMMY\_BIT);}
+\DoxyCodeLine{\Hypertarget{dummy__task_8c_source_l00034}00034\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{dummy__task_8c_source_l00035}00035\ \}}
+\DoxyCodeLine{\Hypertarget{dummy__task_8c_source_l00036}00036\ }
+\DoxyCodeLine{\Hypertarget{dummy__task_8c_source_l00037}00037\ }
+\DoxyCodeLine{\Hypertarget{dummy__task_8c_source_l00038}00038\ \textcolor{keywordtype}{void}\ DummyTask\_Init(\textcolor{keywordtype}{void})\ \{}
+\DoxyCodeLine{\Hypertarget{dummy__task_8c_source_l00039}00039\ \ \ \ \ xDummyTaskQueue\ =\ xQueueCreateStatic(LOCAL\_QUEUE\_LENGTH,\ MSG\_SIZE,\ ucDummyTaskQueueStorageArea,\ \&xDummyTaskQueueData);}
+\DoxyCodeLine{\Hypertarget{dummy__task_8c_source_l00040}00040\ \ \ \ \ xTaskCreateStatic(Dummy\_Task\_Handler,\textcolor{stringliteral}{"{}Dummy\_Task\_Handler"{}},NORMAL\_TASK\_STACK\_SIZE}
+\DoxyCodeLine{\Hypertarget{dummy__task_8c_source_l00041}00041\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ,(\textcolor{keywordtype}{void}*)xDummyTaskQueue,DUMMY\_PR,xDummyTaskStack,\&xDummyTaskBuffer);}
+\DoxyCodeLine{\Hypertarget{dummy__task_8c_source_l00042}00042\ \}}
+
+\end{DoxyCode}

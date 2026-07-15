@@ -4,6 +4,7 @@
  *  Created on: May 15, 2026
  *      Author: adaro
  */
+
 #include <App/Tasks/root_task.h>
 #include "FreeRTOS.h"
 #include "task.h"

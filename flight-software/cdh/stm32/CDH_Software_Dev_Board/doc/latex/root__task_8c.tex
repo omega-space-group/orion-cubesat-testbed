@@ -1,0 +1,55 @@
+\doxysection{CM7/\+\+Core/\+\+Src/\+\+App/\+\+Tasks/\+root\+\_\+task.c File Reference}
+\hypertarget{root__task_8c}{}\label{root__task_8c}\index{CM7/Core/Src/App/Tasks/root\_task.c@{CM7/Core/Src/App/Tasks/root\_task.c}}
+
+
+This file provides code for the configuration of the FDCAN instances.  
+
+
+{\ttfamily \+\#include $<$App/\+\+Tasks/\+root\+\_\+task.\+h$>$}\newline
+{\ttfamily \+\#include "{}Free\+RTOS.\+h"{}}\newline
+{\ttfamily \+\#include "{}task.\+h"{}}\newline
+{\ttfamily \+\#include "{}fdcan.\+h"{}}\newline
+{\ttfamily \+\#include "{}usbd\+\_\+cdc\+\_\+if.\+h"{}}\newline
+{\ttfamily \+\#include $<$stdio.\+h$>$}\newline
+{\ttfamily \+\#include $<$App/\+app\+\_\+config.\+h$>$}\newline
+{\ttfamily \+\#include $<$App/\+\+Services/\+app\+\_\+events.\+h$>$}\newline
+{\ttfamily \+\#include $<$App/\+\+Tasks/\+iwdg\+\_\+task.\+h$>$}\newline
+{\ttfamily \+\#include $<$App/\+\+Tasks/\+dummy\+\_\+task.\+h$>$}\newline
+{\ttfamily \+\#include $<$App/\+\+Tasks/\+dispatcher\+\_\+task.\+h$>$}\newline
+{\ttfamily \+\#include $<$App/\+\+Tasks/\+mode\+Manager\+\_\+task.\+h$>$}\newline
+{\ttfamily \+\#include $<$App/\+\+Tasks/\+health\+Monitor\+\_\+task.\+h$>$}\newline
+{\ttfamily \+\#include $<$App/\+\+Tasks/\+subsystem\+Monitoring\+\_\+task.\+h$>$}\newline
+{\ttfamily \+\#include $<$App/\+\+Tasks/\+subsystem\+Control\+\_\+task.\+h$>$}\newline
+{\ttfamily \+\#include $<$App/\+\+Tasks/\+can\+\_\+rx\+\_\+task.\+h$>$}\newline
+{\ttfamily \+\#include $<$App/\+\+Tasks/\+telecommand\+Handler\+\_\+task.\+h$>$}\newline
+{\ttfamily \+\#include $<$App/\+\+Tasks/\+housekeeping\+\_\+task.\+h$>$}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \doxymbox{\hyperlink{root__task_8c_aca2c7d8f6d456d7fba6e583b40a7c40a}{Root\+\_\+\+Task\+\_\+\+Handler}} (void \texorpdfstring{$\ast$}{*}argument)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This file provides code for the configuration of the FDCAN instances. 
+
+
+
+\label{root__task_8c_doc-func-members}
+\Hypertarget{root__task_8c_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{root__task_8c_aca2c7d8f6d456d7fba6e583b40a7c40a}\index{root\_task.c@{root\_task.c}!Root\_Task\_Handler@{Root\_Task\_Handler}}
+\index{Root\_Task\_Handler@{Root\_Task\_Handler}!root\_task.c@{root\_task.c}}
+\doxysubsubsection{\texorpdfstring{Root\_Task\_Handler()}{Root\_Task\_Handler()}}
+{\footnotesize\ttfamily \label{root__task_8c_aca2c7d8f6d456d7fba6e583b40a7c40a} 
+void Root\+\_\+\+Task\+\_\+\+Handler (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{argument}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em argument} & \\
+\hline
+\end{DoxyParams}
+
+
+References \doxymbox{\hyperlink{dispatcher__task_8c_a1f06ad247a1eebe18b5b98888a598b82}{Dispatcher\+\_\+\+Task\+\_\+\+Init()}}, \doxymbox{\hyperlink{fdcan_8c_a52b806723c5e7d7675e615c1764bf03b}{FDCAN\+\_\+\+Start()}}, and \doxymbox{\hyperlink{health_monitor__task_8c_a9bf16be0fb6926c77cff31b234b642fa}{Health\+Monitor\+\_\+\+Init()}}.
+

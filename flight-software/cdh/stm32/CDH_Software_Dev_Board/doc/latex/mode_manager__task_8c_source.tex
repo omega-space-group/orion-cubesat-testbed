@@ -1,0 +1,104 @@
+\doxysection{mode\+Manager\+\_\+task.\+c}
+\hypertarget{mode_manager__task_8c_source}{}\label{mode_manager__task_8c_source}\index{CM7/Core/Src/App/Tasks/modeManager\_task.c@{CM7/Core/Src/App/Tasks/modeManager\_task.c}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00001}00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00002}00002\ \textcolor{comment}{\ *\ stateManager\_task.c}}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00003}00003\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00004}00004\ \textcolor{comment}{\ *\ \ Created\ on:\ May\ 16,\ 2026}}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00005}00005\ \textcolor{comment}{\ *\ \ \ \ \ \ Author:\ adaro}}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00006}00006\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00007}00007\ }
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00008}00008\ \textcolor{preprocessor}{\#include\ "{}FreeRTOS.h"{}}}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00009}00009\ \textcolor{preprocessor}{\#include\ "{}task.h"{}}}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00010}00010\ \textcolor{preprocessor}{\#include\ "{}fdcan.h"{}}}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00011}00011\ \textcolor{preprocessor}{\#include\ "{}usbd\_cdc\_if.h"{}}}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00012}00012\ \textcolor{preprocessor}{\#include\ <stdio.h>}}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00013}00013\ }
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00014}00014\ \textcolor{preprocessor}{\#include\ <App/app\_config.h>}}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00015}00015\ \textcolor{preprocessor}{\#include\ <App/Services/subscriptions.h>}}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00016}00016\ \textcolor{preprocessor}{\#include\ <App/Services/app\_events.h>}}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00017}00017\ \textcolor{preprocessor}{\#include\ <App/Tasks/modeManager\_task.h>}}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00018}00018\ }
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00019}00019\ \textcolor{keyword}{static}\ StackType\_t\ xTaskStack[NORMAL\_TASK\_STACK\_SIZE];}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00020}00020\ \textcolor{keyword}{static}\ StaticTask\_t\ xTaskBuffer;}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00021}00021\ }
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00022}00022\ \textcolor{keyword}{static}\ StaticQueue\_t\ xTaskQueueData;}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00023}00023\ \textcolor{keyword}{static}\ uint8\_t\ ucTaskQueueStorageArea[LOCAL\_QUEUE\_LENGTH\ *\ MSG\_SIZE];}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00024}00024\ \textcolor{keyword}{static}\ QueueHandle\_t\ xTaskQueue;}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00025}00025\ }
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00026}00026\ State\_t\ CurrentMode\ =\ SAFE;}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00027}00027\ }
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00028}00028\ \textcolor{comment}{/*\ Task\ priority\ and\ Task\ sync\ bit\ (if\ used)\ defined\ in\ app\_config.h\ */}}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00029}00029\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ ModeManager\_Handler(\textcolor{keywordtype}{void}\ *argument)\{}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00030}00030\ \ \ \ \ CAN\_TxPacket\ CAN1\_Tx;}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00031}00031\ \ \ \ \ Message\_t\ newMsg;}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00032}00032\ \ \ \ \ Subscribe(\textcolor{stringliteral}{"{}ModeManager\_Handler"{}},(QueueHandle\_t)argument);}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00033}00033\ \ \ \ \ TaskSync\_SetAndWait(MODE\_BIT);}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00034}00034\ \ \ \ \ Message\_t\ newMsgRsc;}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00035}00035\ \ \ \ \ \textcolor{keywordflow}{while}(1)\{}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00036}00036\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(SleepUntil((QueueHandle\_t)argument,\&newMsgRsc,500)\ ==\ NEW\_MSG)\{}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00037}00037\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{switch}((\textcolor{keywordtype}{int})newMsgRsc.Topic)\{}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00038}00038\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ CHANGE\_SYSTEM\_STATE:\{}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00039}00039\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ State\_t\ NewMode\ =\ newMsgRsc.Data.mode;}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00040}00040\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{switch}\ (CurrentMode)\ \{}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00041}00041\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ SAFE:}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00042}00042\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (NewMode\ ==\ NOMINAL)\ CurrentMode\ =\ NOMINAL;}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00043}00043\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (NewMode\ ==\ LOW\_POWER)\ CurrentMode\ =\ LOW\_POWER;}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00044}00044\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00045}00045\ }
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00046}00046\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ NOMINAL:}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00047}00047\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (NewMode\ ==\ SAFE)\ CurrentMode\ =\ SAFE;}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00048}00048\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (NewMode\ ==\ PAYLOAD)\ CurrentMode\ =\ PAYLOAD;}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00049}00049\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (NewMode\ ==\ LOW\_POWER)\ CurrentMode\ =\ LOW\_POWER;}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00050}00050\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00051}00051\ }
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00052}00052\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ LOW\_POWER:}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00053}00053\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (NewMode\ ==\ SAFE)\ CurrentMode\ =\ SAFE;}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00054}00054\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (NewMode\ ==\ NOMINAL)\ CurrentMode\ =\ NOMINAL;}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00055}00055\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00056}00056\ }
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00057}00057\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ PAYLOAD:}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00058}00058\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (NewMode\ ==\ NOMINAL)\ CurrentMode\ =\ NOMINAL;}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00059}00059\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (NewMode\ ==\ SAFE)\ CurrentMode\ =\ SAFE;}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00060}00060\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00061}00061\ }
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00062}00062\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{default}:}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00063}00063\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ NewMode\ =\ CurrentMode;}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00064}00064\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00065}00065\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00066}00066\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(NewMode\ ==\ SAFE)\{}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00067}00067\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ CAN1\_Tx.Header.Identifier\ =\ 0x002;}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00068}00068\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}SYSTEM\ COMMAND:\ ENTER\ SAFE\ MODE\(\backslash\)r\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00069}00069\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ fflush(stdout);}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00070}00070\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00071}00071\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}(NewMode\ ==\ NOMINAL)\ \{}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00072}00072\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ CAN1\_Tx.Header.Identifier\ =\ 0x003;}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00073}00073\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ CAN1\_Tx.Header.Identifier\ =\ 0x002;}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00074}00074\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}SYSTEM\ COMMAND:\ ENTER\ NOMINAL\ MODE\(\backslash\)r\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00075}00075\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ fflush(stdout);}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00076}00076\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00077}00077\ }
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00078}00078\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ CAN1\_Tx.Header.DataLength\ =\ FDCAN\_DLC\_BYTES\_0;}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00079}00079\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ FDCAN\_Tx(CAN1\_Tx);}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00080}00080\ }
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00081}00081\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ newMsg.Topic\ =\ SYSTEM\_STATE;}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00082}00082\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ newMsg.Data.mode\ =\ NewMode;}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00083}00083\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Publish(newMsg);}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00084}00084\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00085}00085\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00086}00086\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{default}:}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00087}00087\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00088}00088\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00089}00089\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00090}00090\ \ \ \ \ \ \ \ \ TaskHealth\_SetBit(MODE\_BIT);}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00091}00091\ \ \ \ \ \ \ \ \ vTaskDelay(100);}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00092}00092\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00093}00093\ \}}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00094}00094\ }
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00095}00095\ \textcolor{keywordtype}{void}\ ModeManager\_Task\_Init(\textcolor{keywordtype}{void})\ \{}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00096}00096\ \ \ \ \ xTaskQueue\ =\ xQueueCreateStatic(LOCAL\_QUEUE\_LENGTH,\ MSG\_SIZE,\ ucTaskQueueStorageArea,\ \&xTaskQueueData);}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00097}00097\ \ \ \ \ xTaskCreateStatic(ModeManager\_Handler,\textcolor{stringliteral}{"{}ModeManager\_Handler"{}},NORMAL\_TASK\_STACK\_SIZE,(\textcolor{keywordtype}{void}*)xTaskQueue,MODE\_PR,xTaskStack,\&xTaskBuffer);}
+\DoxyCodeLine{\Hypertarget{mode_manager__task_8c_source_l00098}00098\ \}}
+
+\end{DoxyCode}

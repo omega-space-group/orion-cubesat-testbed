@@ -1,0 +1,32 @@
+\doxysection{can\+\_\+rx\+\_\+task.\+h}
+\hypertarget{can__rx__task_8h_source}{}\label{can__rx__task_8h_source}\index{CM7/Core/Inc/App/Tasks/can\_rx\_task.h@{CM7/Core/Inc/App/Tasks/can\_rx\_task.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ *\ can\_rx\_task.h}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ *\ \ Created\ on:\ Jun\ 5,\ 2026}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ *\ \ \ \ \ \ Author:\ adaro}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#ifndef\ INC\_APP\_TASKS\_CAN\_RX\_TASK\_H\_}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#define\ INC\_APP\_TASKS\_CAN\_RX\_TASK\_H\_}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ "{}FreeRTOS.h"{}}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}queue.h"{}}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{enum}\{}
+\DoxyCodeLine{00015\ \ \ \ \ COMMS\ =\ 0,}
+\DoxyCodeLine{00016\ \ \ \ \ EPS\ =\ 1,}
+\DoxyCodeLine{00017\ \ \ \ \ PL\ =\ 2,}
+\DoxyCodeLine{00018\ \ \ \ \ ADCS\ =\ 3}
+\DoxyCodeLine{00019\ \}subsystemName;}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \textcolor{keywordtype}{void}\ CAN\_RX\_Task\_Init(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{00022\ QueueHandle\_t\ CAN\_RX\_Task\_GetQueue(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{00023\ \textcolor{keywordtype}{int}\ GetSubsystemStatus(subsystemName\ sub);}
+\DoxyCodeLine{00024\ \textcolor{keywordtype}{void}\ SetSubsystemStatus(subsystemName\ sub,\ \textcolor{keywordtype}{int}\ status);}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{/*\ INC\_APP\_TASKS\_CAN\_RX\_TASK\_H\_\ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

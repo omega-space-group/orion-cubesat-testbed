@@ -12,6 +12,7 @@
 #include "queue.h"
 
 void Dispatcher_Task_Init(void);
+
 QueueHandle_t DispatcherTask_GetQueue(void);
 
 #endif /* INC_APP_TASKS_DISPATCHER_TASK_H_ */

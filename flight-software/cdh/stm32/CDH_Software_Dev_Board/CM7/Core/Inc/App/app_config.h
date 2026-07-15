@@ -4,7 +4,30 @@
  *  Created on: May 14, 2026
  *      Author: adaro
  */
+/**
+ * @defgroup fdir_module Fault Detection, Isolation, and Recovery (FDIR)
+ * @brief High-level flight safety, health monitoring, and watchdog tasks.
+ */
 
+/**
+ * @defgroup telemetry_module Housekeeping & Telemetry
+ * @brief Serializing, buffering, and transmitting space-to-ground health matrices.
+ */
+
+/**
+ * @defgroup telecommand_module Ground Command Execution
+ * @brief Handling of Telecommands
+ */
+
+/**
+ * @defgroup sys_state_module Satellite Modes
+ * @brief Run the System State FSM
+ */
+
+/**
+ * @defgroup subsystems_module Subsystem Control
+ * @brief Something
+ */
 #ifndef INC_APP_APP_CONFIG_H_
 #define INC_APP_APP_CONFIG_H_
 

@@ -1,0 +1,63 @@
+\doxysection{root\+\_\+task.\+c}
+\hypertarget{root__task_8c_source}{}\label{root__task_8c_source}\index{CM7/Core/Src/App/Tasks/root\_task.c@{CM7/Core/Src/App/Tasks/root\_task.c}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{root__task_8c_source_l00001}00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{root__task_8c_source_l00002}00002\ \textcolor{comment}{\ *\ root\_task.c}}
+\DoxyCodeLine{\Hypertarget{root__task_8c_source_l00003}00003\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{\Hypertarget{root__task_8c_source_l00004}00004\ \textcolor{comment}{\ *\ \ Created\ on:\ May\ 15,\ 2026}}
+\DoxyCodeLine{\Hypertarget{root__task_8c_source_l00005}00005\ \textcolor{comment}{\ *\ \ \ \ \ \ Author:\ adaro}}
+\DoxyCodeLine{\Hypertarget{root__task_8c_source_l00006}00006\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{root__task_8c_source_l00007}00007\ \textcolor{preprocessor}{\#include\ <App/Tasks/root\_task.h>}}
+\DoxyCodeLine{\Hypertarget{root__task_8c_source_l00008}00008\ \textcolor{preprocessor}{\#include\ "{}FreeRTOS.h"{}}}
+\DoxyCodeLine{\Hypertarget{root__task_8c_source_l00009}00009\ \textcolor{preprocessor}{\#include\ "{}task.h"{}}}
+\DoxyCodeLine{\Hypertarget{root__task_8c_source_l00010}00010\ \textcolor{preprocessor}{\#include\ "{}fdcan.h"{}}}
+\DoxyCodeLine{\Hypertarget{root__task_8c_source_l00011}00011\ \textcolor{preprocessor}{\#include\ "{}usbd\_cdc\_if.h"{}}}
+\DoxyCodeLine{\Hypertarget{root__task_8c_source_l00012}00012\ \textcolor{preprocessor}{\#include\ <stdio.h>}}
+\DoxyCodeLine{\Hypertarget{root__task_8c_source_l00013}00013\ }
+\DoxyCodeLine{\Hypertarget{root__task_8c_source_l00014}00014\ \textcolor{preprocessor}{\#include\ <App/app\_config.h>}}
+\DoxyCodeLine{\Hypertarget{root__task_8c_source_l00015}00015\ \textcolor{preprocessor}{\#include\ <App/Services/app\_events.h>}}
+\DoxyCodeLine{\Hypertarget{root__task_8c_source_l00016}00016\ \textcolor{preprocessor}{\#include\ <App/Tasks/iwdg\_task.h>}}
+\DoxyCodeLine{\Hypertarget{root__task_8c_source_l00017}00017\ \textcolor{preprocessor}{\#include\ <App/Tasks/dummy\_task.h>}}
+\DoxyCodeLine{\Hypertarget{root__task_8c_source_l00018}00018\ \textcolor{preprocessor}{\#include\ <App/Tasks/dispatcher\_task.h>}}
+\DoxyCodeLine{\Hypertarget{root__task_8c_source_l00019}00019\ \textcolor{preprocessor}{\#include\ <App/Tasks/modeManager\_task.h>}}
+\DoxyCodeLine{\Hypertarget{root__task_8c_source_l00020}00020\ \textcolor{preprocessor}{\#include\ <App/Tasks/healthMonitor\_task.h>}}
+\DoxyCodeLine{\Hypertarget{root__task_8c_source_l00021}00021\ \textcolor{preprocessor}{\#include\ <App/Tasks/subsystemMonitoring\_task.h>}}
+\DoxyCodeLine{\Hypertarget{root__task_8c_source_l00022}00022\ \textcolor{preprocessor}{\#include\ <App/Tasks/subsystemControl\_task.h>}}
+\DoxyCodeLine{\Hypertarget{root__task_8c_source_l00023}00023\ \textcolor{preprocessor}{\#include\ <App/Tasks/can\_rx\_task.h>}}
+\DoxyCodeLine{\Hypertarget{root__task_8c_source_l00024}00024\ \textcolor{preprocessor}{\#include\ <App/Tasks/telecommandHandler\_task.h>}}
+\DoxyCodeLine{\Hypertarget{root__task_8c_source_l00025}00025\ \textcolor{preprocessor}{\#include\ <App/Tasks/housekeeping\_task.h>}}
+\DoxyCodeLine{\Hypertarget{root__task_8c_source_l00026}00026\ }
+\DoxyCodeLine{\Hypertarget{root__task_8c_source_l00027}00027\ \textcolor{keyword}{static}\ StackType\_t\ xRootTaskStack[NORMAL\_TASK\_STACK\_SIZE];}
+\DoxyCodeLine{\Hypertarget{root__task_8c_source_l00028}00028\ \textcolor{keyword}{static}\ StaticTask\_t\ xRootTaskBuffer;}
+\DoxyCodeLine{\Hypertarget{root__task_8c_source_l00029}00029\ }
+\DoxyCodeLine{\Hypertarget{root__task_8c_source_l00030}00030\ \textcolor{comment}{/*\ Root\ Task\ responsible\ for\ starting\ peripherals\ and\ spawn\ tasks\ */}}
+\DoxyCodeLine{\Hypertarget{root__task_8c_source_l00031}00031\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ Root\_Task\_Handler(\textcolor{keywordtype}{void}\ *argument)\{}
+\DoxyCodeLine{\Hypertarget{root__task_8c_source_l00032}00032\ \textcolor{comment}{//\ \ printf("{}\(\backslash\)r\(\backslash\)n-\/-\/-\/\ SYSTEM\ BOOT\ START\ -\/-\/-\/\(\backslash\)r\(\backslash\)n"{});}}
+\DoxyCodeLine{\Hypertarget{root__task_8c_source_l00033}00033\ \textcolor{comment}{//\ \ fflush(stdout);}}
+\DoxyCodeLine{\Hypertarget{root__task_8c_source_l00034}00034\ \ \ \ \ FDCAN\_Start();}
+\DoxyCodeLine{\Hypertarget{root__task_8c_source_l00035}00035\ }
+\DoxyCodeLine{\Hypertarget{root__task_8c_source_l00036}00036\ \ \ \ \ TaskSync\_Init();}
+\DoxyCodeLine{\Hypertarget{root__task_8c_source_l00037}00037\ \ \ \ \ TaskHealth\_Init();}
+\DoxyCodeLine{\Hypertarget{root__task_8c_source_l00038}00038\ }
+\DoxyCodeLine{\Hypertarget{root__task_8c_source_l00039}00039\ \ \ \ \ IWDG\_Task\_Init();}
+\DoxyCodeLine{\Hypertarget{root__task_8c_source_l00040}00040\ \ \ \ \ \doxymbox{\hyperlink{dispatcher__task_8c_a1f06ad247a1eebe18b5b98888a598b82}{Dispatcher\_Task\_Init}}();}
+\DoxyCodeLine{\Hypertarget{root__task_8c_source_l00041}00041\ \ \ \ \ DummyTask\_Init();}
+\DoxyCodeLine{\Hypertarget{root__task_8c_source_l00042}00042\ \ \ \ \ ModeManager\_Task\_Init();}
+\DoxyCodeLine{\Hypertarget{root__task_8c_source_l00043}00043\ \ \ \ \ HealthMonitor\_Init();}
+\DoxyCodeLine{\Hypertarget{root__task_8c_source_l00044}00044\ \ \ \ \ SubsystemMonitor\_Init();}
+\DoxyCodeLine{\Hypertarget{root__task_8c_source_l00045}00045\ \ \ \ \ SubsystemControl\_Init();}
+\DoxyCodeLine{\Hypertarget{root__task_8c_source_l00046}00046\ \ \ \ \ CAN\_RX\_Task\_Init();}
+\DoxyCodeLine{\Hypertarget{root__task_8c_source_l00047}00047\ \ \ \ \ TelecommandHandler\_Init();}
+\DoxyCodeLine{\Hypertarget{root__task_8c_source_l00048}00048\ \ \ \ \ HousekeepingHandler\_Init();}
+\DoxyCodeLine{\Hypertarget{root__task_8c_source_l00049}00049\ \ \ \ \ \textcolor{comment}{/*\ Infinite\ loop\ */}}
+\DoxyCodeLine{\Hypertarget{root__task_8c_source_l00050}00050\ \ \ \ \ \textcolor{keywordflow}{while}(1)\{}
+\DoxyCodeLine{\Hypertarget{root__task_8c_source_l00051}00051\ \ \ \ \ \ \ \ \ xTaskNotifyWait(0,0,NULL,portMAX\_DELAY);}
+\DoxyCodeLine{\Hypertarget{root__task_8c_source_l00052}00052\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{root__task_8c_source_l00053}00053\ \}}
+\DoxyCodeLine{\Hypertarget{root__task_8c_source_l00054}00054\ }
+\DoxyCodeLine{\Hypertarget{root__task_8c_source_l00055}00055\ \textcolor{keywordtype}{void}\ Root\_Task\_Init(\textcolor{keywordtype}{void})\ \{}
+\DoxyCodeLine{\Hypertarget{root__task_8c_source_l00056}00056\ \ \ \ \ \ \ xTaskCreateStatic(Root\_Task\_Handler,\textcolor{stringliteral}{"{}Root\_Task\_Handler"{}},NORMAL\_TASK\_STACK\_SIZE,NULL,ROOT\_PR,xRootTaskStack,\&xRootTaskBuffer);}
+\DoxyCodeLine{\Hypertarget{root__task_8c_source_l00057}00057\ \}}
+
+\end{DoxyCode}
