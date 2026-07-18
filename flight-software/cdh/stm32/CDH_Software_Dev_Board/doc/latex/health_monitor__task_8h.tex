@@ -2,12 +2,42 @@
 \hypertarget{health_monitor__task_8h}{}\label{health_monitor__task_8h}\index{CM7/Core/Inc/App/Tasks/healthMonitor\_task.h@{CM7/Core/Inc/App/Tasks/healthMonitor\_task.h}}
 
 
-Public interface for the OBC Health Monitoring System.  
+This file contains all the function prototypes for the \doxylink{health_monitor__task_8c}{health\+Monitor\+\_\+task.\+c} file.  
 
 
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \doxymbox{\hyperlink{health_monitor__task_8h_a9bf16be0fb6926c77cff31b234b642fa}{Health\+Monitor\+\_\+\+Init}} (void)
+\begin{DoxyCompactList}\small\item\em Task\textquotesingle{}s initialization function. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
-Public interface for the OBC Health Monitoring System. 
+This file contains all the function prototypes for the \doxylink{health_monitor__task_8c}{health\+Monitor\+\_\+task.\+c} file. 
 
-This module manages the background health reporting, watchdog tracking, and error accounting for all active flight tasks. 
+Implementation of the background execution check and task accounting. For more details look into \doxylink{health_monitor__task_8c_afdddd09b1c8d74d470776489ec452cc7}{Health\+Monitor\+\_\+\+Handler()}. 
+
+\label{health_monitor__task_8h_doc-func-members}
+\Hypertarget{health_monitor__task_8h_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{health_monitor__task_8h_a9bf16be0fb6926c77cff31b234b642fa}\index{healthMonitor\_task.h@{healthMonitor\_task.h}!HealthMonitor\_Init@{HealthMonitor\_Init}}
+\index{HealthMonitor\_Init@{HealthMonitor\_Init}!healthMonitor\_task.h@{healthMonitor\_task.h}}
+\doxysubsubsection{\texorpdfstring{HealthMonitor\_Init()}{HealthMonitor\_Init()}}
+{\footnotesize\ttfamily \label{health_monitor__task_8h_a9bf16be0fb6926c77cff31b234b642fa} 
+void Health\+Monitor\+\_\+\+Init (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Task\textquotesingle{}s initialization function. 
+
+First master queue is created. Then the task itself is created and the queue handle is passed as a task parameter. \begin{DoxyNote}{Note}
+Check \doxylink{app__config_8h}{app\+\_\+config.\+h} for stack configurations 
+\end{DoxyNote}
+
+
+References \doxymbox{\hyperlink{health_monitor__task_8c_afdddd09b1c8d74d470776489ec452cc7}{Health\+Monitor\+\_\+\+Handler()}}, \doxymbox{\hyperlink{app__config_8h_a89edd2c3ccb497e752853757dc7d5137}{HM\+\_\+\+PR}}, \doxymbox{\hyperlink{app__config_8h_a843595a59955f4e62f3d0d2e328e38a2}{LOCAL\+\_\+\+QUEUE\+\_\+\+LENGTH}}, and \doxymbox{\hyperlink{app__config_8h_a200c2c21eb5510aa388dc932a76e830d}{NORMAL\+\_\+\+TASK\+\_\+\+STACK\+\_\+\+SIZE}}.
+
+
+
+Referenced by \doxymbox{\hyperlink{root__task_8c_aca2c7d8f6d456d7fba6e583b40a7c40a}{Root\+\_\+\+Task\+\_\+\+Handler()}}.
+

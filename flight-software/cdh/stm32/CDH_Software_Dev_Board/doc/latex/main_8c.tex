@@ -2,7 +2,7 @@
 \hypertarget{main_8c}{}\label{main_8c}\index{CM7/Core/Src/main.c@{CM7/Core/Src/main.c}}
 
 
-:\+ Main program body  
+Main Function Implementation.  
 
 
 {\ttfamily \+\#include "{}main.\+h"{}}\newline
@@ -16,61 +16,26 @@
 {\ttfamily \+\#include "{}usbd\+\_\+cdc\+\_\+if.\+h"{}}\newline
 {\ttfamily \+\#include $<$stdio.\+h$>$}\newline
 {\ttfamily \+\#include $<$string.\+h$>$}\newline
-\doxysubsubsection*{Macros}
-\begin{DoxyCompactItemize}
-\item 
-\Hypertarget{main_8c_a66761607ebca2d7b18eb6adfbd0891a7}\label{main_8c_a66761607ebca2d7b18eb6adfbd0891a7} 
-\+\#define {\bfseries HSEM\+\_\+\+ID\+\_\+0}~(0U) /\+\texorpdfstring{$\ast$}{*} HW semaphore 0\texorpdfstring{$\ast$}{*}/\+
-\end{DoxyCompactItemize}
 \doxysubsubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-void \doxymbox{\hyperlink{main_8c_a70af21c671abfcc773614a9a4f63d920}{System\+Clock\+\_\+\+Config}} (void)
-\begin{DoxyCompactList}\small\item\em System Clock Configuration. \end{DoxyCompactList}\item 
-void \doxymbox{\hyperlink{main_8c_abade755e13d07c10889ae83143656158}{MX\+\_\+\+FREERTOS\+\_\+\+Init}} (void)
-\begin{DoxyCompactList}\small\item\em Free\+RTOS initialization. \end{DoxyCompactList}\item 
-\Hypertarget{main_8c_adab4f7fc1db4ce2be073d3913209d2af}\label{main_8c_adab4f7fc1db4ce2be073d3913209d2af} 
-void {\bfseries MX\+\_\+\+USB\+\_\+\+DEVICE\+\_\+\+Init} (void)
-\item 
+\Hypertarget{main_8c_abade755e13d07c10889ae83143656158}\label{main_8c_abade755e13d07c10889ae83143656158} 
+void {\bfseries MX\+\_\+\+FREERTOS\+\_\+\+Init} (void)
+\begin{DoxyCompactList}\small\item\em This function initializes the auto-\/generated default thread and the Root Task. \end{DoxyCompactList}\item 
 int \doxymbox{\hyperlink{main_8c_a840291bc02cba5474a4cb46a9b9566fe}{main}} (void)
-\begin{DoxyCompactList}\small\item\em The application entry point. \end{DoxyCompactList}\item 
-\Hypertarget{main_8c_aa025a12d45f60c7d0eae249e61f0c7f9}\label{main_8c_aa025a12d45f60c7d0eae249e61f0c7f9} 
-int {\bfseries \+\_\+write} (int file, char \texorpdfstring{$\ast$}{*}ptr, int len)
-\item 
+\begin{DoxyCompactList}\small\item\em Peripheral and RTOS Initialization. \end{DoxyCompactList}\item 
 void \doxymbox{\hyperlink{main_8c_a8a3b0ad512a6e6c6157440b68d395eac}{HAL\+\_\+\+TIM\+\_\+\+Period\+Elapsed\+Callback}} (TIM\+\_\+\+Handle\+Type\+Def \texorpdfstring{$\ast$}{*}htim)
-\begin{DoxyCompactList}\small\item\em Period elapsed callback in non blocking mode. \end{DoxyCompactList}\item 
-void \doxymbox{\hyperlink{main_8c_a1730ffe1e560465665eb47d9264826f9}{Error\+\_\+\+Handler}} (void)
-\begin{DoxyCompactList}\small\item\em This function is executed in case of error occurrence. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em TIM6 callback function. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
-:\+ Main program body 
+Main Function Implementation. 
 
-\begin{DoxyAttention}{Attention}
-
-\end{DoxyAttention}
-Copyright (c) 2026 STMicroelectronics. All rights reserved.
-
-This software is licensed under terms that can be found in the LICENSE file in the root directory of this software component. If no LICENSE file comes with this software, it is provided AS-\/\+IS. 
+This function is responsible for initializing every peripheral and the kernel. 
 
 \label{main_8c_doc-func-members}
 \Hypertarget{main_8c_doc-func-members}
 \doxysubsection{Function Documentation}
-\Hypertarget{main_8c_a1730ffe1e560465665eb47d9264826f9}\index{main.c@{main.c}!Error\_Handler@{Error\_Handler}}
-\index{Error\_Handler@{Error\_Handler}!main.c@{main.c}}
-\doxysubsubsection{\texorpdfstring{Error\_Handler()}{Error\_Handler()}}
-{\footnotesize\ttfamily \label{main_8c_a1730ffe1e560465665eb47d9264826f9} 
-void Error\+\_\+\+Handler (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
-
-
-
-This function is executed in case of error occurrence. 
-
-
-\begin{DoxyRetVals}{Return values}
-{\em None} & \\
-\hline
-\end{DoxyRetVals}
 \Hypertarget{main_8c_a8a3b0ad512a6e6c6157440b68d395eac}\index{main.c@{main.c}!HAL\_TIM\_PeriodElapsedCallback@{HAL\_TIM\_PeriodElapsedCallback}}
 \index{HAL\_TIM\_PeriodElapsedCallback@{HAL\_TIM\_PeriodElapsedCallback}!main.c@{main.c}}
 \doxysubsubsection{\texorpdfstring{HAL\_TIM\_PeriodElapsedCallback()}{HAL\_TIM\_PeriodElapsedCallback()}}
@@ -79,22 +44,18 @@ void HAL\+\_\+\+TIM\+\_\+\+Period\+Elapsed\+Callback (\begin{DoxyParamCaption}\i
 
 
 
-Period elapsed callback in non blocking mode. 
+TIM6 callback function. 
 
-\begin{DoxyNote}{Note}
-This function is called when TIM6 interrupt took place, inside HAL\+\_\+\+TIM\+\_\+\+IRQHandler(). It makes a direct call to HAL\+\_\+\+Inc\+Tick() to increment a global variable "{}uw\+Tick"{} used as application time base. 
-\end{DoxyNote}
+Whenever TIM6 overflows, the callback increments the global variable "{}uw\+Tick"{} used as application time base for Cortex-\/\+M7. \begin{DoxyWarning}{Warning}
+To prevent interrupt priority inversion and deadlocks, we separate the RTOS timebase from the HAL timebase using TIM6 as the HAL timebase and Sys\+Tick for RTOS
+\end{DoxyWarning}
 
-\begin{DoxyParams}{Parameters}
-{\em htim} & :\+ TIM handle \\
-\hline
-\end{DoxyParams}
+\begin{DoxyEnumerate}
+\item Sys\+Tick is dedicated exclusively to the RTOS and is assigned the LOWEST priority so it doesn\textquotesingle{}t block time-\/critical ISRs.
+\item A dedicated hardware timer (TIM6) is used for the HAL timebase (HAL\+\_\+\+Delay) and is assigned a HIGH priority. This ensures HAL timeouts can safely execute even when called from within peripheral interrupts.
+\end{DoxyEnumerate}
 
-\begin{DoxyRetVals}{Return values}
-{\em None} & \\
-\hline
-\end{DoxyRetVals}
-\Hypertarget{main_8c_a840291bc02cba5474a4cb46a9b9566fe}\index{main.c@{main.c}!main@{main}}
+Using Sys\+Tick for both would cause a deadlock if a HAL function with a timeout were ever called from a high-\/priority interrupt handler. \Hypertarget{main_8c_a840291bc02cba5474a4cb46a9b9566fe}\index{main.c@{main.c}!main@{main}}
 \index{main@{main}!main.c@{main.c}}
 \doxysubsubsection{\texorpdfstring{main()}{main()}}
 {\footnotesize\ttfamily \label{main_8c_a840291bc02cba5474a4cb46a9b9566fe} 
@@ -102,56 +63,25 @@ int main (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
 
 
 
-The application entry point. 
+Peripheral and RTOS Initialization. 
 
 
-\begin{DoxyRetVals}{Return values}
-{\em int} & \\
-\hline
-\end{DoxyRetVals}
-\Hypertarget{main_8c_abade755e13d07c10889ae83143656158}\index{main.c@{main.c}!MX\_FREERTOS\_Init@{MX\_FREERTOS\_Init}}
-\index{MX\_FREERTOS\_Init@{MX\_FREERTOS\_Init}!main.c@{main.c}}
-\doxysubsubsection{\texorpdfstring{MX\_FREERTOS\_Init()}{MX\_FREERTOS\_Init()}}
-{\footnotesize\ttfamily \label{main_8c_abade755e13d07c10889ae83143656158} 
-void MX\+\_\+\+FREERTOS\+\_\+\+Init (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+\begin{DoxyEnumerate}
+\item Every peripheral is initialized.
+\item RTOS Kernel is initialized.
+\item \doxylink{main_8c_abade755e13d07c10889ae83143656158}{MX\+\_\+\+FREERTOS\+\_\+\+Init()} is called to initialize the Root Task
+\item The kernel is started. From now on there is no serial execution and the scheduler has control. \begin{DoxyNote}{Note}
+1. There is a 5 sec delay before initializing the OS to make sure all peripherals are brought up fully. 
 
+2. TIM7 is used to keep track of Free\+RTOS Statistics (Free\+RTOS Task List, Timers etc) for debugging purposes. 
 
+3. Look into Flash and Debug Manual for more info on how Cortex-\/\+M7 handles flashing. 
+\end{DoxyNote}
+\begin{DoxyWarning}{Warning}
+Control should never reach main\textquotesingle{}s inifinite loop because that would mean the RTOS has failed. 
+\end{DoxyWarning}
 
-Free\+RTOS initialization. 
+\end{DoxyEnumerate}
 
+References \doxymbox{\hyperlink{fdcan_8c_af122e1c28b11c5b8771e82328e10fa2c}{MX\+\_\+\+FDCAN1\+\_\+\+Init()}}, and \doxymbox{\hyperlink{main_8c_abade755e13d07c10889ae83143656158}{MX\+\_\+\+FREERTOS\+\_\+\+Init()}}.
 
-\begin{DoxyParams}{Parameters}
-{\em None} & \\
-\hline
-\end{DoxyParams}
-
-\begin{DoxyRetVals}{Return values}
-{\em None} & \\
-\hline
-\end{DoxyRetVals}
-\Hypertarget{main_8c_a70af21c671abfcc773614a9a4f63d920}\index{main.c@{main.c}!SystemClock\_Config@{SystemClock\_Config}}
-\index{SystemClock\_Config@{SystemClock\_Config}!main.c@{main.c}}
-\doxysubsubsection{\texorpdfstring{SystemClock\_Config()}{SystemClock\_Config()}}
-{\footnotesize\ttfamily \label{main_8c_a70af21c671abfcc773614a9a4f63d920} 
-void System\+Clock\+\_\+\+Config (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
-
-
-
-System Clock Configuration. 
-
-
-\begin{DoxyRetVals}{Return values}
-{\em None} & \\
-\hline
-\end{DoxyRetVals}
-Supply configuration update enable
-
-Configure the main internal regulator output voltage
-
-Initializes the RCC Oscillators according to the specified parameters in the RCC\+\_\+\+Osc\+Init\+Type\+Def structure.
-
-Initializes the CPU, AHB and APB buses clocks
-
-Enable the SYSCFG APB clock
-
-Configures CRS

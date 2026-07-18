@@ -27,14 +27,25 @@ int cntHealth = 0;
 int problem = 0;
 
 /* Task sync bit (if used) and task priority defined in app_config.h */
-/*
- * @brief  Main execution thread loop for the Health Monitor system.
- * @details Implements a 5-second periodic execution loop. It synchronizes with the system
- * via the `HM_BIT` flag, asserts its own health state, checks the collective
- * status of all flight subsystems, and accounts for missing status logs.
- * * @param  argument: A generic parameter pointer containing the initialization queue handle.
- * * @note   This function runs as a static thread and is blocked for 5000ms intervals.
- * @see    TaskHealth_Read(), TaskHealth_ClearAll()
+/**
+ * @brief Task's Handler where main logic is executed inside an infinite loop.
+ * @details The idea here is to have a mask (xTaskHealthEvent) with the number of bits equal to the number of tasks initialized.
+ * Each task has its own place on the mask, which is given by the Health and Sync bit (see app_config.h).
+ *
+ * -> Every time a task finishes an execution, it sets its bit to 1.
+ * -> If the task is not periodic and blocks indefinitely then the task sets its bit to 1 before it sleeps to prevent any false
+ * triggers. When the task is woken up, it clears its bit, executes its main loop and sets its bit again after
+ * finishing execution.
+ *
+ *
+ * Health Monitoring Task logic:
+ * 1. Set your own sync bit and block until all other tasks have finished initialization before continuing.
+ * 2. Periodically:
+ * - Check if all tasks are making progress by checking that the mask is equal to ALL_TASKS_OK. That would mean that
+ * all tasks have set their bit and finished execution at least ones, so no starvation or hangs!
+ * - If check okay then increment a local health variable. Else, increment a different local variable.
+ * - Lastly, clear the mask to reset the process.
+ * @param argument  Pointer to task's local queue handle
  */
 static void HealthMonitor_Handler(void *argument){
 	TaskSync_SetAndWait(HM_BIT);
@@ -52,6 +63,11 @@ static void HealthMonitor_Handler(void *argument){
 	}
 }
 
+/**
+ * @brief Task's initialization function.
+ * @details First master queue is created. Then the task itself is created and the queue handle is passed as a task parameter.
+ * @note Check app_config.h for stack configurations
+ */
 void HealthMonitor_Init(void) {
 	xTaskQueue = xQueueCreateStatic(LOCAL_QUEUE_LENGTH, MSG_SIZE, ucTaskQueueStorageArea, &xTaskQueueData);
 	xTaskCreateStatic(HealthMonitor_Handler,"HealthMonitor_Handler",NORMAL_TASK_STACK_SIZE

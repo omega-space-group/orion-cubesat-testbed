@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['main_0',['main',['../main_8c.html#a840291bc02cba5474a4cb46a9b9566fe',1,'main.c']]],
-  ['memmanage_5fhandler_1',['MemManage_Handler',['../stm32h7xx__it_8c.html#a3150f74512510287a942624aa9b44cc5',1,'stm32h7xx_it.c']]],
-  ['mx_5ffreertos_5finit_2',['MX_FREERTOS_Init',['../main_8c.html#abade755e13d07c10889ae83143656158',1,'freertos.c']]],
-  ['mx_5fgpio_5finit_3',['MX_GPIO_Init',['../gpio_8c.html#ac724e431d2af879252de35615be2bdea',1,'gpio.c']]]
+  ['root_5ftask_5fhandler_0',['Root_Task_Handler',['../root__task_8c.html#aca2c7d8f6d456d7fba6e583b40a7c40a',1,'root_task.c']]],
+  ['root_5ftask_5finit_1',['Root_Task_Init',['../root__task_8c.html#a20ccc1f58e4eec886f512b3dbc3829ce',1,'root_task.c']]]
 ];

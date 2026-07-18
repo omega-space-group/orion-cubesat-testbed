@@ -119,11 +119,11 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('main_8c.html',
 </div><!--header-->
 <div class="contents">
 
-<p>: Main program body  
+<p>Main Function Implementation.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;main.h&quot;</code><br />
 <code>#include &quot;cmsis_os.h&quot;</code><br />
-<code>#include &quot;fdcan.h&quot;</code><br />
+<code>#include &quot;<a class="el" href="fdcan_8h.html">fdcan.h</a>&quot;</code><br />
 <code>#include &quot;iwdg.h&quot;</code><br />
 <code>#include &quot;tim.h&quot;</code><br />
 <code>#include &quot;usart.h&quot;</code><br />
@@ -133,59 +133,20 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('main_8c.html',
 <code>#include &lt;stdio.h&gt;</code><br />
 <code>#include &lt;string.h&gt;</code><br />
 </div><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 id="header-define-members" class="groupheader"><a id="define-members" name="define-members"></a>
-Macros</h2></td></tr>
-<tr class="memitem:a66761607ebca2d7b18eb6adfbd0891a7" id="r_a66761607ebca2d7b18eb6adfbd0891a7"><td class="memItemLeft"><a id="a66761607ebca2d7b18eb6adfbd0891a7" name="a66761607ebca2d7b18eb6adfbd0891a7"></a>
-#define&#160;</td><td class="memItemRight"><b>HSEM_ID_0</b>&#160;&#160;&#160;(0U) /* HW semaphore 0*/</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a70af21c671abfcc773614a9a4f63d920" id="r_a70af21c671abfcc773614a9a4f63d920"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a70af21c671abfcc773614a9a4f63d920">SystemClock_Config</a> (void)</td></tr>
-<tr class="memdesc:a70af21c671abfcc773614a9a4f63d920"><td class="mdescLeft">&#160;</td><td class="mdescRight">System Clock Configuration.  <br /></td></tr>
-<tr class="memitem:abade755e13d07c10889ae83143656158" id="r_abade755e13d07c10889ae83143656158"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#abade755e13d07c10889ae83143656158">MX_FREERTOS_Init</a> (void)</td></tr>
-<tr class="memdesc:abade755e13d07c10889ae83143656158"><td class="mdescLeft">&#160;</td><td class="mdescRight">FreeRTOS initialization.  <br /></td></tr>
-<tr class="memitem:adab4f7fc1db4ce2be073d3913209d2af" id="r_adab4f7fc1db4ce2be073d3913209d2af"><td class="memItemLeft"><a id="adab4f7fc1db4ce2be073d3913209d2af" name="adab4f7fc1db4ce2be073d3913209d2af"></a>
-void&#160;</td><td class="memItemRight"><b>MX_USB_DEVICE_Init</b> (void)</td></tr>
+<tr class="memitem:abade755e13d07c10889ae83143656158" id="r_abade755e13d07c10889ae83143656158"><td class="memItemLeft"><a id="abade755e13d07c10889ae83143656158" name="abade755e13d07c10889ae83143656158"></a>
+void&#160;</td><td class="memItemRight"><b>MX_FREERTOS_Init</b> (void)</td></tr>
+<tr class="memdesc:abade755e13d07c10889ae83143656158"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function initializes the auto-generated default thread and the Root Task. <br /></td></tr>
 <tr class="memitem:a840291bc02cba5474a4cb46a9b9566fe" id="r_a840291bc02cba5474a4cb46a9b9566fe"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="#a840291bc02cba5474a4cb46a9b9566fe">main</a> (void)</td></tr>
-<tr class="memdesc:a840291bc02cba5474a4cb46a9b9566fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">The application entry point.  <br /></td></tr>
-<tr class="memitem:aa025a12d45f60c7d0eae249e61f0c7f9" id="r_aa025a12d45f60c7d0eae249e61f0c7f9"><td class="memItemLeft"><a id="aa025a12d45f60c7d0eae249e61f0c7f9" name="aa025a12d45f60c7d0eae249e61f0c7f9"></a>
-int&#160;</td><td class="memItemRight"><b>_write</b> (int file, char *ptr, int len)</td></tr>
+<tr class="memdesc:a840291bc02cba5474a4cb46a9b9566fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Peripheral and RTOS Initialization.  <br /></td></tr>
 <tr class="memitem:a8a3b0ad512a6e6c6157440b68d395eac" id="r_a8a3b0ad512a6e6c6157440b68d395eac"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a8a3b0ad512a6e6c6157440b68d395eac">HAL_TIM_PeriodElapsedCallback</a> (TIM_HandleTypeDef *htim)</td></tr>
-<tr class="memdesc:a8a3b0ad512a6e6c6157440b68d395eac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Period elapsed callback in non blocking mode.  <br /></td></tr>
-<tr class="memitem:a1730ffe1e560465665eb47d9264826f9" id="r_a1730ffe1e560465665eb47d9264826f9"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a1730ffe1e560465665eb47d9264826f9">Error_Handler</a> (void)</td></tr>
-<tr class="memdesc:a1730ffe1e560465665eb47d9264826f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function is executed in case of error occurrence.  <br /></td></tr>
+<tr class="memdesc:a8a3b0ad512a6e6c6157440b68d395eac"><td class="mdescLeft">&#160;</td><td class="mdescRight">TIM6 callback function.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>: Main program body </p>
-<dl class="section attention"><dt>Attention</dt><dd></dd></dl>
-<p>Copyright (c) 2026 STMicroelectronics. All rights reserved.</p>
-<p>This software is licensed under terms that can be found in the LICENSE file in the root directory of this software component. If no LICENSE file comes with this software, it is provided AS-IS. </p>
+<div class="textblock"><p>Main Function Implementation. </p>
+<p>This function is responsible for initializing every peripheral and the kernel. </p>
 </div><a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Function Documentation</h2>
-<a id="a1730ffe1e560465665eb47d9264826f9" name="a1730ffe1e560465665eb47d9264826f9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1730ffe1e560465665eb47d9264826f9">&#9670;&#160;</a></span>Error_Handler()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Error_Handler </td>
-          <td>(</td>
-          <td class="paramtype">void</td>          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>This function is executed in case of error occurrence. </p>
-<dl class="retval"><dt>Return values</dt><dd>
-  <table class="retval">
-    <tr><td class="paramname">None</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
 <a id="a8a3b0ad512a6e6c6157440b68d395eac" name="a8a3b0ad512a6e6c6157440b68d395eac"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8a3b0ad512a6e6c6157440b68d395eac">&#9670;&#160;</a></span>HAL_TIM_PeriodElapsedCallback()</h2>
 
@@ -201,20 +162,13 @@ int&#160;</td><td class="memItemRight"><b>_write</b> (int file, char *ptr, int l
       </table>
 </div><div class="memdoc">
 
-<p>Period elapsed callback in non blocking mode. </p>
-<dl class="section note"><dt>Note</dt><dd>This function is called when TIM6 interrupt took place, inside HAL_TIM_IRQHandler(). It makes a direct call to HAL_IncTick() to increment a global variable "uwTick" used as application time base. </dd></dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">htim</td><td>: TIM handle </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="retval"><dt>Return values</dt><dd>
-  <table class="retval">
-    <tr><td class="paramname">None</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
+<p>TIM6 callback function. </p>
+<p>Whenever TIM6 overflows, the callback increments the global variable "uwTick" used as application time base for Cortex-M7. </p><dl class="section warning"><dt>Warning</dt><dd>To prevent interrupt priority inversion and deadlocks, we separate the RTOS timebase from the HAL timebase using TIM6 as the HAL timebase and SysTick for RTOS</dd></dl>
+<ol type="1">
+<li>SysTick is dedicated exclusively to the RTOS and is assigned the LOWEST priority so it doesn't block time-critical ISRs.</li>
+<li>A dedicated hardware timer (TIM6) is used for the HAL timebase (HAL_Delay) and is assigned a HIGH priority. This ensures HAL timeouts can safely execute even when called from within peripheral interrupts.</li>
+</ol>
+<p>Using SysTick for both would cause a deadlock if a HAL function with a timeout were ever called from a high-priority interrupt handler. </p>
 
 </div>
 </div>
@@ -233,75 +187,21 @@ int&#160;</td><td class="memItemRight"><b>_write</b> (int file, char *ptr, int l
       </table>
 </div><div class="memdoc">
 
-<p>The application entry point. </p>
-<dl class="retval"><dt>Return values</dt><dd>
-  <table class="retval">
-    <tr><td class="paramname">int</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
+<p>Peripheral and RTOS Initialization. </p>
+<ol type="1">
+<li>Every peripheral is initialized.</li>
+<li>RTOS Kernel is initialized.</li>
+<li><a class="el" href="#abade755e13d07c10889ae83143656158" title="This function initializes the auto-generated default thread and the Root Task.">MX_FREERTOS_Init()</a> is called to initialize the Root Task</li>
+<li>The kernel is started. From now on there is no serial execution and the scheduler has control. <dl class="section note"><dt>Note</dt><dd>1. There is a 5 sec delay before initializing the OS to make sure all peripherals are brought up fully. </dd>
+<dd>
+2. TIM7 is used to keep track of FreeRTOS Statistics (FreeRTOS Task List, Timers etc) for debugging purposes. </dd>
+<dd>
+3. Look into Flash and Debug Manual for more info on how Cortex-M7 handles flashing. </dd></dl>
+<dl class="section warning"><dt>Warning</dt><dd>Control should never reach main's inifinite loop because that would mean the RTOS has failed. </dd></dl>
+</li>
+</ol>
 
-</div>
-</div>
-<a id="abade755e13d07c10889ae83143656158" name="abade755e13d07c10889ae83143656158"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abade755e13d07c10889ae83143656158">&#9670;&#160;</a></span>MX_FREERTOS_Init()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void MX_FREERTOS_Init </td>
-          <td>(</td>
-          <td class="paramtype">void</td>          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>FreeRTOS initialization. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">None</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="retval"><dt>Return values</dt><dd>
-  <table class="retval">
-    <tr><td class="paramname">None</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a70af21c671abfcc773614a9a4f63d920" name="a70af21c671abfcc773614a9a4f63d920"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a70af21c671abfcc773614a9a4f63d920">&#9670;&#160;</a></span>SystemClock_Config()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void SystemClock_Config </td>
-          <td>(</td>
-          <td class="paramtype">void</td>          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>System Clock Configuration. </p>
-<dl class="retval"><dt>Return values</dt><dd>
-  <table class="retval">
-    <tr><td class="paramname">None</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-<p>Supply configuration update enable</p>
-<p>Configure the main internal regulator output voltage</p>
-<p>Initializes the RCC Oscillators according to the specified parameters in the RCC_OscInitTypeDef structure.</p>
-<p>Initializes the CPU, AHB and APB buses clocks</p>
-<p>Enable the SYSCFG APB clock</p>
-<p>Configures CRS</p>
+<p class="reference">References <a class="el" href="fdcan_8c.html#af122e1c28b11c5b8771e82328e10fa2c">MX_FDCAN1_Init()</a>, and <a class="el" href="#abade755e13d07c10889ae83143656158">MX_FREERTOS_Init()</a>.</p>
 
 </div>
 </div>

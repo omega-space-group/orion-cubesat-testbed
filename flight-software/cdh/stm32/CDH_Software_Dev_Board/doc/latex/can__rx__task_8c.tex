@@ -1,0 +1,171 @@
+\doxysection{CM7/\+\+Core/\+\+Src/\+\+App/\+\+Tasks/\+can\+\_\+rx\+\_\+task.c File Reference}
+\hypertarget{can__rx__task_8c}{}\label{can__rx__task_8c}\index{CM7/Core/Src/App/Tasks/can\_rx\_task.c@{CM7/Core/Src/App/Tasks/can\_rx\_task.c}}
+
+
+Implementation of the CAN Rx Task responsible for parsing any received FDCAN messages.  
+
+
+{\ttfamily \+\#include $<$App/\+\+Tasks/\+can\+\_\+rx\+\_\+task.\+h$>$}\newline
+{\ttfamily \+\#include "{}Free\+RTOS.\+h"{}}\newline
+{\ttfamily \+\#include "{}queue.\+h"{}}\newline
+{\ttfamily \+\#include "{}fdcan.\+h"{}}\newline
+{\ttfamily \+\#include $<$string.\+h$>$}\newline
+{\ttfamily \+\#include $<$App/\+app\+\_\+config.\+h$>$}\newline
+{\ttfamily \+\#include $<$App/\+\+Services/\+subscriptions.\+h$>$}\newline
+{\ttfamily \+\#include "{}usbd\+\_\+cdc\+\_\+if.\+h"{}}\newline
+{\ttfamily \+\#include $<$stdio.\+h$>$}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \doxymbox{\hyperlink{can__rx__task_8c_afec88a1503ea8a29a78df4d4b9abbb43}{CAN\+\_\+\+RX\+\_\+\+Handler}} (void \texorpdfstring{$\ast$}{*}argument)
+\begin{DoxyCompactList}\small\item\em Task\textquotesingle{}s Handler where main logic is executed inside an infinite loop. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{can__rx__task_8c_aaa74b795083e75b34efb78dd249faf77}{CAN\+\_\+\+RX\+\_\+\+Task\+\_\+\+Init}} (void)
+\begin{DoxyCompactList}\small\item\em Task\textquotesingle{}s initialization function. \end{DoxyCompactList}\item 
+Queue\+Handle\+\_\+t \doxymbox{\hyperlink{can__rx__task_8c_a2e5bd37d755ff666cbb9f33599618d2c}{CAN\+\_\+\+RX\+\_\+\+Task\+\_\+\+Get\+Queue}} (void)
+\begin{DoxyCompactList}\small\item\em Global access to task\textquotesingle{}s local queue. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{can__rx__task_8c_a3ac22077410fb91a154296c96a380a12}{Subsystem\+\_\+\+Msg\+\_\+\+Parser}} (\doxymbox{\hyperlink{struct_c_a_n___rx_packet}{CAN\+\_\+\+Rx\+Packet}} packet)
+\begin{DoxyCompactList}\small\item\em FDCAN Message Parser. \end{DoxyCompactList}\item 
+int \doxymbox{\hyperlink{can__rx__task_8c_aef0f76469910e502ceadd705438488e5}{Get\+Subsystem\+Status}} (\doxymbox{\hyperlink{can__rx__task_8h_a8f963b5a6361565c648237bcc3fc40d5}{subsystem\+Name}} sub)
+\begin{DoxyCompactList}\small\item\em Global getter function for local subsystem status. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{can__rx__task_8c_a87ba64831485881ce0726b85cf48a439}{Set\+Subsystem\+Status}} (\doxymbox{\hyperlink{can__rx__task_8h_a8f963b5a6361565c648237bcc3fc40d5}{subsystem\+Name}} sub, int stat)
+\begin{DoxyCompactList}\small\item\em Global setter function for local subsystem status. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Implementation of the CAN Rx Task responsible for parsing any received FDCAN messages. 
+
+
+
+\label{can__rx__task_8c_doc-func-members}
+\Hypertarget{can__rx__task_8c_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{can__rx__task_8c_afec88a1503ea8a29a78df4d4b9abbb43}\index{can\_rx\_task.c@{can\_rx\_task.c}!CAN\_RX\_Handler@{CAN\_RX\_Handler}}
+\index{CAN\_RX\_Handler@{CAN\_RX\_Handler}!can\_rx\_task.c@{can\_rx\_task.c}}
+\doxysubsubsection{\texorpdfstring{CAN\_RX\_Handler()}{CAN\_RX\_Handler()}}
+{\footnotesize\ttfamily \label{can__rx__task_8c_afec88a1503ea8a29a78df4d4b9abbb43} 
+void CAN\+\_\+\+RX\+\_\+\+Handler (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{argument}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Task\textquotesingle{}s Handler where main logic is executed inside an infinite loop. 
+
+Task blocks indefinitely and wakes up on a new msg pushed to its queue. Then the message is parsed and:\+
+\begin{DoxyEnumerate}
+\item If its a HB msg then subsystem status is locally updated
+\item If not, then the new message and its associated topic are published through the software bus. 
+\begin{DoxyParams}{Parameters}
+{\em argument} & Pointer to task\textquotesingle{}s local queue handle \\
+\hline
+\end{DoxyParams}
+
+\end{DoxyEnumerate}
+
+References \doxymbox{\hyperlink{can__rx__task_8c_a3ac22077410fb91a154296c96a380a12}{Subsystem\+\_\+\+Msg\+\_\+\+Parser()}}.
+
+
+
+Referenced by \doxymbox{\hyperlink{can__rx__task_8c_aaa74b795083e75b34efb78dd249faf77}{CAN\+\_\+\+RX\+\_\+\+Task\+\_\+\+Init()}}.
+
+\Hypertarget{can__rx__task_8c_a2e5bd37d755ff666cbb9f33599618d2c}\index{can\_rx\_task.c@{can\_rx\_task.c}!CAN\_RX\_Task\_GetQueue@{CAN\_RX\_Task\_GetQueue}}
+\index{CAN\_RX\_Task\_GetQueue@{CAN\_RX\_Task\_GetQueue}!can\_rx\_task.c@{can\_rx\_task.c}}
+\doxysubsubsection{\texorpdfstring{CAN\_RX\_Task\_GetQueue()}{CAN\_RX\_Task\_GetQueue()}}
+{\footnotesize\ttfamily \label{can__rx__task_8c_a2e5bd37d755ff666cbb9f33599618d2c} 
+Queue\+Handle\+\_\+t CAN\+\_\+\+RX\+\_\+\+Task\+\_\+\+Get\+Queue (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Global access to task\textquotesingle{}s local queue. 
+
+\begin{DoxyReturn}{Returns}
+Queue handle 
+\end{DoxyReturn}
+
+
+Referenced by \doxymbox{\hyperlink{fdcan_8c_a37d92c0f4f667c4dd4cbc9c3b5d5dad4}{HAL\+\_\+\+FDCAN\+\_\+\+Rx\+Fifo0\+Callback()}}.
+
+\Hypertarget{can__rx__task_8c_aaa74b795083e75b34efb78dd249faf77}\index{can\_rx\_task.c@{can\_rx\_task.c}!CAN\_RX\_Task\_Init@{CAN\_RX\_Task\_Init}}
+\index{CAN\_RX\_Task\_Init@{CAN\_RX\_Task\_Init}!can\_rx\_task.c@{can\_rx\_task.c}}
+\doxysubsubsection{\texorpdfstring{CAN\_RX\_Task\_Init()}{CAN\_RX\_Task\_Init()}}
+{\footnotesize\ttfamily \label{can__rx__task_8c_aaa74b795083e75b34efb78dd249faf77} 
+void CAN\+\_\+\+RX\+\_\+\+Task\+\_\+\+Init (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Task\textquotesingle{}s initialization function. 
+
+First local queue is created. Then the task itself is created and the queue handle is passed as a task parameter. \begin{DoxyNote}{Note}
+Check \doxylink{app__config_8h}{app\+\_\+config.\+h} for stack configurations 
+\end{DoxyNote}
+
+
+References \doxymbox{\hyperlink{can__rx__task_8c_afec88a1503ea8a29a78df4d4b9abbb43}{CAN\+\_\+\+RX\+\_\+\+Handler()}}, \doxymbox{\hyperlink{app__config_8h_a16d794c91d2fcbf7dac7710b4658263f}{CANRX\+\_\+\+PR}}, \doxymbox{\hyperlink{app__config_8h_a843595a59955f4e62f3d0d2e328e38a2}{LOCAL\+\_\+\+QUEUE\+\_\+\+LENGTH}}, and \doxymbox{\hyperlink{app__config_8h_a200c2c21eb5510aa388dc932a76e830d}{NORMAL\+\_\+\+TASK\+\_\+\+STACK\+\_\+\+SIZE}}.
+
+
+
+Referenced by \doxymbox{\hyperlink{root__task_8c_aca2c7d8f6d456d7fba6e583b40a7c40a}{Root\+\_\+\+Task\+\_\+\+Handler()}}.
+
+\Hypertarget{can__rx__task_8c_aef0f76469910e502ceadd705438488e5}\index{can\_rx\_task.c@{can\_rx\_task.c}!GetSubsystemStatus@{GetSubsystemStatus}}
+\index{GetSubsystemStatus@{GetSubsystemStatus}!can\_rx\_task.c@{can\_rx\_task.c}}
+\doxysubsubsection{\texorpdfstring{GetSubsystemStatus()}{GetSubsystemStatus()}}
+{\footnotesize\ttfamily \label{can__rx__task_8c_aef0f76469910e502ceadd705438488e5} 
+int Get\+Subsystem\+Status (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{can__rx__task_8h_a8f963b5a6361565c648237bcc3fc40d5}{subsystem\+Name}}}]{sub}{}\end{DoxyParamCaption})}
+
+
+
+Global getter function for local subsystem status. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em sub} & Subsystem name \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Current subsystem status 
+\end{DoxyReturn}
+\Hypertarget{can__rx__task_8c_a87ba64831485881ce0726b85cf48a439}\index{can\_rx\_task.c@{can\_rx\_task.c}!SetSubsystemStatus@{SetSubsystemStatus}}
+\index{SetSubsystemStatus@{SetSubsystemStatus}!can\_rx\_task.c@{can\_rx\_task.c}}
+\doxysubsubsection{\texorpdfstring{SetSubsystemStatus()}{SetSubsystemStatus()}}
+{\footnotesize\ttfamily \label{can__rx__task_8c_a87ba64831485881ce0726b85cf48a439} 
+void Set\+Subsystem\+Status (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{can__rx__task_8h_a8f963b5a6361565c648237bcc3fc40d5}{subsystem\+Name}}}]{sub}{, }\item[{int}]{stat}{}\end{DoxyParamCaption})}
+
+
+
+Global setter function for local subsystem status. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em sub} & Subsystem name \\
+\hline
+{\em stat} & New subsystem status \\
+\hline
+\end{DoxyParams}
+
+
+Referenced by \doxymbox{\hyperlink{can__rx__task_8c_a3ac22077410fb91a154296c96a380a12}{Subsystem\+\_\+\+Msg\+\_\+\+Parser()}}.
+
+\Hypertarget{can__rx__task_8c_a3ac22077410fb91a154296c96a380a12}\index{can\_rx\_task.c@{can\_rx\_task.c}!Subsystem\_Msg\_Parser@{Subsystem\_Msg\_Parser}}
+\index{Subsystem\_Msg\_Parser@{Subsystem\_Msg\_Parser}!can\_rx\_task.c@{can\_rx\_task.c}}
+\doxysubsubsection{\texorpdfstring{Subsystem\_Msg\_Parser()}{Subsystem\_Msg\_Parser()}}
+{\footnotesize\ttfamily \label{can__rx__task_8c_a3ac22077410fb91a154296c96a380a12} 
+void Subsystem\+\_\+\+Msg\+\_\+\+Parser (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{struct_c_a_n___rx_packet}{CAN\+\_\+\+Rx\+Packet}}}]{packet}{}\end{DoxyParamCaption})}
+
+
+
+FDCAN Message Parser. 
+
+\begin{DoxyNote}{Note}
+This function should be modified to accommodate any custom messages! 
+\end{DoxyNote}
+
+\begin{DoxyParams}{Parameters}
+{\em packet} & \\
+\hline
+\end{DoxyParams}
+
+
+References \doxymbox{\hyperlink{can__rx__task_8h_a8f963b5a6361565c648237bcc3fc40d5a38142277e48b191b563491ebe4affd29}{ADCS}}, \doxymbox{\hyperlink{app__config_8h_a0560169ed6717811a19ca28c11256293afe326f665e0a838aba9651c9c15e2529}{ADCS\+\_\+\+MSG}}, \doxymbox{\hyperlink{can__rx__task_8h_a8f963b5a6361565c648237bcc3fc40d5a576ecfc33e74ec9e89b3b0f9bc5d49c5}{COMMS}}, \doxymbox{\hyperlink{struct_c_a_n___rx_packet_a64c2eb98afd6b69d3f82ea6a7fa9a73f}{CAN\+\_\+\+Rx\+Packet::\+\+Data}}, \doxymbox{\hyperlink{can__rx__task_8h_a8f963b5a6361565c648237bcc3fc40d5a7fe95fbd95752a82e28a74b8abf4e8e7}{EPS}}, \doxymbox{\hyperlink{app__config_8h_a0560169ed6717811a19ca28c11256293afa43490df86bfb0721adeaee47931f82}{EPS\+\_\+\+MSG}}, \doxymbox{\hyperlink{struct_c_a_n___rx_packet_a9d9bc62d94afe772c1cc48fd4664b302}{CAN\+\_\+\+Rx\+Packet::\+\+Header}}, \doxymbox{\hyperlink{app__config_8h_ae2946618e700f814e6147195c808f4c8ae2bd7b57b3f0bb02e66e42dbacc5c7fc}{NOMINAL}}, \doxymbox{\hyperlink{can__rx__task_8h_a8f963b5a6361565c648237bcc3fc40d5a4a0f7dc7bc13b4de9dcaf52874286bd9}{PL}}, \doxymbox{\hyperlink{app__config_8h_a0560169ed6717811a19ca28c11256293ac9595ffe7de871bf39e7c56d77c97af0}{PL\+\_\+\+MSG}}, \doxymbox{\hyperlink{app__config_8h_ae2946618e700f814e6147195c808f4c8aa3a9adacc85c180950255762543c88ac}{SAFE}}, \doxymbox{\hyperlink{can__rx__task_8c_a87ba64831485881ce0726b85cf48a439}{Set\+Subsystem\+Status()}}, and \doxymbox{\hyperlink{app__config_8h_a0560169ed6717811a19ca28c11256293a005b78a0f65bacff527f3a3d9017b784}{TELECOMMAND}}.
+
+
+
+Referenced by \doxymbox{\hyperlink{can__rx__task_8c_afec88a1503ea8a29a78df4d4b9abbb43}{CAN\+\_\+\+RX\+\_\+\+Handler()}}.
+

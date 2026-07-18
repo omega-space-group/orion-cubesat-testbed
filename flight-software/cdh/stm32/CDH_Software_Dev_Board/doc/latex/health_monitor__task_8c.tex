@@ -10,8 +10,77 @@ Implementation of the background execution check and task accounting.
 {\ttfamily \+\#include $<$App/\+app\+\_\+config.\+h$>$}\newline
 {\ttfamily \+\#include $<$App/\+\+Services/\+app\+\_\+events.\+h$>$}\newline
 {\ttfamily \+\#include $<$App/\+\+Tasks/\+health\+Monitor\+\_\+task.\+h$>$}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \doxymbox{\hyperlink{health_monitor__task_8c_afdddd09b1c8d74d470776489ec452cc7}{Health\+Monitor\+\_\+\+Handler}} (void \texorpdfstring{$\ast$}{*}argument)
+\begin{DoxyCompactList}\small\item\em Task\textquotesingle{}s Handler where main logic is executed inside an infinite loop. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{health_monitor__task_8c_a9bf16be0fb6926c77cff31b234b642fa}{Health\+Monitor\+\_\+\+Init}} (void)
+\begin{DoxyCompactList}\small\item\em Task\textquotesingle{}s initialization function. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
 Implementation of the background execution check and task accounting. 
+
+
+
+\label{health_monitor__task_8c_doc-func-members}
+\Hypertarget{health_monitor__task_8c_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{health_monitor__task_8c_afdddd09b1c8d74d470776489ec452cc7}\index{healthMonitor\_task.c@{healthMonitor\_task.c}!HealthMonitor\_Handler@{HealthMonitor\_Handler}}
+\index{HealthMonitor\_Handler@{HealthMonitor\_Handler}!healthMonitor\_task.c@{healthMonitor\_task.c}}
+\doxysubsubsection{\texorpdfstring{HealthMonitor\_Handler()}{HealthMonitor\_Handler()}}
+{\footnotesize\ttfamily \label{health_monitor__task_8c_afdddd09b1c8d74d470776489ec452cc7} 
+void Health\+Monitor\+\_\+\+Handler (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{argument}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Task\textquotesingle{}s Handler where main logic is executed inside an infinite loop. 
+
+The idea here is to have a mask (x\+Task\+Health\+Event) with the number of bits equal to the number of tasks initialized. Each task has its own place on the mask, which is given by the Health and Sync bit (see \doxylink{app__config_8h}{app\+\_\+config.\+h}).
+
+-\/\texorpdfstring{$>$}{>} Every time a task finishes an execution, it sets its bit to 1. -\/\texorpdfstring{$>$}{>} If the task is not periodic and blocks indefinitely then the task sets its bit to 1 before it sleeps to prevent any false triggers. When the task is woken up, it clears its bit, executes its main loop and sets its bit again after finishing execution.
+
+Health Monitoring Task logic:\+
+\begin{DoxyEnumerate}
+\item Set your own sync bit and block until all other tasks have finished initialization before continuing.
+\item Periodically:\+
+\end{DoxyEnumerate}
+\begin{DoxyItemize}
+\item Check if all tasks are making progress by checking that the mask is equal to ALL\+\_\+\+TASKS\+\_\+\+OK. That would mean that all tasks have set their bit and finished execution at least ones, so no starvation or hangs!
+\item If check okay then increment a local health variable. Else, increment a different local variable.
+\item Lastly, clear the mask to reset the process. 
+\begin{DoxyParams}{Parameters}
+{\em argument} & Pointer to task\textquotesingle{}s local queue handle \\
+\hline
+\end{DoxyParams}
+
+\end{DoxyItemize}
+
+References \doxymbox{\hyperlink{app__config_8h_a7d092bb0ccbe33b8392266f030f034ac}{ALL\+\_\+\+TASKS\+\_\+\+OK}}, and \doxymbox{\hyperlink{app__config_8h_a3cdc67f59a4e9aa04dcb6860007364b4}{HM\+\_\+\+BIT}}.
+
+
+
+Referenced by \doxymbox{\hyperlink{health_monitor__task_8c_a9bf16be0fb6926c77cff31b234b642fa}{Health\+Monitor\+\_\+\+Init()}}.
+
+\Hypertarget{health_monitor__task_8c_a9bf16be0fb6926c77cff31b234b642fa}\index{healthMonitor\_task.c@{healthMonitor\_task.c}!HealthMonitor\_Init@{HealthMonitor\_Init}}
+\index{HealthMonitor\_Init@{HealthMonitor\_Init}!healthMonitor\_task.c@{healthMonitor\_task.c}}
+\doxysubsubsection{\texorpdfstring{HealthMonitor\_Init()}{HealthMonitor\_Init()}}
+{\footnotesize\ttfamily \label{health_monitor__task_8c_a9bf16be0fb6926c77cff31b234b642fa} 
+void Health\+Monitor\+\_\+\+Init (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Task\textquotesingle{}s initialization function. 
+
+First master queue is created. Then the task itself is created and the queue handle is passed as a task parameter. \begin{DoxyNote}{Note}
+Check \doxylink{app__config_8h}{app\+\_\+config.\+h} for stack configurations 
+\end{DoxyNote}
+
+
+References \doxymbox{\hyperlink{health_monitor__task_8c_afdddd09b1c8d74d470776489ec452cc7}{Health\+Monitor\+\_\+\+Handler()}}, \doxymbox{\hyperlink{app__config_8h_a89edd2c3ccb497e752853757dc7d5137}{HM\+\_\+\+PR}}, \doxymbox{\hyperlink{app__config_8h_a843595a59955f4e62f3d0d2e328e38a2}{LOCAL\+\_\+\+QUEUE\+\_\+\+LENGTH}}, and \doxymbox{\hyperlink{app__config_8h_a200c2c21eb5510aa388dc932a76e830d}{NORMAL\+\_\+\+TASK\+\_\+\+STACK\+\_\+\+SIZE}}.
+
+
+
+Referenced by \doxymbox{\hyperlink{root__task_8c_aca2c7d8f6d456d7fba6e583b40a7c40a}{Root\+\_\+\+Task\+\_\+\+Handler()}}.
 

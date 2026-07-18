@@ -119,29 +119,52 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('fdcan_8c.html'
 </div><!--header-->
 <div class="contents">
 
-<p>This file provides code for the configuration of the FDCAN instances.  
+<p>Implementation of the FDCAN peripheral control.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="fdcan_8h.html">fdcan.h</a>&quot;</code><br />
 <code>#include &quot;FreeRTOS.h&quot;</code><br />
 <code>#include &quot;queue.h&quot;</code><br />
-<code>#include &lt;App/Tasks/can_rx_task.h&gt;</code><br />
+<code>#include &lt;<a class="el" href="can__rx__task_8h.html">App/Tasks/can_rx_task.h</a>&gt;</code><br />
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:af122e1c28b11c5b8771e82328e10fa2c" id="r_af122e1c28b11c5b8771e82328e10fa2c"><td class="memItemLeft"><a id="af122e1c28b11c5b8771e82328e10fa2c" name="af122e1c28b11c5b8771e82328e10fa2c"></a>
-void&#160;</td><td class="memItemRight"><b>MX_FDCAN1_Init</b> (void)</td></tr>
-<tr class="memdesc:af122e1c28b11c5b8771e82328e10fa2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">FDCAN Initialization Function. <br /></td></tr>
+<tr class="memitem:af122e1c28b11c5b8771e82328e10fa2c" id="r_af122e1c28b11c5b8771e82328e10fa2c"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#af122e1c28b11c5b8771e82328e10fa2c">MX_FDCAN1_Init</a> (void)</td></tr>
+<tr class="memdesc:af122e1c28b11c5b8771e82328e10fa2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">FDCAN Initialization Function.  <br /></td></tr>
 <tr class="memitem:a37d92c0f4f667c4dd4cbc9c3b5d5dad4" id="r_a37d92c0f4f667c4dd4cbc9c3b5d5dad4"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a37d92c0f4f667c4dd4cbc9c3b5d5dad4">HAL_FDCAN_RxFifo0Callback</a> (FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)</td></tr>
-<tr class="memdesc:a37d92c0f4f667c4dd4cbc9c3b5d5dad4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function Called by the FDCAN IRQ Handler.  <br /></td></tr>
-<tr class="memitem:acb1a2ebd043af21a56094e47f2e7797d" id="r_acb1a2ebd043af21a56094e47f2e7797d"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#acb1a2ebd043af21a56094e47f2e7797d">FDCAN_Tx</a> (CAN_TxPacket CAN1_Tx)</td></tr>
+<tr class="memdesc:a37d92c0f4f667c4dd4cbc9c3b5d5dad4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback function that handles new FDCAN messages.  <br /></td></tr>
+<tr class="memitem:acb1a2ebd043af21a56094e47f2e7797d" id="r_acb1a2ebd043af21a56094e47f2e7797d"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#acb1a2ebd043af21a56094e47f2e7797d">FDCAN_Tx</a> (<a class="el" href="struct_c_a_n___tx_packet.html">CAN_TxPacket</a> CAN1_Tx)</td></tr>
 <tr class="memdesc:acb1a2ebd043af21a56094e47f2e7797d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function called to send a message on the FDCAN bus.  <br /></td></tr>
-<tr class="memitem:a52b806723c5e7d7675e615c1764bf03b" id="r_a52b806723c5e7d7675e615c1764bf03b"><td class="memItemLeft"><a id="a52b806723c5e7d7675e615c1764bf03b" name="a52b806723c5e7d7675e615c1764bf03b"></a>
-void&#160;</td><td class="memItemRight"><b>FDCAN_Start</b> ()</td></tr>
-<tr class="memdesc:a52b806723c5e7d7675e615c1764bf03b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function called to start the FDCAN peripheral. <br /></td></tr>
+<tr class="memitem:a52b806723c5e7d7675e615c1764bf03b" id="r_a52b806723c5e7d7675e615c1764bf03b"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a52b806723c5e7d7675e615c1764bf03b">FDCAN_Start</a> ()</td></tr>
+<tr class="memdesc:a52b806723c5e7d7675e615c1764bf03b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function called to start the FDCAN peripheral.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>This file provides code for the configuration of the FDCAN instances. </p>
+<div class="textblock"><p>Implementation of the FDCAN peripheral control. </p>
 </div><a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Function Documentation</h2>
+<a id="a52b806723c5e7d7675e615c1764bf03b" name="a52b806723c5e7d7675e615c1764bf03b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a52b806723c5e7d7675e615c1764bf03b">&#9670;&#160;</a></span>FDCAN_Start()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void FDCAN_Start </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Function called to start the FDCAN peripheral. </p>
+<p>This includes:</p><ol type="1">
+<li>Starting the peripheral.</li>
+<li>Activating notifications on the Rx FIFO so that the MCU is informed whenever there is a new message. </li>
+</ol>
+
+<p class="reference">Referenced by <a class="el" href="root__task_8c.html#aca2c7d8f6d456d7fba6e583b40a7c40a">Root_Task_Handler()</a>.</p>
+
+</div>
+</div>
 <a id="acb1a2ebd043af21a56094e47f2e7797d" name="acb1a2ebd043af21a56094e47f2e7797d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#acb1a2ebd043af21a56094e47f2e7797d">&#9670;&#160;</a></span>FDCAN_Tx()</h2>
 
@@ -151,19 +174,25 @@ void&#160;</td><td class="memItemRight"><b>FDCAN_Start</b> ()</td></tr>
         <tr>
           <td class="memname">void FDCAN_Tx </td>
           <td>(</td>
-          <td class="paramtype">CAN_TxPacket</td>          <td class="paramname"><span class="paramname"><em>CAN1_Tx</em></span></td><td>)</td>
+          <td class="paramtype"><a class="el" href="struct_c_a_n___tx_packet.html">CAN_TxPacket</a></td>          <td class="paramname"><span class="paramname"><em>CAN1_Tx</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Function called to send a message on the FDCAN bus. </p>
-<dl class="params"><dt>Parameters</dt><dd>
+<p>This includes the following:</p><ol type="1">
+<li>Tx FIFO fill level check.</li>
+<li>Push new msg to Tx FIFO, if space available. Else abort latest request to make space. <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">CAN1_Tx</td><td></td></tr>
+    <tr><td class="paramname">CAN1_Tx</td><td>A custom data structure with the standard FDCAN frame. </td></tr>
   </table>
   </dd>
 </dl>
+</li>
+</ol>
+
+<p class="reference">References <a class="el" href="struct_c_a_n___tx_packet.html#a0ff793051491ba56b219df1eea76f07d">CAN_TxPacket::Data</a>, and <a class="el" href="struct_c_a_n___tx_packet.html#a08fb9c5765d18d0a5aca46bbe1f88fc1">CAN_TxPacket::Header</a>.</p>
 
 </div>
 </div>
@@ -186,14 +215,42 @@ void&#160;</td><td class="memItemRight"><b>FDCAN_Start</b> ()</td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Function Called by the FDCAN IRQ Handler. </p>
-<dl class="params"><dt>Parameters</dt><dd>
+<p>Callback function that handles new FDCAN messages. </p>
+<p>Any new messages received by the peripheral that also pass any hardware filtering will trigger a hardware interrupt. This will wake up the IRQ Handler which in turn calls the callback function to handle the message. This includes:</p><ol type="1">
+<li>Popping the msg from the FDCAN Rx FIFO</li>
+<li>Pushing the new msg to CAN_Rx_Task's (<a class="el" href="can__rx__task_8c.html" title="Implementation of the CAN Rx Task responsible for parsing any received FDCAN messages.">can_rx_task.c</a>) queue for parsing. <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">hfdcan</td><td></td></tr>
-    <tr><td class="paramname">RxFifo0ITs</td><td></td></tr>
+    <tr><td class="paramname">hfdcan</td><td>Peripheral's handle </td></tr>
+    <tr><td class="paramname">RxFifo0ITs</td><td>Rx FIFO to be used for pushing/popping new messages. Configured in <a class="el" href="#af122e1c28b11c5b8771e82328e10fa2c" title="FDCAN Initialization Function.">MX_FDCAN1_Init()</a>. </td></tr>
   </table>
   </dd>
 </dl>
+</li>
+</ol>
+
+<p class="reference">References <a class="el" href="can__rx__task_8c.html#a2e5bd37d755ff666cbb9f33599618d2c">CAN_RX_Task_GetQueue()</a>.</p>
+
+</div>
+</div>
+<a id="af122e1c28b11c5b8771e82328e10fa2c" name="af122e1c28b11c5b8771e82328e10fa2c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af122e1c28b11c5b8771e82328e10fa2c">&#9670;&#160;</a></span>MX_FDCAN1_Init()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MX_FDCAN1_Init </td>
+          <td>(</td>
+          <td class="paramtype">void</td>          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>FDCAN Initialization Function. </p>
+<p>All FDCAN settings are initialized here. Parameters can be changed through here or the ioc. </p>
+
+<p class="reference">Referenced by <a class="el" href="main_8c.html#a840291bc02cba5474a4cb46a9b9566fe">main()</a>.</p>
 
 </div>
 </div>

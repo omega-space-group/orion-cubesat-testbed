@@ -119,12 +119,43 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('health_monitor
 </div><!--header-->
 <div class="contents">
 
-<p>Public interface for the OBC Health Monitoring System.  
+<p>This file contains all the function prototypes for the <a class="el" href="health_monitor__task_8c.html" title="Implementation of the background execution check and task accounting.">healthMonitor_task.c</a> file.  
 <a href="#details">More...</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:a9bf16be0fb6926c77cff31b234b642fa" id="r_a9bf16be0fb6926c77cff31b234b642fa"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a9bf16be0fb6926c77cff31b234b642fa">HealthMonitor_Init</a> (void)</td></tr>
+<tr class="memdesc:a9bf16be0fb6926c77cff31b234b642fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Task's initialization function.  <br /></td></tr>
+</table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Public interface for the OBC Health Monitoring System. </p>
-<p>This module manages the background health reporting, watchdog tracking, and error accounting for all active flight tasks. </p>
-</div></div><!-- contents -->
+<div class="textblock"><p>This file contains all the function prototypes for the <a class="el" href="health_monitor__task_8c.html" title="Implementation of the background execution check and task accounting.">healthMonitor_task.c</a> file. </p>
+<p>Implementation of the background execution check and task accounting. For more details look into <a class="el" href="health_monitor__task_8c.html#afdddd09b1c8d74d470776489ec452cc7" title="Task&#39;s Handler where main logic is executed inside an infinite loop.">HealthMonitor_Handler()</a>. </p>
+</div><a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Function Documentation</h2>
+<a id="a9bf16be0fb6926c77cff31b234b642fa" name="a9bf16be0fb6926c77cff31b234b642fa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9bf16be0fb6926c77cff31b234b642fa">&#9670;&#160;</a></span>HealthMonitor_Init()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void HealthMonitor_Init </td>
+          <td>(</td>
+          <td class="paramtype">void</td>          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Task's initialization function. </p>
+<p>First master queue is created. Then the task itself is created and the queue handle is passed as a task parameter. </p><dl class="section note"><dt>Note</dt><dd>Check <a class="el" href="app__config_8h.html" title="Configuration file for current application.">app_config.h</a> for stack configurations </dd></dl>
+
+<p class="reference">References <a class="el" href="health_monitor__task_8c.html#afdddd09b1c8d74d470776489ec452cc7">HealthMonitor_Handler()</a>, <a class="el" href="app__config_8h.html#a89edd2c3ccb497e752853757dc7d5137">HM_PR</a>, <a class="el" href="app__config_8h.html#a843595a59955f4e62f3d0d2e328e38a2">LOCAL_QUEUE_LENGTH</a>, and <a class="el" href="app__config_8h.html#a200c2c21eb5510aa388dc932a76e830d">NORMAL_TASK_STACK_SIZE</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="root__task_8c.html#aca2c7d8f6d456d7fba6e583b40a7c40a">Root_Task_Handler()</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
 </div><!-- doc-content -->
 <div id="page-nav" class="page-nav-panel">
 <div id="page-nav-resize-handle"></div>

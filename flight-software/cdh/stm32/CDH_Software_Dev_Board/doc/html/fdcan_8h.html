@@ -119,23 +119,76 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('fdcan_8h.html'
 </div><!--header-->
 <div class="contents">
 
-<p>This file contains all the function prototypes for the fdcan.c file.  
+<p>This file contains all the function prototypes for the <a class="el" href="fdcan_8c.html" title="Implementation of the FDCAN peripheral control.">fdcan.c</a> file.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;main.h&quot;</code><br />
 </div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-nested-classes" class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:CAN_5FTxPacket" id="r_CAN_5FTxPacket"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="struct_c_a_n___tx_packet.html">CAN_TxPacket</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A custom data structure with the standard FDCAN frame for Tx Messages.  <a href="struct_c_a_n___tx_packet.html#details">More...</a><br /></td></tr>
+<tr class="memitem:CAN_5FRxPacket" id="r_CAN_5FRxPacket"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="struct_c_a_n___rx_packet.html">CAN_RxPacket</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A custom data structure with the standard FDCAN frame for Rx Messages.  <a href="struct_c_a_n___rx_packet.html#details">More...</a><br /></td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:af122e1c28b11c5b8771e82328e10fa2c" id="r_af122e1c28b11c5b8771e82328e10fa2c"><td class="memItemLeft"><a id="af122e1c28b11c5b8771e82328e10fa2c" name="af122e1c28b11c5b8771e82328e10fa2c"></a>
-void&#160;</td><td class="memItemRight"><b>MX_FDCAN1_Init</b> (void)</td></tr>
-<tr class="memdesc:af122e1c28b11c5b8771e82328e10fa2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">FDCAN Initialization Function. <br /></td></tr>
-<tr class="memitem:a52b806723c5e7d7675e615c1764bf03b" id="r_a52b806723c5e7d7675e615c1764bf03b"><td class="memItemLeft"><a id="a52b806723c5e7d7675e615c1764bf03b" name="a52b806723c5e7d7675e615c1764bf03b"></a>
-void&#160;</td><td class="memItemRight"><b>FDCAN_Start</b> ()</td></tr>
-<tr class="memdesc:a52b806723c5e7d7675e615c1764bf03b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function called to start the FDCAN peripheral. <br /></td></tr>
+<tr class="memitem:af122e1c28b11c5b8771e82328e10fa2c" id="r_af122e1c28b11c5b8771e82328e10fa2c"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#af122e1c28b11c5b8771e82328e10fa2c">MX_FDCAN1_Init</a> (void)</td></tr>
+<tr class="memdesc:af122e1c28b11c5b8771e82328e10fa2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">FDCAN Initialization Function.  <br /></td></tr>
+<tr class="memitem:a52b806723c5e7d7675e615c1764bf03b" id="r_a52b806723c5e7d7675e615c1764bf03b"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a52b806723c5e7d7675e615c1764bf03b">FDCAN_Start</a> ()</td></tr>
+<tr class="memdesc:a52b806723c5e7d7675e615c1764bf03b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function called to start the FDCAN peripheral.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>This file contains all the function prototypes for the fdcan.c file. </p>
-<p>This module manages the FDCAN peripheral and related data structures. </p>
-</div></div><!-- contents -->
+<div class="textblock"><p>This file contains all the function prototypes for the <a class="el" href="fdcan_8c.html" title="Implementation of the FDCAN peripheral control.">fdcan.c</a> file. </p>
+<p>Implementation of the FDCAN peripheral control. </p>
+</div><a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Function Documentation</h2>
+<a id="a52b806723c5e7d7675e615c1764bf03b" name="a52b806723c5e7d7675e615c1764bf03b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a52b806723c5e7d7675e615c1764bf03b">&#9670;&#160;</a></span>FDCAN_Start()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void FDCAN_Start </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Function called to start the FDCAN peripheral. </p>
+<p>This includes:</p><ol type="1">
+<li>Starting the peripheral.</li>
+<li>Activating notifications on the Rx FIFO so that the MCU is informed whenever there is a new message. </li>
+</ol>
+
+<p class="reference">Referenced by <a class="el" href="root__task_8c.html#aca2c7d8f6d456d7fba6e583b40a7c40a">Root_Task_Handler()</a>.</p>
+
+</div>
+</div>
+<a id="af122e1c28b11c5b8771e82328e10fa2c" name="af122e1c28b11c5b8771e82328e10fa2c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af122e1c28b11c5b8771e82328e10fa2c">&#9670;&#160;</a></span>MX_FDCAN1_Init()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MX_FDCAN1_Init </td>
+          <td>(</td>
+          <td class="paramtype">void</td>          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>FDCAN Initialization Function. </p>
+<p>All FDCAN settings are initialized here. Parameters can be changed through here or the ioc. </p>
+
+<p class="reference">Referenced by <a class="el" href="main_8c.html#a840291bc02cba5474a4cb46a9b9566fe">main()</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
 </div><!-- doc-content -->
 <div id="page-nav" class="page-nav-panel">
 <div id="page-nav-resize-handle"></div>

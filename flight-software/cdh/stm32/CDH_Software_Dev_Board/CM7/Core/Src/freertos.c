@@ -1,8 +1,7 @@
 /* USER CODE BEGIN Header */
 /**
+ * @file freertos.c
  * @brief RTOS Initialization and Default Task Creation
- * @details This module manages the data request and acquisition from itself and the subsystems
- * and also the logging and downlink when possible.
  */
 /* USER CODE END Header */
 
@@ -71,6 +70,9 @@ return ulHighFrequencyTimerTicks;
 }
 /* USER CODE END 1 */
 
+/**
+ * @brief This function initializes the auto-generated default thread and the Root Task
+ */
 void MX_FREERTOS_Init(void) {
   /* USER CODE BEGIN Init */
   /* USER CODE END Init */
@@ -105,16 +107,18 @@ void MX_FREERTOS_Init(void) {
 
 }
 
+/**
+ * @brief Default Task not used. Blocks indefinitely.
+ */
 /* USER CODE BEGIN Header_StartDefaultTask */
 /* USER CODE END Header_StartDefaultTask */
 void StartDefaultTask(void *argument)
 {
   /* init code for USB_DEVICE */
-  MX_USB_DEVICE_Init();
   /* USER CODE BEGIN StartDefaultTask */
   /* Infinite loop */
 	while(1){
-		osDelay(300);
+		osDelay(portMAX_DELAY);
   }
   /* USER CODE END StartDefaultTask */
 }

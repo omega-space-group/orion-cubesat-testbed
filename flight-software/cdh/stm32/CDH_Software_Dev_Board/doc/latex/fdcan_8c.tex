@@ -2,7 +2,7 @@
 \hypertarget{fdcan_8c}{}\label{fdcan_8c}\index{CM7/Core/Src/fdcan.c@{CM7/Core/Src/fdcan.c}}
 
 
-This file provides code for the configuration of the FDCAN instances.  
+Implementation of the FDCAN peripheral control.  
 
 
 {\ttfamily \+\#include "{}fdcan.\+h"{}}\newline
@@ -12,41 +12,65 @@ This file provides code for the configuration of the FDCAN instances.
 \doxysubsubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-\Hypertarget{fdcan_8c_af122e1c28b11c5b8771e82328e10fa2c}\label{fdcan_8c_af122e1c28b11c5b8771e82328e10fa2c} 
-void {\bfseries MX\+\_\+\+FDCAN1\+\_\+\+Init} (void)
+void \doxymbox{\hyperlink{fdcan_8c_af122e1c28b11c5b8771e82328e10fa2c}{MX\+\_\+\+FDCAN1\+\_\+\+Init}} (void)
 \begin{DoxyCompactList}\small\item\em FDCAN Initialization Function. \end{DoxyCompactList}\item 
 void \doxymbox{\hyperlink{fdcan_8c_a37d92c0f4f667c4dd4cbc9c3b5d5dad4}{HAL\+\_\+\+FDCAN\+\_\+\+Rx\+Fifo0\+Callback}} (FDCAN\+\_\+\+Handle\+Type\+Def \texorpdfstring{$\ast$}{*}hfdcan, uint32\+\_\+t Rx\+Fifo0\+ITs)
-\begin{DoxyCompactList}\small\item\em Function Called by the FDCAN IRQ Handler. \end{DoxyCompactList}\item 
-void \doxymbox{\hyperlink{fdcan_8c_acb1a2ebd043af21a56094e47f2e7797d}{FDCAN\+\_\+\+Tx}} (CAN\+\_\+\+Tx\+Packet CAN1\+\_\+\+Tx)
+\begin{DoxyCompactList}\small\item\em Callback function that handles new FDCAN messages. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{fdcan_8c_acb1a2ebd043af21a56094e47f2e7797d}{FDCAN\+\_\+\+Tx}} (\doxymbox{\hyperlink{struct_c_a_n___tx_packet}{CAN\+\_\+\+Tx\+Packet}} CAN1\+\_\+\+Tx)
 \begin{DoxyCompactList}\small\item\em Function called to send a message on the FDCAN bus. \end{DoxyCompactList}\item 
-\Hypertarget{fdcan_8c_a52b806723c5e7d7675e615c1764bf03b}\label{fdcan_8c_a52b806723c5e7d7675e615c1764bf03b} 
-void {\bfseries FDCAN\+\_\+\+Start} ()
+void \doxymbox{\hyperlink{fdcan_8c_a52b806723c5e7d7675e615c1764bf03b}{FDCAN\+\_\+\+Start}} ()
 \begin{DoxyCompactList}\small\item\em Function called to start the FDCAN peripheral. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
-This file provides code for the configuration of the FDCAN instances. 
+Implementation of the FDCAN peripheral control. 
 
 
 
 \label{fdcan_8c_doc-func-members}
 \Hypertarget{fdcan_8c_doc-func-members}
 \doxysubsection{Function Documentation}
+\Hypertarget{fdcan_8c_a52b806723c5e7d7675e615c1764bf03b}\index{fdcan.c@{fdcan.c}!FDCAN\_Start@{FDCAN\_Start}}
+\index{FDCAN\_Start@{FDCAN\_Start}!fdcan.c@{fdcan.c}}
+\doxysubsubsection{\texorpdfstring{FDCAN\_Start()}{FDCAN\_Start()}}
+{\footnotesize\ttfamily \label{fdcan_8c_a52b806723c5e7d7675e615c1764bf03b} 
+void FDCAN\+\_\+\+Start (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Function called to start the FDCAN peripheral. 
+
+This includes:\+
+\begin{DoxyEnumerate}
+\item Starting the peripheral.
+\item Activating notifications on the Rx FIFO so that the MCU is informed whenever there is a new message. 
+\end{DoxyEnumerate}
+
+Referenced by \doxymbox{\hyperlink{root__task_8c_aca2c7d8f6d456d7fba6e583b40a7c40a}{Root\+\_\+\+Task\+\_\+\+Handler()}}.
+
 \Hypertarget{fdcan_8c_acb1a2ebd043af21a56094e47f2e7797d}\index{fdcan.c@{fdcan.c}!FDCAN\_Tx@{FDCAN\_Tx}}
 \index{FDCAN\_Tx@{FDCAN\_Tx}!fdcan.c@{fdcan.c}}
 \doxysubsubsection{\texorpdfstring{FDCAN\_Tx()}{FDCAN\_Tx()}}
 {\footnotesize\ttfamily \label{fdcan_8c_acb1a2ebd043af21a56094e47f2e7797d} 
-void FDCAN\+\_\+\+Tx (\begin{DoxyParamCaption}\item[{CAN\+\_\+\+Tx\+Packet}]{CAN1\+\_\+\+Tx}{}\end{DoxyParamCaption})}
+void FDCAN\+\_\+\+Tx (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{struct_c_a_n___tx_packet}{CAN\+\_\+\+Tx\+Packet}}}]{CAN1\+\_\+\+Tx}{}\end{DoxyParamCaption})}
 
 
 
 Function called to send a message on the FDCAN bus. 
 
-
+This includes the following:\+
+\begin{DoxyEnumerate}
+\item Tx FIFO fill level check.
+\item Push new msg to Tx FIFO, if space available. Else abort latest request to make space. 
 \begin{DoxyParams}{Parameters}
-{\em CAN1\+\_\+\+Tx} & \\
+{\em CAN1\+\_\+\+Tx} & A custom data structure with the standard FDCAN frame. \\
 \hline
 \end{DoxyParams}
+
+\end{DoxyEnumerate}
+
+References \doxymbox{\hyperlink{struct_c_a_n___tx_packet_a0ff793051491ba56b219df1eea76f07d}{CAN\+\_\+\+Tx\+Packet::\+\+Data}}, and \doxymbox{\hyperlink{struct_c_a_n___tx_packet_a08fb9c5765d18d0a5aca46bbe1f88fc1}{CAN\+\_\+\+Tx\+Packet::\+\+Header}}.
+
 \Hypertarget{fdcan_8c_a37d92c0f4f667c4dd4cbc9c3b5d5dad4}\index{fdcan.c@{fdcan.c}!HAL\_FDCAN\_RxFifo0Callback@{HAL\_FDCAN\_RxFifo0Callback}}
 \index{HAL\_FDCAN\_RxFifo0Callback@{HAL\_FDCAN\_RxFifo0Callback}!fdcan.c@{fdcan.c}}
 \doxysubsubsection{\texorpdfstring{HAL\_FDCAN\_RxFifo0Callback()}{HAL\_FDCAN\_RxFifo0Callback()}}
@@ -55,12 +79,34 @@ void HAL\+\_\+\+FDCAN\+\_\+\+Rx\+Fifo0\+Callback (\begin{DoxyParamCaption}\item[
 
 
 
-Function Called by the FDCAN IRQ Handler. 
+Callback function that handles new FDCAN messages. 
 
-
+Any new messages received by the peripheral that also pass any hardware filtering will trigger a hardware interrupt. This will wake up the IRQ Handler which in turn calls the callback function to handle the message. This includes:\+
+\begin{DoxyEnumerate}
+\item Popping the msg from the FDCAN Rx FIFO
+\item Pushing the new msg to CAN\+\_\+\+Rx\+\_\+\+Task\textquotesingle{}s (\doxylink{can__rx__task_8c}{can\+\_\+rx\+\_\+task.\+c}) queue for parsing. 
 \begin{DoxyParams}{Parameters}
-{\em hfdcan} & \\
+{\em hfdcan} & Peripheral\textquotesingle{}s handle \\
 \hline
-{\em Rx\+Fifo0\+ITs} & \\
+{\em Rx\+Fifo0\+ITs} & Rx FIFO to be used for pushing/\+popping new messages. Configured in \doxylink{fdcan_8c_af122e1c28b11c5b8771e82328e10fa2c}{MX\+\_\+\+FDCAN1\+\_\+\+Init()}. \\
 \hline
 \end{DoxyParams}
+
+\end{DoxyEnumerate}
+
+References \doxymbox{\hyperlink{can__rx__task_8c_a2e5bd37d755ff666cbb9f33599618d2c}{CAN\+\_\+\+RX\+\_\+\+Task\+\_\+\+Get\+Queue()}}.
+
+\Hypertarget{fdcan_8c_af122e1c28b11c5b8771e82328e10fa2c}\index{fdcan.c@{fdcan.c}!MX\_FDCAN1\_Init@{MX\_FDCAN1\_Init}}
+\index{MX\_FDCAN1\_Init@{MX\_FDCAN1\_Init}!fdcan.c@{fdcan.c}}
+\doxysubsubsection{\texorpdfstring{MX\_FDCAN1\_Init()}{MX\_FDCAN1\_Init()}}
+{\footnotesize\ttfamily \label{fdcan_8c_af122e1c28b11c5b8771e82328e10fa2c} 
+void MX\+\_\+\+FDCAN1\+\_\+\+Init (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+FDCAN Initialization Function. 
+
+All FDCAN settings are initialized here. Parameters can be changed through here or the ioc. 
+
+Referenced by \doxymbox{\hyperlink{main_8c_a840291bc02cba5474a4cb46a9b9566fe}{main()}}.
+

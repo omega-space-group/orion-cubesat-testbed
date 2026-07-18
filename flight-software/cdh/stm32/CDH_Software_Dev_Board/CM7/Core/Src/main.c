@@ -1,9 +1,8 @@
 /* USER CODE BEGIN Header */
 /**
+ * @file main.c
  * @brief Main Function Implementation
  * @details This function is responsible for initializing every peripheral and the kernel.
- * Then initialize the RTOS and finally start the scheduler.
- * @note There is a 5 sec delay before initializing the OS to make sure all peripherals are brought up fully.
  */
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
@@ -69,8 +68,16 @@ extern void MX_USB_DEVICE_Init(void);
 /* USER CODE END 0 */
 
 /**
- * @brief Test
- * @return
+ * @brief Peripheral and RTOS Initialization.
+ * @details
+ * 1. Every peripheral is initialized.
+ * 2. RTOS Kernel is initialized.
+ * 3. MX_FREERTOS_Init() is called to initialize the Root Task
+ * 4. The kernel is started. From now on there is no serial execution and the scheduler has control.
+ * @note 1. There is a 5 sec delay before initializing the OS to make sure all peripherals are brought up fully.
+ * @note 2. TIM7 is used to keep track of FreeRTOS Statistics (FreeRTOS Task List, Timers etc) for debugging purposes.
+ * @note 3. Look into Flash and Debug Manual for more info on how Cortex-M7 handles flashing.
+ * @warning Control should never reach main's inifinite loop because that would mean the RTOS has failed.
  */
 int main(void)
 {
@@ -287,6 +294,25 @@ int _write(int file, char *ptr, int len) {
 }
 /* USER CODE END 4 */
 
+/**
+ * @brief TIM6 callback function.
+ * @details Whenever TIM6 overflows, the callback increments the global variable "uwTick" used as application time base for Cortex-M7.
+ * @warning
+ * To prevent interrupt priority inversion and deadlocks, we separate the
+ * RTOS timebase from the HAL timebase using TIM6 as the HAL timebase and SysTick for RTOS
+ *
+ *
+ * 1. SysTick is dedicated exclusively to the RTOS and is
+ *    assigned the LOWEST priority so it doesn't block time-critical ISRs.
+ *
+ * 2. A dedicated hardware timer (TIM6) is used for the HAL timebase
+ *    (HAL_Delay) and is assigned a HIGH priority. This ensures HAL timeouts
+ *    can safely execute even when called from within peripheral interrupts.
+ *
+ *
+ * Using SysTick for both would cause a deadlock if a HAL function with a
+ * timeout were ever called from a high-priority interrupt handler.
+ */
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
   /* USER CODE BEGIN Callback 0 */

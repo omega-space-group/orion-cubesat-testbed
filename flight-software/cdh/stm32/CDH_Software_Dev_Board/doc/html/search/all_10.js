@@ -1,7 +1,10 @@
 var searchData=
 [
-  ['xtaskbuffer_0',['xTaskBuffer',['../health_monitor__task_8c.html#a13039649057e832cfb39fa9c1e413ce5',1,'healthMonitor_task.c']]],
-  ['xtaskqueue_1',['xTaskQueue',['../health_monitor__task_8c.html#a733882249f948efb4dd189de337b101a',1,'healthMonitor_task.c']]],
-  ['xtaskqueuedata_2',['xTaskQueueData',['../health_monitor__task_8c.html#aa4d932f44a75ba02b1e338f3d9fd81f6',1,'healthMonitor_task.c']]],
-  ['xtaskstack_3',['xTaskStack',['../health_monitor__task_8c.html#a5ddad0d1619fa1bd2dc21bddfcc5f78d',1,'healthMonitor_task.c']]]
+  ['task_20creation_20and_20declararion_0',['Task Creation and Declararion',['../task_declaration.html',1,'manuals']]],
+  ['tc_5fbit_1',['TC_BIT',['../app__config_8h.html#a7777db792b63724d39c9c7ea68b6b03a',1,'app_config.h']]],
+  ['tc_5fpr_2',['TC_PR',['../app__config_8h.html#a7cc550f1475a6f83dbc54d2ec940be71',1,'app_config.h']]],
+  ['telecommand_3',['TELECOMMAND',['../app__config_8h.html#a0560169ed6717811a19ca28c11256293a005b78a0f65bacff527f3a3d9017b784',1,'app_config.h']]],
+  ['telemetry_4',['Housekeeping &amp;amp; Telemetry',['../group__telemetry__module.html',1,'']]],
+  ['the_20stm32h7_20dual_20core_20mcu_5',['Flash and Debug the STM32H7 Dual Core MCU',['../flash_and_debug.html',1,'manuals']]],
+  ['topic_5ft_6',['Topic_t',['../app__config_8h.html#a0560169ed6717811a19ca28c11256293',1,'app_config.h']]]
 ];

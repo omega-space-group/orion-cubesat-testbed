@@ -121,15 +121,120 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('dispatcher__ta
 
 <p>Implementation of the dispatcher and master queue logic.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &lt;App/Tasks/dispatcher_task.h&gt;</code><br />
+<div class="textblock"><code>#include &lt;<a class="el" href="dispatcher__task_8h.html">App/Tasks/dispatcher_task.h</a>&gt;</code><br />
 <code>#include &quot;FreeRTOS.h&quot;</code><br />
 <code>#include &quot;queue.h&quot;</code><br />
-<code>#include &lt;App/app_config.h&gt;</code><br />
+<code>#include &lt;<a class="el" href="app__config_8h.html">App/app_config.h</a>&gt;</code><br />
 <code>#include &lt;App/Services/subscriptions.h&gt;</code><br />
 <code>#include &lt;App/Services/app_events.h&gt;</code><br />
-</div><a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
+</div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:a471a79b618b429dac39b0ffd0c77049e" id="r_a471a79b618b429dac39b0ffd0c77049e"><td class="memItemLeft">static void&#160;</td><td class="memItemRight"><a class="el" href="#a471a79b618b429dac39b0ffd0c77049e">Dispatcher_Task_Handler</a> (void *argument)</td></tr>
+<tr class="memdesc:a471a79b618b429dac39b0ffd0c77049e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Main task loop for the system dispatcher.  <br /></td></tr>
+<tr class="memitem:a1f06ad247a1eebe18b5b98888a598b82" id="r_a1f06ad247a1eebe18b5b98888a598b82"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a1f06ad247a1eebe18b5b98888a598b82">Dispatcher_Task_Init</a> (void)</td></tr>
+<tr class="memdesc:a1f06ad247a1eebe18b5b98888a598b82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Task's initialization function.  <br /></td></tr>
+<tr class="memitem:a3152510efb79418f53cd53cc7dd0ba51" id="r_a3152510efb79418f53cd53cc7dd0ba51"><td class="memItemLeft">QueueHandle_t&#160;</td><td class="memItemRight"><a class="el" href="#a3152510efb79418f53cd53cc7dd0ba51">DispatcherTask_GetQueue</a> (void)</td></tr>
+<tr class="memdesc:a3152510efb79418f53cd53cc7dd0ba51"><td class="mdescLeft">&#160;</td><td class="mdescRight">Global access to master queue.  <br /></td></tr>
+</table>
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Implementation of the dispatcher and master queue logic. </p>
-</div></div><!-- contents -->
+</div><a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Function Documentation</h2>
+<a id="a471a79b618b429dac39b0ffd0c77049e" name="a471a79b618b429dac39b0ffd0c77049e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a471a79b618b429dac39b0ffd0c77049e">&#9670;&#160;</a></span>Dispatcher_Task_Handler()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Dispatcher_Task_Handler </td>
+          <td>(</td>
+          <td class="paramtype">void *</td>          <td class="paramname"><span class="paramname"><em>argument</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Main task loop for the system dispatcher. </p>
+<p>Task's logic:</p><ol type="1">
+<li>Block until all other tasks have finished initialization.</li>
+<li>Enter infinite loop and set health bit (since task is not periodic).</li>
+</ol>
+<ol type="1">
+<li>Block indefinitely until a new message is pushed in the master queue.</li>
+<li>Wake up and clear the health bit and begin execution.</li>
+<li>Forwards the received message to every subscriber task via the DispatcherSend().</li>
+<li>Set health bit to 1 again and finish.</li>
+</ol>
+<ul>
+<li><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">argument</td><td>Pointer to the Master Queue handle. </td></tr>
+  </table>
+  </dd>
+</dl>
+</li>
+</ul>
+
+<p class="reference">References <a class="el" href="app__config_8h.html#a2318625f96819d1c1c71f21ef45c005b">DISPATCHER_BIT</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="#a1f06ad247a1eebe18b5b98888a598b82">Dispatcher_Task_Init()</a>.</p>
+
+</div>
+</div>
+<a id="a1f06ad247a1eebe18b5b98888a598b82" name="a1f06ad247a1eebe18b5b98888a598b82"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1f06ad247a1eebe18b5b98888a598b82">&#9670;&#160;</a></span>Dispatcher_Task_Init()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Dispatcher_Task_Init </td>
+          <td>(</td>
+          <td class="paramtype">void</td>          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Task's initialization function. </p>
+<p>First master queue is created. Then the task itself is created and the queue handle is passed as a task parameter. </p><dl class="section note"><dt>Note</dt><dd>Check <a class="el" href="app__config_8h.html" title="Configuration file for current application.">app_config.h</a> for stack configurations </dd></dl>
+
+<p class="reference">References <a class="el" href="app__config_8h.html#ad9f540d4c21cc489d88a531e7e6dcf9e">DISPATCHER_PR</a>, <a class="el" href="#a471a79b618b429dac39b0ffd0c77049e">Dispatcher_Task_Handler()</a>, <a class="el" href="app__config_8h.html#a225d14042fa83623029d9bf491a4f5f2">LARGE_TASK_STACK_SIZE</a>, and <a class="el" href="app__config_8h.html#a843595a59955f4e62f3d0d2e328e38a2">LOCAL_QUEUE_LENGTH</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="root__task_8c.html#aca2c7d8f6d456d7fba6e583b40a7c40a">Root_Task_Handler()</a>.</p>
+
+</div>
+</div>
+<a id="a3152510efb79418f53cd53cc7dd0ba51" name="a3152510efb79418f53cd53cc7dd0ba51"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3152510efb79418f53cd53cc7dd0ba51">&#9670;&#160;</a></span>DispatcherTask_GetQueue()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">QueueHandle_t DispatcherTask_GetQueue </td>
+          <td>(</td>
+          <td class="paramtype">void</td>          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Global access to master queue. </p>
+<dl class="section return"><dt>Returns</dt><dd>Queue handle </dd></dl>
+
+</div>
+</div>
+</div><!-- contents -->
 </div><!-- doc-content -->
 <div id="page-nav" class="page-nav-panel">
 <div id="page-nav-resize-handle"></div>

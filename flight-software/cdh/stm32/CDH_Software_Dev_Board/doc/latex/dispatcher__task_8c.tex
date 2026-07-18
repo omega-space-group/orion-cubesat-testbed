@@ -11,8 +11,92 @@ Implementation of the dispatcher and master queue logic.
 {\ttfamily \+\#include $<$App/\+app\+\_\+config.\+h$>$}\newline
 {\ttfamily \+\#include $<$App/\+\+Services/\+subscriptions.\+h$>$}\newline
 {\ttfamily \+\#include $<$App/\+\+Services/\+app\+\_\+events.\+h$>$}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \doxymbox{\hyperlink{dispatcher__task_8c_a471a79b618b429dac39b0ffd0c77049e}{Dispatcher\+\_\+\+Task\+\_\+\+Handler}} (void \texorpdfstring{$\ast$}{*}argument)
+\begin{DoxyCompactList}\small\item\em Main task loop for the system dispatcher. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{dispatcher__task_8c_a1f06ad247a1eebe18b5b98888a598b82}{Dispatcher\+\_\+\+Task\+\_\+\+Init}} (void)
+\begin{DoxyCompactList}\small\item\em Task\textquotesingle{}s initialization function. \end{DoxyCompactList}\item 
+Queue\+Handle\+\_\+t \doxymbox{\hyperlink{dispatcher__task_8c_a3152510efb79418f53cd53cc7dd0ba51}{Dispatcher\+Task\+\_\+\+Get\+Queue}} (void)
+\begin{DoxyCompactList}\small\item\em Global access to master queue. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
 Implementation of the dispatcher and master queue logic. 
 
+
+
+\label{dispatcher__task_8c_doc-func-members}
+\Hypertarget{dispatcher__task_8c_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{dispatcher__task_8c_a471a79b618b429dac39b0ffd0c77049e}\index{dispatcher\_task.c@{dispatcher\_task.c}!Dispatcher\_Task\_Handler@{Dispatcher\_Task\_Handler}}
+\index{Dispatcher\_Task\_Handler@{Dispatcher\_Task\_Handler}!dispatcher\_task.c@{dispatcher\_task.c}}
+\doxysubsubsection{\texorpdfstring{Dispatcher\_Task\_Handler()}{Dispatcher\_Task\_Handler()}}
+{\footnotesize\ttfamily \label{dispatcher__task_8c_a471a79b618b429dac39b0ffd0c77049e} 
+void Dispatcher\+\_\+\+Task\+\_\+\+Handler (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{argument}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Main task loop for the system dispatcher. 
+
+Task\textquotesingle{}s logic:\+
+\begin{DoxyEnumerate}
+\item Block until all other tasks have finished initialization.
+\item Enter infinite loop and set health bit (since task is not periodic).
+\end{DoxyEnumerate}
+\begin{DoxyEnumerate}
+\item Block indefinitely until a new message is pushed in the master queue.
+\item Wake up and clear the health bit and begin execution.
+\item Forwards the received message to every subscriber task via the Dispatcher\+Send().
+\item Set health bit to 1 again and finish.
+\end{DoxyEnumerate}
+\begin{DoxyItemize}
+\item 
+\begin{DoxyParams}{Parameters}
+{\em argument} & Pointer to the Master Queue handle. \\
+\hline
+\end{DoxyParams}
+
+\end{DoxyItemize}
+
+References \doxymbox{\hyperlink{app__config_8h_a2318625f96819d1c1c71f21ef45c005b}{DISPATCHER\+\_\+\+BIT}}.
+
+
+
+Referenced by \doxymbox{\hyperlink{dispatcher__task_8c_a1f06ad247a1eebe18b5b98888a598b82}{Dispatcher\+\_\+\+Task\+\_\+\+Init()}}.
+
+\Hypertarget{dispatcher__task_8c_a1f06ad247a1eebe18b5b98888a598b82}\index{dispatcher\_task.c@{dispatcher\_task.c}!Dispatcher\_Task\_Init@{Dispatcher\_Task\_Init}}
+\index{Dispatcher\_Task\_Init@{Dispatcher\_Task\_Init}!dispatcher\_task.c@{dispatcher\_task.c}}
+\doxysubsubsection{\texorpdfstring{Dispatcher\_Task\_Init()}{Dispatcher\_Task\_Init()}}
+{\footnotesize\ttfamily \label{dispatcher__task_8c_a1f06ad247a1eebe18b5b98888a598b82} 
+void Dispatcher\+\_\+\+Task\+\_\+\+Init (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Task\textquotesingle{}s initialization function. 
+
+First master queue is created. Then the task itself is created and the queue handle is passed as a task parameter. \begin{DoxyNote}{Note}
+Check \doxylink{app__config_8h}{app\+\_\+config.\+h} for stack configurations 
+\end{DoxyNote}
+
+
+References \doxymbox{\hyperlink{app__config_8h_ad9f540d4c21cc489d88a531e7e6dcf9e}{DISPATCHER\+\_\+\+PR}}, \doxymbox{\hyperlink{dispatcher__task_8c_a471a79b618b429dac39b0ffd0c77049e}{Dispatcher\+\_\+\+Task\+\_\+\+Handler()}}, \doxymbox{\hyperlink{app__config_8h_a225d14042fa83623029d9bf491a4f5f2}{LARGE\+\_\+\+TASK\+\_\+\+STACK\+\_\+\+SIZE}}, and \doxymbox{\hyperlink{app__config_8h_a843595a59955f4e62f3d0d2e328e38a2}{LOCAL\+\_\+\+QUEUE\+\_\+\+LENGTH}}.
+
+
+
+Referenced by \doxymbox{\hyperlink{root__task_8c_aca2c7d8f6d456d7fba6e583b40a7c40a}{Root\+\_\+\+Task\+\_\+\+Handler()}}.
+
+\Hypertarget{dispatcher__task_8c_a3152510efb79418f53cd53cc7dd0ba51}\index{dispatcher\_task.c@{dispatcher\_task.c}!DispatcherTask\_GetQueue@{DispatcherTask\_GetQueue}}
+\index{DispatcherTask\_GetQueue@{DispatcherTask\_GetQueue}!dispatcher\_task.c@{dispatcher\_task.c}}
+\doxysubsubsection{\texorpdfstring{DispatcherTask\_GetQueue()}{DispatcherTask\_GetQueue()}}
+{\footnotesize\ttfamily \label{dispatcher__task_8c_a3152510efb79418f53cd53cc7dd0ba51} 
+Queue\+Handle\+\_\+t Dispatcher\+Task\+\_\+\+Get\+Queue (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Global access to master queue. 
+
+\begin{DoxyReturn}{Returns}
+Queue handle 
+\end{DoxyReturn}

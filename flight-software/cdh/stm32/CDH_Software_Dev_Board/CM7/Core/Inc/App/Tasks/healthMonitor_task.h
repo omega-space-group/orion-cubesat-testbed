@@ -6,9 +6,9 @@
  */
 /**
  * @file healthMonitor_task.h
- * @brief Public interface for the OBC Health Monitoring System.
- * @details This module manages the background health reporting, watchdog tracking,
- * and error accounting for all active flight tasks.
+ * @brief This file contains all the function prototypes for the healthMonitor_task.c file.
+ * @details Implementation of the background execution check and task accounting.
+ * For more details look into HealthMonitor_Handler().
  * @ingroup fdir_module
  */
 

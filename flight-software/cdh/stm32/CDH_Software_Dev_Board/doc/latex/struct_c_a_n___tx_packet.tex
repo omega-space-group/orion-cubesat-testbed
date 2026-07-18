@@ -1,0 +1,46 @@
+\doxysection{CAN\+\_\+\+Tx\+Packet Struct Reference}
+\hypertarget{struct_c_a_n___tx_packet}{}\label{struct_c_a_n___tx_packet}\index{CAN\_TxPacket@{CAN\_TxPacket}}
+
+
+A custom data structure with the standard FDCAN frame for Tx Messages.  
+
+
+
+
+{\ttfamily \+\#include $<$fdcan.\+h$>$}
+
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+FDCAN\+\_\+\+Tx\+Header\+Type\+Def \doxymbox{\hyperlink{struct_c_a_n___tx_packet_a08fb9c5765d18d0a5aca46bbe1f88fc1}{Header}}
+\item 
+uint8\+\_\+t \doxymbox{\hyperlink{struct_c_a_n___tx_packet_a0ff793051491ba56b219df1eea76f07d}{Data}} \+[8]\+
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A custom data structure with the standard FDCAN frame for Tx Messages. 
+
+\label{struct_c_a_n___tx_packet_doc-variable-members}
+\Hypertarget{struct_c_a_n___tx_packet_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{struct_c_a_n___tx_packet_a0ff793051491ba56b219df1eea76f07d}\index{CAN\_TxPacket@{CAN\_TxPacket}!Data@{Data}}
+\index{Data@{Data}!CAN\_TxPacket@{CAN\_TxPacket}}
+\doxysubsubsection{\texorpdfstring{Data}{Data}}
+{\footnotesize\ttfamily \label{struct_c_a_n___tx_packet_a0ff793051491ba56b219df1eea76f07d} 
+uint8\+\_\+t CAN\+\_\+\+Tx\+Packet::\+\+Data\+[8]\+}
+
+Data payload buffer holding up to 8 bytes of message data. 
+
+Referenced by \doxymbox{\hyperlink{fdcan_8c_acb1a2ebd043af21a56094e47f2e7797d}{FDCAN\+\_\+\+Tx()}}.
+
+\Hypertarget{struct_c_a_n___tx_packet_a08fb9c5765d18d0a5aca46bbe1f88fc1}\index{CAN\_TxPacket@{CAN\_TxPacket}!Header@{Header}}
+\index{Header@{Header}!CAN\_TxPacket@{CAN\_TxPacket}}
+\doxysubsubsection{\texorpdfstring{Header}{Header}}
+{\footnotesize\ttfamily \label{struct_c_a_n___tx_packet_a08fb9c5765d18d0a5aca46bbe1f88fc1} 
+FDCAN\+\_\+\+Tx\+Header\+Type\+Def CAN\+\_\+\+Tx\+Packet::\+\+Header}
+
+Configuration header specifying ID, DLC, and frame type. 
+
+Referenced by \doxymbox{\hyperlink{fdcan_8c_acb1a2ebd043af21a56094e47f2e7797d}{FDCAN\+\_\+\+Tx()}}.
+

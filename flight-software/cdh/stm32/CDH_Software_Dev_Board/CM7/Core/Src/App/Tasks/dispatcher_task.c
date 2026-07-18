@@ -24,15 +24,16 @@ static StaticQueue_t xMasterQueueData;
 static uint8_t ucMasterQueueStorageArea[MASTER_QUEUE_LENGTH * MSG_SIZE];
 static QueueHandle_t xMasterQueue;
 
-/*
+/**
  * @brief  Main task loop for the system dispatcher.
- * @note   This is an internal task handler managed strictly by FreeRTOS.
- * * @details This task orchestrates system events by implementing the following pipeline:
- * 1. Blocks indefinitely until a new message arrives via the master queue.
- * 2. Temporarily clears the health monitoring status during execution.
- * 3. Forwards the received `Message_t` packet to sub-tables via DispatcherSend().
- * 4. Sets the health bit high again before reverting back to a blocked state.
- * * @param  argument: A pointer to the Master Queue handle (`QueueHandle_t`).
+ * @details Task's logic:
+ * 1. Block until all other tasks have finished initialization.
+ * 2. Enter infinite loop and set health bit (since task is not periodic).
+ * 2. Block indefinitely until a new message is pushed in the master queue.
+ * 3. Wake up and clear the health bit and begin execution.
+ * 4. Forward the received message to every subscriber task.
+ * 6. Set health bit to 1 again and finish.
+ * * @param  argument:  Pointer to the Master Queue handle.
  */
 static void Dispatcher_Task_Handler(void *argument){
 	TaskSync_WaitForAll();
@@ -47,12 +48,21 @@ static void Dispatcher_Task_Handler(void *argument){
 	}
 }
 
+/**
+ * @brief Task's initialization function.
+ * @details First master queue is created. Then the task itself is created and the queue handle is passed as a task parameter.
+ * @note Check app_config.h for stack configurations
+ */
 void Dispatcher_Task_Init(void){
 	xMasterQueue = xQueueCreateStatic(LOCAL_QUEUE_LENGTH, MSG_SIZE, ucMasterQueueStorageArea, &xMasterQueueData);
 	xTaskCreateStatic(Dispatcher_Task_Handler,"Dispatcher_Task_Handler",LARGE_TASK_STACK_SIZE
 			,(void*)xMasterQueue,DISPATCHER_PR,xDispatcherTaskStack,&xDispatcherTaskBuffer);
 }
 
+/**
+ * @brief Global access to master queue
+ * @return Queue handle
+ */
 QueueHandle_t DispatcherTask_GetQueue(void) {
     return xMasterQueue;
 }

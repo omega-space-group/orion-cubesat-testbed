@@ -1,0 +1,160 @@
+\doxysection{CM7/\+\+Core/\+\+Inc/\+\+App/\+\+Tasks/\+can\+\_\+rx\+\_\+task.h File Reference}
+\hypertarget{can__rx__task_8h}{}\label{can__rx__task_8h}\index{CM7/Core/Inc/App/Tasks/can\_rx\_task.h@{CM7/Core/Inc/App/Tasks/can\_rx\_task.h}}
+
+
+This file contains all the function prototypes for the \doxylink{can__rx__task_8c}{can\+\_\+rx\+\_\+task.\+c} file.  
+
+
+{\ttfamily \+\#include "{}Free\+RTOS.\+h"{}}\newline
+{\ttfamily \+\#include "{}queue.\+h"{}}\newline
+\doxysubsubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \doxymbox{\hyperlink{can__rx__task_8h_a8f963b5a6361565c648237bcc3fc40d5}{subsystem\+Name}} \{ \doxymbox{\hyperlink{can__rx__task_8h_a8f963b5a6361565c648237bcc3fc40d5a576ecfc33e74ec9e89b3b0f9bc5d49c5}{COMMS}} = 0
+, \doxymbox{\hyperlink{can__rx__task_8h_a8f963b5a6361565c648237bcc3fc40d5a7fe95fbd95752a82e28a74b8abf4e8e7}{EPS}} = 1
+, \doxymbox{\hyperlink{can__rx__task_8h_a8f963b5a6361565c648237bcc3fc40d5a4a0f7dc7bc13b4de9dcaf52874286bd9}{PL}} = 2
+, \doxymbox{\hyperlink{can__rx__task_8h_a8f963b5a6361565c648237bcc3fc40d5a38142277e48b191b563491ebe4affd29}{ADCS}} = 3
+ \}
+\begin{DoxyCompactList}\small\item\em Subsystem enumeration. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \doxymbox{\hyperlink{can__rx__task_8h_aaa74b795083e75b34efb78dd249faf77}{CAN\+\_\+\+RX\+\_\+\+Task\+\_\+\+Init}} (void)
+\begin{DoxyCompactList}\small\item\em Task\textquotesingle{}s initialization function. \end{DoxyCompactList}\item 
+Queue\+Handle\+\_\+t \doxymbox{\hyperlink{can__rx__task_8h_a2e5bd37d755ff666cbb9f33599618d2c}{CAN\+\_\+\+RX\+\_\+\+Task\+\_\+\+Get\+Queue}} (void)
+\begin{DoxyCompactList}\small\item\em Global access to task\textquotesingle{}s local queue. \end{DoxyCompactList}\item 
+int \doxymbox{\hyperlink{can__rx__task_8h_aef0f76469910e502ceadd705438488e5}{Get\+Subsystem\+Status}} (\doxymbox{\hyperlink{can__rx__task_8h_a8f963b5a6361565c648237bcc3fc40d5}{subsystem\+Name}} sub)
+\begin{DoxyCompactList}\small\item\em Global getter function for local subsystem status. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{can__rx__task_8h_a7407c71b478f8712e7931c93ad3b25f4}{Set\+Subsystem\+Status}} (\doxymbox{\hyperlink{can__rx__task_8h_a8f963b5a6361565c648237bcc3fc40d5}{subsystem\+Name}} sub, int status)
+\begin{DoxyCompactList}\small\item\em Global setter function for local subsystem status. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This file contains all the function prototypes for the \doxylink{can__rx__task_8c}{can\+\_\+rx\+\_\+task.\+c} file. 
+
+Implementation of the CAN Rx Task responsible for parsing any received FDCAN messages. For more details look into \doxylink{can__rx__task_8c_afec88a1503ea8a29a78df4d4b9abbb43}{CAN\+\_\+\+RX\+\_\+\+Handler()}. 
+
+\label{can__rx__task_8h_doc-enum-members}
+\Hypertarget{can__rx__task_8h_doc-enum-members}
+\doxysubsection{Enumeration Type Documentation}
+\Hypertarget{can__rx__task_8h_a8f963b5a6361565c648237bcc3fc40d5}\index{can\_rx\_task.h@{can\_rx\_task.h}!subsystemName@{subsystemName}}
+\index{subsystemName@{subsystemName}!can\_rx\_task.h@{can\_rx\_task.h}}
+\doxysubsubsection{\texorpdfstring{subsystemName}{subsystemName}}
+{\footnotesize\ttfamily \label{can__rx__task_8h_a8f963b5a6361565c648237bcc3fc40d5} 
+enum \doxymbox{\hyperlink{can__rx__task_8h_a8f963b5a6361565c648237bcc3fc40d5}{subsystem\+Name}}}
+
+
+
+Subsystem enumeration. 
+
+\begin{DoxyNote}{Note}
+This enum should be modified to accommodate extra subsystems 
+\end{DoxyNote}
+\begin{DoxyEnumFields}[2]{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{COMMS@{COMMS}!can\_rx\_task.h@{can\_rx\_task.h}}
+\index{can\_rx\_task.h@{can\_rx\_task.h}!COMMS@{COMMS}}
+}\Hypertarget{can__rx__task_8h_a8f963b5a6361565c648237bcc3fc40d5a576ecfc33e74ec9e89b3b0f9bc5d49c5}\label{can__rx__task_8h_a8f963b5a6361565c648237bcc3fc40d5a576ecfc33e74ec9e89b3b0f9bc5d49c5} 
+COMMS&Communication Subsystem \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{EPS@{EPS}!can\_rx\_task.h@{can\_rx\_task.h}}
+\index{can\_rx\_task.h@{can\_rx\_task.h}!EPS@{EPS}}
+}\Hypertarget{can__rx__task_8h_a8f963b5a6361565c648237bcc3fc40d5a7fe95fbd95752a82e28a74b8abf4e8e7}\label{can__rx__task_8h_a8f963b5a6361565c648237bcc3fc40d5a7fe95fbd95752a82e28a74b8abf4e8e7} 
+EPS&Electrical Power System \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{PL@{PL}!can\_rx\_task.h@{can\_rx\_task.h}}
+\index{can\_rx\_task.h@{can\_rx\_task.h}!PL@{PL}}
+}\Hypertarget{can__rx__task_8h_a8f963b5a6361565c648237bcc3fc40d5a4a0f7dc7bc13b4de9dcaf52874286bd9}\label{can__rx__task_8h_a8f963b5a6361565c648237bcc3fc40d5a4a0f7dc7bc13b4de9dcaf52874286bd9} 
+PL&Payload \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{ADCS@{ADCS}!can\_rx\_task.h@{can\_rx\_task.h}}
+\index{can\_rx\_task.h@{can\_rx\_task.h}!ADCS@{ADCS}}
+}\Hypertarget{can__rx__task_8h_a8f963b5a6361565c648237bcc3fc40d5a38142277e48b191b563491ebe4affd29}\label{can__rx__task_8h_a8f963b5a6361565c648237bcc3fc40d5a38142277e48b191b563491ebe4affd29} 
+ADCS&Attitude Determination and Control System \\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\label{can__rx__task_8h_doc-func-members}
+\Hypertarget{can__rx__task_8h_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{can__rx__task_8h_a2e5bd37d755ff666cbb9f33599618d2c}\index{can\_rx\_task.h@{can\_rx\_task.h}!CAN\_RX\_Task\_GetQueue@{CAN\_RX\_Task\_GetQueue}}
+\index{CAN\_RX\_Task\_GetQueue@{CAN\_RX\_Task\_GetQueue}!can\_rx\_task.h@{can\_rx\_task.h}}
+\doxysubsubsection{\texorpdfstring{CAN\_RX\_Task\_GetQueue()}{CAN\_RX\_Task\_GetQueue()}}
+{\footnotesize\ttfamily \label{can__rx__task_8h_a2e5bd37d755ff666cbb9f33599618d2c} 
+Queue\+Handle\+\_\+t CAN\+\_\+\+RX\+\_\+\+Task\+\_\+\+Get\+Queue (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Global access to task\textquotesingle{}s local queue. 
+
+\begin{DoxyReturn}{Returns}
+Queue handle 
+\end{DoxyReturn}
+
+
+Referenced by \doxymbox{\hyperlink{fdcan_8c_a37d92c0f4f667c4dd4cbc9c3b5d5dad4}{HAL\+\_\+\+FDCAN\+\_\+\+Rx\+Fifo0\+Callback()}}.
+
+\Hypertarget{can__rx__task_8h_aaa74b795083e75b34efb78dd249faf77}\index{can\_rx\_task.h@{can\_rx\_task.h}!CAN\_RX\_Task\_Init@{CAN\_RX\_Task\_Init}}
+\index{CAN\_RX\_Task\_Init@{CAN\_RX\_Task\_Init}!can\_rx\_task.h@{can\_rx\_task.h}}
+\doxysubsubsection{\texorpdfstring{CAN\_RX\_Task\_Init()}{CAN\_RX\_Task\_Init()}}
+{\footnotesize\ttfamily \label{can__rx__task_8h_aaa74b795083e75b34efb78dd249faf77} 
+void CAN\+\_\+\+RX\+\_\+\+Task\+\_\+\+Init (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Task\textquotesingle{}s initialization function. 
+
+First local queue is created. Then the task itself is created and the queue handle is passed as a task parameter. \begin{DoxyNote}{Note}
+Check \doxylink{app__config_8h}{app\+\_\+config.\+h} for stack configurations 
+\end{DoxyNote}
+
+
+References \doxymbox{\hyperlink{can__rx__task_8c_afec88a1503ea8a29a78df4d4b9abbb43}{CAN\+\_\+\+RX\+\_\+\+Handler()}}, \doxymbox{\hyperlink{app__config_8h_a16d794c91d2fcbf7dac7710b4658263f}{CANRX\+\_\+\+PR}}, \doxymbox{\hyperlink{app__config_8h_a843595a59955f4e62f3d0d2e328e38a2}{LOCAL\+\_\+\+QUEUE\+\_\+\+LENGTH}}, and \doxymbox{\hyperlink{app__config_8h_a200c2c21eb5510aa388dc932a76e830d}{NORMAL\+\_\+\+TASK\+\_\+\+STACK\+\_\+\+SIZE}}.
+
+
+
+Referenced by \doxymbox{\hyperlink{root__task_8c_aca2c7d8f6d456d7fba6e583b40a7c40a}{Root\+\_\+\+Task\+\_\+\+Handler()}}.
+
+\Hypertarget{can__rx__task_8h_aef0f76469910e502ceadd705438488e5}\index{can\_rx\_task.h@{can\_rx\_task.h}!GetSubsystemStatus@{GetSubsystemStatus}}
+\index{GetSubsystemStatus@{GetSubsystemStatus}!can\_rx\_task.h@{can\_rx\_task.h}}
+\doxysubsubsection{\texorpdfstring{GetSubsystemStatus()}{GetSubsystemStatus()}}
+{\footnotesize\ttfamily \label{can__rx__task_8h_aef0f76469910e502ceadd705438488e5} 
+int Get\+Subsystem\+Status (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{can__rx__task_8h_a8f963b5a6361565c648237bcc3fc40d5}{subsystem\+Name}}}]{sub}{}\end{DoxyParamCaption})}
+
+
+
+Global getter function for local subsystem status. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em sub} & Subsystem name \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Current subsystem status 
+\end{DoxyReturn}
+\Hypertarget{can__rx__task_8h_a7407c71b478f8712e7931c93ad3b25f4}\index{can\_rx\_task.h@{can\_rx\_task.h}!SetSubsystemStatus@{SetSubsystemStatus}}
+\index{SetSubsystemStatus@{SetSubsystemStatus}!can\_rx\_task.h@{can\_rx\_task.h}}
+\doxysubsubsection{\texorpdfstring{SetSubsystemStatus()}{SetSubsystemStatus()}}
+{\footnotesize\ttfamily \label{can__rx__task_8h_a7407c71b478f8712e7931c93ad3b25f4} 
+void Set\+Subsystem\+Status (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{can__rx__task_8h_a8f963b5a6361565c648237bcc3fc40d5}{subsystem\+Name}}}]{sub}{, }\item[{int}]{stat}{}\end{DoxyParamCaption})}
+
+
+
+Global setter function for local subsystem status. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em sub} & Subsystem name \\
+\hline
+{\em stat} & New subsystem status \\
+\hline
+\end{DoxyParams}
+
+
+Referenced by \doxymbox{\hyperlink{can__rx__task_8c_a3ac22077410fb91a154296c96a380a12}{Subsystem\+\_\+\+Msg\+\_\+\+Parser()}}.
+

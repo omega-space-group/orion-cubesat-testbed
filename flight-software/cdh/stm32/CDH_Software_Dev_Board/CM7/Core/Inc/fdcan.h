@@ -2,7 +2,7 @@
 /**
  * @file fdcan.h
  * @brief This file contains all the function prototypes for the fdcan.c file.
- * @details This module manages the FDCAN peripheral and related data structures.
+ * @details Implementation of the FDCAN peripheral control.
  */
 /* USER CODE END Header */
 /* Define to prevent recursive inclusion -------------------------------------*/
@@ -24,14 +24,20 @@ extern FDCAN_HandleTypeDef hfdcan1;
 
 /* USER CODE BEGIN Private defines */
 
+/**
+ * @brief A custom data structure with the standard FDCAN frame for Tx Messages.
+ */
 typedef struct {
-    FDCAN_TxHeaderTypeDef Header;
-    uint8_t               Data[8];
+    FDCAN_TxHeaderTypeDef Header; /**< Configuration header specifying ID, DLC, and frame type. */
+    uint8_t               Data[8]; /**< Data payload buffer holding up to 8 bytes of message data. */
 } CAN_TxPacket;
 
+/**
+ * @brief A custom data structure with the standard FDCAN frame for Rx Messages.
+ */
 typedef struct {
-    FDCAN_RxHeaderTypeDef Header;
-    uint8_t               Data[8];
+    FDCAN_RxHeaderTypeDef Header; /**< Configuration header specifying ID, DLC, and frame type. */
+    uint8_t               Data[8]; /**< Data payload buffer holding up to 8 bytes of message data. */
 } CAN_RxPacket;
 
 /* USER CODE END Private defines */

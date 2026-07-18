@@ -1,0 +1,3 @@
+@page flash_and_debug Flash and Debug the STM32H7 Dual Core MCU
+
+Your manual content goes here...
