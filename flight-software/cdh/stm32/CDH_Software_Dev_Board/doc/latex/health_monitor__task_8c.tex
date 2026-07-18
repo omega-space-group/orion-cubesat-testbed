@@ -49,7 +49,10 @@ Health Monitoring Task logic:\+
 \begin{DoxyItemize}
 \item Check if all tasks are making progress by checking that the mask is equal to ALL\+\_\+\+TASKS\+\_\+\+OK. That would mean that all tasks have set their bit and finished execution at least ones, so no starvation or hangs!
 \item If check okay then increment a local health variable. Else, increment a different local variable.
-\item Lastly, clear the mask to reset the process. 
+\item Lastly, clear the mask to reset the process. \begin{DoxyNote}{Note}
+Task runs every 5sec! 
+\end{DoxyNote}
+
 \begin{DoxyParams}{Parameters}
 {\em argument} & Pointer to task\textquotesingle{}s local queue handle \\
 \hline

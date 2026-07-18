@@ -170,7 +170,8 @@ Functions</h2></td></tr>
 <ul>
 <li>Check if all tasks are making progress by checking that the mask is equal to ALL_TASKS_OK. That would mean that all tasks have set their bit and finished execution at least ones, so no starvation or hangs!</li>
 <li>If check okay then increment a local health variable. Else, increment a different local variable.</li>
-<li>Lastly, clear the mask to reset the process. <dl class="params"><dt>Parameters</dt><dd>
+<li>Lastly, clear the mask to reset the process. <dl class="section note"><dt>Note</dt><dd>Task runs every 5sec! </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">argument</td><td>Pointer to task's local queue handle </td></tr>
   </table>

@@ -23,7 +23,7 @@ Configuration file for current application.
 \Hypertarget{app__config_8h_a843595a59955f4e62f3d0d2e328e38a2}\label{app__config_8h_a843595a59955f4e62f3d0d2e328e38a2} 
 \+\#define {\bfseries LOCAL\+\_\+\+QUEUE\+\_\+\+LENGTH}~5
 \begin{DoxyCompactList}\small\item\em Local queue length. \end{DoxyCompactList}\item 
-\+\#define \doxymbox{\hyperlink{app__config_8h_ad92056533d94e7a5cbc443e4f40ee9a7}{PERIODIC\+\_\+\+TASKS}}~(\doxymbox{\hyperlink{app__config_8h_a000410b4e381df0e2479e769176ddb1b}{DUMMY\+\_\+\+BIT}} \texorpdfstring{$\vert$}{|} \doxymbox{\hyperlink{app__config_8h_acfde02c445d4aba6bc99ab7d79814cb4}{MODE\+\_\+\+BIT}} \texorpdfstring{$\vert$}{|} \doxymbox{\hyperlink{app__config_8h_a3cdc67f59a4e9aa04dcb6860007364b4}{HM\+\_\+\+BIT}} \texorpdfstring{$\vert$}{|} \doxymbox{\hyperlink{app__config_8h_a0d46bc03efdec2cb55867268bc3b4462}{SUBM\+\_\+\+BIT}} \texorpdfstring{$\vert$}{|} \doxymbox{\hyperlink{app__config_8h_a6389953d7894249585c0caffa8675180}{HK\+\_\+\+BIT}})
+\+\#define \doxymbox{\hyperlink{app__config_8h_ad92056533d94e7a5cbc443e4f40ee9a7}{PERIODIC\+\_\+\+TASKS}}~(\doxymbox{\hyperlink{app__config_8h_a000410b4e381df0e2479e769176ddb1b}{DUMMY\+\_\+\+BIT}} \texorpdfstring{$\vert$}{|} \doxymbox{\hyperlink{app__config_8h_a3cdc67f59a4e9aa04dcb6860007364b4}{HM\+\_\+\+BIT}} \texorpdfstring{$\vert$}{|} \doxymbox{\hyperlink{app__config_8h_a0d46bc03efdec2cb55867268bc3b4462}{SUBM\+\_\+\+BIT}} \texorpdfstring{$\vert$}{|} \doxymbox{\hyperlink{app__config_8h_a6389953d7894249585c0caffa8675180}{HK\+\_\+\+BIT}})
 \begin{DoxyCompactList}\small\item\em This define is used to group all periodic tasks together. More info in \doxylink{health_monitor__task_8c}{health\+Monitor\+\_\+task.\+c}. \end{DoxyCompactList}\item 
 \+\#define \doxymbox{\hyperlink{app__config_8h_a552b8b30bb8cf4c54f1d62980e0d7b13}{ALL\+\_\+\+TASKS\+\_\+\+READY}}~(\doxymbox{\hyperlink{app__config_8h_a000410b4e381df0e2479e769176ddb1b}{DUMMY\+\_\+\+BIT}} \texorpdfstring{$\vert$}{|} \doxymbox{\hyperlink{app__config_8h_acfde02c445d4aba6bc99ab7d79814cb4}{MODE\+\_\+\+BIT}} \texorpdfstring{$\vert$}{|} \doxymbox{\hyperlink{app__config_8h_a3cdc67f59a4e9aa04dcb6860007364b4}{HM\+\_\+\+BIT}} \texorpdfstring{$\vert$}{|} \doxymbox{\hyperlink{app__config_8h_a0d46bc03efdec2cb55867268bc3b4462}{SUBM\+\_\+\+BIT}} \texorpdfstring{$\vert$}{|} \doxymbox{\hyperlink{app__config_8h_ab0af60e8248527f8131652b2fee1db11}{SUBC\+\_\+\+BIT}} \texorpdfstring{$\vert$}{|} \doxymbox{\hyperlink{app__config_8h_a7777db792b63724d39c9c7ea68b6b03a}{TC\+\_\+\+BIT}} \texorpdfstring{$\vert$}{|} \doxymbox{\hyperlink{app__config_8h_a6389953d7894249585c0caffa8675180}{HK\+\_\+\+BIT}})
 \begin{DoxyCompactList}\small\item\em This define is used for sync purposes. More info in \doxylink{dispatcher__task_8c}{dispatcher\+\_\+task.\+c}. \end{DoxyCompactList}\item 
@@ -235,17 +235,25 @@ Referenced by \doxymbox{\hyperlink{health_monitor__task_8c_a9bf16be0fb6926c77cff
 {\footnotesize\ttfamily \label{app__config_8h_acfde02c445d4aba6bc99ab7d79814cb4} 
 \+\#define MODE\+\_\+\+BIT~(1 $<$$<$ 2)}
 
-~ \Hypertarget{app__config_8h_ad1ed0ea73c4459cd52a8fe09d5931b1d}\index{app\_config.h@{app\_config.h}!MODE\_PR@{MODE\_PR}}
+~ 
+
+Referenced by \doxymbox{\hyperlink{mode_manager__task_8c_ae5180377d2e4e13d2b0f1344658df6d4}{Mode\+Manager\+\_\+\+Handler()}}.
+
+\Hypertarget{app__config_8h_ad1ed0ea73c4459cd52a8fe09d5931b1d}\index{app\_config.h@{app\_config.h}!MODE\_PR@{MODE\_PR}}
 \index{MODE\_PR@{MODE\_PR}!app\_config.h@{app\_config.h}}
 \doxysubsubsection{\texorpdfstring{MODE\_PR}{MODE\_PR}}
 {\footnotesize\ttfamily \label{app__config_8h_ad1ed0ea73c4459cd52a8fe09d5931b1d} 
 \+\#define MODE\+\_\+\+PR~32}
 
-~ \Hypertarget{app__config_8h_ad92056533d94e7a5cbc443e4f40ee9a7}\index{app\_config.h@{app\_config.h}!PERIODIC\_TASKS@{PERIODIC\_TASKS}}
+~ 
+
+Referenced by \doxymbox{\hyperlink{mode_manager__task_8c_a1d3500502fc4fd3697e8b87290e7d997}{Mode\+Manager\+\_\+\+Task\+\_\+\+Init()}}.
+
+\Hypertarget{app__config_8h_ad92056533d94e7a5cbc443e4f40ee9a7}\index{app\_config.h@{app\_config.h}!PERIODIC\_TASKS@{PERIODIC\_TASKS}}
 \index{PERIODIC\_TASKS@{PERIODIC\_TASKS}!app\_config.h@{app\_config.h}}
 \doxysubsubsection{\texorpdfstring{PERIODIC\_TASKS}{PERIODIC\_TASKS}}
 {\footnotesize\ttfamily \label{app__config_8h_ad92056533d94e7a5cbc443e4f40ee9a7} 
-\+\#define PERIODIC\+\_\+\+TASKS~(\doxymbox{\hyperlink{app__config_8h_a000410b4e381df0e2479e769176ddb1b}{DUMMY\+\_\+\+BIT}} \texorpdfstring{$\vert$}{|} \doxymbox{\hyperlink{app__config_8h_acfde02c445d4aba6bc99ab7d79814cb4}{MODE\+\_\+\+BIT}} \texorpdfstring{$\vert$}{|} \doxymbox{\hyperlink{app__config_8h_a3cdc67f59a4e9aa04dcb6860007364b4}{HM\+\_\+\+BIT}} \texorpdfstring{$\vert$}{|} \doxymbox{\hyperlink{app__config_8h_a0d46bc03efdec2cb55867268bc3b4462}{SUBM\+\_\+\+BIT}} \texorpdfstring{$\vert$}{|} \doxymbox{\hyperlink{app__config_8h_a6389953d7894249585c0caffa8675180}{HK\+\_\+\+BIT}})}
+\+\#define PERIODIC\+\_\+\+TASKS~(\doxymbox{\hyperlink{app__config_8h_a000410b4e381df0e2479e769176ddb1b}{DUMMY\+\_\+\+BIT}} \texorpdfstring{$\vert$}{|} \doxymbox{\hyperlink{app__config_8h_a3cdc67f59a4e9aa04dcb6860007364b4}{HM\+\_\+\+BIT}} \texorpdfstring{$\vert$}{|} \doxymbox{\hyperlink{app__config_8h_a0d46bc03efdec2cb55867268bc3b4462}{SUBM\+\_\+\+BIT}} \texorpdfstring{$\vert$}{|} \doxymbox{\hyperlink{app__config_8h_a6389953d7894249585c0caffa8675180}{HK\+\_\+\+BIT}})}
 
 
 

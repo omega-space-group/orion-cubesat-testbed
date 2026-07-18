@@ -6,7 +6,7 @@ var searchData=
   ['all_5ftasks_5fok_3',['ALL_TASKS_OK',['../app__config_8h.html#a7d092bb0ccbe33b8392266f030f034ac',1,'app_config.h']]],
   ['all_5ftasks_5fready_4',['ALL_TASKS_READY',['../app__config_8h.html#a552b8b30bb8cf4c54f1d62980e0d7b13',1,'app_config.h']]],
   ['and_20debug_20the_20stm32h7_20dual_20core_20mcu_5',['Flash and Debug the STM32H7 Dual Core MCU',['../flash_and_debug.html',1,'manuals']]],
-  ['and_20declararion_6',['Task Creation and Declararion',['../task_declaration.html',1,'manuals']]],
+  ['and_20initialization_6',['Task Creation and Initialization',['../task_creation.html',1,'manuals']]],
   ['and_20recovery_20fdir_7',['Fault Detection, Isolation, and Recovery (FDIR)',['../group__fdir__module.html',1,'']]],
   ['app_5fconfig_2eh_8',['app_config.h',['../app__config_8h.html',1,'']]],
   ['arcitecture_9',['Software Bus Arcitecture',['../software_bus.html',1,'manuals']]]

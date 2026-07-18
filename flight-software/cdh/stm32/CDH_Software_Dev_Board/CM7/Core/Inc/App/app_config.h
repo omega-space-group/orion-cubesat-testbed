@@ -101,7 +101,7 @@
  * @brief This define is used to group all periodic tasks together. More info in healthMonitor_task.c
  * @note Any new initialized PERIODIC tasks should be added!
  */
-#define PERIODIC_TASKS (DUMMY_BIT | MODE_BIT | HM_BIT | SUBM_BIT | HK_BIT)
+#define PERIODIC_TASKS (DUMMY_BIT | HM_BIT | SUBM_BIT | HK_BIT)
 
 /**
  * @brief This define is used for sync purposes. More info in dispatcher_task.c

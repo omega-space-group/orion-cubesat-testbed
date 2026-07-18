@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['obc_20software_20v0_0',['OBC Software v0',['../index.html',1,'']]]
+  ['manuals_0',['Manuals',['../manuals.html',1,'index']]],
+  ['mcu_1',['Flash and Debug the STM32H7 Dual Core MCU',['../flash_and_debug.html',1,'manuals']]]
 ];

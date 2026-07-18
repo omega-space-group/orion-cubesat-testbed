@@ -14,6 +14,7 @@ var searchData=
   ['subm_5fpr_11',['SUBM_PR',['../app__config_8h.html#a5018529b484b92b7b4c0d6a4082b901d',1,'app_config.h']]],
   ['subsystem_20control_12',['Subsystem Control',['../group__subsystems__module.html',1,'']]],
   ['subsystem_5fmsg_5fparser_13',['Subsystem_Msg_Parser',['../can__rx__task_8c.html#a3ac22077410fb91a154296c96a380a12',1,'can_rx_task.c']]],
-  ['subsystemname_14',['subsystemName',['../can__rx__task_8h.html#a8f963b5a6361565c648237bcc3fc40d5',1,'can_rx_task.h']]],
-  ['system_5fstate_15',['SYSTEM_STATE',['../app__config_8h.html#a0560169ed6717811a19ca28c11256293afa331522f1b1dda554d1c65e5a0e6061',1,'app_config.h']]]
+  ['subsystemcontrol_5ftask_2ec_14',['subsystemControl_task.c',['../subsystem_control__task_8c.html',1,'']]],
+  ['subsystemname_15',['subsystemName',['../can__rx__task_8h.html#a8f963b5a6361565c648237bcc3fc40d5',1,'can_rx_task.h']]],
+  ['system_5fstate_16',['SYSTEM_STATE',['../app__config_8h.html#a0560169ed6717811a19ca28c11256293afa331522f1b1dda554d1c65e5a0e6061',1,'app_config.h']]]
 ];

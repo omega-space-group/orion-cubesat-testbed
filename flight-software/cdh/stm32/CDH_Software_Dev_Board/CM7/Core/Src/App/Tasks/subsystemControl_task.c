@@ -4,7 +4,10 @@
  *  Created on: Jun 26, 2026
  *      Author: adaro
  */
-
+/**
+ * @file subsystemControl_task.c
+ * @brief .
+ */
 #include "FreeRTOS.h"
 #include "task.h"
 

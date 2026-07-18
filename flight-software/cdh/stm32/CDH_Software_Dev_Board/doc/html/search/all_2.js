@@ -15,5 +15,5 @@ var searchData=
   ['comms_5ftm_12',['COMMS_TM',['../app__config_8h.html#a0560169ed6717811a19ca28c11256293a68e62d53d0d8c95cb88d291304dc545f',1,'app_config.h']]],
   ['control_13',['Subsystem Control',['../group__subsystems__module.html',1,'']]],
   ['core_20mcu_14',['Flash and Debug the STM32H7 Dual Core MCU',['../flash_and_debug.html',1,'manuals']]],
-  ['creation_20and_20declararion_15',['Task Creation and Declararion',['../task_declaration.html',1,'manuals']]]
+  ['creation_20and_20initialization_15',['Task Creation and Initialization',['../task_creation.html',1,'manuals']]]
 ];

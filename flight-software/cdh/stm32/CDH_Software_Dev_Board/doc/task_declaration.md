@@ -1,3 +1,0 @@
-@page task_declaration Task Creation and Declararion
-
-Your manual content goes here...

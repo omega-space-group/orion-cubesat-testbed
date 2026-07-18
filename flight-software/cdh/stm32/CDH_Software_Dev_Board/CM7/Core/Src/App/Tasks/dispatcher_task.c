@@ -29,9 +29,9 @@ static QueueHandle_t xMasterQueue;
  * @details Task's logic:
  * 1. Block until all other tasks have finished initialization.
  * 2. Enter infinite loop and set health bit (since task is not periodic).
- * 2. Block indefinitely until a new message is pushed in the master queue.
- * 3. Wake up and clear the health bit and begin execution.
- * 4. Forward the received message to every subscriber task.
+ * 3. Block indefinitely until a new message is pushed in the master queue.
+ * 4. Wake up and clear the health bit and begin execution.
+ * 5. Forward the received message to every subscriber task.
  * 6. Set health bit to 1 again and finish.
  * * @param  argument:  Pointer to the Master Queue handle.
  */

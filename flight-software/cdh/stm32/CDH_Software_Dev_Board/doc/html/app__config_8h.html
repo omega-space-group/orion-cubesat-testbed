@@ -139,7 +139,7 @@ Macros</h2></td></tr>
 <tr class="memitem:a843595a59955f4e62f3d0d2e328e38a2" id="r_a843595a59955f4e62f3d0d2e328e38a2"><td class="memItemLeft"><a id="a843595a59955f4e62f3d0d2e328e38a2" name="a843595a59955f4e62f3d0d2e328e38a2"></a>
 #define&#160;</td><td class="memItemRight"><b>LOCAL_QUEUE_LENGTH</b>&#160;&#160;&#160;5</td></tr>
 <tr class="memdesc:a843595a59955f4e62f3d0d2e328e38a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Local queue length. <br /></td></tr>
-<tr class="memitem:ad92056533d94e7a5cbc443e4f40ee9a7" id="r_ad92056533d94e7a5cbc443e4f40ee9a7"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#ad92056533d94e7a5cbc443e4f40ee9a7">PERIODIC_TASKS</a>&#160;&#160;&#160;(<a class="el" href="#a000410b4e381df0e2479e769176ddb1b">DUMMY_BIT</a> | <a class="el" href="#acfde02c445d4aba6bc99ab7d79814cb4">MODE_BIT</a> | <a class="el" href="#a3cdc67f59a4e9aa04dcb6860007364b4">HM_BIT</a> | <a class="el" href="#a0d46bc03efdec2cb55867268bc3b4462">SUBM_BIT</a> | <a class="el" href="#a6389953d7894249585c0caffa8675180">HK_BIT</a>)</td></tr>
+<tr class="memitem:ad92056533d94e7a5cbc443e4f40ee9a7" id="r_ad92056533d94e7a5cbc443e4f40ee9a7"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#ad92056533d94e7a5cbc443e4f40ee9a7">PERIODIC_TASKS</a>&#160;&#160;&#160;(<a class="el" href="#a000410b4e381df0e2479e769176ddb1b">DUMMY_BIT</a> | <a class="el" href="#a3cdc67f59a4e9aa04dcb6860007364b4">HM_BIT</a> | <a class="el" href="#a0d46bc03efdec2cb55867268bc3b4462">SUBM_BIT</a> | <a class="el" href="#a6389953d7894249585c0caffa8675180">HK_BIT</a>)</td></tr>
 <tr class="memdesc:ad92056533d94e7a5cbc443e4f40ee9a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">This define is used to group all periodic tasks together. More info in <a class="el" href="health_monitor__task_8c.html" title="Implementation of the background execution check and task accounting.">healthMonitor_task.c</a>.  <br /></td></tr>
 <tr class="memitem:a552b8b30bb8cf4c54f1d62980e0d7b13" id="r_a552b8b30bb8cf4c54f1d62980e0d7b13"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a552b8b30bb8cf4c54f1d62980e0d7b13">ALL_TASKS_READY</a>&#160;&#160;&#160;(<a class="el" href="#a000410b4e381df0e2479e769176ddb1b">DUMMY_BIT</a> | <a class="el" href="#acfde02c445d4aba6bc99ab7d79814cb4">MODE_BIT</a> | <a class="el" href="#a3cdc67f59a4e9aa04dcb6860007364b4">HM_BIT</a> | <a class="el" href="#a0d46bc03efdec2cb55867268bc3b4462">SUBM_BIT</a> | <a class="el" href="#ab0af60e8248527f8131652b2fee1db11">SUBC_BIT</a> | <a class="el" href="#a7777db792b63724d39c9c7ea68b6b03a">TC_BIT</a> | <a class="el" href="#a6389953d7894249585c0caffa8675180">HK_BIT</a>)</td></tr>
 <tr class="memdesc:a552b8b30bb8cf4c54f1d62980e0d7b13"><td class="mdescLeft">&#160;</td><td class="mdescRight">This define is used for sync purposes. More info in <a class="el" href="dispatcher__task_8c.html" title="Implementation of the dispatcher and master queue logic.">dispatcher_task.c</a>.  <br /></td></tr>
@@ -401,6 +401,8 @@ Enumerations</h2></td></tr>
 </div><div class="memdoc">
 <p>&#160; </p>
 
+<p class="reference">Referenced by <a class="el" href="mode_manager__task_8c.html#ae5180377d2e4e13d2b0f1344658df6d4">ModeManager_Handler()</a>.</p>
+
 </div>
 </div>
 <a id="ad1ed0ea73c4459cd52a8fe09d5931b1d" name="ad1ed0ea73c4459cd52a8fe09d5931b1d"></a>
@@ -416,6 +418,8 @@ Enumerations</h2></td></tr>
 </div><div class="memdoc">
 <p>&#160; </p>
 
+<p class="reference">Referenced by <a class="el" href="mode_manager__task_8c.html#a1d3500502fc4fd3697e8b87290e7d997">ModeManager_Task_Init()</a>.</p>
+
 </div>
 </div>
 <a id="ad92056533d94e7a5cbc443e4f40ee9a7" name="ad92056533d94e7a5cbc443e4f40ee9a7"></a>
@@ -425,7 +429,7 @@ Enumerations</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define PERIODIC_TASKS&#160;&#160;&#160;(<a class="el" href="#a000410b4e381df0e2479e769176ddb1b">DUMMY_BIT</a> | <a class="el" href="#acfde02c445d4aba6bc99ab7d79814cb4">MODE_BIT</a> | <a class="el" href="#a3cdc67f59a4e9aa04dcb6860007364b4">HM_BIT</a> | <a class="el" href="#a0d46bc03efdec2cb55867268bc3b4462">SUBM_BIT</a> | <a class="el" href="#a6389953d7894249585c0caffa8675180">HK_BIT</a>)</td>
+          <td class="memname">#define PERIODIC_TASKS&#160;&#160;&#160;(<a class="el" href="#a000410b4e381df0e2479e769176ddb1b">DUMMY_BIT</a> | <a class="el" href="#a3cdc67f59a4e9aa04dcb6860007364b4">HM_BIT</a> | <a class="el" href="#a0d46bc03efdec2cb55867268bc3b4462">SUBM_BIT</a> | <a class="el" href="#a6389953d7894249585c0caffa8675180">HK_BIT</a>)</td>
         </tr>
       </table>
 </div><div class="memdoc">

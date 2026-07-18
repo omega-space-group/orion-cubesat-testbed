@@ -44,11 +44,9 @@ Task\textquotesingle{}s logic:\+
 \begin{DoxyEnumerate}
 \item Block until all other tasks have finished initialization.
 \item Enter infinite loop and set health bit (since task is not periodic).
-\end{DoxyEnumerate}
-\begin{DoxyEnumerate}
 \item Block indefinitely until a new message is pushed in the master queue.
 \item Wake up and clear the health bit and begin execution.
-\item Forwards the received message to every subscriber task via the Dispatcher\+Send().
+\item Forward the received message to every subscriber task.
 \item Set health bit to 1 again and finish.
 \end{DoxyEnumerate}
 \begin{DoxyItemize}

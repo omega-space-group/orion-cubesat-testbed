@@ -26,6 +26,7 @@ var NAVTREE =
 [
   [ "OBC Software v0", "index.html", [
     [ "Manuals", "manuals.html", "manuals" ],
+    [ "task_creation", "md_doc_2task__creation.html", null ],
     [ "Topics", "topics.html", "topics" ],
     [ "Classes", "annotated.html", [
       [ "Class List", "annotated.html", "annotated_dup" ],

@@ -45,6 +45,7 @@ int problem = 0;
  * all tasks have set their bit and finished execution at least ones, so no starvation or hangs!
  * - If check okay then increment a local health variable. Else, increment a different local variable.
  * - Lastly, clear the mask to reset the process.
+ * @note Task runs every 5sec!
  * @param argument  Pointer to task's local queue handle
  */
 static void HealthMonitor_Handler(void *argument){
