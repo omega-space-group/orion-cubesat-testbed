@@ -41,7 +41,7 @@ WakeupReason_t SleepUntil(QueueHandle_t queue, Message_t *newMsgRsc, TickType_t 
 Task blocks (sleeps) until a new message is received in its local queue
 
 #### Notes:  
-* If you set a timeout value, the task wakes up either when a message arrives or when the time runs out. If a message arrives early, the timer doesn't reset (Note: need to fill in exactly what happens next here).
+* If you set a timeout value, the task wakes up either when a message arrives or when the time runs out. 
 * To make the task block and wait forever without timing out, use portMAX_DELAY. 
 
 For more information on how this works under the hood, look up xQueueReceive() in the FreeRTOS_Reference_Manual_V10.0.0.pdf.

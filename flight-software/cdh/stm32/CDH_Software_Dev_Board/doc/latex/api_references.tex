@@ -45,7 +45,7 @@ Publishes a message via the software bus\hypertarget{api_references_autotoc_md6}
 Task blocks (sleeps) until a new message is received in its local queue\hypertarget{api_references_autotoc_md10}{}\doxysubsubsubsubsubsection{\texorpdfstring{Notes:\+}{Notes:\+}}\label{api_references_autotoc_md10}
 
 \begin{DoxyItemize}
-\item If you set a timeout value, the task wakes up either when a message arrives or when the time runs out. If a message arrives early, the timer doesn\textquotesingle{}t reset (Note:\+ need to fill in exactly what happens next here).
+\item If you set a timeout value, the task wakes up either when a message arrives or when the time runs out.
 \item To make the task block and wait forever without timing out, use port\+MAX\+\_\+\+DELAY.
 \end{DoxyItemize}
 
