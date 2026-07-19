@@ -1,4 +1,11 @@
 var searchData=
 [
-  ['systemclock_5fconfig_0',['SystemClock_Config',['../main_8c.html#a70af21c671abfcc773614a9a4f63d920',1,'main.c']]]
+  ['taskhealth_5fclearall_0',['TaskHealth_ClearAll',['../app__events_8c.html#acb0cb16b39bae1effdef4b84e2007e0f',1,'TaskHealth_ClearAll(void):&#160;app_events.c'],['../app__events_8h.html#acb0cb16b39bae1effdef4b84e2007e0f',1,'TaskHealth_ClearAll(void):&#160;app_events.c']]],
+  ['taskhealth_5fclearbit_1',['TaskHealth_ClearBit',['../app__events_8c.html#a174333602856420f67c1fa54affc5af5',1,'TaskHealth_ClearBit(EventBits_t bit):&#160;app_events.c'],['../app__events_8h.html#a174333602856420f67c1fa54affc5af5',1,'TaskHealth_ClearBit(EventBits_t bit):&#160;app_events.c']]],
+  ['taskhealth_5finit_2',['TaskHealth_Init',['../app__events_8c.html#a78aceff648bff00067552c1ae95e89fc',1,'TaskHealth_Init(void):&#160;app_events.c'],['../app__events_8h.html#a78aceff648bff00067552c1ae95e89fc',1,'TaskHealth_Init(void):&#160;app_events.c']]],
+  ['taskhealth_5fread_3',['TaskHealth_Read',['../app__events_8c.html#a5cc34f3b8c4e2100404eca52a1a02453',1,'TaskHealth_Read(void):&#160;app_events.c'],['../app__events_8h.html#a5cc34f3b8c4e2100404eca52a1a02453',1,'TaskHealth_Read(void):&#160;app_events.c']]],
+  ['taskhealth_5fsetbit_4',['TaskHealth_SetBit',['../app__events_8c.html#a384c29a086f7e2d03af1568fb5bdf761',1,'TaskHealth_SetBit(EventBits_t bit):&#160;app_events.c'],['../app__events_8h.html#a384c29a086f7e2d03af1568fb5bdf761',1,'TaskHealth_SetBit(EventBits_t bit):&#160;app_events.c']]],
+  ['tasksync_5finit_5',['TaskSync_Init',['../app__events_8c.html#a3f95efb0848f050e56b5840715d56c7c',1,'TaskSync_Init(void):&#160;app_events.c'],['../app__events_8h.html#a3f95efb0848f050e56b5840715d56c7c',1,'TaskSync_Init(void):&#160;app_events.c']]],
+  ['tasksync_5fsetandwait_6',['TaskSync_SetAndWait',['../app__events_8c.html#a07ff4defe7033e21ccfbb62159df4313',1,'TaskSync_SetAndWait(EventBits_t taskBit):&#160;app_events.c'],['../app__events_8h.html#a07ff4defe7033e21ccfbb62159df4313',1,'TaskSync_SetAndWait(EventBits_t taskBit):&#160;app_events.c']]],
+  ['tasksync_5fwaitforall_7',['TaskSync_WaitForAll',['../app__events_8c.html#a786e32b482933fe78a16a27a49a9b2e2',1,'TaskSync_WaitForAll(void):&#160;app_events.c'],['../app__events_8h.html#a786e32b482933fe78a16a27a49a9b2e2',1,'TaskSync_WaitForAll(void):&#160;app_events.c']]]
 ];

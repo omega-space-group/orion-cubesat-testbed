@@ -1,0 +1,43 @@
+\chapter{md\+\_\+doc\+\_\+2api\+\_\+\+\_\+references }
+\hypertarget{md_doc_2api__references}{}\label{md_doc_2api__references}\index{md\_doc\_2api\_\_references@{md\_doc\_2api\_\_references}}
+\hypertarget{md_doc_2api__references_autotoc_md0}{}\doxysubsection{\texorpdfstring{Available API Reference}{Available API Reference}}\label{md_doc_2api__references_autotoc_md0}
+\label{md_doc_2api__references_api_references}%
+\Hypertarget{md_doc_2api__references_api_references}%
+ \hypertarget{md_doc_2api__references_autotoc_md1}{}\doxysubsubsection{\texorpdfstring{1. Subscribe}{1. Subscribe}}\label{md_doc_2api__references_autotoc_md1}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keywordtype}{void}\ Subscribe(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ name,\ QueueHandle\_t\ queue);}
+
+\end{DoxyCode}
+\hypertarget{md_doc_2api__references_autotoc_md2}{}\doxysubsubsubsection{\texorpdfstring{📦 What it takes:\+}{📦 What it takes:\+}}\label{md_doc_2api__references_autotoc_md2}
+name:\+ The task handler name as a string.
+
+queue:\+ The task\textquotesingle{}s local queue handle (passed via the task\textquotesingle{}s argument).\hypertarget{md_doc_2api__references_autotoc_md3}{}\doxysubsubsubsection{\texorpdfstring{⚙️ How it works:\+}{⚙️ How it works:\+}}\label{md_doc_2api__references_autotoc_md3}
+Calling this function does not wake up a task. It is just a normal function call inside the task.\hypertarget{md_doc_2api__references_autotoc_md4}{}\doxysubsubsubsection{\texorpdfstring{⏱️ When to use it:\+}{⏱️ When to use it:\+}}\label{md_doc_2api__references_autotoc_md4}
+You should call this during the "{}boot"{} phase of the task, outside of the infinite loop, so it runs only once. After subscribing, all tasks must call Task\+Sync\+\_\+\+Set\+And\+Wait() to sync up before moving forward.\hypertarget{md_doc_2api__references_autotoc_md5}{}\doxysubsubsubsection{\texorpdfstring{📖 See Also:\+}{📖 See Also:\+}}\label{md_doc_2api__references_autotoc_md5}
+For more details, check out the \doxylink{task_creation}{Task Creation and Initialization Manual}.
+
+\begin{DoxyRefDesc}{Todo}
+\item[\doxymbox{\hyperlink{todo__todo000001}{Todo}}]Missing return values to show if execution succeeded.\end{DoxyRefDesc}
+\hypertarget{md_doc_2api__references_autotoc_md6}{}\doxysubsubsection{\texorpdfstring{2. Publish}{2. Publish}}\label{md_doc_2api__references_autotoc_md6}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keywordtype}{void}\ Publish(\doxymbox{\hyperlink{struct_message__t}{Message\_t}}\ newMsg);}
+
+\end{DoxyCode}
+\hypertarget{md_doc_2api__references_autotoc_md7}{}\doxysubsubsubsection{\texorpdfstring{📦 What it takes:\+}{📦 What it takes:\+}}\label{md_doc_2api__references_autotoc_md7}
+new\+Msg:\+ The message you want to publish.\hypertarget{md_doc_2api__references_autotoc_md8}{}\doxysubsubsubsection{\texorpdfstring{⚙️ How it works:\+}{⚙️ How it works:\+}}\label{md_doc_2api__references_autotoc_md8}
+Calling this does not wake up a task directly and acts like a normal function call. However, calling this will wake up the dispatcher task right away. This triggers a context switch, meaning the current task stops running and the dispatcher takes over (because in the original firmware, the dispatcher task has the highest priority).\hypertarget{md_doc_2api__references_autotoc_md9}{}\doxysubsubsection{\texorpdfstring{3. Sleep}{3. Sleep}}\label{md_doc_2api__references_autotoc_md9}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{WakeupReason\_t\ SleepUntil(QueueHandle\_t\ queue,\ \doxymbox{\hyperlink{struct_message__t}{Message\_t}}\ *newMsgRsc,\ TickType\_t\ xTicksToWait);}
+
+\end{DoxyCode}
+\hypertarget{md_doc_2api__references_autotoc_md10}{}\doxysubsubsubsection{\texorpdfstring{📦 What it takes:\+}{📦 What it takes:\+}}\label{md_doc_2api__references_autotoc_md10}
+queue:\+ The task\textquotesingle{}s own local queue.
+
+new\+Msg\+Rsc:\+ The structure where the incoming message will be stored.
+
+x\+Ticks\+To\+Wait:\+ How long the task can stay blocked waiting for a message.\hypertarget{md_doc_2api__references_autotoc_md11}{}\doxysubsubsubsection{\texorpdfstring{⚙️ How it works:\+}{⚙️ How it works:\+}}\label{md_doc_2api__references_autotoc_md11}
+If you set a timeout value, the task wakes up either when a message arrives or when the time runs out. If a message arrives early, the timer doesn\textquotesingle{}t reset (Note:\+ need to fill in exactly what happens next here).\hypertarget{md_doc_2api__references_autotoc_md12}{}\doxysubsubsubsection{\texorpdfstring{⏱️ When to use it:\+}{⏱️ When to use it:\+}}\label{md_doc_2api__references_autotoc_md12}
+To make the task block and wait forever without timing out, use port\+MAX\+\_\+\+DELAY. For more information on how this works under the hood, look up x\+Queue\+Receive() in the Free\+RTOS\+\_\+\+Reference\+\_\+\+Manual\+\_\+\+V10.\+0.\+0.\+pdf. 

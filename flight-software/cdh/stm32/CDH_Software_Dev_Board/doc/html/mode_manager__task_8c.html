@@ -127,8 +127,8 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('mode_manager__
 <code>#include &quot;usbd_cdc_if.h&quot;</code><br />
 <code>#include &lt;stdio.h&gt;</code><br />
 <code>#include &lt;<a class="el" href="app__config_8h.html">App/app_config.h</a>&gt;</code><br />
-<code>#include &lt;App/Services/subscriptions.h&gt;</code><br />
-<code>#include &lt;App/Services/app_events.h&gt;</code><br />
+<code>#include &lt;<a class="el" href="subscriptions_8h.html">App/Services/subscriptions.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="app__events_8h.html">App/Services/app_events.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="mode_manager__task_8h.html">App/Tasks/modeManager_task.h</a>&gt;</code><br />
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
@@ -166,13 +166,13 @@ Functions</h2></td></tr>
 
 <p>Task's Handler where main logic is executed inside an infinite loop. </p>
 <p>Mode Manager Logic:</p><ol type="1">
-<li>Subscribe to topics defined in subscriptions.c</li>
+<li>Subscribe to topics defined in <a class="el" href="subscriptions_8c.html" title="Implementation of the Subscriber/Publisher logic.">subscriptions.c</a></li>
 <li>Set your own sync bit and block until all other tasks have finished initialization before continuing.</li>
 <li>Enter infinite loop and set health bit (since task is not periodic).</li>
 <li>Block indefinitely until a new message is pushed in the local queue.</li>
 <li>Wake up and clear the health bit and begin execution.</li>
 <li>Run FSM and change current state if change is valid.</li>
-<li>Publish change internally via Publish() and send a message over FDCAN to the rest of the system.</li>
+<li>Publish change internally via <a class="el" href="subscriptions_8c.html#ad3332b1450087d0a68dd470140d74a47" title="Publishes a message via the software bus.">Publish()</a> and send a message over FDCAN to the rest of the system.</li>
 <li>Set health bit to 1 again and finish.</li>
 </ol>
 <dl class="section note"><dt>Note</dt><dd>On boot system enters SAFE mode. </dd>
@@ -185,7 +185,7 @@ Task runs every 100ms! </dd></dl>
   </dd>
 </dl>
 
-<p class="reference">References <a class="el" href="app__config_8h.html#a0560169ed6717811a19ca28c11256293abc777eb98dc283307dad9d57db9802a6">CHANGE_SYSTEM_STATE</a>, <a class="el" href="fdcan_8c.html#acb1a2ebd043af21a56094e47f2e7797d">FDCAN_Tx()</a>, <a class="el" href="struct_c_a_n___tx_packet.html#a08fb9c5765d18d0a5aca46bbe1f88fc1">CAN_TxPacket::Header</a>, <a class="el" href="app__config_8h.html#ae2946618e700f814e6147195c808f4c8a04ef9c54bf8fecf6499edcc41b7281d7">LOW_POWER</a>, <a class="el" href="app__config_8h.html#acfde02c445d4aba6bc99ab7d79814cb4">MODE_BIT</a>, <a class="el" href="app__config_8h.html#ae2946618e700f814e6147195c808f4c8ae2bd7b57b3f0bb02e66e42dbacc5c7fc">NOMINAL</a>, <a class="el" href="app__config_8h.html#ae2946618e700f814e6147195c808f4c8a14aa1c5c4852ea2d61eef4d73772ea65">PAYLOAD</a>, <a class="el" href="app__config_8h.html#ae2946618e700f814e6147195c808f4c8aa3a9adacc85c180950255762543c88ac">SAFE</a>, and <a class="el" href="app__config_8h.html#a0560169ed6717811a19ca28c11256293afa331522f1b1dda554d1c65e5a0e6061">SYSTEM_STATE</a>.</p>
+<p class="reference">References <a class="el" href="app__config_8h.html#a0560169ed6717811a19ca28c11256293abc777eb98dc283307dad9d57db9802a6">CHANGE_SYSTEM_STATE</a>, <a class="el" href="fdcan_8c.html#acb1a2ebd043af21a56094e47f2e7797d">FDCAN_Tx()</a>, <a class="el" href="struct_c_a_n___tx_packet.html#a08fb9c5765d18d0a5aca46bbe1f88fc1">CAN_TxPacket::Header</a>, <a class="el" href="app__config_8h.html#ae2946618e700f814e6147195c808f4c8a04ef9c54bf8fecf6499edcc41b7281d7">LOW_POWER</a>, <a class="el" href="struct_message__t.html#a94920a8924f4dfd278b36ffe75ef8088">Message_t::mode</a>, <a class="el" href="app__config_8h.html#acfde02c445d4aba6bc99ab7d79814cb4">MODE_BIT</a>, <a class="el" href="app__config_8h.html#ae2946618e700f814e6147195c808f4c8ae2bd7b57b3f0bb02e66e42dbacc5c7fc">NOMINAL</a>, <a class="el" href="app__config_8h.html#ae2946618e700f814e6147195c808f4c8a14aa1c5c4852ea2d61eef4d73772ea65">PAYLOAD</a>, <a class="el" href="subscriptions_8c.html#ad3332b1450087d0a68dd470140d74a47">Publish()</a>, <a class="el" href="app__config_8h.html#ae2946618e700f814e6147195c808f4c8aa3a9adacc85c180950255762543c88ac">SAFE</a>, <a class="el" href="subscriptions_8c.html#a195e703619f15d910cc26b4e17e10850">SleepUntil()</a>, <a class="el" href="subscriptions_8c.html#adb8a7e8cec223ef73534f0d14094c79a">Subscribe()</a>, <a class="el" href="app__config_8h.html#a0560169ed6717811a19ca28c11256293afa331522f1b1dda554d1c65e5a0e6061">SYSTEM_STATE</a>, <a class="el" href="app__events_8c.html#a174333602856420f67c1fa54affc5af5">TaskHealth_ClearBit()</a>, <a class="el" href="app__events_8c.html#a384c29a086f7e2d03af1568fb5bdf761">TaskHealth_SetBit()</a>, <a class="el" href="app__events_8c.html#a07ff4defe7033e21ccfbb62159df4313">TaskSync_SetAndWait()</a>, and <a class="el" href="struct_message__t.html#aabea3bb99f37aea991c46a0bfa604a29">Message_t::Topic</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="#a1d3500502fc4fd3697e8b87290e7d997">ModeManager_Task_Init()</a>.</p>
 
@@ -209,7 +209,7 @@ Task runs every 100ms! </dd></dl>
 <p>Task's initialization function. </p>
 <p>First local queue is created. Then the task itself is created and the queue handle is passed as a task parameter. </p><dl class="section note"><dt>Note</dt><dd>Check <a class="el" href="app__config_8h.html" title="Configuration file for current application.">app_config.h</a> for stack configurations </dd></dl>
 
-<p class="reference">References <a class="el" href="app__config_8h.html#a843595a59955f4e62f3d0d2e328e38a2">LOCAL_QUEUE_LENGTH</a>, <a class="el" href="app__config_8h.html#ad1ed0ea73c4459cd52a8fe09d5931b1d">MODE_PR</a>, <a class="el" href="#ae5180377d2e4e13d2b0f1344658df6d4">ModeManager_Handler()</a>, and <a class="el" href="app__config_8h.html#a200c2c21eb5510aa388dc932a76e830d">NORMAL_TASK_STACK_SIZE</a>.</p>
+<p class="reference">References <a class="el" href="app__config_8h.html#a843595a59955f4e62f3d0d2e328e38a2">LOCAL_QUEUE_LENGTH</a>, <a class="el" href="app__config_8h.html#ad1ed0ea73c4459cd52a8fe09d5931b1d">MODE_PR</a>, <a class="el" href="#ae5180377d2e4e13d2b0f1344658df6d4">ModeManager_Handler()</a>, <a class="el" href="app__config_8h.html#ad4d025ecf1bdbf8b244ca688df8e478d">MSG_SIZE</a>, and <a class="el" href="app__config_8h.html#a200c2c21eb5510aa388dc932a76e830d">NORMAL_TASK_STACK_SIZE</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="root__task_8c.html#aca2c7d8f6d456d7fba6e583b40a7c40a">Root_Task_Handler()</a>.</p>
 

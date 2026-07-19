@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['header_0',['Header',['../struct_c_a_n___tx_packet.html#a08fb9c5765d18d0a5aca46bbe1f88fc1',1,'CAN_TxPacket::Header'],['../struct_c_a_n___rx_packet.html#a9d9bc62d94afe772c1cc48fd4664b302',1,'CAN_RxPacket::Header']]]
+  ['data_0',['Data',['../struct_c_a_n___tx_packet.html#a0ff793051491ba56b219df1eea76f07d',1,'CAN_TxPacket::Data'],['../struct_c_a_n___rx_packet.html#a64c2eb98afd6b69d3f82ea6a7fa9a73f',1,'CAN_RxPacket::Data']]]
 ];

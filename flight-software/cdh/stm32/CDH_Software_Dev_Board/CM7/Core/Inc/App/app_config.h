@@ -161,15 +161,22 @@ typedef struct {
     QueueHandle_t SubscriberQueues[MAX_SUBSCRIBERS_PER_TOPIC];
 } Subscription_t;
 
+/**
+ * @brief Software Bus Message Structure
+ * @details A union has been used to make the data part of the message more flexible
+ */
 typedef struct{
-	Topic_t Topic;
+	Topic_t Topic; /**< Message Topic */
 	union{
-		State_t mode;
-		uint32_t rawData;
-		CAN_RxPacket canPacket;
+		State_t mode; /**< Message Topic */
+		uint32_t rawData; /**< 32-bit Unsigned Raw Data */
+		CAN_RxPacket canPacket; /**< FDCAN Packet */
 	}Data;
 } Message_t;
 
+/**
+ * @brief Message Size
+ */
 #define MSG_SIZE sizeof(Message_t)
 
 /* Tasks - Topics Lookup Table */

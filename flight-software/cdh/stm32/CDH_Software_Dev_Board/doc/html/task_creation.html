@@ -118,114 +118,99 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('task_creation.
   <div class="headertitle"><div class="title">Task Creation and Initialization </div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><ul>
-<li></li>
-<li>Every new task is defined inside a pair of taskName_task.c/taskName_task.h files inside the Src/Core/App/Tasks and Inc/Core/App/Tasks directories respectively.</li>
-<li></li>
-<li>&mdash;</li>
-<li></li>
-<li>### Source File Template:</li>
-<li></li>
-<li><div class="fragment"><div class="line">* #include <span class="stringliteral">&quot;FreeRTOS.h&quot;</span></div>
-<div class="line">* #include <span class="stringliteral">&quot;task.h&quot;</span></div>
-<div class="line">* </div>
-<div class="line">* #include &lt;App/app_config.h&gt;</div>
-<div class="line">* #include &lt;App/Services/subscriptions.h&gt;</div>
-<div class="line">* #include &lt;App/Services/app_events.h&gt;</div>
-<div class="line">* #include &lt;App/Tasks/taskName_task.h&gt;</div>
-<div class="line">* </div>
-<div class="line">* <span class="keyword">static</span> StackType_t xTaskStack[<a class="code hl_define" href="app__config_8h.html#a200c2c21eb5510aa388dc932a76e830d">NORMAL_TASK_STACK_SIZE</a>];</div>
-<div class="line">* <span class="keyword">static</span> StaticTask_t xTaskBuffer;</div>
-<div class="line">* </div>
-<div class="line">* <span class="keyword">static</span> StaticQueue_t xTaskQueueData;</div>
-<div class="line">* <span class="keyword">static</span> uint8_t ucTaskQueueStorageArea[<a class="code hl_define" href="app__config_8h.html#a843595a59955f4e62f3d0d2e328e38a2">LOCAL_QUEUE_LENGTH</a> * MSG_SIZE];</div>
-<div class="line">* <span class="keyword">static</span> QueueHandle_t xTaskQueue;</div>
-<div class="line">* </div>
+<div class="textblock"><p>Every new task is defined inside a pair of taskName_task.c/taskName_task.h files inside the Src/Core/App/Tasks and Inc/Core/App/Tasks directories respectively.</p>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md36"></a>
+Source File Template:</h2>
+<div class="fragment"><div class="line"><span class="preprocessor">#include &quot;FreeRTOS.h&quot;</span></div>
+<div class="line"><span class="preprocessor">#include &quot;task.h&quot;</span></div>
+<div class="line"> </div>
+<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="app__config_8h.html">App/app_config.h</a>&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="subscriptions_8h.html">App/Services/subscriptions.h</a>&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="app__events_8h.html">App/Services/app_events.h</a>&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;App/Tasks/taskName_task.h&gt;</span></div>
+<div class="line"> </div>
+<div class="line"><span class="keyword">static</span> StackType_t xTaskStack[<a class="code hl_define" href="app__config_8h.html#a200c2c21eb5510aa388dc932a76e830d">NORMAL_TASK_STACK_SIZE</a>];</div>
+<div class="line"><span class="keyword">static</span> StaticTask_t xTaskBuffer;</div>
+<div class="line"> </div>
+<div class="line"><span class="keyword">static</span> StaticQueue_t xTaskQueueData;</div>
+<div class="line"><span class="keyword">static</span> uint8_t ucTaskQueueStorageArea[<a class="code hl_define" href="app__config_8h.html#a843595a59955f4e62f3d0d2e328e38a2">LOCAL_QUEUE_LENGTH</a> * <a class="code hl_define" href="app__config_8h.html#ad4d025ecf1bdbf8b244ca688df8e478d">MSG_SIZE</a>];</div>
+<div class="line"><span class="keyword">static</span> QueueHandle_t xTaskQueue;</div>
+<div class="ttc" id="aapp__config_8h_html"><div class="ttname"><a href="app__config_8h.html">app_config.h</a></div><div class="ttdoc">Configuration file for current application.</div></div>
 <div class="ttc" id="aapp__config_8h_html_a200c2c21eb5510aa388dc932a76e830d"><div class="ttname"><a href="app__config_8h.html#a200c2c21eb5510aa388dc932a76e830d">NORMAL_TASK_STACK_SIZE</a></div><div class="ttdeci">#define NORMAL_TASK_STACK_SIZE</div><div class="ttdoc">Normal task stack size.</div><div class="ttdef"><b>Definition</b> app_config.h:46</div></div>
 <div class="ttc" id="aapp__config_8h_html_a843595a59955f4e62f3d0d2e328e38a2"><div class="ttname"><a href="app__config_8h.html#a843595a59955f4e62f3d0d2e328e38a2">LOCAL_QUEUE_LENGTH</a></div><div class="ttdeci">#define LOCAL_QUEUE_LENGTH</div><div class="ttdoc">Local queue length.</div><div class="ttdef"><b>Definition</b> app_config.h:61</div></div>
-</div><!-- fragment --></li>
-<li></li>
-<li>#### -&gt; Handler Template for periodic tasks:</li>
-<li><div class="fragment"><div class="line">* <span class="keyword">static</span> <span class="keywordtype">void</span> TaskName_Handler(<span class="keywordtype">void</span> *argument){</div>
-<div class="line">*     TaskSync_SetAndWait(TASK_BIT);</div>
-<div class="line">*     <span class="keywordflow">while</span>(1){</div>
-<div class="line">*         vTaskDelay(period_in_ms);</div>
-<div class="line">* </div>
-<div class="line">*         <span class="comment">//Task logic goes here...</span></div>
-<div class="line">* </div>
-<div class="line">*         TaskHealth_SetBit(TASK_BIT);</div>
-<div class="line">*     }</div>
-<div class="line">* }</div>
-<div class="line">* </div>
-</div><!-- fragment --></li>
-<li></li>
-<li>#### -&gt; Handler Template for non-periodic tasks:</li>
-<li><div class="fragment"><div class="line">* <span class="keyword">static</span> <span class="keywordtype">void</span> TaskName_Handler(<span class="keywordtype">void</span> *argument){</div>
-<div class="line">*     Subscribe(<span class="stringliteral">&quot;TaskName_Handler&quot;</span>,(QueueHandle_t)argument);</div>
-<div class="line">*     TaskSync_SetAndWait(TASK_BIT);</div>
-<div class="line">*     Message_t newMsgRsc;</div>
-<div class="line">*     <span class="keywordflow">while</span>(1){</div>
-<div class="line">*         TaskHealth_SetBit(TASK_BIT);</div>
-<div class="line">*         SleepUntil((QueueHandle_t)argument,&amp;newMsgRsc,portMAX_DELAY);</div>
-<div class="line">*         TaskHealth_ClearBit(TASK_BIT);</div>
-<div class="line">* </div>
-<div class="line">*         <span class="comment">//Task logic goes here...</span></div>
-<div class="line">* </div>
-<div class="line">*         TaskHealth_SetBit(TASK_BIT);</div>
-<div class="line">*     }</div>
-<div class="line">* }</div>
-<div class="line">* </div>
-</div><!-- fragment --></li>
-<li></li>
-<li>#### -&gt; Initialization of a task without a local queue:</li>
-<li><div class="fragment"><div class="line">* <span class="keywordtype">void</span> TaskName_Init(<span class="keywordtype">void</span>) {</div>
-<div class="line">*       xTaskCreateStatic(TaskName_Handler,<span class="stringliteral">&quot;TaskName_Handler&quot;</span>,<a class="code hl_define" href="app__config_8h.html#a200c2c21eb5510aa388dc932a76e830d">NORMAL_TASK_STACK_SIZE</a>,NULL,TASK_PR,xTaskStack,&amp;xTaskBuffer);</div>
-<div class="line">* }</div>
-<div class="line">* </div>
-</div><!-- fragment --></li>
-<li></li>
-<li>#### -&gt; Initialization of a task with a local queue:</li>
-<li><div class="fragment"><div class="line">* #include <span class="stringliteral">&quot;queue.h&quot;</span></div>
-<div class="line">* </div>
-<div class="line">* <span class="keyword">static</span> StaticQueue_t xTaskQueueData;</div>
-<div class="line">* <span class="keyword">static</span> uint8_t ucTaskQueueStorageArea[<a class="code hl_define" href="app__config_8h.html#a843595a59955f4e62f3d0d2e328e38a2">LOCAL_QUEUE_LENGTH</a> * MSG_SIZE];</div>
-<div class="line">* <span class="keyword">static</span> QueueHandle_t xTaskQueue;</div>
-<div class="line">* </div>
-<div class="line">* <span class="keywordtype">void</span> TaskNameHandler_Init(<span class="keywordtype">void</span>) {</div>
-<div class="line">*     xTaskQueue = xQueueCreateStatic(<a class="code hl_define" href="app__config_8h.html#a843595a59955f4e62f3d0d2e328e38a2">LOCAL_QUEUE_LENGTH</a>, MSG_SIZE, ucTaskQueueStorageArea, &amp;xTaskQueueData);</div>
-<div class="line">*     xTaskCreateStatic(TaskNameHandler_Init,<span class="stringliteral">&quot;TaskNameHandler_Init&quot;</span>,<a class="code hl_define" href="app__config_8h.html#a200c2c21eb5510aa388dc932a76e830d">NORMAL_TASK_STACK_SIZE</a></div>
-<div class="line">*             ,(<span class="keywordtype">void</span>*)xTaskQueue,TASK_PR,xTaskStack,&amp;xTaskBuffer);</div>
-<div class="line">* }</div>
-<div class="line">* </div>
-</div><!-- fragment --></li>
-<li></li>
-<li>#### -&gt; Optional function to get global access to a local queue:</li>
-<li><div class="fragment"><div class="line">* <span class="keyword">static</span> QueueHandle_t xLocal_Queue;</div>
-<div class="line">* </div>
-<div class="line">* QueueHandle_t TaskName_GetQueue(<span class="keywordtype">void</span>) {</div>
-<div class="line">*     <span class="keywordflow">return</span> xLocal_Queue;</div>
-<div class="line">* }</div>
-<div class="line">* </div>
-</div><!-- fragment --></li>
-<li></li>
-<li><dl class="section note"><dt>Note</dt><dd>TASK_PR, TASK_BIT should be defined inside <a class="el" href="app__config_8h.html" title="Configuration file for current application.">app_config.h</a></dd></dl>
-</li>
-<li></li>
-<li>&mdash;</li>
-<li></li>
-<li>### Header File Template:</li>
-<li></li>
-<li><div class="fragment"><div class="line">* #include <span class="stringliteral">&quot;FreeRTOS.h&quot;</span></div>
-<div class="line">* #include <span class="stringliteral">&quot;queue.h&quot;</span></div>
-<div class="line">* </div>
-<div class="line">* <span class="keywordtype">void</span> TaskName_Init(<span class="keywordtype">void</span>);</div>
-<div class="line">* QueueHandle_t TaskName_GetQueue(<span class="keywordtype">void</span>); <span class="comment">//If used</span></div>
-<div class="line">* </div>
-</div><!-- fragment --></li>
-<li></li>
-<li><dl class="section note"><dt>Note</dt><dd>Finally to get the task scheduled for execution you need to call TaskNameHandler_Init(void) inside the <a class="el" href="root__task_8c.html#aca2c7d8f6d456d7fba6e583b40a7c40a" title="Task&#39;s Handler where main logic is executed inside an infinite loop.">Root_Task_Handler(void *argument)</a> before the infite loop. */ </dd></dl>
-</li>
-</ul>
+<div class="ttc" id="aapp__config_8h_html_ad4d025ecf1bdbf8b244ca688df8e478d"><div class="ttname"><a href="app__config_8h.html#ad4d025ecf1bdbf8b244ca688df8e478d">MSG_SIZE</a></div><div class="ttdeci">#define MSG_SIZE</div><div class="ttdoc">Message Size.</div><div class="ttdef"><b>Definition</b> app_config.h:180</div></div>
+<div class="ttc" id="aapp__events_8h_html"><div class="ttname"><a href="app__events_8h.html">app_events.h</a></div><div class="ttdoc">This file contains all the function prototypes for the app_events.c file.</div></div>
+<div class="ttc" id="asubscriptions_8h_html"><div class="ttname"><a href="subscriptions_8h.html">subscriptions.h</a></div><div class="ttdoc">This file contains all the function prototypes for the subscriptions.c file.</div></div>
+</div><!-- fragment --><h3 class="doxsection"><a class="anchor" id="autotoc_md37"></a>
+-&gt; Handler Template for periodic tasks:</h3>
+<div class="fragment"><div class="line"><span class="keyword">static</span> <span class="keywordtype">void</span> TaskName_Handler(<span class="keywordtype">void</span> *argument){</div>
+<div class="line">   <a class="code hl_function" href="app__events_8c.html#a07ff4defe7033e21ccfbb62159df4313">TaskSync_SetAndWait</a>(TASK_BIT);</div>
+<div class="line">   <span class="keywordflow">while</span>(1){</div>
+<div class="line">       vTaskDelay(period_in_ms);</div>
+<div class="line"> </div>
+<div class="line">       <span class="comment">//Task logic goes here...</span></div>
+<div class="line"> </div>
+<div class="line">       <a class="code hl_function" href="app__events_8c.html#a384c29a086f7e2d03af1568fb5bdf761">TaskHealth_SetBit</a>(TASK_BIT);</div>
+<div class="line">   }</div>
+<div class="line">}</div>
+<div class="ttc" id="aapp__events_8c_html_a07ff4defe7033e21ccfbb62159df4313"><div class="ttname"><a href="app__events_8c.html#a07ff4defe7033e21ccfbb62159df4313">TaskSync_SetAndWait</a></div><div class="ttdeci">void TaskSync_SetAndWait(EventBits_t taskBit)</div><div class="ttdoc">Acts as a Thread Sync Barrier.</div><div class="ttdef"><b>Definition</b> app_events.c:34</div></div>
+<div class="ttc" id="aapp__events_8c_html_a384c29a086f7e2d03af1568fb5bdf761"><div class="ttname"><a href="app__events_8c.html#a384c29a086f7e2d03af1568fb5bdf761">TaskHealth_SetBit</a></div><div class="ttdeci">void TaskHealth_SetBit(EventBits_t bit)</div><div class="ttdoc">Sets task bit to health check event group.</div><div class="ttdef"><b>Definition</b> app_events.c:58</div></div>
+</div><!-- fragment --><h3 class="doxsection"><a class="anchor" id="autotoc_md38"></a>
+-&gt; Handler Template for non-periodic tasks:</h3>
+<div class="fragment"><div class="line"><span class="keyword">static</span> <span class="keywordtype">void</span> TaskName_Handler(<span class="keywordtype">void</span> *argument){</div>
+<div class="line">   <a class="code hl_function" href="subscriptions_8c.html#adb8a7e8cec223ef73534f0d14094c79a">Subscribe</a>(<span class="stringliteral">&quot;TaskName_Handler&quot;</span>,(QueueHandle_t)argument);</div>
+<div class="line">   <a class="code hl_function" href="app__events_8c.html#a07ff4defe7033e21ccfbb62159df4313">TaskSync_SetAndWait</a>(TASK_BIT);</div>
+<div class="line">   <a class="code hl_struct" href="struct_message__t.html">Message_t</a> newMsgRsc;</div>
+<div class="line">   <span class="keywordflow">while</span>(1){</div>
+<div class="line">       <a class="code hl_function" href="app__events_8c.html#a384c29a086f7e2d03af1568fb5bdf761">TaskHealth_SetBit</a>(TASK_BIT);</div>
+<div class="line">       <a class="code hl_function" href="subscriptions_8c.html#a195e703619f15d910cc26b4e17e10850">SleepUntil</a>((QueueHandle_t)argument,&amp;newMsgRsc,portMAX_DELAY);</div>
+<div class="line">       <a class="code hl_function" href="app__events_8c.html#a174333602856420f67c1fa54affc5af5">TaskHealth_ClearBit</a>(TASK_BIT);</div>
+<div class="line"> </div>
+<div class="line">       <span class="comment">//Task logic goes here...</span></div>
+<div class="line"> </div>
+<div class="line">       <a class="code hl_function" href="app__events_8c.html#a384c29a086f7e2d03af1568fb5bdf761">TaskHealth_SetBit</a>(TASK_BIT);</div>
+<div class="line">   }</div>
+<div class="ttc" id="aapp__events_8c_html_a174333602856420f67c1fa54affc5af5"><div class="ttname"><a href="app__events_8c.html#a174333602856420f67c1fa54affc5af5">TaskHealth_ClearBit</a></div><div class="ttdeci">void TaskHealth_ClearBit(EventBits_t bit)</div><div class="ttdoc">Clears task bit to health check event group.</div><div class="ttdef"><b>Definition</b> app_events.c:66</div></div>
+<div class="ttc" id="astruct_message__t_html"><div class="ttname"><a href="struct_message__t.html">Message_t</a></div><div class="ttdoc">Software Bus Message Structure.</div><div class="ttdef"><b>Definition</b> app_config.h:168</div></div>
+<div class="ttc" id="asubscriptions_8c_html_a195e703619f15d910cc26b4e17e10850"><div class="ttname"><a href="subscriptions_8c.html#a195e703619f15d910cc26b4e17e10850">SleepUntil</a></div><div class="ttdeci">WakeupReason_t SleepUntil(QueueHandle_t queue, Message_t *newMsgRsc, TickType_t xTicksToWait)</div><div class="ttdoc">Task blocks (sleeps) until a new message is received in its local queue.</div><div class="ttdef"><b>Definition</b> subscriptions.c:132</div></div>
+<div class="ttc" id="asubscriptions_8c_html_adb8a7e8cec223ef73534f0d14094c79a"><div class="ttname"><a href="subscriptions_8c.html#adb8a7e8cec223ef73534f0d14094c79a">Subscribe</a></div><div class="ttdeci">void Subscribe(const char *name, QueueHandle_t queue)</div><div class="ttdoc">Subscribes a task to predefined topics.</div><div class="ttdef"><b>Definition</b> subscriptions.c:59</div></div>
+</div><!-- fragment --> <dl class="section note"><dt>Note</dt><dd>New task subscriptions need to be manually added in the Subscription Table in <a class="el" href="subscriptions_8c.html" title="Implementation of the Subscriber/Publisher logic.">subscriptions.c</a> before calling <a class="el" href="subscriptions_8c.html#adb8a7e8cec223ef73534f0d14094c79a" title="Subscribes a task to predefined topics.">Subscribe()</a></dd></dl>
+<h3 class="doxsection"><a class="anchor" id="autotoc_md39"></a>
+-&gt; Task initialization without a local queue:</h3>
+<div class="fragment"><div class="line"><span class="keywordtype">void</span> TaskName_Init(<span class="keywordtype">void</span>) {</div>
+<div class="line">    xTaskCreateStatic(TaskName_Handler,<span class="stringliteral">&quot;TaskName_Handler&quot;</span>,<a class="code hl_define" href="app__config_8h.html#a200c2c21eb5510aa388dc932a76e830d">NORMAL_TASK_STACK_SIZE</a>,NULL,TASK_PR,xTaskStack,&amp;xTaskBuffer);</div>
+<div class="line">}</div>
+</div><!-- fragment --><h3 class="doxsection"><a class="anchor" id="autotoc_md40"></a>
+-&gt; Task initialization with a local queue:</h3>
+<div class="fragment"><div class="line"><span class="preprocessor">#include &quot;queue.h&quot;</span></div>
+<div class="line"> </div>
+<div class="line"><span class="keyword">static</span> StaticQueue_t xTaskQueueData;</div>
+<div class="line"><span class="keyword">static</span> uint8_t ucTaskQueueStorageArea[<a class="code hl_define" href="app__config_8h.html#a843595a59955f4e62f3d0d2e328e38a2">LOCAL_QUEUE_LENGTH</a> * <a class="code hl_define" href="app__config_8h.html#ad4d025ecf1bdbf8b244ca688df8e478d">MSG_SIZE</a>];</div>
+<div class="line"><span class="keyword">static</span> QueueHandle_t xTaskQueue;</div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">void</span> TaskNameHandler_Init(<span class="keywordtype">void</span>) {</div>
+<div class="line">    xTaskQueue = xQueueCreateStatic(<a class="code hl_define" href="app__config_8h.html#a843595a59955f4e62f3d0d2e328e38a2">LOCAL_QUEUE_LENGTH</a>, <a class="code hl_define" href="app__config_8h.html#ad4d025ecf1bdbf8b244ca688df8e478d">MSG_SIZE</a>, ucTaskQueueStorageArea, &amp;xTaskQueueData);</div>
+<div class="line">    xTaskCreateStatic(TaskNameHandler_Init,<span class="stringliteral">&quot;TaskNameHandler_Init&quot;</span>,<a class="code hl_define" href="app__config_8h.html#a200c2c21eb5510aa388dc932a76e830d">NORMAL_TASK_STACK_SIZE</a></div>
+<div class="line">           ,(<span class="keywordtype">void</span>*)xTaskQueue,TASK_PR,xTaskStack,&amp;xTaskBuffer);</div>
+<div class="line">}</div>
+</div><!-- fragment --><h3 class="doxsection"><a class="anchor" id="autotoc_md41"></a>
+-&gt; Optional function to get global access to local queue:</h3>
+<div class="fragment"><div class="line"><span class="keyword">static</span> QueueHandle_t xLocal_Queue;</div>
+<div class="line"> </div>
+<div class="line">QueueHandle_t TaskName_GetQueue(<span class="keywordtype">void</span>) {</div>
+<div class="line">    <span class="keywordflow">return</span> xLocal_Queue;</div>
+<div class="line">}</div>
+</div><!-- fragment --><dl class="section note"><dt>Note</dt><dd>TASK_PR, TASK_BIT should be defined inside <a class="el" href="app__config_8h.html" title="Configuration file for current application.">app_config.h</a></dd></dl>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md42"></a>
+Header File Template:</h2>
+<div class="fragment"><div class="line"><span class="preprocessor">#include &quot;FreeRTOS.h&quot;</span></div>
+<div class="line"><span class="preprocessor">#include &quot;queue.h&quot;</span></div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">void</span> TaskName_Init(<span class="keywordtype">void</span>);</div>
+<div class="line">QueueHandle_t TaskName_GetQueue(<span class="keywordtype">void</span>); <span class="comment">//If used</span></div>
+</div><!-- fragment --><dl class="section note"><dt>Note</dt><dd>Finally to get the task scheduled for execution you need to call TaskNameHandler_Init(void) inside the <a class="el" href="root__task_8c.html#aca2c7d8f6d456d7fba6e583b40a7c40a" title="Task&#39;s Handler where main logic is executed inside an infinite loop.">Root_Task_Handler(void *argument)</a> before the infite loop.</dd></dl>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md43"></a>
+Header File Template:</h2>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->

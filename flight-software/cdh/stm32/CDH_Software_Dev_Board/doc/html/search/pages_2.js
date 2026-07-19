@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['core_20mcu_0',['Flash and Debug the STM32H7 Dual Core MCU',['../flash_and_debug.html',1,'manuals']]],
-  ['creation_20and_20initialization_1',['Task Creation and Initialization',['../task_creation.html',1,'manuals']]]
+  ['2_20publish_0',['2. Publish',['../api_references.html#autotoc_md4',1,'']]],
+  ['2_20publisher_20side_1',['2. Publisher Side',['../software_bus.html#autotoc_md31',1,'']]]
 ];

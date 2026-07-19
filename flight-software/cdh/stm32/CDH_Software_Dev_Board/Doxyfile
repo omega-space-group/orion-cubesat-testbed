@@ -1026,7 +1026,7 @@ WARN_LOGFILE           =
 # spaces. See also FILE_PATTERNS and EXTENSION_MAPPING
 # Note: If this tag is empty the current directory is searched.
 
-INPUT                  = CM7\Core\Src\App CM7\Core\Src\main.c CM7\Core\Src\App CM7\Core\Src\fdcan.c CM7\Core\Src\freertos.c CM7\Core\Inc\App CM7\Core\Inc\fdcan.h doc\
+INPUT                  = CM7\Core\Src\App CM7\Core\Src\main.c CM7\Core\Src\App CM7\Core\Src\fdcan.c CM7\Core\Src\freertos.c CM7\Core\Inc\App CM7\Core\Inc\fdcan.h doc\ 
 
 # This tag can be used to specify the character encoding of the source files
 # that Doxygen parses. Internally Doxygen uses the UTF-8 encoding. Doxygen uses
@@ -1180,7 +1180,7 @@ EXAMPLE_RECURSIVE      = NO
 # that contain images that are to be included in the documentation (see the
 # \image command).
 
-IMAGE_PATH             =
+IMAGE_PATH             = doc\images
 
 # The INPUT_FILTER tag can be used to specify a program that Doxygen should
 # invoke to filter for each input file. Doxygen will invoke the filter program

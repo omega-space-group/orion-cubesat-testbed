@@ -43,13 +43,13 @@ Task\textquotesingle{}s Handler where main logic is executed inside an infinite 
 
 Mode Manager Logic:\+
 \begin{DoxyEnumerate}
-\item Subscribe to topics defined in subscriptions.\+c
+\item Subscribe to topics defined in \doxylink{subscriptions_8c}{subscriptions.\+c}
 \item Set your own sync bit and block until all other tasks have finished initialization before continuing.
 \item Enter infinite loop and set health bit (since task is not periodic).
 \item Block indefinitely until a new message is pushed in the local queue.
 \item Wake up and clear the health bit and begin execution.
 \item Run FSM and change current state if change is valid.
-\item Publish change internally via Publish() and send a message over FDCAN to the rest of the system.
+\item Publish change internally via \doxylink{subscriptions_8c_ad3332b1450087d0a68dd470140d74a47}{Publish()} and send a message over FDCAN to the rest of the system.
 \item Set health bit to 1 again and finish.
 \end{DoxyEnumerate}
 
@@ -65,7 +65,7 @@ Task runs every 100ms!
 \end{DoxyParams}
 
 
-References \doxymbox{\hyperlink{app__config_8h_a0560169ed6717811a19ca28c11256293abc777eb98dc283307dad9d57db9802a6}{CHANGE\+\_\+\+SYSTEM\+\_\+\+STATE}}, \doxymbox{\hyperlink{fdcan_8c_acb1a2ebd043af21a56094e47f2e7797d}{FDCAN\+\_\+\+Tx()}}, \doxymbox{\hyperlink{struct_c_a_n___tx_packet_a08fb9c5765d18d0a5aca46bbe1f88fc1}{CAN\+\_\+\+Tx\+Packet::\+\+Header}}, \doxymbox{\hyperlink{app__config_8h_ae2946618e700f814e6147195c808f4c8a04ef9c54bf8fecf6499edcc41b7281d7}{LOW\+\_\+\+POWER}}, \doxymbox{\hyperlink{app__config_8h_acfde02c445d4aba6bc99ab7d79814cb4}{MODE\+\_\+\+BIT}}, \doxymbox{\hyperlink{app__config_8h_ae2946618e700f814e6147195c808f4c8ae2bd7b57b3f0bb02e66e42dbacc5c7fc}{NOMINAL}}, \doxymbox{\hyperlink{app__config_8h_ae2946618e700f814e6147195c808f4c8a14aa1c5c4852ea2d61eef4d73772ea65}{PAYLOAD}}, \doxymbox{\hyperlink{app__config_8h_ae2946618e700f814e6147195c808f4c8aa3a9adacc85c180950255762543c88ac}{SAFE}}, and \doxymbox{\hyperlink{app__config_8h_a0560169ed6717811a19ca28c11256293afa331522f1b1dda554d1c65e5a0e6061}{SYSTEM\+\_\+\+STATE}}.
+References \doxymbox{\hyperlink{app__config_8h_a0560169ed6717811a19ca28c11256293abc777eb98dc283307dad9d57db9802a6}{CHANGE\+\_\+\+SYSTEM\+\_\+\+STATE}}, \doxymbox{\hyperlink{fdcan_8c_acb1a2ebd043af21a56094e47f2e7797d}{FDCAN\+\_\+\+Tx()}}, \doxymbox{\hyperlink{struct_c_a_n___tx_packet_a08fb9c5765d18d0a5aca46bbe1f88fc1}{CAN\+\_\+\+Tx\+Packet::\+\+Header}}, \doxymbox{\hyperlink{app__config_8h_ae2946618e700f814e6147195c808f4c8a04ef9c54bf8fecf6499edcc41b7281d7}{LOW\+\_\+\+POWER}}, \doxymbox{\hyperlink{struct_message__t_a94920a8924f4dfd278b36ffe75ef8088}{Message\+\_\+t::\+mode}}, \doxymbox{\hyperlink{app__config_8h_acfde02c445d4aba6bc99ab7d79814cb4}{MODE\+\_\+\+BIT}}, \doxymbox{\hyperlink{app__config_8h_ae2946618e700f814e6147195c808f4c8ae2bd7b57b3f0bb02e66e42dbacc5c7fc}{NOMINAL}}, \doxymbox{\hyperlink{app__config_8h_ae2946618e700f814e6147195c808f4c8a14aa1c5c4852ea2d61eef4d73772ea65}{PAYLOAD}}, \doxymbox{\hyperlink{subscriptions_8c_ad3332b1450087d0a68dd470140d74a47}{Publish()}}, \doxymbox{\hyperlink{app__config_8h_ae2946618e700f814e6147195c808f4c8aa3a9adacc85c180950255762543c88ac}{SAFE}}, \doxymbox{\hyperlink{subscriptions_8c_a195e703619f15d910cc26b4e17e10850}{Sleep\+Until()}}, \doxymbox{\hyperlink{subscriptions_8c_adb8a7e8cec223ef73534f0d14094c79a}{Subscribe()}}, \doxymbox{\hyperlink{app__config_8h_a0560169ed6717811a19ca28c11256293afa331522f1b1dda554d1c65e5a0e6061}{SYSTEM\+\_\+\+STATE}}, \doxymbox{\hyperlink{app__events_8c_a174333602856420f67c1fa54affc5af5}{Task\+Health\+\_\+\+Clear\+Bit()}}, \doxymbox{\hyperlink{app__events_8c_a384c29a086f7e2d03af1568fb5bdf761}{Task\+Health\+\_\+\+Set\+Bit()}}, \doxymbox{\hyperlink{app__events_8c_a07ff4defe7033e21ccfbb62159df4313}{Task\+Sync\+\_\+\+Set\+And\+Wait()}}, and \doxymbox{\hyperlink{struct_message__t_aabea3bb99f37aea991c46a0bfa604a29}{Message\+\_\+t::\+\+Topic}}.
 
 
 
@@ -86,7 +86,7 @@ Check \doxylink{app__config_8h}{app\+\_\+config.\+h} for stack configurations
 \end{DoxyNote}
 
 
-References \doxymbox{\hyperlink{app__config_8h_a843595a59955f4e62f3d0d2e328e38a2}{LOCAL\+\_\+\+QUEUE\+\_\+\+LENGTH}}, \doxymbox{\hyperlink{app__config_8h_ad1ed0ea73c4459cd52a8fe09d5931b1d}{MODE\+\_\+\+PR}}, \doxymbox{\hyperlink{mode_manager__task_8c_ae5180377d2e4e13d2b0f1344658df6d4}{Mode\+Manager\+\_\+\+Handler()}}, and \doxymbox{\hyperlink{app__config_8h_a200c2c21eb5510aa388dc932a76e830d}{NORMAL\+\_\+\+TASK\+\_\+\+STACK\+\_\+\+SIZE}}.
+References \doxymbox{\hyperlink{app__config_8h_a843595a59955f4e62f3d0d2e328e38a2}{LOCAL\+\_\+\+QUEUE\+\_\+\+LENGTH}}, \doxymbox{\hyperlink{app__config_8h_ad1ed0ea73c4459cd52a8fe09d5931b1d}{MODE\+\_\+\+PR}}, \doxymbox{\hyperlink{mode_manager__task_8c_ae5180377d2e4e13d2b0f1344658df6d4}{Mode\+Manager\+\_\+\+Handler()}}, \doxymbox{\hyperlink{app__config_8h_ad4d025ecf1bdbf8b244ca688df8e478d}{MSG\+\_\+\+SIZE}}, and \doxymbox{\hyperlink{app__config_8h_a200c2c21eb5510aa388dc932a76e830d}{NORMAL\+\_\+\+TASK\+\_\+\+STACK\+\_\+\+SIZE}}.
 
 
 

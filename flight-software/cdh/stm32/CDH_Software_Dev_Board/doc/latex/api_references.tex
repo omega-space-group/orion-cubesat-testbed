@@ -1,0 +1,131 @@
+\doxysubsection{Available API Reference }
+\hypertarget{api_references}{}\label{api_references}\index{Available API Reference@{Available API Reference}}
+\hypertarget{api_references_autotoc_md0}{}\doxysubsubsubsubsection{\texorpdfstring{1. Subscribe}{1. Subscribe}}\label{api_references_autotoc_md0}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{subscriptions_8c_adb8a7e8cec223ef73534f0d14094c79a}{Subscribe}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ name,\ QueueHandle\_t\ queue);}
+
+\end{DoxyCode}
+\hypertarget{api_references_autotoc_md1}{}\doxysubsubsubsubsubsection{\texorpdfstring{Discription:\+}{Discription:\+}}\label{api_references_autotoc_md1}
+Subscribes a task to topics based on the Subscription Table (\doxylink{subscriptions_8c_sub_table}{sub\+\_\+table})\hypertarget{api_references_autotoc_md2}{}\doxysubsubsubsubsubsection{\texorpdfstring{Notes:\+}{Notes:\+}}\label{api_references_autotoc_md2}
+
+\begin{DoxyItemize}
+\item Calling this function does not wake up a task. It is just a normal function call inside the task.
+\item You should call this during the setup phase of the task, outside of the infinite loop, so it runs only once.
+\item After subscribing, all tasks must call \doxylink{app__events_8c_a07ff4defe7033e21ccfbb62159df4313}{Task\+Sync\+\_\+\+Set\+And\+Wait()} to sync up before moving forward.
+\end{DoxyItemize}
+
+For more details, check out the \doxylink{task_creation}{Task Creation and Initialization Manual}.
+
+\begin{DoxyNote}{Note}
+Missing return values to show if execution succeeded.
+\end{DoxyNote}
+\DoxyHorRuler{0}
+\hypertarget{api_references_autotoc_md4}{}\doxysubsubsubsubsection{\texorpdfstring{2. Publish}{2. Publish}}\label{api_references_autotoc_md4}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{subscriptions_8c_ad3332b1450087d0a68dd470140d74a47}{Publish}}(\doxymbox{\hyperlink{struct_message__t}{Message\_t}}\ newMsg);}
+
+\end{DoxyCode}
+\hypertarget{api_references_autotoc_md5}{}\doxysubsubsubsubsubsection{\texorpdfstring{Discription:\+}{Discription:\+}}\label{api_references_autotoc_md5}
+Publishes a message via the software bus\hypertarget{api_references_autotoc_md6}{}\doxysubsubsubsubsubsection{\texorpdfstring{Notes:\+}{Notes:\+}}\label{api_references_autotoc_md6}
+
+\begin{DoxyItemize}
+\item Calling this does not wake up a task directly and acts like a normal function call. However, calling this will wake up the dispatcher task right away. This triggers a context switch, meaning the current task stops running and the dispatcher takes over (because in the original firmware, the dispatcher task has the highest priority).
+\end{DoxyItemize}
+
+\DoxyHorRuler{0}
+\hypertarget{api_references_autotoc_md8}{}\doxysubsubsubsubsection{\texorpdfstring{3. Sleep}{3. Sleep}}\label{api_references_autotoc_md8}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\doxymbox{\hyperlink{subscriptions_8h_a937e0a39ee2588df48e8d90bee76358c}{WakeupReason\_t}}\ \doxymbox{\hyperlink{subscriptions_8c_a195e703619f15d910cc26b4e17e10850}{SleepUntil}}(QueueHandle\_t\ queue,\ \doxymbox{\hyperlink{struct_message__t}{Message\_t}}\ *newMsgRsc,\ TickType\_t\ xTicksToWait);}
+
+\end{DoxyCode}
+\hypertarget{api_references_autotoc_md9}{}\doxysubsubsubsubsubsection{\texorpdfstring{Discription:\+}{Discription:\+}}\label{api_references_autotoc_md9}
+Task blocks (sleeps) until a new message is received in its local queue\hypertarget{api_references_autotoc_md10}{}\doxysubsubsubsubsubsection{\texorpdfstring{Notes:\+}{Notes:\+}}\label{api_references_autotoc_md10}
+
+\begin{DoxyItemize}
+\item If you set a timeout value, the task wakes up either when a message arrives or when the time runs out. If a message arrives early, the timer doesn\textquotesingle{}t reset (Note:\+ need to fill in exactly what happens next here).
+\item To make the task block and wait forever without timing out, use port\+MAX\+\_\+\+DELAY.
+\end{DoxyItemize}
+
+For more information on how this works under the hood, look up x\+Queue\+Receive() in the Free\+RTOS\+\_\+\+Reference\+\_\+\+Manual\+\_\+\+V10.\+0.\+0.\+pdf.
+
+\DoxyHorRuler{0}
+\hypertarget{api_references_autotoc_md12}{}\doxysubsubsubsubsection{\texorpdfstring{4. Task Sync}{4. Task Sync}}\label{api_references_autotoc_md12}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{app__events_8c_a3f95efb0848f050e56b5840715d56c7c}{TaskSync\_Init}}(\textcolor{keywordtype}{void});}
+
+\end{DoxyCode}
+\hypertarget{api_references_autotoc_md13}{}\doxysubsubsubsubsubsection{\texorpdfstring{Discription:\+}{Discription:\+}}\label{api_references_autotoc_md13}
+Initialization of task synchronization event group
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{app__events_8c_a07ff4defe7033e21ccfbb62159df4313}{TaskSync\_SetAndWait}}(EventBits\_t\ taskBit);}
+
+\end{DoxyCode}
+\hypertarget{api_references_autotoc_md14}{}\doxysubsubsubsubsubsection{\texorpdfstring{Discription:\+}{Discription:\+}}\label{api_references_autotoc_md14}
+Acts as a Thread Sync Barrier\hypertarget{api_references_autotoc_md15}{}\doxysubsubsubsubsubsection{\texorpdfstring{Notes:\+}{Notes:\+}}\label{api_references_autotoc_md15}
+
+\begin{DoxyItemize}
+\item Task sets its own bit to 1 in the event mask and blocks until every other task has done so too to continue.
+\end{DoxyItemize}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{app__events_8c_a786e32b482933fe78a16a27a49a9b2e2}{TaskSync\_WaitForAll}}(\textcolor{keywordtype}{void});}
+
+\end{DoxyCode}
+\hypertarget{api_references_autotoc_md16}{}\doxysubsubsubsubsubsection{\texorpdfstring{Discription:\+}{Discription:\+}}\label{api_references_autotoc_md16}
+Acts as a Thread Sync Barrier\hypertarget{api_references_autotoc_md17}{}\doxysubsubsubsubsubsection{\texorpdfstring{Notes:\+}{Notes:\+}}\label{api_references_autotoc_md17}
+
+\begin{DoxyItemize}
+\item Block until event mask becomes 1, which means all tasks are synced, and then continue.
+\end{DoxyItemize}
+
+\DoxyHorRuler{0}
+\hypertarget{api_references_autotoc_md19}{}\doxysubsubsubsubsection{\texorpdfstring{5. Task Health Check}{5. Task Health Check}}\label{api_references_autotoc_md19}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{app__events_8c_a78aceff648bff00067552c1ae95e89fc}{TaskHealth\_Init}}(\textcolor{keywordtype}{void});}
+
+\end{DoxyCode}
+\hypertarget{api_references_autotoc_md20}{}\doxysubsubsubsubsubsection{\texorpdfstring{Discription:\+}{Discription:\+}}\label{api_references_autotoc_md20}
+Initializes task health check event group
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{app__events_8c_a384c29a086f7e2d03af1568fb5bdf761}{TaskHealth\_SetBit}}(EventBits\_t\ bit);}
+
+\end{DoxyCode}
+\hypertarget{api_references_autotoc_md21}{}\doxysubsubsubsubsubsection{\texorpdfstring{Discription:\+}{Discription:\+}}\label{api_references_autotoc_md21}
+Sets task bit to health check event group
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{app__events_8c_a174333602856420f67c1fa54affc5af5}{TaskHealth\_ClearBit}}(EventBits\_t\ bit);}
+
+\end{DoxyCode}
+\hypertarget{api_references_autotoc_md22}{}\doxysubsubsubsubsubsection{\texorpdfstring{Discription:\+}{Discription:\+}}\label{api_references_autotoc_md22}
+Clears task bit to health check event group
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{app__events_8c_acb0cb16b39bae1effdef4b84e2007e0f}{TaskHealth\_ClearAll}}(\textcolor{keywordtype}{void});}
+
+\end{DoxyCode}
+\hypertarget{api_references_autotoc_md23}{}\doxysubsubsubsubsubsection{\texorpdfstring{Discription:\+}{Discription:\+}}\label{api_references_autotoc_md23}
+Clears health check event mask
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{EventBits\_t\ \doxymbox{\hyperlink{app__events_8c_a5cc34f3b8c4e2100404eca52a1a02453}{TaskHealth\_Read}}(\textcolor{keywordtype}{void});}
+
+\end{DoxyCode}
+\hypertarget{api_references_autotoc_md24}{}\doxysubsubsubsubsubsection{\texorpdfstring{Discription:\+}{Discription:\+}}\label{api_references_autotoc_md24}
+Returns the value of the health check event mask
+
+\DoxyHorRuler{0}
+ \hypertarget{api_references_autotoc_md26}{}\doxysubsubsubsubsubsection{\texorpdfstring{For more information on how events work, look up the Event\+Group section in the Free\+RTOS\+\_\+\+Reference\+\_\+\+Manual\+\_\+\+V10.\+0.\+0.\+pdf.}{For more information on how events work, look up the Event\+Group section in the Free\+RTOS\+\_\+\+Reference\+\_\+\+Manual\+\_\+\+V10.\+0.\+0.\+pdf.}}\label{api_references_autotoc_md26}

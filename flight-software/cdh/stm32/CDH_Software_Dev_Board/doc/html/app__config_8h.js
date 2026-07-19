@@ -1,5 +1,6 @@
 var app__config_8h =
 [
+    [ "Message_t", "struct_message__t.html", "struct_message__t" ],
     [ "ALL_TASKS_OK", "app__config_8h.html#a7d092bb0ccbe33b8392266f030f034ac", null ],
     [ "ALL_TASKS_READY", "app__config_8h.html#a552b8b30bb8cf4c54f1d62980e0d7b13", null ],
     [ "CANRX_PR", "app__config_8h.html#a16d794c91d2fcbf7dac7710b4658263f", null ],
@@ -18,6 +19,7 @@ var app__config_8h =
     [ "MAX_SUBSCRIBERS_PER_TOPIC", "app__config_8h.html#ae039b6dcd703089e83fa3e1b3fc896c8", null ],
     [ "MODE_BIT", "app__config_8h.html#acfde02c445d4aba6bc99ab7d79814cb4", null ],
     [ "MODE_PR", "app__config_8h.html#ad1ed0ea73c4459cd52a8fe09d5931b1d", null ],
+    [ "MSG_SIZE", "app__config_8h.html#ad4d025ecf1bdbf8b244ca688df8e478d", null ],
     [ "NORMAL_TASK_STACK_SIZE", "app__config_8h.html#a200c2c21eb5510aa388dc932a76e830d", null ],
     [ "PERIODIC_TASKS", "app__config_8h.html#ad92056533d94e7a5cbc443e4f40ee9a7", null ],
     [ "ROOT_PR", "app__config_8h.html#a5c02af385cb9256e1e1bbb76e3a04184", null ],

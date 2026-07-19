@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['and_20debug_20the_20stm32h7_20dual_20core_20mcu_0',['Flash and Debug the STM32H7 Dual Core MCU',['../flash_and_debug.html',1,'manuals']]],
-  ['and_20initialization_1',['Task Creation and Initialization',['../task_creation.html',1,'manuals']]],
-  ['arcitecture_2',['Software Bus Arcitecture',['../software_bus.html',1,'manuals']]]
+  ['0_200_20pdf_0',['For more information on how events work, look up the EventGroup section in the FreeRTOS_Reference_Manual_V10.0.0.pdf.',['../api_references.html#autotoc_md26',1,'']]],
+  ['0_20pdf_1',['For more information on how events work, look up the EventGroup section in the FreeRTOS_Reference_Manual_V10.0.0.pdf.',['../api_references.html#autotoc_md26',1,'']]]
 ];

@@ -1,11 +1,24 @@
 var searchData=
 [
-  ['task_20creation_20and_20initialization_0',['Task Creation and Initialization',['../task_creation.html',1,'manuals']]],
-  ['task_5fcreation_1',['task_creation',['../md_doc_2task__creation.html',1,'']]],
-  ['tc_5fbit_2',['TC_BIT',['../app__config_8h.html#a7777db792b63724d39c9c7ea68b6b03a',1,'app_config.h']]],
-  ['tc_5fpr_3',['TC_PR',['../app__config_8h.html#a7cc550f1475a6f83dbc54d2ec940be71',1,'app_config.h']]],
-  ['telecommand_4',['TELECOMMAND',['../app__config_8h.html#a0560169ed6717811a19ca28c11256293a005b78a0f65bacff527f3a3d9017b784',1,'app_config.h']]],
-  ['telemetry_5',['Housekeeping &amp;amp; Telemetry',['../group__telemetry__module.html',1,'']]],
-  ['the_20stm32h7_20dual_20core_20mcu_6',['Flash and Debug the STM32H7 Dual Core MCU',['../flash_and_debug.html',1,'manuals']]],
-  ['topic_5ft_7',['Topic_t',['../app__config_8h.html#a0560169ed6717811a19ca28c11256293',1,'app_config.h']]]
+  ['main_0',['main',['../main_8c.html#a840291bc02cba5474a4cb46a9b9566fe',1,'main.c']]],
+  ['main_2ec_1',['main.c',['../main_8c.html',1,'']]],
+  ['manuals_2',['Manuals',['../manuals.html',1,'index']]],
+  ['master_5fqueue_5flength_3',['MASTER_QUEUE_LENGTH',['../app__config_8h.html#af04bc000259721bc839efbe4879a4630',1,'app_config.h']]],
+  ['max_5fsubs_4',['MAX_SUBS',['../app__config_8h.html#a4cecb71b936e9c443f548540fb7a54ff',1,'app_config.h']]],
+  ['max_5fsubscribers_5fper_5ftopic_5',['MAX_SUBSCRIBERS_PER_TOPIC',['../app__config_8h.html#ae039b6dcd703089e83fa3e1b3fc896c8',1,'app_config.h']]],
+  ['mcu_6',['Flash and Debug the STM32H7 Dual Core MCU',['../flash_and_debug.html',1,'manuals']]],
+  ['message_5ft_7',['Message_t',['../struct_message__t.html',1,'']]],
+  ['mode_8',['mode',['../struct_message__t.html#a94920a8924f4dfd278b36ffe75ef8088',1,'Message_t']]],
+  ['mode_5fbit_9',['MODE_BIT',['../app__config_8h.html#acfde02c445d4aba6bc99ab7d79814cb4',1,'app_config.h']]],
+  ['mode_5fpr_10',['MODE_PR',['../app__config_8h.html#ad1ed0ea73c4459cd52a8fe09d5931b1d',1,'app_config.h']]],
+  ['model_11',['Publisher / Subscriber Model',['../software_bus.html#autotoc_md27',1,'']]],
+  ['modemanager_5fhandler_12',['ModeManager_Handler',['../mode_manager__task_8c.html#ae5180377d2e4e13d2b0f1344658df6d4',1,'modeManager_task.c']]],
+  ['modemanager_5ftask_2ec_13',['modeManager_task.c',['../mode_manager__task_8c.html',1,'']]],
+  ['modemanager_5ftask_2eh_14',['modeManager_task.h',['../mode_manager__task_8h.html',1,'']]],
+  ['modemanager_5ftask_5finit_15',['ModeManager_Task_Init',['../mode_manager__task_8c.html#a1d3500502fc4fd3697e8b87290e7d997',1,'ModeManager_Task_Init(void):&#160;modeManager_task.c'],['../mode_manager__task_8h.html#a1d3500502fc4fd3697e8b87290e7d997',1,'ModeManager_Task_Init(void):&#160;modeManager_task.c']]],
+  ['modes_16',['Satellite Modes',['../group__sys__state__module.html',1,'']]],
+  ['more_20information_20on_20how_20events_20work_20look_20up_20the_20eventgroup_20section_20in_20the_20freertos_5freference_5fmanual_5fv10_200_200_20pdf_17',['For more information on how events work, look up the EventGroup section in the FreeRTOS_Reference_Manual_V10.0.0.pdf.',['../api_references.html#autotoc_md26',1,'']]],
+  ['msg_5fsize_18',['MSG_SIZE',['../app__config_8h.html#ad4d025ecf1bdbf8b244ca688df8e478d',1,'app_config.h']]],
+  ['mx_5ffdcan1_5finit_19',['MX_FDCAN1_Init',['../fdcan_8c.html#af122e1c28b11c5b8771e82328e10fa2c',1,'MX_FDCAN1_Init(void):&#160;fdcan.c'],['../fdcan_8h.html#af122e1c28b11c5b8771e82328e10fa2c',1,'MX_FDCAN1_Init(void):&#160;fdcan.c']]],
+  ['mx_5ffreertos_5finit_20',['MX_FREERTOS_Init',['../main_8c.html#abade755e13d07c10889ae83143656158',1,'MX_FREERTOS_Init(void):&#160;freertos.c'],['../freertos_8c.html#abade755e13d07c10889ae83143656158',1,'MX_FREERTOS_Init(void):&#160;freertos.c']]]
 ];

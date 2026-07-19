@@ -4,7 +4,11 @@
  *  Created on: May 15, 2026
  *      Author: adaro
  */
-
+/**
+ * @file app_events.h
+ * @brief This file contains all the function prototypes for the app_events.c file.
+ * @details Implementation of all application events.
+ */
 #ifndef INC_APP_SERVICES_APP_EVENTS_H_
 #define INC_APP_SERVICES_APP_EVENTS_H_
 

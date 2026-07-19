@@ -8,6 +8,11 @@ Configuration file for current application.
 {\ttfamily \+\#include "{}Free\+RTOS.\+h"{}}\newline
 {\ttfamily \+\#include "{}queue.\+h"{}}\newline
 {\ttfamily \+\#include "{}fdcan.\+h"{}}\newline
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \doxymbox{\hyperlink{struct_message__t}{Message\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Software Bus Message Structure. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsubsection*{Macros}
 \begin{DoxyCompactItemize}
 \item 
@@ -34,7 +39,10 @@ Configuration file for current application.
 \begin{DoxyCompactList}\small\item\em Maximum number of subscribers (i.\+e. tasks that have subscribed to at least one topic) allowed. \end{DoxyCompactList}\item 
 \Hypertarget{app__config_8h_ae039b6dcd703089e83fa3e1b3fc896c8}\label{app__config_8h_ae039b6dcd703089e83fa3e1b3fc896c8} 
 \+\#define {\bfseries MAX\+\_\+\+SUBSCRIBERS\+\_\+\+PER\+\_\+\+TOPIC}~10
-\begin{DoxyCompactList}\small\item\em Maximum number of subscribers per topic allowed. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Maximum number of subscribers per topic allowed. \end{DoxyCompactList}\item 
+\Hypertarget{app__config_8h_ad4d025ecf1bdbf8b244ca688df8e478d}\label{app__config_8h_ad4d025ecf1bdbf8b244ca688df8e478d} 
+\+\#define {\bfseries MSG\+\_\+\+SIZE}~sizeof(\doxymbox{\hyperlink{struct_message__t}{Message\+\_\+t}})
+\begin{DoxyCompactList}\small\item\em Message Size. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \begin{Indent}\textbf{ Task priorities}\par
 {\em RTOS priorities go from high to low. Meaning highest priority task will execute before a lower priority task.
 
@@ -155,6 +163,10 @@ This define is used for sync purposes. More info in \doxylink{dispatcher__task_8
 \begin{DoxyNote}{Note}
 Any new initialized tasks should be added! 
 \end{DoxyNote}
+
+
+Referenced by \doxymbox{\hyperlink{app__events_8c_a07ff4defe7033e21ccfbb62159df4313}{Task\+Sync\+\_\+\+Set\+And\+Wait()}}, and \doxymbox{\hyperlink{app__events_8c_a786e32b482933fe78a16a27a49a9b2e2}{Task\+Sync\+\_\+\+Wait\+For\+All()}}.
+
 \Hypertarget{app__config_8h_a16d794c91d2fcbf7dac7710b4658263f}\index{app\_config.h@{app\_config.h}!CANRX\_PR@{CANRX\_PR}}
 \index{CANRX\_PR@{CANRX\_PR}!app\_config.h@{app\_config.h}}
 \doxysubsubsection{\texorpdfstring{CANRX\_PR}{CANRX\_PR}}
@@ -262,6 +274,10 @@ This define is used to group all periodic tasks together. More info in \doxylink
 \begin{DoxyNote}{Note}
 Any new initialized PERIODIC tasks should be added! 
 \end{DoxyNote}
+
+
+Referenced by \doxymbox{\hyperlink{app__events_8c_acb0cb16b39bae1effdef4b84e2007e0f}{Task\+Health\+\_\+\+Clear\+All()}}.
+
 \Hypertarget{app__config_8h_a5c02af385cb9256e1e1bbb76e3a04184}\index{app\_config.h@{app\_config.h}!ROOT\_PR@{ROOT\_PR}}
 \index{ROOT\_PR@{ROOT\_PR}!app\_config.h@{app\_config.h}}
 \doxysubsubsection{\texorpdfstring{ROOT\_PR}{ROOT\_PR}}

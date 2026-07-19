@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['data_0',['Data',['../struct_c_a_n___tx_packet.html#a0ff793051491ba56b219df1eea76f07d',1,'CAN_TxPacket::Data'],['../struct_c_a_n___rx_packet.html#a64c2eb98afd6b69d3f82ea6a7fa9a73f',1,'CAN_RxPacket::Data']]]
+  ['canpacket_0',['canPacket',['../struct_message__t.html#aed6f4c218e6e5b4026f417fc0202231d',1,'Message_t']]]
 ];

@@ -1,20 +1,8 @@
 var searchData=
 [
-  ['safe_0',['SAFE',['../app__config_8h.html#ae2946618e700f814e6147195c808f4c8aa3a9adacc85c180950255762543c88ac',1,'app_config.h']]],
-  ['satellite_20modes_1',['Satellite Modes',['../group__sys__state__module.html',1,'']]],
-  ['setsubsystemstatus_2',['SetSubsystemStatus',['../can__rx__task_8c.html#a87ba64831485881ce0726b85cf48a439',1,'SetSubsystemStatus(subsystemName sub, int stat):&#160;can_rx_task.c'],['../can__rx__task_8h.html#a7407c71b478f8712e7931c93ad3b25f4',1,'SetSubsystemStatus(subsystemName sub, int status):&#160;can_rx_task.c']]],
-  ['software_20bus_20arcitecture_3',['Software Bus Arcitecture',['../software_bus.html',1,'manuals']]],
-  ['software_20v0_4',['OBC Software v0',['../index.html',1,'']]],
-  ['startdefaulttask_5',['StartDefaultTask',['../freertos_8c.html#a99d0fdb0434092bcb24d9c9af917e4e9',1,'freertos.c']]],
-  ['state_5ft_6',['State_t',['../app__config_8h.html#ae2946618e700f814e6147195c808f4c8',1,'app_config.h']]],
-  ['stm32h7_20dual_20core_20mcu_7',['Flash and Debug the STM32H7 Dual Core MCU',['../flash_and_debug.html',1,'manuals']]],
-  ['subc_5fbit_8',['SUBC_BIT',['../app__config_8h.html#ab0af60e8248527f8131652b2fee1db11',1,'app_config.h']]],
-  ['subc_5fpr_9',['SUBC_PR',['../app__config_8h.html#acd35480f6bf1574471b4d5e62bfefa53',1,'app_config.h']]],
-  ['subm_5fbit_10',['SUBM_BIT',['../app__config_8h.html#a0d46bc03efdec2cb55867268bc3b4462',1,'app_config.h']]],
-  ['subm_5fpr_11',['SUBM_PR',['../app__config_8h.html#a5018529b484b92b7b4c0d6a4082b901d',1,'app_config.h']]],
-  ['subsystem_20control_12',['Subsystem Control',['../group__subsystems__module.html',1,'']]],
-  ['subsystem_5fmsg_5fparser_13',['Subsystem_Msg_Parser',['../can__rx__task_8c.html#a3ac22077410fb91a154296c96a380a12',1,'can_rx_task.c']]],
-  ['subsystemcontrol_5ftask_2ec_14',['subsystemControl_task.c',['../subsystem_control__task_8c.html',1,'']]],
-  ['subsystemname_15',['subsystemName',['../can__rx__task_8h.html#a8f963b5a6361565c648237bcc3fc40d5',1,'can_rx_task.h']]],
-  ['system_5fstate_16',['SYSTEM_STATE',['../app__config_8h.html#a0560169ed6717811a19ca28c11256293afa331522f1b1dda554d1c65e5a0e6061',1,'app_config.h']]]
+  ['large_5ftask_5fstack_5fsize_0',['LARGE_TASK_STACK_SIZE',['../app__config_8h.html#a225d14042fa83623029d9bf491a4f5f2',1,'app_config.h']]],
+  ['local_20queue_3a_1',['local queue:',['../task_creation.html#autotoc_md41',1,'-&amp;gt; Optional function to get global access to local queue:'],['../task_creation.html#autotoc_md40',1,'-&amp;gt; Task initialization with a local queue:'],['../task_creation.html#autotoc_md39',1,'-&amp;gt; Task initialization without a local queue:']]],
+  ['local_5fqueue_5flength_2',['LOCAL_QUEUE_LENGTH',['../app__config_8h.html#a843595a59955f4e62f3d0d2e328e38a2',1,'app_config.h']]],
+  ['look_20up_20the_20eventgroup_20section_20in_20the_20freertos_5freference_5fmanual_5fv10_200_200_20pdf_3',['For more information on how events work, look up the EventGroup section in the FreeRTOS_Reference_Manual_V10.0.0.pdf.',['../api_references.html#autotoc_md26',1,'']]],
+  ['low_5fpower_4',['LOW_POWER',['../app__config_8h.html#ae2946618e700f814e6147195c808f4c8a04ef9c54bf8fecf6499edcc41b7281d7',1,'app_config.h']]]
 ];
