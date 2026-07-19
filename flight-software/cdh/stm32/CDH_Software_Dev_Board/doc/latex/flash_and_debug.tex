@@ -1,3 +1,62 @@
 \doxysubsection{Flash and Debug the STM32\+H7 Dual Core MCU }
 \hypertarget{flash_and_debug}{}\label{flash_and_debug}\index{Flash and Debug the STM32H7 Dual Core MCU@{Flash and Debug the STM32H7 Dual Core MCU}}
-Your manual content goes here... 
+\hypertarget{flash_and_debug_autotoc_md27}{}\doxysubsubsubsection{\texorpdfstring{Debug Configurations -\/ Initial FLashing}{Debug Configurations -\/ Initial FLashing}}\label{flash_and_debug_autotoc_md27}
+\hypertarget{flash_and_debug_autotoc_md28}{}\doxysubsubsubsubsection{\texorpdfstring{Instructions}{Instructions}}\label{flash_and_debug_autotoc_md28}
+This manual follows the steps as described in the following ST forum:\+ \href{https://community.st.com/stm32-mcus-60/how-to-create-and-run-an-stm32h7-dual-core-basic-example-160437}{\texttt{https:\+/\+/\+community.\+st.\+com/\+stm32-\/mcus-\/60/\+how-\/to-\/create-\/and-\/run-\/an-\/stm32h7-\/dual-\/core-\/basic-\/example-\/160437}}\hypertarget{flash_and_debug_autotoc_md29}{}\doxysubsubsubsubsection{\texorpdfstring{How Flashing Works}{How Flashing Works}}\label{flash_and_debug_autotoc_md29}
+Flashing a dual-\/core STM32\+H7 requires two distinct binaries (one for the Cortex-\/\+M7 and one for the Cortex-\/\+M4).
+
+
+\begin{DoxyItemize}
+\item The Master Project:\+ In the IDE, the CM4 project is added to the startup setup of the CM7 project.
+\item The Single-\/\+Click Flash:\+ When you flash or hit run on the CM7 project, the compiler automatically handles everything—it flashes the CM7 binary first, followed immediately by the CM4 binary into their respective memory regions.
+\item Debugging Setup:\+ Each core runs an independent GDB debugger server instance utilizing separated port numbers (differing by at least 4, e.\+g., port 61234 and 61238).
+\end{DoxyItemize}\hypertarget{flash_and_debug_autotoc_md30}{}\doxysubsubsubsubsection{\texorpdfstring{Sequence of Events (Boot \& Run)}{Sequence of Events (Boot \& Run)}}\label{flash_and_debug_autotoc_md30}
+
+\begin{DoxyItemize}
+\item System Power-\/\+On /\+ Reset:\+ The primary core (Cortex-\/\+M7) boots up first. It is entirely responsible for setting up fundamental system resources, the system clock configuration, and initializing peripheral components.
+\item Secondary Core Wakeup:\+ While the M7 initializes the board, the Cortex-\/\+M4 core is kept on hold in reset or a low-\/power hardware stop mode. Once the M7 finishes basic system setup, it safely releases the M4 core via software control.
+\item Cross-\/\+Trigger Synchronization (CTI):\+ Both debuggers use the Cross-\/\+Trigger Interface (CTI). If an error occurs or you hit a breakpoint, one core can instantly signal and halt the other core to prevent synchronization mismatches.
+\item Execution Parallelism:\+ Once fully synchronized, the M7 and M4 process their logic simultaneously in parallel (demonstrated by toggling their respective hardware pins within roughly \texorpdfstring{$\sim$}{\string~}12 to 20 microseconds of one another).
+\end{DoxyItemize}
+
+For more information checkout ST\textquotesingle{}s application notes:\+
+\begin{DoxyItemize}
+\item \href{https://www.st.com/resource/en/application_note/dm00629855-getting-started-with-projects-based-on-dualcore-stm32h7-microcontrollers-in-stm32cubeide-stmicroelectronics.pdf}{\texttt{https:\+/\+/\+www.\+st.\+com/\+resource/\+en/\+application\+\_\+note/\+dm00629855-\/getting-\/started-\/with-\/projects-\/based-\/on-\/dualcore-\/stm32h7-\/microcontrollers-\/in-\/stm32cubeide-\/stmicroelectronics.\+pdf}}
+\item \href{https://www.st.com/content/ccc/resource/technical/document/application_note/group1/96/bf/35/36/e6/97/42/2e/DM00597308/files/DM00597308.pdf/jcr:content/translations/en.DM00597308.pdf}{\texttt{https:\+/\+/\+www.\+st.\+com/\+content/\+ccc/\+resource/\+technical/\+document/\+application\+\_\+note/\+group1/\+96/\+bf/\+35/\+36/\+e6/\+97/\+42/\+2e/\+\+DM00597308/\+files/\+\+DM00597308.\+pdf/\+jcr:\+content/\+translations/\+en.\+DM00597308.\+pdf}}
+\end{DoxyItemize}\hypertarget{flash_and_debug_autotoc_md31}{}\doxysubsubsubsubsection{\texorpdfstring{How "{}\+Debug Configurations"{} should look:\+}{How "{}\+Debug Configurations"{} should look:\+}}\label{flash_and_debug_autotoc_md31}
+
+
+\DoxyHorRuler{0}
+
+
+
+
+\DoxyHorRuler{0}
+
+
+
+
+\DoxyHorRuler{0}
+
+
+
+
+\DoxyHorRuler{0}
+
+
+\begin{DoxyNote}{Note}
+Make sure \doxylink{main_8c}{main.\+c} includes the following auto-\/generated boot code for both cores:\+  
+\end{DoxyNote}
+\DoxyHorRuler{0}
+\hypertarget{flash_and_debug_autotoc_md37}{}\doxysubsubsubsection{\texorpdfstring{Auto-\/generated Code and Re-\/flashing}{Auto-\/generated Code and Re-\/flashing}}\label{flash_and_debug_autotoc_md37}
+\begin{DoxyWarning}{Warning}
+{\bfseries{Important Warning:\+}} Modifying the {\ttfamily .ioc} file generates fresh code but safely preserves anything inside the {\ttfamily USER CODE BEGIN /\+ END} sections. However, the {\ttfamily MX\+\_\+\+IWDG1\+\_\+\+Init()} function call is generated {\itshape outside} of these user blocks.
+\end{DoxyWarning}
+\hypertarget{flash_and_debug_autotoc_md38}{}\doxysubsubsubsubsection{\texorpdfstring{Watchdog Configuration Warning}{Watchdog Configuration Warning}}\label{flash_and_debug_autotoc_md38}
+
+\begin{DoxyItemize}
+\item The MCU\textquotesingle{}s internal watchdog ({\bfseries{IWDG1}}) is enabled in the {\ttfamily .ioc} configuration for testing. Because the software is still in development and system timings are not finalized, the watchdog needs to remain disabled during standard testing to prevent unwanted resets.
+\item {\bfseries{The Current Workaround:\+}} The {\ttfamily MX\+\_\+\+IWDG1\+\_\+\+Init()} function call is manually commented out in {\ttfamily \doxylink{main_8c}{main.\+c}}.
+\item {\bfseries{The Risk:\+}} Every single time you generate code from Cube\+MX after making a change to the {\ttfamily .ioc} file, it will automatically {\bfseries{uncomment}} {\ttfamily MX\+\_\+\+IWDG1\+\_\+\+Init()} and re-\/enable the watchdog.
+\item {\bfseries{Required Action:\+}} Whenever you update or change the {\ttfamily .ioc} configuration, you {\bfseries{must}} go back into {\ttfamily \doxylink{main_8c}{main.\+c}} and manually comment out {\ttfamily MX\+\_\+\+IWDG1\+\_\+\+Init()} again for the software to run correctly. 
+\end{DoxyItemize}

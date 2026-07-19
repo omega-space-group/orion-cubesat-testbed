@@ -2,10 +2,10 @@ var searchData=
 [
   ['hal_5ffdcan_5frxfifo0callback_0',['HAL_FDCAN_RxFifo0Callback',['../fdcan_8c.html#a37d92c0f4f667c4dd4cbc9c3b5d5dad4',1,'fdcan.c']]],
   ['hal_5ftim_5fperiodelapsedcallback_1',['HAL_TIM_PeriodElapsedCallback',['../main_8c.html#a8a3b0ad512a6e6c6157440b68d395eac',1,'main.c']]],
-  ['handler_20template_20for_20non_20periodic_20tasks_3a_2',['-&amp;gt; Handler Template for non-periodic tasks:',['../task_creation.html#autotoc_md38',1,'']]],
-  ['handler_20template_20for_20periodic_20tasks_3a_3',['-&amp;gt; Handler Template for periodic tasks:',['../task_creation.html#autotoc_md37',1,'']]],
+  ['handler_20template_20for_20non_20periodic_20tasks_3a_2',['-&amp;gt; Handler Template for non-periodic tasks:',['../task_creation.html#autotoc_md54',1,'']]],
+  ['handler_20template_20for_20periodic_20tasks_3a_3',['-&amp;gt; Handler Template for periodic tasks:',['../task_creation.html#autotoc_md53',1,'']]],
   ['header_4',['Header',['../struct_c_a_n___tx_packet.html#a08fb9c5765d18d0a5aca46bbe1f88fc1',1,'CAN_TxPacket::Header'],['../struct_c_a_n___rx_packet.html#a9d9bc62d94afe772c1cc48fd4664b302',1,'CAN_RxPacket::Header']]],
-  ['header_20file_20template_3a_5',['Header File Template:',['../task_creation.html#autotoc_md42',1,'Header File Template:'],['../task_creation.html#autotoc_md43',1,'Header File Template:']]],
+  ['header_20file_20template_3a_5',['Header File Template:',['../task_creation.html#autotoc_md58',1,'Header File Template:'],['../task_creation.html#autotoc_md59',1,'Header File Template:']]],
   ['health_20check_6',['5. Task Health Check',['../api_references.html#autotoc_md19',1,'']]],
   ['healthmonitor_5fhandler_7',['HealthMonitor_Handler',['../health_monitor__task_8c.html#afdddd09b1c8d74d470776489ec452cc7',1,'healthMonitor_task.c']]],
   ['healthmonitor_5finit_8',['HealthMonitor_Init',['../health_monitor__task_8c.html#a9bf16be0fb6926c77cff31b234b642fa',1,'HealthMonitor_Init(void):&#160;healthMonitor_task.c'],['../health_monitor__task_8h.html#a9bf16be0fb6926c77cff31b234b642fa',1,'HealthMonitor_Init(void):&#160;healthMonitor_task.c']]],
@@ -18,5 +18,7 @@ var searchData=
   ['housekeeping_20telemetry_15',['Housekeeping &amp;amp; Telemetry',['../group__telemetry__module.html',1,'']]],
   ['housekeeping_5ftask_2ec_16',['housekeeping_task.c',['../housekeeping__task_8c.html',1,'']]],
   ['housekeeping_5ftask_2eh_17',['housekeeping_task.h',['../housekeeping__task_8h.html',1,'']]],
-  ['how_20events_20work_20look_20up_20the_20eventgroup_20section_20in_20the_20freertos_5freference_5fmanual_5fv10_200_200_20pdf_18',['For more information on how events work, look up the EventGroup section in the FreeRTOS_Reference_Manual_V10.0.0.pdf.',['../api_references.html#autotoc_md26',1,'']]]
+  ['how_20debug_20configurations_20should_20look_3a_18',['How &quot;Debug Configurations&quot; should look:',['../flash_and_debug.html#autotoc_md31',1,'']]],
+  ['how_20events_20work_20look_20up_20the_20eventgroup_20section_20in_20the_20freertos_5freference_5fmanual_5fv10_200_200_20pdf_19',['For more information on how events work, look up the EventGroup section in the FreeRTOS_Reference_Manual_V10.0.0.pdf.',['../api_references.html#autotoc_md26',1,'']]],
+  ['how_20flashing_20works_20',['How Flashing Works',['../flash_and_debug.html#autotoc_md29',1,'']]]
 ];

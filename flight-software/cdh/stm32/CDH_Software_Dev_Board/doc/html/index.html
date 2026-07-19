@@ -118,7 +118,44 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('index.html',''
   <div class="headertitle"><div class="title">OBC Software v0 </div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>Welcome!</p>
+<div class="textblock"><div class="image">
+<img src="manual.png" alt="" width="800px"/>
+</div>
+<h3 class="doxsection"><a class="anchor" id="autotoc_md39"></a>
+Flight Software Overview</h3>
+<p>This project aims to develop a lightweight, message-based flight software firmware built on FreeRTOS specifically for the Open-Source CubeSat FlatSat Testbed. By leveraging a publish-subscribe (Pub/Sub) messaging architecture, the system will ensure decoupled, modular communication between software components (e.g., telemetry, power management, and ADCS). Furthermore it aims to comply with the mission requirements of the Orion CubeSat (more info in Cubesat Testbed Project Overview.pdf that can be found in the project folder).</p>
+<h3 class="doxsection"><a class="anchor" id="autotoc_md40"></a>
+System Requirements</h3>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadLeft">Category  </th><th class="markdownTableHeadLeft">Parameter  </th><th class="markdownTableHeadLeft">Specification  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyLeft"><b>Toolchain</b>  </td><td class="markdownTableBodyLeft">IDE Version  </td><td class="markdownTableBodyLeft">STM32CubeIDE v1.13.0 (Caution with migration)  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyLeft"></td><td class="markdownTableBodyLeft">Compiler &amp; Settings  </td><td class="markdownTableBodyLeft">arm-none-eabi-gcc (-O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity &ndash;specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb)  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyLeft"><b>Operating System</b>  </td><td class="markdownTableBodyLeft">FreeRTOS Version  </td><td class="markdownTableBodyLeft">v10.3.1 (CMSIS-RTOS V2 wrapper) or later  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyLeft"><b>Hardware Target</b>  </td><td class="markdownTableBodyLeft">MCU Model  </td><td class="markdownTableBodyLeft">STM32H755ZI (ARM Cortex-M7 @ <b>64 MHz</b> &amp; ARM Cortex-M4 @ <b>64 MHz</b>)  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyLeft"><b>Clock and Timers</b>  </td><td class="markdownTableBodyLeft">HSI  </td><td class="markdownTableBodyLeft">64 MHz  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyLeft"></td><td class="markdownTableBodyLeft">Systick  </td><td class="markdownTableBodyLeft"><b>TIM6</b> (Dedicated Peripheral for HAL Timebase - Assigned Highest Priority) &amp; <b>Systick</b> (Dedicated Exclusively to RTOS - Assigned Lowest Priority)  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyLeft"><b>Critical Drivers</b>  </td><td class="markdownTableBodyLeft">STM32Cube FW Library  </td><td class="markdownTableBodyLeft">Patch v1.11.12 or later  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyLeft"><b>Peripherals</b>  </td><td class="markdownTableBodyLeft">Communication Buses  </td><td class="markdownTableBodyLeft">FDCAN1 (Payload)  </td></tr>
+</table>
+<h3 class="doxsection"><a class="anchor" id="autotoc_md41"></a>
+Current Setup</h3>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadLeft">Hardware  </th><th class="markdownTableHeadLeft">Part Number  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyLeft"><b>STM32 Nucleo Board</b>  </td><td class="markdownTableBodyLeft">nucleo-h755zi-q  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyLeft"><b>FDCAN Transceiver Hat</b>  </td><td class="markdownTableBodyLeft">Waveshare RS485 CAN Shield  </td></tr>
+</table>
 <div style="display: none;"> <a class="el" href="manuals.html" title="Manuals">Manuals</a> </div> </div></div><!-- PageDoc -->
 <a href="doxygen_crawl.html"></a>
 </div><!-- contents -->

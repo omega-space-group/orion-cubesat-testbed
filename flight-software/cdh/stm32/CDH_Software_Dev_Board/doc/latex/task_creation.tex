@@ -1,6 +1,6 @@
 \doxysubsection{Task Creation and Initialization }
 \hypertarget{task_creation}{}\label{task_creation}\index{Task Creation and Initialization@{Task Creation and Initialization}}
-Every new task is defined inside a pair of task\+Name\+\_\+task.\+c/\+task\+Name\+\_\+task.h files inside the Src/\+\+Core/\+\+App/\+\+Tasks and Inc/\+\+Core/\+\+App/\+\+Tasks directories respectively.\hypertarget{task_creation_autotoc_md36}{}\doxysubsubsubsection{\texorpdfstring{Source File Template:\+}{Source File Template:\+}}\label{task_creation_autotoc_md36}
+Every new task is defined inside a pair of task\+Name\+\_\+task.\+c/\+task\+Name\+\_\+task.h files inside the Src/\+\+Core/\+\+App/\+\+Tasks and Inc/\+\+Core/\+\+App/\+\+Tasks directories respectively.\hypertarget{task_creation_autotoc_md52}{}\doxysubsubsubsection{\texorpdfstring{Source File Template:\+}{Source File Template:\+}}\label{task_creation_autotoc_md52}
 
 \begin{DoxyCode}{0}
 \DoxyCodeLine{\textcolor{preprocessor}{\#include\ "{}FreeRTOS.h"{}}}
@@ -19,7 +19,7 @@ Every new task is defined inside a pair of task\+Name\+\_\+task.\+c/\+task\+Name
 \DoxyCodeLine{\textcolor{keyword}{static}\ QueueHandle\_t\ xTaskQueue;}
 
 \end{DoxyCode}
-\hypertarget{task_creation_autotoc_md37}{}\doxysubsubsubsubsection{\texorpdfstring{-\/\texorpdfstring{$>$}{>} Handler Template for periodic tasks:\+}{-\/\texorpdfstring{$>$}{>} Handler Template for periodic tasks:\+}}\label{task_creation_autotoc_md37}
+\hypertarget{task_creation_autotoc_md53}{}\doxysubsubsubsubsection{\texorpdfstring{-\/\texorpdfstring{$>$}{>} Handler Template for periodic tasks:\+}{-\/\texorpdfstring{$>$}{>} Handler Template for periodic tasks:\+}}\label{task_creation_autotoc_md53}
 
 \begin{DoxyCode}{0}
 \DoxyCodeLine{\textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ TaskName\_Handler(\textcolor{keywordtype}{void}\ *argument)\{}
@@ -34,7 +34,7 @@ Every new task is defined inside a pair of task\+Name\+\_\+task.\+c/\+task\+Name
 \DoxyCodeLine{\}}
 
 \end{DoxyCode}
-\hypertarget{task_creation_autotoc_md38}{}\doxysubsubsubsubsection{\texorpdfstring{-\/\texorpdfstring{$>$}{>} Handler Template for non-\/periodic tasks:\+}{-\/\texorpdfstring{$>$}{>} Handler Template for non-\/periodic tasks:\+}}\label{task_creation_autotoc_md38}
+\hypertarget{task_creation_autotoc_md54}{}\doxysubsubsubsubsection{\texorpdfstring{-\/\texorpdfstring{$>$}{>} Handler Template for non-\/periodic tasks:\+}{-\/\texorpdfstring{$>$}{>} Handler Template for non-\/periodic tasks:\+}}\label{task_creation_autotoc_md54}
 
 \begin{DoxyCode}{0}
 \DoxyCodeLine{\textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ TaskName\_Handler(\textcolor{keywordtype}{void}\ *argument)\{}
@@ -55,7 +55,7 @@ Every new task is defined inside a pair of task\+Name\+\_\+task.\+c/\+task\+Name
  \begin{DoxyNote}{Note}
 New task subscriptions need to be manually added in the Subscription Table in \doxylink{subscriptions_8c}{subscriptions.\+c} before calling \doxylink{subscriptions_8c_adb8a7e8cec223ef73534f0d14094c79a}{Subscribe()}
 \end{DoxyNote}
-\hypertarget{task_creation_autotoc_md39}{}\doxysubsubsubsubsection{\texorpdfstring{-\/\texorpdfstring{$>$}{>} Task initialization without a local queue:\+}{-\/\texorpdfstring{$>$}{>} Task initialization without a local queue:\+}}\label{task_creation_autotoc_md39}
+\hypertarget{task_creation_autotoc_md55}{}\doxysubsubsubsubsection{\texorpdfstring{-\/\texorpdfstring{$>$}{>} Task initialization without a local queue:\+}{-\/\texorpdfstring{$>$}{>} Task initialization without a local queue:\+}}\label{task_creation_autotoc_md55}
 
 \begin{DoxyCode}{0}
 \DoxyCodeLine{\textcolor{keywordtype}{void}\ TaskName\_Init(\textcolor{keywordtype}{void})\ \{}
@@ -63,7 +63,7 @@ New task subscriptions need to be manually added in the Subscription Table in \d
 \DoxyCodeLine{\}}
 
 \end{DoxyCode}
-\hypertarget{task_creation_autotoc_md40}{}\doxysubsubsubsubsection{\texorpdfstring{-\/\texorpdfstring{$>$}{>} Task initialization with a local queue:\+}{-\/\texorpdfstring{$>$}{>} Task initialization with a local queue:\+}}\label{task_creation_autotoc_md40}
+\hypertarget{task_creation_autotoc_md56}{}\doxysubsubsubsubsection{\texorpdfstring{-\/\texorpdfstring{$>$}{>} Task initialization with a local queue:\+}{-\/\texorpdfstring{$>$}{>} Task initialization with a local queue:\+}}\label{task_creation_autotoc_md56}
 
 \begin{DoxyCode}{0}
 \DoxyCodeLine{\textcolor{preprocessor}{\#include\ "{}queue.h"{}}}
@@ -79,7 +79,7 @@ New task subscriptions need to be manually added in the Subscription Table in \d
 \DoxyCodeLine{\}}
 
 \end{DoxyCode}
-\hypertarget{task_creation_autotoc_md41}{}\doxysubsubsubsubsection{\texorpdfstring{-\/\texorpdfstring{$>$}{>} Optional function to get global access to local queue:\+}{-\/\texorpdfstring{$>$}{>} Optional function to get global access to local queue:\+}}\label{task_creation_autotoc_md41}
+\hypertarget{task_creation_autotoc_md57}{}\doxysubsubsubsubsection{\texorpdfstring{-\/\texorpdfstring{$>$}{>} Optional function to get global access to local queue:\+}{-\/\texorpdfstring{$>$}{>} Optional function to get global access to local queue:\+}}\label{task_creation_autotoc_md57}
 
 \begin{DoxyCode}{0}
 \DoxyCodeLine{\textcolor{keyword}{static}\ QueueHandle\_t\ xLocal\_Queue;}
@@ -94,7 +94,7 @@ New task subscriptions need to be manually added in the Subscription Table in \d
 \begin{DoxyNote}{Note}
 TASK\+\_\+\+PR, TASK\+\_\+\+BIT should be defined inside \doxylink{app__config_8h}{app\+\_\+config.\+h}
 \end{DoxyNote}
-\hypertarget{task_creation_autotoc_md42}{}\doxysubsubsubsection{\texorpdfstring{Header File Template:\+}{Header File Template:\+}}\label{task_creation_autotoc_md42}
+\hypertarget{task_creation_autotoc_md58}{}\doxysubsubsubsection{\texorpdfstring{Header File Template:\+}{Header File Template:\+}}\label{task_creation_autotoc_md58}
 
 \begin{DoxyCode}{0}
 \DoxyCodeLine{\textcolor{preprocessor}{\#include\ "{}FreeRTOS.h"{}}}
@@ -109,4 +109,4 @@ TASK\+\_\+\+PR, TASK\+\_\+\+BIT should be defined inside \doxylink{app__config_8
 \begin{DoxyNote}{Note}
 Finally to get the task scheduled for execution you need to call Task\+Name\+Handler\+\_\+\+Init(void) inside the \doxylink{root__task_8c_aca2c7d8f6d456d7fba6e583b40a7c40a}{Root\+\_\+\+Task\+\_\+\+Handler(void \texorpdfstring{$\ast$}{*}argument)} before the infite loop.
 \end{DoxyNote}
-\hypertarget{task_creation_autotoc_md43}{}\doxysubsubsubsection{\texorpdfstring{Header File Template:\+}{Header File Template:\+}}\label{task_creation_autotoc_md43}
+\hypertarget{task_creation_autotoc_md59}{}\doxysubsubsubsection{\texorpdfstring{Header File Template:\+}{Header File Template:\+}}\label{task_creation_autotoc_md59}

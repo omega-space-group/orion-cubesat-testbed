@@ -118,7 +118,74 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('flash_and_debu
   <div class="headertitle"><div class="title">Flash and Debug the STM32H7 Dual Core MCU </div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>Your manual content goes here... </p>
+<div class="textblock"><h2 class="doxsection"><a class="anchor" id="autotoc_md27"></a>
+Debug Configurations - Initial FLashing</h2>
+<h3 class="doxsection"><a class="anchor" id="autotoc_md28"></a>
+Instructions</h3>
+<p>This manual follows the steps as described in the following ST forum: <a href="https://community.st.com/stm32-mcus-60/how-to-create-and-run-an-stm32h7-dual-core-basic-example-160437">https://community.st.com/stm32-mcus-60/how-to-create-and-run-an-stm32h7-dual-core-basic-example-160437</a></p>
+<h3 class="doxsection"><a class="anchor" id="autotoc_md29"></a>
+How Flashing Works</h3>
+<p>Flashing a dual-core STM32H7 requires two distinct binaries (one for the Cortex-M7 and one for the Cortex-M4).</p>
+<ul>
+<li>The Master Project: In the IDE, the CM4 project is added to the startup setup of the CM7 project.</li>
+<li>The Single-Click Flash: When you flash or hit run on the CM7 project, the compiler automatically handles everything—it flashes the CM7 binary first, followed immediately by the CM4 binary into their respective memory regions.</li>
+<li>Debugging Setup: Each core runs an independent GDB debugger server instance utilizing separated port numbers (differing by at least 4, e.g., port 61234 and 61238).</li>
+</ul>
+<h3 class="doxsection"><a class="anchor" id="autotoc_md30"></a>
+Sequence of Events (Boot &amp; Run)</h3>
+<ul>
+<li>System Power-On / Reset: The primary core (Cortex-M7) boots up first. It is entirely responsible for setting up fundamental system resources, the system clock configuration, and initializing peripheral components.</li>
+<li>Secondary Core Wakeup: While the M7 initializes the board, the Cortex-M4 core is kept on hold in reset or a low-power hardware stop mode. Once the M7 finishes basic system setup, it safely releases the M4 core via software control.</li>
+<li>Cross-Trigger Synchronization (CTI): Both debuggers use the Cross-Trigger Interface (CTI). If an error occurs or you hit a breakpoint, one core can instantly signal and halt the other core to prevent synchronization mismatches.</li>
+<li>Execution Parallelism: Once fully synchronized, the M7 and M4 process their logic simultaneously in parallel (demonstrated by toggling their respective hardware pins within roughly ~12 to 20 microseconds of one another).</li>
+</ul>
+<p>For more information checkout ST's application notes:</p><ul>
+<li><a href="https://www.st.com/resource/en/application_note/dm00629855-getting-started-with-projects-based-on-dualcore-stm32h7-microcontrollers-in-stm32cubeide-stmicroelectronics.pdf">https://www.st.com/resource/en/application_note/dm00629855-getting-started-with-projects-based-on-dualcore-stm32h7-microcontrollers-in-stm32cubeide-stmicroelectronics.pdf</a></li>
+<li><a href="https://www.st.com/content/ccc/resource/technical/document/application_note/group1/96/bf/35/36/e6/97/42/2e/DM00597308/files/DM00597308.pdf/jcr:content/translations/en.DM00597308.pdf">https://www.st.com/content/ccc/resource/technical/document/application_note/group1/96/bf/35/36/e6/97/42/2e/DM00597308/files/DM00597308.pdf/jcr:content/translations/en.DM00597308.pdf</a></li>
+</ul>
+<h3 class="doxsection"><a class="anchor" id="autotoc_md31"></a>
+How "Debug Configurations" should look:</h3>
+<div class="image">
+<img src="M4_debug.png" alt="" width="1000px"/>
+<div class="caption">
+Cortex-M4 Debug Tab</div></div>
+<hr  />
+<div class="image">
+<img src="M4_startup.png" alt="" width="1000px"/>
+<div class="caption">
+Cortex-M4 Startup Tab</div></div>
+<hr  />
+<div class="image">
+<img src="M7_debug.png" alt="" width="1000px"/>
+<div class="caption">
+Cortex-M7 Debug Tab</div></div>
+<hr  />
+<div class="image">
+<img src="M7_startup.png" alt="" width="1000px"/>
+<div class="caption">
+Cortex-M7 Startup Tab</div></div>
+<hr  />
+<dl class="section note"><dt>Note</dt><dd>Make sure <a class="el" href="main_8c.html" title="Main Function Implementation.">main.c</a> includes the following auto-generated boot code for both cores: <div class="image">
+<img src="M4_main.png" alt="" width="1000px"/>
+<div class="caption">
+Cortex-M4 Boot Code</div></div>
+ <div class="image">
+<img src="M7_main.png" alt="" width="1000px"/>
+<div class="caption">
+Cortex-M7 Boot Code</div></div>
+</dd></dl>
+<hr  />
+<h2 class="doxsection"><a class="anchor" id="autotoc_md37"></a>
+Auto-generated Code and Re-flashing</h2>
+<dl class="section warning"><dt>Warning</dt><dd><b>Important Warning:</b> Modifying the <span class="tt">.ioc</span> file generates fresh code but safely preserves anything inside the <span class="tt">USER CODE BEGIN / END</span> sections. However, the <span class="tt">MX_IWDG1_Init()</span> function call is generated <em>outside</em> of these user blocks.</dd></dl>
+<h3 class="doxsection"><a class="anchor" id="autotoc_md38"></a>
+Watchdog Configuration Warning</h3>
+<ul>
+<li>The MCU's internal watchdog (<b>IWDG1</b>) is enabled in the <span class="tt">.ioc</span> configuration for testing. Because the software is still in development and system timings are not finalized, the watchdog needs to remain disabled during standard testing to prevent unwanted resets.</li>
+<li><b>The Current Workaround:</b> The <span class="tt">MX_IWDG1_Init()</span> function call is manually commented out in <span class="tt"><a class="el" href="main_8c.html" title="Main Function Implementation.">main.c</a></span>.</li>
+<li><b>The Risk:</b> Every single time you generate code from CubeMX after making a change to the <span class="tt">.ioc</span> file, it will automatically <b>uncomment</b> <span class="tt">MX_IWDG1_Init()</span> and re-enable the watchdog.</li>
+<li><b>Required Action:</b> Whenever you update or change the <span class="tt">.ioc</span> configuration, you <b>must</b> go back into <span class="tt"><a class="el" href="main_8c.html" title="Main Function Implementation.">main.c</a></span> and manually comment out <span class="tt">MX_IWDG1_Init()</span> again for the software to run correctly. </li>
+</ul>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
