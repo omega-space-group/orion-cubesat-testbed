@@ -27,6 +27,7 @@ static QueueHandle_t xTaskQueue;
 /* Task sync bit (if used) and task priority defined in app_config.h */
 static void Housekeeping_Handler(void *argument){
 	Subscribe("Housekeeping_Handler",(QueueHandle_t)argument);
+	TaskSync_SetAndWait(HK_BIT);
 	Message_t newMsg;
 	TickType_t xLastWakeTime;
 	const TickType_t xPeriod = pdMS_TO_TICKS(5000);

@@ -36,7 +36,7 @@ const char *subsystems[] = {
         "ADCS",
     };
 
-void Subsystem_HB_Parser(CAN_RxPacket packet);
+void Subsystem_Msg_Parser(CAN_RxPacket packet);
 int Subsystem_HB_Print(uint8_t data, const char *subsystem);
 
 Message_t newMsg;

@@ -35,13 +35,13 @@ static void Telecommand_Handler(void *argument){
 		//STEP 2: Decode Package
 		//STEP 3: Decode PUS
 		//STEP 4: Handle TC
-		switch(newMsg.Data.canPacket.Header.Identifier){
-		case 0x100:
+		switch(newMsg.Data.mode){
+		case SAFE:
 			newMsg.Topic = CHANGE_SYSTEM_STATE;
 			newMsg.Data.mode = SAFE;
 			Publish(newMsg);
 			break;
-		case 0x101:
+		case NOMINAL:
 			newMsg.Topic = CHANGE_SYSTEM_STATE;
 			newMsg.Data.mode = NOMINAL;
 			Publish(newMsg);

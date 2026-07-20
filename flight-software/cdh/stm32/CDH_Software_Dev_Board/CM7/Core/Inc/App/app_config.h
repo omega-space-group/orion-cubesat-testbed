@@ -43,7 +43,7 @@
 /**
  * @brief Normal task stack size
  */
-#define NORMAL_TASK_STACK_SIZE 256*10
+#define NORMAL_TASK_STACK_SIZE 256*15
 
 /**
  * @brief Large task stack size
@@ -74,11 +74,12 @@
 #define MODE_PR        32 /**< &nbsp; */
 #define CANRX_PR       31 /**< &nbsp; */
 #define DUMMY_PR       29 /**< &nbsp; */
-#define HM_PR          27 /**< &nbsp; */
 #define SUBM_PR        26 /**< &nbsp; */
 #define SUBC_PR        25 /**< &nbsp; */
 #define TC_PR          24 /**< &nbsp; */
-#define HK_PR          23 /**< &nbsp; */
+#define HK_PR          27 /**< &nbsp; */
+
+#define HM_PR          23 /**< &nbsp; */
 /** @} */
 
 /**
@@ -118,12 +119,12 @@
 /**
  * @brief Maximum number of subscribers (i.e. tasks that have subscribed to at least one topic) allowed.
  */
-#define MAX_SUBS 10
+#define MAX_SUBS 20
 
 /**
  * @brief Maximum number of subscribers per topic allowed.
  */
-#define MAX_SUBSCRIBERS_PER_TOPIC 10
+#define MAX_SUBSCRIBERS_PER_TOPIC 15
 
 /**
  * @brief All available system states. More info in modeManager.c
