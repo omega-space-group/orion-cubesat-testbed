@@ -1,0 +1,50 @@
+\doxysection{health\+Monitor\+\_\+task.\+c}
+\hypertarget{health_monitor__task_8c_source}{}\label{health_monitor__task_8c_source}\index{CM7/Core/Src/App/Tasks/healthMonitor\_task.c@{CM7/Core/Src/App/Tasks/healthMonitor\_task.c}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{health_monitor__task_8c_source_l00001}00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{health_monitor__task_8c_source_l00002}00002\ \textcolor{comment}{\ *\ healthMonitor\_task.c}}
+\DoxyCodeLine{\Hypertarget{health_monitor__task_8c_source_l00003}00003\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{\Hypertarget{health_monitor__task_8c_source_l00004}00004\ \textcolor{comment}{\ *\ \ Created\ on:\ May\ 18,\ 2026}}
+\DoxyCodeLine{\Hypertarget{health_monitor__task_8c_source_l00005}00005\ \textcolor{comment}{\ *\ \ \ \ \ \ Author:\ adaro}}
+\DoxyCodeLine{\Hypertarget{health_monitor__task_8c_source_l00006}00006\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{health_monitor__task_8c_source_l00007}00007\ }
+\DoxyCodeLine{\Hypertarget{health_monitor__task_8c_source_l00008}00008\ \textcolor{preprocessor}{\#include\ "{}FreeRTOS.h"{}}}
+\DoxyCodeLine{\Hypertarget{health_monitor__task_8c_source_l00009}00009\ \textcolor{preprocessor}{\#include\ "{}task.h"{}}}
+\DoxyCodeLine{\Hypertarget{health_monitor__task_8c_source_l00010}00010\ }
+\DoxyCodeLine{\Hypertarget{health_monitor__task_8c_source_l00011}00011\ \textcolor{preprocessor}{\#include\ <App/app\_config.h>}}
+\DoxyCodeLine{\Hypertarget{health_monitor__task_8c_source_l00012}00012\ \textcolor{preprocessor}{\#include\ <App/Services/app\_events.h>}}
+\DoxyCodeLine{\Hypertarget{health_monitor__task_8c_source_l00013}00013\ \textcolor{preprocessor}{\#include\ <App/Tasks/healthMonitor\_task.h>}}
+\DoxyCodeLine{\Hypertarget{health_monitor__task_8c_source_l00014}00014\ }
+\DoxyCodeLine{\Hypertarget{health_monitor__task_8c_source_l00015}00015\ \textcolor{keyword}{static}\ StackType\_t\ xTaskStack[NORMAL\_TASK\_STACK\_SIZE];}
+\DoxyCodeLine{\Hypertarget{health_monitor__task_8c_source_l00016}00016\ \textcolor{keyword}{static}\ StaticTask\_t\ xTaskBuffer;}
+\DoxyCodeLine{\Hypertarget{health_monitor__task_8c_source_l00017}00017\ }
+\DoxyCodeLine{\Hypertarget{health_monitor__task_8c_source_l00018}00018\ \textcolor{keyword}{static}\ StaticQueue\_t\ xTaskQueueData;}
+\DoxyCodeLine{\Hypertarget{health_monitor__task_8c_source_l00019}00019\ \textcolor{keyword}{static}\ uint8\_t\ ucTaskQueueStorageArea[LOCAL\_QUEUE\_LENGTH\ *\ MSG\_SIZE];}
+\DoxyCodeLine{\Hypertarget{health_monitor__task_8c_source_l00020}00020\ \textcolor{keyword}{static}\ QueueHandle\_t\ xTaskQueue;}
+\DoxyCodeLine{\Hypertarget{health_monitor__task_8c_source_l00021}00021\ }
+\DoxyCodeLine{\Hypertarget{health_monitor__task_8c_source_l00022}00022\ \textcolor{keywordtype}{int}\ cntHealth,problem\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{health_monitor__task_8c_source_l00023}00023\ \textcolor{comment}{/*\ Task\ sync\ bit\ (if\ used)\ and\ task\ priority\ defined\ in\ app\_config.h\ */}}
+\DoxyCodeLine{\Hypertarget{health_monitor__task_8c_source_l00024}00024\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ HealthMonitor\_Handler(\textcolor{keywordtype}{void}\ *argument)\{}
+\DoxyCodeLine{\Hypertarget{health_monitor__task_8c_source_l00025}00025\ \ \ \ \ TaskSync\_SetAndWait(HM\_BIT);}
+\DoxyCodeLine{\Hypertarget{health_monitor__task_8c_source_l00026}00026\ \ \ \ \ \textcolor{comment}{/*\ Infinite\ loop\ */}}
+\DoxyCodeLine{\Hypertarget{health_monitor__task_8c_source_l00027}00027\ \ \ \ \ \textcolor{keywordflow}{while}(1)\{}
+\DoxyCodeLine{\Hypertarget{health_monitor__task_8c_source_l00028}00028\ \ \ \ \ \ \ \ \ vTaskDelay(5000);}
+\DoxyCodeLine{\Hypertarget{health_monitor__task_8c_source_l00029}00029\ \ \ \ \ \ \ \ \ TaskHealth\_SetBit(HM\_BIT);}
+\DoxyCodeLine{\Hypertarget{health_monitor__task_8c_source_l00030}00030\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(TaskHealth\_Read()\ ==\ ALL\_TASKS\_OK)\{}
+\DoxyCodeLine{\Hypertarget{health_monitor__task_8c_source_l00031}00031\ \ \ \ \ \ \ \ \ \ \ \ \ cntHealth++;}
+\DoxyCodeLine{\Hypertarget{health_monitor__task_8c_source_l00032}00032\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{health_monitor__task_8c_source_l00033}00033\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\{}
+\DoxyCodeLine{\Hypertarget{health_monitor__task_8c_source_l00034}00034\ \ \ \ \ \ \ \ \ \ \ \ \ problem++;}
+\DoxyCodeLine{\Hypertarget{health_monitor__task_8c_source_l00035}00035\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{health_monitor__task_8c_source_l00036}00036\ \ \ \ \ \ \ \ \ TaskHealth\_ClearAll();}
+\DoxyCodeLine{\Hypertarget{health_monitor__task_8c_source_l00037}00037\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{health_monitor__task_8c_source_l00038}00038\ \}}
+\DoxyCodeLine{\Hypertarget{health_monitor__task_8c_source_l00039}00039\ }
+\DoxyCodeLine{\Hypertarget{health_monitor__task_8c_source_l00040}00040\ \textcolor{keywordtype}{void}\ HealthMonitor\_Init(\textcolor{keywordtype}{void})\ \{}
+\DoxyCodeLine{\Hypertarget{health_monitor__task_8c_source_l00041}00041\ \ \ \ \ xTaskQueue\ =\ xQueueCreateStatic(LOCAL\_QUEUE\_LENGTH,\ MSG\_SIZE,\ ucTaskQueueStorageArea,\ \&xTaskQueueData);}
+\DoxyCodeLine{\Hypertarget{health_monitor__task_8c_source_l00042}00042\ \ \ \ \ xTaskCreateStatic(HealthMonitor\_Handler,\textcolor{stringliteral}{"{}HealthMonitor\_Handler"{}},NORMAL\_TASK\_STACK\_SIZE}
+\DoxyCodeLine{\Hypertarget{health_monitor__task_8c_source_l00043}00043\ \ \ \ \ \ \ \ \ \ \ \ \ ,(\textcolor{keywordtype}{void}*)xTaskQueue,HM\_PR,xTaskStack,\&xTaskBuffer);}
+\DoxyCodeLine{\Hypertarget{health_monitor__task_8c_source_l00044}00044\ \}}
+
+\end{DoxyCode}

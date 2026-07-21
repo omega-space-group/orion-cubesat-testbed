@@ -1,20 +1,8 @@
 /* USER CODE BEGIN Header */
 /**
-  ******************************************************************************
-  * File Name          : freertos.c
-  * Description        : Code for freertos applications
-  ******************************************************************************
-  * @attention
-  *
-  * Copyright (c) 2026 STMicroelectronics.
-  * All rights reserved.
-  *
-  * This software is licensed under terms that can be found in the LICENSE file
-  * in the root directory of this software component.
-  * If no LICENSE file comes with this software, it is provided AS-IS.
-  *
-  ******************************************************************************
-  */
+ * @file freertos.c
+ * @brief RTOS Initialization and Default Task Creation
+ */
 /* USER CODE END Header */
 
 /* Includes ------------------------------------------------------------------*/
@@ -83,10 +71,8 @@ return ulHighFrequencyTimerTicks;
 /* USER CODE END 1 */
 
 /**
-  * @brief  FreeRTOS initialization
-  * @param  None
-  * @retval None
-  */
+ * @brief This function initializes the auto-generated default thread and the Root Task
+ */
 void MX_FREERTOS_Init(void) {
   /* USER CODE BEGIN Init */
   /* USER CODE END Init */
@@ -121,21 +107,18 @@ void MX_FREERTOS_Init(void) {
 
 }
 
-/* USER CODE BEGIN Header_StartDefaultTask */
 /**
-  * @brief  Function implementing the defaultTask thread.
-  * @param  argument: Not used
-  * @retval None
-  */
+ * @brief Default Task not used. Blocks indefinitely.
+ */
+/* USER CODE BEGIN Header_StartDefaultTask */
 /* USER CODE END Header_StartDefaultTask */
 void StartDefaultTask(void *argument)
 {
   /* init code for USB_DEVICE */
-  MX_USB_DEVICE_Init();
   /* USER CODE BEGIN StartDefaultTask */
   /* Infinite loop */
 	while(1){
-		osDelay(300);
+		osDelay(portMAX_DELAY);
   }
   /* USER CODE END StartDefaultTask */
 }

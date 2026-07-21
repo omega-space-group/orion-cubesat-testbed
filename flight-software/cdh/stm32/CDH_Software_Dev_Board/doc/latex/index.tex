@@ -1,0 +1,26 @@
+\chapter{OBC Software v0 }
+\hypertarget{index}{}\label{index}\index{OBC Software v0@{OBC Software v0}}
+\hypertarget{index_autotoc_md39}{}\doxysubsubsection{\texorpdfstring{Flight Software Overview}{Flight Software Overview}}\label{index_autotoc_md39}
+This project aims to develop a lightweight, message-\/based flight software firmware built on Free\+RTOS specifically for the Open-\/\+Source Cube\+Sat Flat\+Sat Testbed. By leveraging a publish-\/subscribe (Pub/\+\+Sub) messaging architecture, the system will ensure decoupled, modular communication between software components (e.\+g., telemetry, power management, and ADCS). Furthermore it aims to comply with the mission requirements of the Orion Cube\+Sat (more info in Cubesat Testbed Project Overview.\+pdf that can be found in the project folder).\hypertarget{index_autotoc_md40}{}\doxysubsubsection{\texorpdfstring{System Requirements}{System Requirements}}\label{index_autotoc_md40}
+
+\begin{DoxyTable}{3}{}{}{1}
+\SetCell{bg=\tableheadbgcolor,font=\bfseries}Category  &\SetCell{bg=\tableheadbgcolor,font=\bfseries}Parameter  &\SetCell{bg=\tableheadbgcolor,font=\bfseries}Specification  \\
+{\bfseries{Toolchain}}  &IDE Version  &STM32\+Cube\+IDE v1.\+13.\+0 (Caution with migration)  \\
+&Compiler \& Settings  &arm-\/none-\/eabi-\/gcc (-\/O0 -\/ffunction-\/sections -\/fdata-\/sections -\/Wall -\/fstack-\/usage -\/fcyclomatic-\/complexity --specs=nano.\+specs -\/mfpu=fpv5-\/d16 -\/mfloat-\/abi=hard -\/mthumb)  \\
+{\bfseries{Operating System}}  &Free\+RTOS Version  &v10.\+3.\+1 (CMSIS-\/\+RTOS V2 wrapper) or later  \\
+{\bfseries{Hardware Target}}  &MCU Model  &STM32\+H755\+ZI (ARM Cortex-\/\+M7 @ {\bfseries{64 MHz}} \& ARM Cortex-\/\+M4 @ {\bfseries{64 MHz}})  \\
+{\bfseries{Clock and Timers}}  &HSI  &64 MHz  \\
+&Systick  &{\bfseries{TIM6}} (Dedicated Peripheral for HAL Timebase -\/ Assigned Highest Priority) \& {\bfseries{Systick}} (Dedicated Exclusively to RTOS -\/ Assigned Lowest Priority)  \\
+{\bfseries{Critical Drivers}}  &STM32\+Cube FW Library  &Patch v1.\+11.\+12 or later  \\
+{\bfseries{Peripherals}}  &Communication Buses  &FDCAN1 (Payload)  \\
+\end{DoxyTable}
+\hypertarget{index_autotoc_md41}{}\doxysubsubsection{\texorpdfstring{Current Setup}{Current Setup}}\label{index_autotoc_md41}
+
+\begin{DoxyTable}{2}{}{}{1}
+\SetCell{bg=\tableheadbgcolor,font=\bfseries}Hardware  &\SetCell{bg=\tableheadbgcolor,font=\bfseries}Part Number  \\
+{\bfseries{STM32 Nucleo Board}}  &nucleo-\/h755zi-\/q  \\
+{\bfseries{FDCAN Transceiver Hat}}  &Waveshare RS485 CAN Shield  \\
+\end{DoxyTable}
+
+
+ \doxylink{manuals}{Manuals}  \input{manuals}

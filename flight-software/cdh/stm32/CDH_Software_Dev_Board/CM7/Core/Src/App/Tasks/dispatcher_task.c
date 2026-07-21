@@ -4,6 +4,11 @@
  *  Created on: May 15, 2026
  *      Author: adaro
  */
+
+/**
+ * @file dispatcher_task.c
+ * @brief Implementation of the dispatcher and master queue logic.
+ */
 #include <App/Tasks/dispatcher_task.h>
 #include "FreeRTOS.h"
 #include "queue.h"
@@ -19,12 +24,17 @@ static StaticQueue_t xMasterQueueData;
 static uint8_t ucMasterQueueStorageArea[MASTER_QUEUE_LENGTH * MSG_SIZE];
 static QueueHandle_t xMasterQueue;
 
-/*
- * 1. Block until someone wakes you up (all events should trigger the dispatcher only)
- * 2. Check reason for waking up
- * 3. If event than set event group's respective event bit (this action will automatically wake up all "subscribed tasks") (not sure yet)
- * 4. If need for data exchange than get data, look through sub table and push on respective queues
- * */
+/**
+ * @brief  Main task loop for the system dispatcher.
+ * @details Task's logic:
+ * 1. Block until all other tasks have finished initialization.
+ * 2. Enter infinite loop and set health bit (since task is not periodic).
+ * 3. Block indefinitely until a new message is pushed in the master queue.
+ * 4. Wake up and clear the health bit and begin execution.
+ * 5. Forward the received message to every subscriber task.
+ * 6. Set health bit to 1 again and finish.
+ * * @param  argument:  Pointer to the Master Queue handle.
+ */
 static void Dispatcher_Task_Handler(void *argument){
 	TaskSync_WaitForAll();
 	Message_t newMsg;
@@ -38,12 +48,21 @@ static void Dispatcher_Task_Handler(void *argument){
 	}
 }
 
+/**
+ * @brief Task's initialization function.
+ * @details First master queue is created. Then the task itself is created and the queue handle is passed as a task parameter.
+ * @note Check app_config.h for stack configurations
+ */
 void Dispatcher_Task_Init(void){
 	xMasterQueue = xQueueCreateStatic(LOCAL_QUEUE_LENGTH, MSG_SIZE, ucMasterQueueStorageArea, &xMasterQueueData);
 	xTaskCreateStatic(Dispatcher_Task_Handler,"Dispatcher_Task_Handler",LARGE_TASK_STACK_SIZE
 			,(void*)xMasterQueue,DISPATCHER_PR,xDispatcherTaskStack,&xDispatcherTaskBuffer);
 }
 
+/**
+ * @brief Global access to master queue
+ * @return Queue handle
+ */
 QueueHandle_t DispatcherTask_GetQueue(void) {
     return xMasterQueue;
 }

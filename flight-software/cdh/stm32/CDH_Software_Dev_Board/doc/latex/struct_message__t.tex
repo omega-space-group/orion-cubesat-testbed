@@ -1,0 +1,58 @@
+\doxysection{Message\+\_\+t Struct Reference}
+\hypertarget{struct_message__t}{}\label{struct_message__t}\index{Message\_t@{Message\_t}}
+
+
+Software Bus Message Structure.  
+
+
+
+
+{\ttfamily \+\#include $<$app\+\_\+config.\+h$>$}
+
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\doxymbox{\hyperlink{app__config_8h_a0560169ed6717811a19ca28c11256293}{Topic\+\_\+t}} \doxymbox{\hyperlink{struct_message__t_aabea3bb99f37aea991c46a0bfa604a29}{Topic}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Software Bus Message Structure. 
+
+A union has been used to make the data part of the message more flexible 
+
+\label{struct_message__t_doc-variable-members}
+\Hypertarget{struct_message__t_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{struct_message__t_aed6f4c218e6e5b4026f417fc0202231d}\index{Message\_t@{Message\_t}!canPacket@{canPacket}}
+\index{canPacket@{canPacket}!Message\_t@{Message\_t}}
+\doxysubsubsection{\texorpdfstring{canPacket}{canPacket}}
+{\footnotesize\ttfamily \label{struct_message__t_aed6f4c218e6e5b4026f417fc0202231d} 
+\doxymbox{\hyperlink{struct_c_a_n___rx_packet}{CAN\+\_\+\+Rx\+Packet}} Message\+\_\+t::\+can\+Packet}
+
+FDCAN Packet \Hypertarget{struct_message__t_a94920a8924f4dfd278b36ffe75ef8088}\index{Message\_t@{Message\_t}!mode@{mode}}
+\index{mode@{mode}!Message\_t@{Message\_t}}
+\doxysubsubsection{\texorpdfstring{mode}{mode}}
+{\footnotesize\ttfamily \label{struct_message__t_a94920a8924f4dfd278b36ffe75ef8088} 
+\doxymbox{\hyperlink{app__config_8h_ae2946618e700f814e6147195c808f4c8}{State\+\_\+t}} Message\+\_\+t::\+mode}
+
+Message Topic 
+
+Referenced by \doxymbox{\hyperlink{mode_manager__task_8c_ae5180377d2e4e13d2b0f1344658df6d4}{Mode\+Manager\+\_\+\+Handler()}}.
+
+\Hypertarget{struct_message__t_a244827a35db2a403477de16d34b8e0d3}\index{Message\_t@{Message\_t}!rawData@{rawData}}
+\index{rawData@{rawData}!Message\_t@{Message\_t}}
+\doxysubsubsection{\texorpdfstring{rawData}{rawData}}
+{\footnotesize\ttfamily \label{struct_message__t_a244827a35db2a403477de16d34b8e0d3} 
+uint32\+\_\+t Message\+\_\+t::\+raw\+Data}
+
+32-\/bit Unsigned Raw Data \Hypertarget{struct_message__t_aabea3bb99f37aea991c46a0bfa604a29}\index{Message\_t@{Message\_t}!Topic@{Topic}}
+\index{Topic@{Topic}!Message\_t@{Message\_t}}
+\doxysubsubsection{\texorpdfstring{Topic}{Topic}}
+{\footnotesize\ttfamily \label{struct_message__t_aabea3bb99f37aea991c46a0bfa604a29} 
+\doxymbox{\hyperlink{app__config_8h_a0560169ed6717811a19ca28c11256293}{Topic\+\_\+t}} Message\+\_\+t::\+\+Topic}
+
+Message Topic 
+
+Referenced by \doxymbox{\hyperlink{mode_manager__task_8c_ae5180377d2e4e13d2b0f1344658df6d4}{Mode\+Manager\+\_\+\+Handler()}}.
+

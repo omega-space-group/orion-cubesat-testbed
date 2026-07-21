@@ -4,7 +4,10 @@
  *  Created on: Jun 26, 2026
  *      Author: adaro
  */
-
+/**
+ * @file subsystemControl_task.c
+ * @brief .
+ */
 #include "FreeRTOS.h"
 #include "task.h"
 
@@ -41,7 +44,6 @@ static void SubsystemControl_Handler(void *argument){
 		case 0x203:
 			eps_cnt++;
 			if(eps_cnt > 3){
-				//subsystem hasn't sent a HB in over 15s
 				eps_cnt = 0;
 				printf("SYSTEM COMMAND: ENTER SAFE MODE\r\n");
 				fflush(stdout);
@@ -53,7 +55,6 @@ static void SubsystemControl_Handler(void *argument){
 		case 0x303:
 			adcs_cnt++;
 			if(adcs_cnt > 3){
-				//subsystem hasn't sent a HB in over 15s
 				adcs_cnt = 0;
 				printf("SYSTEM COMMAND: ENTER SAFE MODE\r\n");
 				fflush(stdout);
@@ -65,7 +66,6 @@ static void SubsystemControl_Handler(void *argument){
 		case 0x403:
 			pl_cnt++;
 			if(pl_cnt > 3){
-				//subsystem hasn't sent a HB in over 15s
 				pl_cnt = 0;
 				printf("SYSTEM COMMAND: ENTER SAFE MODE\r\n");
 				fflush(stdout);

@@ -1,21 +1,8 @@
 /* USER CODE BEGIN Header */
 /**
-  ******************************************************************************
-  * @file    fdcan.c
-  * @brief   This file provides code for the configuration
-  *          of the FDCAN instances.
-  ******************************************************************************
-  * @attention
-  *
-  * Copyright (c) 2026 STMicroelectronics.
-  * All rights reserved.
-  *
-  * This software is licensed under terms that can be found in the LICENSE file
-  * in the root directory of this software component.
-  * If no LICENSE file comes with this software, it is provided AS-IS.
-  *
-  ******************************************************************************
-  */
+ * @file fdcan.c
+ * @brief Implementation of the FDCAN peripheral control.
+ */
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "fdcan.h"
@@ -33,6 +20,10 @@ static CAN_RxPacket CAN1_Rx;
 FDCAN_HandleTypeDef hfdcan1;
 
 /* FDCAN1 init function */
+/**
+ * @brief FDCAN Initialization Function
+ * @details All FDCAN settings are initialized here. Parameters can be changed through here or the ioc.
+ */
 void MX_FDCAN1_Init(void)
 {
 
@@ -90,9 +81,6 @@ void HAL_FDCAN_MspInit(FDCAN_HandleTypeDef* fdcanHandle)
   /* USER CODE BEGIN FDCAN1_MspInit 0 */
 
   /* USER CODE END FDCAN1_MspInit 0 */
-
-  /** Initializes the peripherals clock
-  */
     PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_FDCAN;
     PeriphClkInitStruct.FdcanClockSelection = RCC_FDCANCLKSOURCE_PLL;
     if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)
@@ -104,10 +92,6 @@ void HAL_FDCAN_MspInit(FDCAN_HandleTypeDef* fdcanHandle)
     __HAL_RCC_FDCAN_CLK_ENABLE();
 
     __HAL_RCC_GPIOB_CLK_ENABLE();
-    /**FDCAN1 GPIO Configuration
-    PB8     ------> FDCAN1_RX
-    PB9     ------> FDCAN1_TX
-    */
     GPIO_InitStruct.Pin = GPIO_PIN_8|GPIO_PIN_9;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
@@ -134,11 +118,6 @@ void HAL_FDCAN_MspDeInit(FDCAN_HandleTypeDef* fdcanHandle)
   /* USER CODE END FDCAN1_MspDeInit 0 */
     /* Peripheral clock disable */
     __HAL_RCC_FDCAN_CLK_DISABLE();
-
-    /**FDCAN1 GPIO Configuration
-    PB8     ------> FDCAN1_RX
-    PB9     ------> FDCAN1_TX
-    */
     HAL_GPIO_DeInit(GPIOB, GPIO_PIN_8|GPIO_PIN_9);
 
     /* FDCAN1 interrupt Deinit */
@@ -151,6 +130,16 @@ void HAL_FDCAN_MspDeInit(FDCAN_HandleTypeDef* fdcanHandle)
 
 /* USER CODE BEGIN 1 */
 BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+/**
+ * @brief Callback function that handles new FDCAN messages.
+ * @details Any new messages received by the peripheral that also pass any hardware filtering
+ * will trigger a hardware interrupt. This will wake up the IRQ Handler which in turn calls the callback function to handle the message.
+ * This includes:
+ * 1. Popping the msg from the FDCAN Rx FIFO
+ * 2. Pushing the new msg to CAN_Rx_Task's (can_rx_task.c) queue for parsing.
+ * @param hfdcan Peripheral's handle
+ * @param RxFifo0ITs  Rx FIFO to be used for pushing/popping new messages. Configured in MX_FDCAN1_Init().
+ */
 void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs){
 	if((RxFifo0ITs & FDCAN_IT_RX_FIFO0_NEW_MESSAGE) != RESET)
 	  {
@@ -166,6 +155,14 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
 	  }
 }
 
+/**
+ * @brief Function called to send a message on the FDCAN bus
+ * @details
+ * This includes the following:
+ * 1. Tx FIFO fill level check.
+ * 2. Push new msg to Tx FIFO, if space available. Else abort latest request to make space.
+ * @param CAN1_Tx  A custom data structure with the standard FDCAN frame.
+ */
 void FDCAN_Tx(CAN_TxPacket CAN1_Tx){
 	if (HAL_FDCAN_GetTxFifoFreeLevel(&hfdcan1) > 0)
 	{
@@ -180,6 +177,12 @@ void FDCAN_Tx(CAN_TxPacket CAN1_Tx){
 	}
 }
 
+/**
+ * @brief Function called to start the FDCAN peripheral
+ * @details This includes:
+ * 1. Starting the peripheral.
+ * 2. Activating notifications on the Rx FIFO so that the MCU is informed whenever there is a new message.
+ */
 void FDCAN_Start(){
 	/* FDCAN 1 */
 	  if(HAL_FDCAN_Start(&hfdcan1)!= HAL_OK){

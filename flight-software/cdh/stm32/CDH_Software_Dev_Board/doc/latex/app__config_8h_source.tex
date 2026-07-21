@@ -1,0 +1,106 @@
+\doxysection{app\+\_\+config.\+h}
+\hypertarget{app__config_8h_source}{}\label{app__config_8h_source}\index{CM7/Core/Inc/App/app\_config.h@{CM7/Core/Inc/App/app\_config.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ *\ app\_config.h}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ *\ \ Created\ on:\ May\ 14,\ 2026}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ *\ \ \ \ \ \ Author:\ adaro}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#ifndef\ INC\_APP\_APP\_CONFIG\_H\_}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#define\ INC\_APP\_APP\_CONFIG\_H\_}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ "{}FreeRTOS.h"{}}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}queue.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{fdcan_8h}{fdcan.h}}"{}}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#define\ NORMAL\_TASK\_STACK\_SIZE\ 256*10}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#define\ LARGE\_TASK\_STACK\_SIZE\ \ 256*10}}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#define\ MASTER\_QUEUE\_LENGTH\ \ \ \ 10}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#define\ LOCAL\_QUEUE\_LENGTH\ \ \ \ \ 5}}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#define\ ROOT\_PR\ \ \ \ \ \ \ 35}}
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\#define\ DISPATCHER\_PR\ 33}}
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\#define\ MODE\_PR\ \ \ \ \ \ \ 32}}
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\#define\ CANRX\_PR\ \ \ \ \ \ 31}}
+\DoxyCodeLine{00025\ \textcolor{preprocessor}{\#define\ DUMMY\_PR\ \ \ \ \ \ 29}}
+\DoxyCodeLine{00026\ \textcolor{preprocessor}{\#define\ HM\_PR\ \ \ \ \ \ \ \ \ 27}}
+\DoxyCodeLine{00027\ \textcolor{preprocessor}{\#define\ SUBM\_PR\ \ \ \ \ \ \ 26}}
+\DoxyCodeLine{00028\ \textcolor{preprocessor}{\#define\ SUBC\_PR\ \ \ \ \ \ \ 25}}
+\DoxyCodeLine{00029\ \textcolor{preprocessor}{\#define\ TC\_PR\ \ \ \ \ \ \ \ \ 24}}
+\DoxyCodeLine{00030\ \textcolor{preprocessor}{\#define\ HK\_PR\ \ \ \ \ \ \ \ \ 23}}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \textcolor{comment}{//Keep\ in\ mind\ PR\ =\ 24\ is\ being\ used\ by\ the\ auto-\/generated\ default\ task\ in\ freertos.c}}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \textcolor{preprocessor}{\#define\ DISPATCHER\_BIT\ (0\ <<\ 0)}}
+\DoxyCodeLine{00036\ \textcolor{preprocessor}{\#define\ DUMMY\_BIT\ \ \ \ \ \ (1\ <<\ 1)}}
+\DoxyCodeLine{00037\ \textcolor{preprocessor}{\#define\ MODE\_BIT\ \ \ \ \ \ \ (1\ <<\ 2)}}
+\DoxyCodeLine{00038\ \textcolor{preprocessor}{\#define\ HM\_BIT\ \ \ \ \ \ \ \ \ (1\ <<\ 3)}}
+\DoxyCodeLine{00039\ \textcolor{preprocessor}{\#define\ SUBM\_BIT\ \ \ \ \ \ \ (1\ <<\ 4)}}
+\DoxyCodeLine{00040\ \textcolor{preprocessor}{\#define\ SUBC\_BIT\ \ \ \ \ \ \ (1\ <<\ 5)}}
+\DoxyCodeLine{00041\ \textcolor{preprocessor}{\#define\ TC\_BIT\ \ \ \ \ \ \ \ \ (1\ <<\ 6)}}
+\DoxyCodeLine{00042\ \textcolor{preprocessor}{\#define\ HK\_BIT\ \ \ \ \ \ \ \ \ (1\ <<\ 7)}}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \textcolor{comment}{//move\ to\ app\_events\ (?)}}
+\DoxyCodeLine{00045\ \textcolor{preprocessor}{\#define\ PERIODIC\_TASKS\ (DUMMY\_BIT\ |\ MODE\_BIT\ |\ HM\_BIT\ |\ SUBM\_BIT\ |\ HK\_BIT)}}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00047\ \textcolor{preprocessor}{\#define\ ALL\_TASKS\_READY\ (DUMMY\_BIT\ |\ MODE\_BIT\ |\ HM\_BIT\ |\ SUBM\_BIT\ |\ SUBC\_BIT\ |\ TC\_BIT\ |\ HK\_BIT)}}
+\DoxyCodeLine{00048\ \textcolor{preprocessor}{\#define\ ALL\_TASKS\_OK\ (DISPATCHER\_BIT\ |\ DUMMY\_BIT\ |\ MODE\_BIT\ |\ HM\_BIT\ |\ SUBM\_BIT\ |\ SUBC\_BIT\ |\ TC\_BIT\ |\ HK\_BIT)}}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00050\ \textcolor{preprocessor}{\#define\ MAX\_SUBS\ 10}}
+\DoxyCodeLine{00051\ \textcolor{preprocessor}{\#define\ MAX\_SUBSCRIBERS\_PER\_TOPIC\ 10}}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{enum}\{}
+\DoxyCodeLine{00054\ \ \ \ \ SAFE\ \ \ \ \ \ =\ 1,}
+\DoxyCodeLine{00055\ \ \ \ \ LOW\_POWER\ =\ 2,}
+\DoxyCodeLine{00056\ \ \ \ \ NOMINAL\ \ \ =\ 3,}
+\DoxyCodeLine{00057\ \ \ \ \ PAYLOAD\ \ \ =\ 4}
+\DoxyCodeLine{00058\ \}State\_t;}
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00060\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{enum}\{}
+\DoxyCodeLine{00061\ \ \ \ \ SYSTEM\_STATE\ \ \ \ \ \ \ \ =\ 1,}
+\DoxyCodeLine{00062\ \ \ \ \ CHANGE\_SYSTEM\_STATE\ =\ 2,}
+\DoxyCodeLine{00063\ \ \ \ \ TELECOMMAND,}
+\DoxyCodeLine{00064\ \ \ \ \ EPS\_MSG,}
+\DoxyCodeLine{00065\ \ \ \ \ EPS\_TM,}
+\DoxyCodeLine{00066\ \ \ \ \ COMMS\_MSG,}
+\DoxyCodeLine{00067\ \ \ \ \ COMMS\_TM,}
+\DoxyCodeLine{00068\ \ \ \ \ ADCS\_MSG,}
+\DoxyCodeLine{00069\ \ \ \ \ ADCS\_TM,}
+\DoxyCodeLine{00070\ \ \ \ \ PL\_MSG,}
+\DoxyCodeLine{00071\ \ \ \ \ PL\_TM,}
+\DoxyCodeLine{00072\ \}Topic\_t;}
+\DoxyCodeLine{00073\ }
+\DoxyCodeLine{00074\ \textcolor{comment}{/*\ Subscription\ Table\ Definition\ */}}
+\DoxyCodeLine{00075\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\{}
+\DoxyCodeLine{00076\ \ \ \ \ Topic\_t\ Topic;}
+\DoxyCodeLine{00077\ \ \ \ \ uint8\_t\ SubscriberCount;}
+\DoxyCodeLine{00078\ \ \ \ \ QueueHandle\_t\ SubscriberQueues[MAX\_SUBSCRIBERS\_PER\_TOPIC];}
+\DoxyCodeLine{00079\ \}\ Subscription\_t;}
+\DoxyCodeLine{00080\ }
+\DoxyCodeLine{00081\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct}\{}
+\DoxyCodeLine{00082\ \ \ \ \ Topic\_t\ Topic;}
+\DoxyCodeLine{00083\ \ \ \ \ \textcolor{keyword}{union}\{}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ State\_t\ mode;}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ uint32\_t\ rawData;}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ CAN\_RxPacket\ canPacket;}
+\DoxyCodeLine{00087\ \ \ \ \ \}Data;}
+\DoxyCodeLine{00088\ \}\ Message\_t;}
+\DoxyCodeLine{00089\ }
+\DoxyCodeLine{00090\ \textcolor{preprocessor}{\#define\ MSG\_SIZE\ sizeof(Message\_t)}}
+\DoxyCodeLine{00091\ }
+\DoxyCodeLine{00092\ \textcolor{comment}{/*\ Tasks\ -\/\ Topics\ Lookup\ Table\ */}}
+\DoxyCodeLine{00093\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct}\{}
+\DoxyCodeLine{00094\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ name;}
+\DoxyCodeLine{00095\ \ \ \ \ uint8\_t\ length;}
+\DoxyCodeLine{00096\ \ \ \ \ Topic\_t*\ topics;}
+\DoxyCodeLine{00097\ \}\ SubEntries\_t;}
+\DoxyCodeLine{00098\ }
+\DoxyCodeLine{00099\ }
+\DoxyCodeLine{00100\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{/*\ INC\_APP\_APP\_CONFIG\_H\_\ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

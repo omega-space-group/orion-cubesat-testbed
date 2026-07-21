@@ -1,0 +1,31 @@
+\doxysection{subscriptions.\+h}
+\hypertarget{subscriptions_8h_source}{}\label{subscriptions_8h_source}\index{CM7/Core/Inc/App/Services/subscriptions.h@{CM7/Core/Inc/App/Services/subscriptions.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ *\ subscriptions.h}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ *\ \ Created\ on:\ May\ 15,\ 2026}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ *\ \ \ \ \ \ Author:\ adaro}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#ifndef\ INC\_APP\_SERVICES\_SUBSCRIPTIONS\_H\_}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#define\ INC\_APP\_SERVICES\_SUBSCRIPTIONS\_H\_}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ "{}FreeRTOS.h"{}}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}queue.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ <App/app\_config.h>}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{enum}\{}
+\DoxyCodeLine{00016\ \ \ \ \ NEW\_MSG,}
+\DoxyCodeLine{00017\ \ \ \ \ TIMEOUT}
+\DoxyCodeLine{00018\ \}WakeupReason\_t;}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \textcolor{keywordtype}{void}\ Subscribe(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ name,QueueHandle\_t\ queue);}
+\DoxyCodeLine{00021\ \textcolor{keywordtype}{void}\ Publish(Message\_t\ newMsg);}
+\DoxyCodeLine{00022\ WakeupReason\_t\ SleepUntil(QueueHandle\_t\ queue,\ Message\_t\ *newMsgRsc,\ TickType\_t\ xTicksToWait);}
+\DoxyCodeLine{00023\ \textcolor{keywordtype}{void}\ DispatcherSend(Message\_t\ newMsg);}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{/*\ INC\_APP\_SERVICES\_SUBSCRIPTIONS\_H\_\ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

@@ -1,0 +1,15 @@
+\chapter{FDIR Architecture \& Manual }
+\hypertarget{fdir_manual}{}\label{fdir_manual}\index{FDIR Architecture \& Manual@{FDIR Architecture \& Manual}}
+\hypertarget{fdir_manual_autotoc_md2}{}\doxysection{\texorpdfstring{High-\/\+Level FDIR Code Flow}{High-\/\+Level FDIR Code Flow}}\label{fdir_manual_autotoc_md2}
+The On-\/\+Board Computer safeguards flight stability using a multi-\/tiered monitoring strategy:\+
+
+
+\begin{DoxyEnumerate}
+\item {\bfseries{Local Health Matrix Auditing:\+}} The \doxylink{health_monitor__task_8c_afdddd09b1c8d74d470776489ec452cc7}{Health\+Monitor\+\_\+\+Handler} runs every 5 seconds to inspect the status bits of all running threads.
+\item {\bfseries{Watchdog Mitigation:\+}} If the state matrix is valid ({\ttfamily ALL\+\_\+\+TASKS\+\_\+\+OK}), the system allows the independent watchdog task to invoke IWDG\+\_\+\+Kick.
+\item {\bfseries{Recovery State:\+}} If a thread locks up, the matrix check fails, missing the kick window, which triggers a safe hardware processor reset.
+\end{DoxyEnumerate}\hypertarget{fdir_manual_autotoc_md3}{}\doxysection{\texorpdfstring{Related Modules}{Related Modules}}\label{fdir_manual_autotoc_md3}
+
+\begin{DoxyItemize}
+\item For specific reporting hooks, see the complete API asset listing in the \doxylink{group__fdir__module}{Fault Detection, Isolation, and Recovery (FDIR)}. 
+\end{DoxyItemize}

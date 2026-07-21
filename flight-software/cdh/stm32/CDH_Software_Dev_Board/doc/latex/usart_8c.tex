@@ -1,0 +1,54 @@
+\doxysection{CM7/\+\+Core/\+\+Src/\+usart.c File Reference}
+\hypertarget{usart_8c}{}\label{usart_8c}\index{CM7/Core/Src/usart.c@{CM7/Core/Src/usart.c}}
+
+
+This file provides code for the configuration of the USART instances.  
+
+
+{\ttfamily \+\#include "{}usart.\+h"{}}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{usart_8c_a3d04b903a77089f6ce08dd0bf1c81a81}\label{usart_8c_a3d04b903a77089f6ce08dd0bf1c81a81} 
+void {\bfseries MX\+\_\+\+USART3\+\_\+\+UART\+\_\+\+Init} (void)
+\item 
+void \doxymbox{\hyperlink{usart_8c_a62a25476866998c7aadfb5c0864fa349}{HAL\+\_\+\+UART\+\_\+\+Msp\+Init}} (UART\+\_\+\+Handle\+Type\+Def \texorpdfstring{$\ast$}{*}uart\+Handle)
+\item 
+void \doxymbox{\hyperlink{usart_8c_a94cd2c58add4f2549895a03bf267622e}{HAL\+\_\+\+UART\+\_\+\+Msp\+De\+Init}} (UART\+\_\+\+Handle\+Type\+Def \texorpdfstring{$\ast$}{*}uart\+Handle)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{usart_8c_ab7c63c1b0f65db92b6a4ea19edf957e1}\label{usart_8c_ab7c63c1b0f65db92b6a4ea19edf957e1} 
+UART\+\_\+\+Handle\+Type\+Def {\bfseries huart3}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This file provides code for the configuration of the USART instances. 
+
+\begin{DoxyAttention}{Attention}
+
+\end{DoxyAttention}
+Copyright (c) 2026 STMicroelectronics. All rights reserved.
+
+This software is licensed under terms that can be found in the LICENSE file in the root directory of this software component. If no LICENSE file comes with this software, it is provided AS-\/\+IS. 
+
+\label{usart_8c_doc-func-members}
+\Hypertarget{usart_8c_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{usart_8c_a94cd2c58add4f2549895a03bf267622e}\index{usart.c@{usart.c}!HAL\_UART\_MspDeInit@{HAL\_UART\_MspDeInit}}
+\index{HAL\_UART\_MspDeInit@{HAL\_UART\_MspDeInit}!usart.c@{usart.c}}
+\doxysubsubsection{\texorpdfstring{HAL\_UART\_MspDeInit()}{HAL\_UART\_MspDeInit()}}
+{\footnotesize\ttfamily \label{usart_8c_a94cd2c58add4f2549895a03bf267622e} 
+void HAL\+\_\+\+UART\+\_\+\+Msp\+De\+Init (\begin{DoxyParamCaption}\item[{UART\+\_\+\+Handle\+Type\+Def \texorpdfstring{$\ast$}{*}}]{uart\+Handle}{}\end{DoxyParamCaption})}
+
+USART3 GPIO Configuration PD8 -\/-\/-\/-\/-\/-\/\texorpdfstring{$>$}{>} USART3\+\_\+\+TX PD9 -\/-\/-\/-\/-\/-\/\texorpdfstring{$>$}{>} USART3\+\_\+\+RX\Hypertarget{usart_8c_a62a25476866998c7aadfb5c0864fa349}\index{usart.c@{usart.c}!HAL\_UART\_MspInit@{HAL\_UART\_MspInit}}
+\index{HAL\_UART\_MspInit@{HAL\_UART\_MspInit}!usart.c@{usart.c}}
+\doxysubsubsection{\texorpdfstring{HAL\_UART\_MspInit()}{HAL\_UART\_MspInit()}}
+{\footnotesize\ttfamily \label{usart_8c_a62a25476866998c7aadfb5c0864fa349} 
+void HAL\+\_\+\+UART\+\_\+\+Msp\+Init (\begin{DoxyParamCaption}\item[{UART\+\_\+\+Handle\+Type\+Def \texorpdfstring{$\ast$}{*}}]{uart\+Handle}{}\end{DoxyParamCaption})}
+
+Initializes the peripherals clock
+
+USART3 GPIO Configuration PD8 -\/-\/-\/-\/-\/-\/\texorpdfstring{$>$}{>} USART3\+\_\+\+TX PD9 -\/-\/-\/-\/-\/-\/\texorpdfstring{$>$}{>} USART3\+\_\+\+RX

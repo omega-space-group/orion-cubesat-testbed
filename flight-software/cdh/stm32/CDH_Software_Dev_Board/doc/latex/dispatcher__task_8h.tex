@@ -1,0 +1,64 @@
+\doxysection{CM7/\+\+Core/\+\+Inc/\+\+App/\+\+Tasks/\+dispatcher\+\_\+task.h File Reference}
+\hypertarget{dispatcher__task_8h}{}\label{dispatcher__task_8h}\index{CM7/Core/Inc/App/Tasks/dispatcher\_task.h@{CM7/Core/Inc/App/Tasks/dispatcher\_task.h}}
+
+
+This file contains all the function prototypes for the \doxylink{dispatcher__task_8c}{dispatcher\+\_\+task.\+c} file.  
+
+
+{\ttfamily \+\#include "{}Free\+RTOS.\+h"{}}\newline
+{\ttfamily \+\#include "{}queue.\+h"{}}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \doxymbox{\hyperlink{dispatcher__task_8h_a1f06ad247a1eebe18b5b98888a598b82}{Dispatcher\+\_\+\+Task\+\_\+\+Init}} (void)
+\begin{DoxyCompactList}\small\item\em Task\textquotesingle{}s initialization function. \end{DoxyCompactList}\item 
+Queue\+Handle\+\_\+t \doxymbox{\hyperlink{dispatcher__task_8h_a3152510efb79418f53cd53cc7dd0ba51}{Dispatcher\+Task\+\_\+\+Get\+Queue}} (void)
+\begin{DoxyCompactList}\small\item\em Global access to master queue. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This file contains all the function prototypes for the \doxylink{dispatcher__task_8c}{dispatcher\+\_\+task.\+c} file. 
+
+Implementation of the dispatcher and master queue logic. 
+
+\label{dispatcher__task_8h_doc-func-members}
+\Hypertarget{dispatcher__task_8h_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{dispatcher__task_8h_a1f06ad247a1eebe18b5b98888a598b82}\index{dispatcher\_task.h@{dispatcher\_task.h}!Dispatcher\_Task\_Init@{Dispatcher\_Task\_Init}}
+\index{Dispatcher\_Task\_Init@{Dispatcher\_Task\_Init}!dispatcher\_task.h@{dispatcher\_task.h}}
+\doxysubsubsection{\texorpdfstring{Dispatcher\_Task\_Init()}{Dispatcher\_Task\_Init()}}
+{\footnotesize\ttfamily \label{dispatcher__task_8h_a1f06ad247a1eebe18b5b98888a598b82} 
+void Dispatcher\+\_\+\+Task\+\_\+\+Init (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Task\textquotesingle{}s initialization function. 
+
+First master queue is created. Then the task itself is created and the queue handle is passed as a task parameter. \begin{DoxyNote}{Note}
+Check \doxylink{app__config_8h}{app\+\_\+config.\+h} for stack configurations 
+\end{DoxyNote}
+
+
+References \doxymbox{\hyperlink{app__config_8h_ad9f540d4c21cc489d88a531e7e6dcf9e}{DISPATCHER\+\_\+\+PR}}, \doxymbox{\hyperlink{dispatcher__task_8c_a471a79b618b429dac39b0ffd0c77049e}{Dispatcher\+\_\+\+Task\+\_\+\+Handler()}}, \doxymbox{\hyperlink{app__config_8h_a225d14042fa83623029d9bf491a4f5f2}{LARGE\+\_\+\+TASK\+\_\+\+STACK\+\_\+\+SIZE}}, \doxymbox{\hyperlink{app__config_8h_a843595a59955f4e62f3d0d2e328e38a2}{LOCAL\+\_\+\+QUEUE\+\_\+\+LENGTH}}, and \doxymbox{\hyperlink{app__config_8h_ad4d025ecf1bdbf8b244ca688df8e478d}{MSG\+\_\+\+SIZE}}.
+
+
+
+Referenced by \doxymbox{\hyperlink{root__task_8c_aca2c7d8f6d456d7fba6e583b40a7c40a}{Root\+\_\+\+Task\+\_\+\+Handler()}}.
+
+\Hypertarget{dispatcher__task_8h_a3152510efb79418f53cd53cc7dd0ba51}\index{dispatcher\_task.h@{dispatcher\_task.h}!DispatcherTask\_GetQueue@{DispatcherTask\_GetQueue}}
+\index{DispatcherTask\_GetQueue@{DispatcherTask\_GetQueue}!dispatcher\_task.h@{dispatcher\_task.h}}
+\doxysubsubsection{\texorpdfstring{DispatcherTask\_GetQueue()}{DispatcherTask\_GetQueue()}}
+{\footnotesize\ttfamily \label{dispatcher__task_8h_a3152510efb79418f53cd53cc7dd0ba51} 
+Queue\+Handle\+\_\+t Dispatcher\+Task\+\_\+\+Get\+Queue (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Global access to master queue. 
+
+\begin{DoxyReturn}{Returns}
+Queue handle 
+\end{DoxyReturn}
+
+
+Referenced by \doxymbox{\hyperlink{subscriptions_8c_ad3332b1450087d0a68dd470140d74a47}{Publish()}}.
+

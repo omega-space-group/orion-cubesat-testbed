@@ -1,0 +1,173 @@
+\doxysection{fdcan.\+c}
+\hypertarget{fdcan_8c_source}{}\label{fdcan_8c_source}\index{CM7/Core/Src/fdcan.c@{CM7/Core/Src/fdcan.c}}
+\doxymbox{\hyperlink{fdcan_8c}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00001}00001\ \textcolor{comment}{/*\ USER\ CODE\ BEGIN\ Header\ */}}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00019}00019\ \textcolor{comment}{/*\ USER\ CODE\ END\ Header\ */}}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00020}00020\ \textcolor{comment}{/*\ Includes\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00021}00021\ \textcolor{preprocessor}{\#include\ "{}fdcan.h"{}}}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00022}00022\ }
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00023}00023\ \textcolor{comment}{/*\ USER\ CODE\ BEGIN\ 0\ */}}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00024}00024\ \textcolor{preprocessor}{\#include\ "{}FreeRTOS.h"{}}}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00025}00025\ \textcolor{preprocessor}{\#include\ "{}queue.h"{}}}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00026}00026\ }
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00027}00027\ \textcolor{preprocessor}{\#include\ <App/Tasks/can\_rx\_task.h>}}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00028}00028\ }
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00029}00029\ \textcolor{keyword}{static}\ CAN\_RxPacket\ CAN1\_Rx;}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00030}00030\ }
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00031}00031\ \textcolor{comment}{/*\ USER\ CODE\ END\ 0\ */}}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00032}00032\ }
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00033}00033\ FDCAN\_HandleTypeDef\ hfdcan1;}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00034}00034\ }
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00035}00035\ \textcolor{comment}{/*\ FDCAN1\ init\ function\ */}}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00036}00036\ \textcolor{keywordtype}{void}\ MX\_FDCAN1\_Init(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00037}00037\ \{}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00038}00038\ }
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00039}00039\ \ \ \textcolor{comment}{/*\ USER\ CODE\ BEGIN\ FDCAN1\_Init\ 0\ */}}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00040}00040\ }
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00041}00041\ \ \ \textcolor{comment}{/*\ USER\ CODE\ END\ FDCAN1\_Init\ 0\ */}}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00042}00042\ }
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00043}00043\ \ \ \textcolor{comment}{/*\ USER\ CODE\ BEGIN\ FDCAN1\_Init\ 1\ */}}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00044}00044\ }
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00045}00045\ \ \ \textcolor{comment}{/*\ USER\ CODE\ END\ FDCAN1\_Init\ 1\ */}}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00046}00046\ \ \ hfdcan1.Instance\ =\ FDCAN1;}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00047}00047\ \ \ hfdcan1.Init.FrameFormat\ =\ FDCAN\_FRAME\_CLASSIC;}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00048}00048\ \ \ hfdcan1.Init.Mode\ =\ FDCAN\_MODE\_NORMAL;}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00049}00049\ \ \ hfdcan1.Init.AutoRetransmission\ =\ DISABLE;}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00050}00050\ \ \ hfdcan1.Init.TransmitPause\ =\ DISABLE;}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00051}00051\ \ \ hfdcan1.Init.ProtocolException\ =\ DISABLE;}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00052}00052\ \ \ hfdcan1.Init.NominalPrescaler\ =\ 1;}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00053}00053\ \ \ hfdcan1.Init.NominalSyncJumpWidth\ =\ 1;}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00054}00054\ \ \ hfdcan1.Init.NominalTimeSeg1\ =\ 64;}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00055}00055\ \ \ hfdcan1.Init.NominalTimeSeg2\ =\ 10;}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00056}00056\ \ \ hfdcan1.Init.DataPrescaler\ =\ 1;}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00057}00057\ \ \ hfdcan1.Init.DataSyncJumpWidth\ =\ 1;}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00058}00058\ \ \ hfdcan1.Init.DataTimeSeg1\ =\ 1;}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00059}00059\ \ \ hfdcan1.Init.DataTimeSeg2\ =\ 1;}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00060}00060\ \ \ hfdcan1.Init.MessageRAMOffset\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00061}00061\ \ \ hfdcan1.Init.StdFiltersNbr\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00062}00062\ \ \ hfdcan1.Init.ExtFiltersNbr\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00063}00063\ \ \ hfdcan1.Init.RxFifo0ElmtsNbr\ =\ 2;}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00064}00064\ \ \ hfdcan1.Init.RxFifo0ElmtSize\ =\ FDCAN\_DATA\_BYTES\_8;}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00065}00065\ \ \ hfdcan1.Init.RxFifo1ElmtsNbr\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00066}00066\ \ \ hfdcan1.Init.RxFifo1ElmtSize\ =\ FDCAN\_DATA\_BYTES\_8;}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00067}00067\ \ \ hfdcan1.Init.RxBuffersNbr\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00068}00068\ \ \ hfdcan1.Init.RxBufferSize\ =\ FDCAN\_DATA\_BYTES\_8;}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00069}00069\ \ \ hfdcan1.Init.TxEventsNbr\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00070}00070\ \ \ hfdcan1.Init.TxBuffersNbr\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00071}00071\ \ \ hfdcan1.Init.TxFifoQueueElmtsNbr\ =\ 2;}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00072}00072\ \ \ hfdcan1.Init.TxFifoQueueMode\ =\ FDCAN\_TX\_FIFO\_OPERATION;}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00073}00073\ \ \ hfdcan1.Init.TxElmtSize\ =\ FDCAN\_DATA\_BYTES\_8;}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00074}00074\ \ \ \textcolor{keywordflow}{if}\ (HAL\_FDCAN\_Init(\&hfdcan1)\ !=\ HAL\_OK)}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00075}00075\ \ \ \{}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00076}00076\ \ \ \ \ Error\_Handler();}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00077}00077\ \ \ \}}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00078}00078\ \ \ \textcolor{comment}{/*\ USER\ CODE\ BEGIN\ FDCAN1\_Init\ 2\ */}}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00079}00079\ \ \ \textcolor{comment}{/*\ USER\ CODE\ END\ FDCAN1\_Init\ 2\ */}}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00080}00080\ }
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00081}00081\ \}}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00082}00082\ }
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00083}\doxymbox{\hyperlink{fdcan_8c_a93a2756cf80884d125eecad39c785c5d}{00083}}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{fdcan_8c_a93a2756cf80884d125eecad39c785c5d}{HAL\_FDCAN\_MspInit}}(FDCAN\_HandleTypeDef*\ fdcanHandle)}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00084}00084\ \{}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00085}00085\ }
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00086}00086\ \ \ GPIO\_InitTypeDef\ GPIO\_InitStruct\ =\ \{0\};}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00087}00087\ \ \ RCC\_PeriphCLKInitTypeDef\ PeriphClkInitStruct\ =\ \{0\};}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00088}00088\ \ \ \textcolor{keywordflow}{if}(fdcanHandle-\/>Instance==FDCAN1)}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00089}00089\ \ \ \{}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00090}00090\ \ \ \textcolor{comment}{/*\ USER\ CODE\ BEGIN\ FDCAN1\_MspInit\ 0\ */}}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00091}00091\ }
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00092}00092\ \ \ \textcolor{comment}{/*\ USER\ CODE\ END\ FDCAN1\_MspInit\ 0\ */}}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00093}00093\ }
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00096}00096\ \ \ \ \ PeriphClkInitStruct.PeriphClockSelection\ =\ RCC\_PERIPHCLK\_FDCAN;}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00097}00097\ \ \ \ \ PeriphClkInitStruct.FdcanClockSelection\ =\ RCC\_FDCANCLKSOURCE\_PLL;}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00098}00098\ \ \ \ \ \textcolor{keywordflow}{if}\ (HAL\_RCCEx\_PeriphCLKConfig(\&PeriphClkInitStruct)\ !=\ HAL\_OK)}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00099}00099\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00100}00100\ \ \ \ \ \ \ Error\_Handler();}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00101}00101\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00102}00102\ }
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00103}00103\ \ \ \ \ \textcolor{comment}{/*\ FDCAN1\ clock\ enable\ */}}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00104}00104\ \ \ \ \ \_\_HAL\_RCC\_FDCAN\_CLK\_ENABLE();}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00105}00105\ }
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00106}00106\ \ \ \ \ \_\_HAL\_RCC\_GPIOB\_CLK\_ENABLE();}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00111}00111\ \ \ \ \ GPIO\_InitStruct.Pin\ =\ GPIO\_PIN\_8|GPIO\_PIN\_9;}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00112}00112\ \ \ \ \ GPIO\_InitStruct.Mode\ =\ GPIO\_MODE\_AF\_PP;}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00113}00113\ \ \ \ \ GPIO\_InitStruct.Pull\ =\ GPIO\_NOPULL;}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00114}00114\ \ \ \ \ GPIO\_InitStruct.Speed\ =\ GPIO\_SPEED\_FREQ\_LOW;}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00115}00115\ \ \ \ \ GPIO\_InitStruct.Alternate\ =\ GPIO\_AF9\_FDCAN1;}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00116}00116\ \ \ \ \ HAL\_GPIO\_Init(GPIOB,\ \&GPIO\_InitStruct);}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00117}00117\ }
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00118}00118\ \ \ \ \ \textcolor{comment}{/*\ FDCAN1\ interrupt\ Init\ */}}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00119}00119\ \ \ \ \ HAL\_NVIC\_SetPriority(FDCAN1\_IT0\_IRQn,\ 5,\ 0);}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00120}00120\ \ \ \ \ HAL\_NVIC\_EnableIRQ(FDCAN1\_IT0\_IRQn);}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00121}00121\ \ \ \textcolor{comment}{/*\ USER\ CODE\ BEGIN\ FDCAN1\_MspInit\ 1\ */}}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00122}00122\ }
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00123}00123\ \ \ \textcolor{comment}{/*\ USER\ CODE\ END\ FDCAN1\_MspInit\ 1\ */}}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00124}00124\ \ \ \}}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00125}00125\ \}}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00126}00126\ }
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00127}\doxymbox{\hyperlink{fdcan_8c_a7c1e54efb942c6aa706dbfc9f35914f9}{00127}}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{fdcan_8c_a7c1e54efb942c6aa706dbfc9f35914f9}{HAL\_FDCAN\_MspDeInit}}(FDCAN\_HandleTypeDef*\ fdcanHandle)}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00128}00128\ \{}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00129}00129\ }
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00130}00130\ \ \ \textcolor{keywordflow}{if}(fdcanHandle-\/>Instance==FDCAN1)}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00131}00131\ \ \ \{}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00132}00132\ \ \ \textcolor{comment}{/*\ USER\ CODE\ BEGIN\ FDCAN1\_MspDeInit\ 0\ */}}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00133}00133\ }
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00134}00134\ \ \ \textcolor{comment}{/*\ USER\ CODE\ END\ FDCAN1\_MspDeInit\ 0\ */}}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00135}00135\ \ \ \ \ \textcolor{comment}{/*\ Peripheral\ clock\ disable\ */}}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00136}00136\ \ \ \ \ \_\_HAL\_RCC\_FDCAN\_CLK\_DISABLE();}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00137}00137\ }
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00142}00142\ \ \ \ \ HAL\_GPIO\_DeInit(GPIOB,\ GPIO\_PIN\_8|GPIO\_PIN\_9);}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00143}00143\ }
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00144}00144\ \ \ \ \ \textcolor{comment}{/*\ FDCAN1\ interrupt\ Deinit\ */}}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00145}00145\ \ \ \ \ HAL\_NVIC\_DisableIRQ(FDCAN1\_IT0\_IRQn);}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00146}00146\ \ \ \textcolor{comment}{/*\ USER\ CODE\ BEGIN\ FDCAN1\_MspDeInit\ 1\ */}}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00147}00147\ }
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00148}00148\ \ \ \textcolor{comment}{/*\ USER\ CODE\ END\ FDCAN1\_MspDeInit\ 1\ */}}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00149}00149\ \ \ \}}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00150}00150\ \}}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00151}00151\ }
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00152}00152\ \textcolor{comment}{/*\ USER\ CODE\ BEGIN\ 1\ */}}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00153}00153\ BaseType\_t\ xHigherPriorityTaskWoken\ =\ pdFALSE;}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00159}\doxymbox{\hyperlink{fdcan_8c_a37d92c0f4f667c4dd4cbc9c3b5d5dad4}{00159}}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{fdcan_8c_a37d92c0f4f667c4dd4cbc9c3b5d5dad4}{HAL\_FDCAN\_RxFifo0Callback}}(FDCAN\_HandleTypeDef\ *hfdcan,\ uint32\_t\ RxFifo0ITs)\{}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00160}00160\ \ \ \ \ \textcolor{keywordflow}{if}((RxFifo0ITs\ \&\ FDCAN\_IT\_RX\_FIFO0\_NEW\_MESSAGE)\ !=\ RESET)}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00161}00161\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00162}00162\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(hfdcan-\/>Instance\ ==\ FDCAN1)\{}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00163}00163\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (HAL\_FDCAN\_GetRxMessage(hfdcan,\ FDCAN\_RX\_FIFO0,\ \&CAN1\_Rx.Header,CAN1\_Rx.Data)\ !=\ HAL\_OK)}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00164}00164\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00165}00165\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Error\_Handler();}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00166}00166\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00167}00167\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(xQueueSendToBackFromISR(CAN\_RX\_Task\_GetQueue(),\&CAN1\_Rx,\&xHigherPriorityTaskWoken)\ ==\ pdPASS)\{}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00168}00168\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ portYIELD\_FROM\_ISR(xHigherPriorityTaskWoken);}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00169}00169\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00170}00170\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00171}00171\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00172}00172\ \}}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00173}00173\ }
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00174}00174\ \textcolor{keywordtype}{void}\ FDCAN\_Tx(CAN\_TxPacket\ CAN1\_Tx)\{}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00175}00175\ \ \ \ \ \textcolor{keywordflow}{if}\ (HAL\_FDCAN\_GetTxFifoFreeLevel(\&hfdcan1)\ >\ 0)}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00176}00176\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00177}00177\ \ \ \ \ \ \ \ \ HAL\_FDCAN\_AddMessageToTxFifoQ(\&hfdcan1,\&CAN1\_Tx.Header,CAN1\_Tx.Data);}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00178}00178\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00179}00179\ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00180}00180\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00181}00181\ \ \ \ \ \ \ \ \ uint32\_t\ txFifoRequest\ =\ HAL\_FDCAN\_GetLatestTxFifoQRequestBuffer(\&hfdcan1);}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00182}00182\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (HAL\_FDCAN\_IsTxBufferMessagePending(\&hfdcan1,\ txFifoRequest))\ \{}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00183}00183\ \ \ \ \ \ \ \ \ \ \ \ \ HAL\_FDCAN\_AbortTxRequest(\&hfdcan1,\ txFifoRequest);}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00184}00184\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00185}00185\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00186}00186\ \}}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00187}00187\ }
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00188}00188\ \textcolor{keywordtype}{void}\ FDCAN\_Start()\{}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00189}00189\ \ \ \ \ \textcolor{comment}{/*\ FDCAN\ 1\ */}}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00190}00190\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(HAL\_FDCAN\_Start(\&hfdcan1)!=\ HAL\_OK)\{}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00191}00191\ \ \ \ \ \ \ \ \ \ \ Error\_Handler();}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00192}00192\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00193}00193\ }
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00194}00194\ \ \ \ \ \ \textcolor{keywordflow}{if}\ (HAL\_FDCAN\_ActivateNotification(\&hfdcan1,\ FDCAN\_IT\_RX\_FIFO0\_NEW\_MESSAGE,\ 0)\ !=\ HAL\_OK)\{}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00195}00195\ \ \ \ \ \ \ \ \ \ Error\_Handler();}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00196}00196\ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00197}00197\ \}}
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00198}00198\ }
+\DoxyCodeLine{\Hypertarget{fdcan_8c_source_l00199}00199\ \textcolor{comment}{/*\ USER\ CODE\ END\ 1\ */}}
+
+\end{DoxyCode}

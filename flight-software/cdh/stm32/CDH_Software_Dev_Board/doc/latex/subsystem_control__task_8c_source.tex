@@ -1,0 +1,90 @@
+\doxysection{subsystem\+Control\+\_\+task.\+c}
+\hypertarget{subsystem_control__task_8c_source}{}\label{subsystem_control__task_8c_source}\index{CM7/Core/Src/App/Tasks/subsystemControl\_task.c@{CM7/Core/Src/App/Tasks/subsystemControl\_task.c}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00001}00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00002}00002\ \textcolor{comment}{\ *\ subsystemControl\_task.c}}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00003}00003\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00004}00004\ \textcolor{comment}{\ *\ \ Created\ on:\ Jun\ 26,\ 2026}}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00005}00005\ \textcolor{comment}{\ *\ \ \ \ \ \ Author:\ adaro}}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00006}00006\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00007}00007\ }
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00008}00008\ \textcolor{preprocessor}{\#include\ "{}FreeRTOS.h"{}}}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00009}00009\ \textcolor{preprocessor}{\#include\ "{}task.h"{}}}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00010}00010\ }
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00011}00011\ \textcolor{preprocessor}{\#include\ <App/app\_config.h>}}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00012}00012\ \textcolor{preprocessor}{\#include\ <App/Services/subscriptions.h>}}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00013}00013\ \textcolor{preprocessor}{\#include\ <App/Services/app\_events.h>}}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00014}00014\ \textcolor{preprocessor}{\#include\ <App/Tasks/subsystemControl\_task.h>}}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00015}00015\ }
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00016}00016\ \textcolor{preprocessor}{\#include\ "{}usbd\_cdc\_if.h"{}}}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00017}00017\ \textcolor{preprocessor}{\#include\ <stdio.h>}}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00018}00018\ }
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00019}00019\ \textcolor{keyword}{static}\ StackType\_t\ xTaskStack[NORMAL\_TASK\_STACK\_SIZE];}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00020}00020\ \textcolor{keyword}{static}\ StaticTask\_t\ xTaskBuffer;}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00021}00021\ }
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00022}00022\ \textcolor{keyword}{static}\ StaticQueue\_t\ xTaskQueueData;}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00023}00023\ \textcolor{keyword}{static}\ uint8\_t\ ucTaskQueueStorageArea[LOCAL\_QUEUE\_LENGTH\ *\ MSG\_SIZE];}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00024}00024\ \textcolor{keyword}{static}\ QueueHandle\_t\ xTaskQueue;}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00025}00025\ }
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00026}00026\ \textcolor{keyword}{static}\ uint8\_t\ eps\_cnt,\ pl\_cnt,\ adcs\_cnt\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00027}00027\ }
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00028}00028\ \textcolor{comment}{/*\ -\/-\/-\/\ SYS-\/OBC-\/REL-\/04\ -\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00029}00029\ }
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00030}00030\ \textcolor{comment}{/*\ Task\ sync\ bit\ (if\ used)\ and\ task\ priority\ defined\ in\ app\_config.h\ */}}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00031}00031\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ SubsystemControl\_Handler(\textcolor{keywordtype}{void}\ *argument)\{}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00032}00032\ \ \ \ \ Subscribe(\textcolor{stringliteral}{"{}SubsystemControl\_Handler"{}},(QueueHandle\_t)argument);}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00033}00033\ \ \ \ \ TaskSync\_SetAndWait(SUBC\_BIT);}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00034}00034\ \ \ \ \ Message\_t\ newMsg;}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00035}00035\ \ \ \ \ \textcolor{keywordflow}{while}(1)\{}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00036}00036\ \ \ \ \ \ \ \ \ TaskHealth\_SetBit(SUBC\_BIT);}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00037}00037\ \ \ \ \ \ \ \ \ SleepUntil((QueueHandle\_t)argument,\&newMsg,portMAX\_DELAY);}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00038}00038\ \ \ \ \ \ \ \ \ TaskHealth\_ClearBit(SUBC\_BIT);}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00039}00039\ }
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00040}00040\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{switch}(newMsg.Data.canPacket.Header.Identifier)\{}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00041}00041\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 0x203:}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00042}00042\ \ \ \ \ \ \ \ \ \ \ \ \ eps\_cnt++;}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00043}00043\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(eps\_cnt\ >\ 3)\{}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00044}00044\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ eps\_cnt\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00045}00045\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}SYSTEM\ COMMAND:\ ENTER\ SAFE\ MODE\(\backslash\)r\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00046}00046\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ fflush(stdout);}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00047}00047\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ newMsg.Topic\ =\ CHANGE\_SYSTEM\_STATE;}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00048}00048\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ newMsg.Data.mode\ =\ SAFE;}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00049}00049\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Publish(newMsg);}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00050}00050\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00051}00051\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00052}00052\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 0x303:}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00053}00053\ \ \ \ \ \ \ \ \ \ \ \ \ adcs\_cnt++;}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00054}00054\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(adcs\_cnt\ >\ 3)\{}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00055}00055\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ adcs\_cnt\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00056}00056\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}SYSTEM\ COMMAND:\ ENTER\ SAFE\ MODE\(\backslash\)r\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00057}00057\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ fflush(stdout);}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00058}00058\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ newMsg.Topic\ =\ CHANGE\_SYSTEM\_STATE;}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00059}00059\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ newMsg.Data.mode\ =\ SAFE;}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00060}00060\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Publish(newMsg);}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00061}00061\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00062}00062\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00063}00063\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 0x403:}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00064}00064\ \ \ \ \ \ \ \ \ \ \ \ \ pl\_cnt++;}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00065}00065\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(pl\_cnt\ >\ 3)\{}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00066}00066\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ pl\_cnt\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00067}00067\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}SYSTEM\ COMMAND:\ ENTER\ SAFE\ MODE\(\backslash\)r\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00068}00068\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ fflush(stdout);}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00069}00069\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ newMsg.Topic\ =\ CHANGE\_SYSTEM\_STATE;}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00070}00070\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ newMsg.Data.mode\ =\ SAFE;}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00071}00071\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Publish(newMsg);}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00072}00072\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00073}00073\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00074}00074\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00075}00075\ \ \ \ \ \ \ \ \ TaskHealth\_SetBit(SUBC\_BIT);}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00076}00076\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00077}00077\ \}}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00078}00078\ }
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00079}00079\ \textcolor{keywordtype}{void}\ SubsystemControl\_Init(\textcolor{keywordtype}{void})\ \{}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00080}00080\ \ \ \ \ xTaskQueue\ =\ xQueueCreateStatic(LOCAL\_QUEUE\_LENGTH,\ MSG\_SIZE,\ ucTaskQueueStorageArea,\ \&xTaskQueueData);}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00081}00081\ \ \ \ \ xTaskCreateStatic(SubsystemControl\_Handler,\textcolor{stringliteral}{"{}SubsystemControl\_Handler"{}},NORMAL\_TASK\_STACK\_SIZE}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00082}00082\ \ \ \ \ \ \ \ \ \ \ \ \ ,(\textcolor{keywordtype}{void}*)xTaskQueue,SUBC\_PR,xTaskStack,\&xTaskBuffer);}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00083}00083\ \}}
+\DoxyCodeLine{\Hypertarget{subsystem_control__task_8c_source_l00084}00084\ }
+
+\end{DoxyCode}

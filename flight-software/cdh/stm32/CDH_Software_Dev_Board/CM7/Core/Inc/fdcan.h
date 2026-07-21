@@ -1,21 +1,9 @@
 /* USER CODE BEGIN Header */
 /**
-  ******************************************************************************
-  * @file    fdcan.h
-  * @brief   This file contains all the function prototypes for
-  *          the fdcan.c file
-  ******************************************************************************
-  * @attention
-  *
-  * Copyright (c) 2026 STMicroelectronics.
-  * All rights reserved.
-  *
-  * This software is licensed under terms that can be found in the LICENSE file
-  * in the root directory of this software component.
-  * If no LICENSE file comes with this software, it is provided AS-IS.
-  *
-  ******************************************************************************
-  */
+ * @file fdcan.h
+ * @brief This file contains all the function prototypes for the fdcan.c file.
+ * @details Implementation of the FDCAN peripheral control.
+ */
 /* USER CODE END Header */
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __FDCAN_H__
@@ -36,14 +24,20 @@ extern FDCAN_HandleTypeDef hfdcan1;
 
 /* USER CODE BEGIN Private defines */
 
+/**
+ * @brief A custom data structure with the standard FDCAN frame for Tx Messages.
+ */
 typedef struct {
-    FDCAN_TxHeaderTypeDef Header;
-    uint8_t               Data[8];
+    FDCAN_TxHeaderTypeDef Header; /**< Configuration header specifying ID, DLC, and frame type. */
+    uint8_t               Data[8]; /**< Data payload buffer holding up to 8 bytes of message data. */
 } CAN_TxPacket;
 
+/**
+ * @brief A custom data structure with the standard FDCAN frame for Rx Messages.
+ */
 typedef struct {
-    FDCAN_RxHeaderTypeDef Header;
-    uint8_t               Data[8];
+    FDCAN_RxHeaderTypeDef Header; /**< Configuration header specifying ID, DLC, and frame type. */
+    uint8_t               Data[8]; /**< Data payload buffer holding up to 8 bytes of message data. */
 } CAN_RxPacket;
 
 /* USER CODE END Private defines */

@@ -1,0 +1,54 @@
+\doxysection{fdcan.\+h}
+\hypertarget{fdcan_8h_source}{}\label{fdcan_8h_source}\index{CM7/Core/Inc/fdcan.h@{CM7/Core/Inc/fdcan.h}}
+\doxymbox{\hyperlink{fdcan_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*\ USER\ CODE\ BEGIN\ Header\ */}}
+\DoxyCodeLine{00019\ \textcolor{comment}{/*\ USER\ CODE\ END\ Header\ */}}
+\DoxyCodeLine{00020\ \textcolor{comment}{/*\ Define\ to\ prevent\ recursive\ inclusion\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#ifndef\ \_\_FDCAN\_H\_\_}}
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\#define\ \_\_FDCAN\_H\_\_}}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\#ifdef\ \_\_cplusplus}}
+\DoxyCodeLine{00025\ \textcolor{keyword}{extern}\ \textcolor{stringliteral}{"{}C"{}}\ \{}
+\DoxyCodeLine{00026\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00028\ \textcolor{comment}{/*\ Includes\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{00029\ \textcolor{preprocessor}{\#include\ "{}main.h"{}}}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \textcolor{comment}{/*\ USER\ CODE\ BEGIN\ Includes\ */}}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \textcolor{comment}{/*\ USER\ CODE\ END\ Includes\ */}}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \textcolor{keyword}{extern}\ FDCAN\_HandleTypeDef\ hfdcan1;}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \textcolor{comment}{/*\ USER\ CODE\ BEGIN\ Private\ defines\ */}}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\{}
+\DoxyCodeLine{00040\ \ \ \ \ FDCAN\_TxHeaderTypeDef\ Header;}
+\DoxyCodeLine{00041\ \ \ \ \ uint8\_t\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Data[8];}
+\DoxyCodeLine{00042\ \}\ CAN\_TxPacket;}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\{}
+\DoxyCodeLine{00045\ \ \ \ \ FDCAN\_RxHeaderTypeDef\ Header;}
+\DoxyCodeLine{00046\ \ \ \ \ uint8\_t\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Data[8];}
+\DoxyCodeLine{00047\ \}\ CAN\_RxPacket;}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ \textcolor{comment}{/*\ USER\ CODE\ END\ Private\ defines\ */}}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{fdcan_8h_af122e1c28b11c5b8771e82328e10fa2c}{MX\_FDCAN1\_Init}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \textcolor{comment}{/*\ USER\ CODE\ BEGIN\ Prototypes\ */}}
+\DoxyCodeLine{00054\ }
+\DoxyCodeLine{00055\ \textcolor{keywordtype}{void}\ FDCAN\_Start();}
+\DoxyCodeLine{00056\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{fdcan_8c_acb1a2ebd043af21a56094e47f2e7797d}{FDCAN\_Tx}}();}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ \textcolor{comment}{/*\ USER\ CODE\ END\ Prototypes\ */}}
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00060\ \textcolor{preprocessor}{\#ifdef\ \_\_cplusplus}}
+\DoxyCodeLine{00061\ \}}
+\DoxyCodeLine{00062\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{/*\ \_\_FDCAN\_H\_\_\ */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{00065\ }
+
+\end{DoxyCode}

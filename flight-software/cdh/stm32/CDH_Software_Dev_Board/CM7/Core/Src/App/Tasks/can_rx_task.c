@@ -4,6 +4,10 @@
  *  Created on: Jun 5, 2026
  *      Author: adaro
  */
+/**
+ * @file can_rx_task.c
+ * @brief Implementation of the CAN Rx Task responsible for parsing any received FDCAN messages.
+ */
 #include <App/Tasks/can_rx_task.h>
 #include "FreeRTOS.h"
 #include "queue.h"
@@ -32,42 +36,59 @@ const char *subsystems[] = {
         "ADCS",
     };
 
-void Subsystem_HB_Parser(CAN_RxPacket packet);
+void Subsystem_Msg_Parser(CAN_RxPacket packet);
 int Subsystem_HB_Print(uint8_t data, const char *subsystem);
 
 Message_t newMsg;
 static int status[4] = {0};
 
+/**
+ * @brief Task's Handler where main logic is executed inside an infinite loop.
+ * @details Task blocks indefinitely and wakes up on a new msg pushed to its queue.
+ * Then the message is parsed and:
+ * 1. If its a HB msg then subsystem status is locally updated
+ * 2. If not, then the new message and its associated topic are published through the software bus.
+ * @param argument  Pointer to task's local queue handle
+ */
 static void CAN_RX_Handler(void *argument){
 	while(1){
-		if(xQueueReceive((QueueHandle_t)argument,&CAN_Rx,portMAX_DELAY) == pdPASS){
-			Subsystem_HB_Parser(CAN_Rx);
-//			if(CAN_Rx.Header.Identifier == 0x103 || 0x204 || 0x304 || 0x404){
-//
-//			}
-		}
+		if(xQueueReceive((QueueHandle_t)argument,&CAN_Rx,portMAX_DELAY) == pdPASS) Subsystem_Msg_Parser(CAN_Rx);
 	}
 }
 
+/**
+ * @brief Task's initialization function.
+ * @details First local queue is created. Then the task itself is created and the queue handle is passed as a task parameter.
+ * @note Check app_config.h for stack configurations
+ */
 void CAN_RX_Task_Init(void){
 	xCAN_RXQueue = xQueueCreateStatic(LOCAL_QUEUE_LENGTH, sizeof(CAN_Rx), ucxCAN_RXQueueStorageArea, &xxCAN_RXQueueData);
 	xTaskCreateStatic(CAN_RX_Handler,"CAN_RX_Handler",NORMAL_TASK_STACK_SIZE,(void*)xCAN_RXQueue,CANRX_PR,xTaskStack,&xTaskBuffer);
 }
 
+/**
+ * @brief Global access to task's local queue
+ * @return Queue handle
+ */
 QueueHandle_t CAN_RX_Task_GetQueue(void) {
     return xCAN_RXQueue;
 }
 
-void Subsystem_HB_Parser(CAN_RxPacket packet){
+/**
+ * @brief FDCAN Message Parser
+ * @note This function should be modified to accommodate any custom messages!
+ * @param packet
+ */
+void Subsystem_Msg_Parser(CAN_RxPacket packet){
 	switch(packet.Header.Identifier){
 	//COMMS HB
 	case 0x100:
-		newMsg.Topic = CHANGE_SYSTEM_STATE;
+		newMsg.Topic = TELECOMMAND;
 		newMsg.Data.mode = SAFE;
 		Publish(newMsg);
 		break;
 	case 0x101:
-		newMsg.Topic = CHANGE_SYSTEM_STATE;
+		newMsg.Topic = TELECOMMAND;
 		newMsg.Data.mode = NOMINAL;
 		Publish(newMsg);
 		break;
@@ -97,7 +118,7 @@ void Subsystem_HB_Parser(CAN_RxPacket packet){
 		Subsystem_HB_Print(*packet.Data, subsystems[1]);
 		break;
 	case 0x203:
-        newMsg.Topic = SUBSYSTEM_STATUS;
+        newMsg.Topic = EPS_MSG;
         memcpy(&newMsg.Data.canPacket,&packet, sizeof(packet));
         Publish(newMsg);
 		break;
@@ -111,7 +132,7 @@ void Subsystem_HB_Parser(CAN_RxPacket packet){
 		fflush(stdout);
 		break;
 	case 0x303:
-        newMsg.Topic = SUBSYSTEM_STATUS;
+        newMsg.Topic = ADCS_MSG;
         memcpy(&newMsg.Data.canPacket,&packet, sizeof(packet));
         Publish(newMsg);
 		break;
@@ -129,7 +150,7 @@ void Subsystem_HB_Parser(CAN_RxPacket packet){
 		fflush(stdout);
 		break;
 	case 0x403:
-        newMsg.Topic = SUBSYSTEM_STATUS;
+        newMsg.Topic = PL_MSG;
         memcpy(&newMsg.Data.canPacket,&packet, sizeof(packet));
         Publish(newMsg);
 		break;
@@ -164,10 +185,20 @@ int Subsystem_HB_Print(uint8_t data, const char *subsystem){
 	return -1;
 }
 
+/**
+ * @brief Global getter function for local subsystem status
+ * @param sub  Subsystem name
+ * @return  Current subsystem status
+ */
 int GetSubsystemStatus(subsystemName sub){
 	return status[sub];
 }
 
+/**
+ * @brief Global setter function for local subsystem status
+ * @param sub  Subsystem name
+ * @param stat  New subsystem status
+ */
 void SetSubsystemStatus(subsystemName sub, int stat){
 	status[sub] = stat;
 }
