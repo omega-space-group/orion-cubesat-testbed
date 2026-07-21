@@ -1,0 +1,46 @@
+\doxysection{CAN\+\_\+\+Rx\+Packet Struct Reference}
+\hypertarget{struct_c_a_n___rx_packet}{}\label{struct_c_a_n___rx_packet}\index{CAN\_RxPacket@{CAN\_RxPacket}}
+
+
+A custom data structure with the standard FDCAN frame for Rx Messages.  
+
+
+
+
+{\ttfamily \+\#include $<$fdcan.\+h$>$}
+
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+FDCAN\+\_\+\+Rx\+Header\+Type\+Def \doxymbox{\hyperlink{struct_c_a_n___rx_packet_a9d9bc62d94afe772c1cc48fd4664b302}{Header}}
+\item 
+uint8\+\_\+t \doxymbox{\hyperlink{struct_c_a_n___rx_packet_a64c2eb98afd6b69d3f82ea6a7fa9a73f}{Data}} \+[8]\+
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A custom data structure with the standard FDCAN frame for Rx Messages. 
+
+\label{struct_c_a_n___rx_packet_doc-variable-members}
+\Hypertarget{struct_c_a_n___rx_packet_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{struct_c_a_n___rx_packet_a64c2eb98afd6b69d3f82ea6a7fa9a73f}\index{CAN\_RxPacket@{CAN\_RxPacket}!Data@{Data}}
+\index{Data@{Data}!CAN\_RxPacket@{CAN\_RxPacket}}
+\doxysubsubsection{\texorpdfstring{Data}{Data}}
+{\footnotesize\ttfamily \label{struct_c_a_n___rx_packet_a64c2eb98afd6b69d3f82ea6a7fa9a73f} 
+uint8\+\_\+t CAN\+\_\+\+Rx\+Packet::\+\+Data\+[8]\+}
+
+Data payload buffer holding up to 8 bytes of message data. 
+
+Referenced by \doxymbox{\hyperlink{can__rx__task_8c_a3ac22077410fb91a154296c96a380a12}{Subsystem\+\_\+\+Msg\+\_\+\+Parser()}}.
+
+\Hypertarget{struct_c_a_n___rx_packet_a9d9bc62d94afe772c1cc48fd4664b302}\index{CAN\_RxPacket@{CAN\_RxPacket}!Header@{Header}}
+\index{Header@{Header}!CAN\_RxPacket@{CAN\_RxPacket}}
+\doxysubsubsection{\texorpdfstring{Header}{Header}}
+{\footnotesize\ttfamily \label{struct_c_a_n___rx_packet_a9d9bc62d94afe772c1cc48fd4664b302} 
+FDCAN\+\_\+\+Rx\+Header\+Type\+Def CAN\+\_\+\+Rx\+Packet::\+\+Header}
+
+Configuration header specifying ID, DLC, and frame type. 
+
+Referenced by \doxymbox{\hyperlink{can__rx__task_8c_a3ac22077410fb91a154296c96a380a12}{Subsystem\+\_\+\+Msg\+\_\+\+Parser()}}.
+
