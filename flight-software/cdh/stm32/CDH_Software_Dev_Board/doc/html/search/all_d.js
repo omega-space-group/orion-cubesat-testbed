@@ -16,9 +16,11 @@ var searchData=
   ['hm_5fbit_13',['HM_BIT',['../da/d88/app__config_8h.html#a3cdc67f59a4e9aa04dcb6860007364b4',1,'app_config.h']]],
   ['hm_5fpr_14',['HM_PR',['../da/d88/app__config_8h.html#a89edd2c3ccb497e752853757dc7d5137',1,'app_config.h']]],
   ['housekeeping_20telemetry_15',['Housekeeping &amp;amp; Telemetry',['../d1/d62/group__telemetry__module.html',1,'']]],
-  ['housekeeping_5ftask_2ec_16',['housekeeping_task.c',['../d9/d29/housekeeping__task_8c.html',1,'']]],
-  ['housekeeping_5ftask_2eh_17',['housekeeping_task.h',['../dc/df5/housekeeping__task_8h.html',1,'']]],
-  ['how_20debug_20configurations_20should_20look_3a_18',['How &quot;Debug Configurations&quot; should look:',['../d4/d87/flash_and_debug.html#autotoc_md31',1,'']]],
-  ['how_20events_20work_20look_20up_20the_20eventgroup_20section_20in_20the_20freertos_5freference_5fmanual_5fv10_200_200_20pdf_19',['For more information on how events work, look up the EventGroup section in the FreeRTOS_Reference_Manual_V10.0.0.pdf.',['../d1/d35/api_references.html#autotoc_md26',1,'']]],
-  ['how_20flashing_20works_20',['How Flashing Works',['../d4/d87/flash_and_debug.html#autotoc_md29',1,'']]]
+  ['housekeeping_5fhandler_16',['Housekeeping_Handler',['../d9/d29/housekeeping__task_8c.html#af66a7d4fbff590f988caf66da2869a25',1,'housekeeping_task.c']]],
+  ['housekeeping_5ftask_2ec_17',['housekeeping_task.c',['../d9/d29/housekeeping__task_8c.html',1,'']]],
+  ['housekeeping_5ftask_2eh_18',['housekeeping_task.h',['../dc/df5/housekeeping__task_8h.html',1,'']]],
+  ['housekeepinghandler_5finit_19',['HousekeepingHandler_Init',['../d9/d29/housekeeping__task_8c.html#ade6a9a41e6fdb411ece45a8adef9308f',1,'HousekeepingHandler_Init(void):&#160;housekeeping_task.c'],['../dc/df5/housekeeping__task_8h.html#ade6a9a41e6fdb411ece45a8adef9308f',1,'HousekeepingHandler_Init(void):&#160;housekeeping_task.c']]],
+  ['how_20debug_20configurations_20should_20look_3a_20',['How &quot;Debug Configurations&quot; should look:',['../d4/d87/flash_and_debug.html#autotoc_md31',1,'']]],
+  ['how_20events_20work_20look_20up_20the_20eventgroup_20section_20in_20the_20freertos_5freference_5fmanual_5fv10_200_200_20pdf_21',['For more information on how events work, look up the EventGroup section in the FreeRTOS_Reference_Manual_V10.0.0.pdf.',['../d1/d35/api_references.html#autotoc_md26',1,'']]],
+  ['how_20flashing_20works_22',['How Flashing Works',['../d4/d87/flash_and_debug.html#autotoc_md29',1,'']]]
 ];

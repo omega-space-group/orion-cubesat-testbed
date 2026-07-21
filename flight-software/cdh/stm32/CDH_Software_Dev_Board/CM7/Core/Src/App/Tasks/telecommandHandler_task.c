@@ -5,7 +5,10 @@
  *      Author: adaro
  */
 
-
+/**
+ * @file telecommandHandler_task.c
+ * @brief Implementation of the parsing and handling of Telecommands received from ground.
+ */
 #include "FreeRTOS.h"
 #include "task.h"
 
@@ -22,6 +25,20 @@ static uint8_t ucTaskQueueStorageArea[LOCAL_QUEUE_LENGTH * MSG_SIZE];
 static QueueHandle_t xTaskQueue;
 
 /* Task sync bit (if used) and task priority defined in app_config.h */
+/**
+ * @brief Task's Handler where main logic is executed inside an infinite loop.
+ * @details Telecommand Handling Logic:
+ * 1. Subscribe to topics defined in subscriptions.c
+ * 2. Set your own sync bit and block until all other tasks have finished initialization before continuing.
+ * 3. Enter infinite loop and set health bit (since task is not periodic).
+ * 4. Block indefinitely until a new message is pushed in the local queue.
+ * 5. Wake up and clear the health bit and begin execution.
+ * 6. Parse the command (Authenticate -> Decode (Package then PUS))
+ * 7. Execute TC if valid.
+ * 8. Set health bit to 1 again and finish.
+ * @note For testing purposes, the handler responds only to TC to change state to SAFE or NOMINAL at the moment.
+ * @param argument  Pointer to task's local queue handle
+ */
 static void Telecommand_Handler(void *argument){
 	Subscribe("Telecommand_Handler",(QueueHandle_t)argument);
 	TaskSync_SetAndWait(TC_BIT);
@@ -54,6 +71,11 @@ static void Telecommand_Handler(void *argument){
 	}
 }
 
+/**
+ * @brief Task's initialization function.
+ * @details First local queue is created. Then the task itself is created and the queue handle is passed as a task parameter.
+ * @note Check app_config.h for stack configurations
+ */
 void TelecommandHandler_Init(void) {
 	xTaskQueue = xQueueCreateStatic(LOCAL_QUEUE_LENGTH, MSG_SIZE, ucTaskQueueStorageArea, &xTaskQueueData);
 	xTaskCreateStatic(Telecommand_Handler,"Telecommand_Handler",NORMAL_TASK_STACK_SIZE

@@ -6,7 +6,7 @@
  */
 /**
  * @file subsystemControl_task.c
- * @brief .
+ * @brief Implementation of the subsystem control logic.
  */
 #include "FreeRTOS.h"
 #include "task.h"
@@ -28,9 +28,20 @@ static QueueHandle_t xTaskQueue;
 
 static uint8_t eps_cnt, pl_cnt, adcs_cnt = 0;
 
-/* --- SYS-OBC-REL-04 ---*/
-
 /* Task sync bit (if used) and task priority defined in app_config.h */
+/**
+ * @brief Task's Handler where main logic is executed inside an infinite loop.
+ * @details Subsystem Control Logic:
+ * 1. Subscribe to topics defined in subscriptions.c
+ * 2. Set your own sync bit and block until all other tasks have finished initialization before continuing.
+ * 3. Enter infinite loop and set health bit (since task is not periodic).
+ * 4. Block indefinitely until a new message is pushed in the local queue.
+ * 5. Wake up and clear the health bit and begin execution.
+ * 6. Decode the message.
+ * 7. If ERROR MSG and same ERROR MSG has occurred over 3 times, send reset command on the relative subsystem.
+ * 8. Set health bit to 1 again and finish.
+ * @param argument  Pointer to task's local queue handle
+ */
 static void SubsystemControl_Handler(void *argument){
 	Subscribe("SubsystemControl_Handler",(QueueHandle_t)argument);
 	TaskSync_SetAndWait(SUBC_BIT);
@@ -79,6 +90,11 @@ static void SubsystemControl_Handler(void *argument){
 	}
 }
 
+/**
+ * @brief Task's initialization function.
+ * @details First local queue is created. Then the task itself is created and the queue handle is passed as a task parameter.
+ * @note Check app_config.h for stack configurations
+ */
 void SubsystemControl_Init(void) {
 	xTaskQueue = xQueueCreateStatic(LOCAL_QUEUE_LENGTH, MSG_SIZE, ucTaskQueueStorageArea, &xTaskQueueData);
 	xTaskCreateStatic(SubsystemControl_Handler,"SubsystemControl_Handler",NORMAL_TASK_STACK_SIZE

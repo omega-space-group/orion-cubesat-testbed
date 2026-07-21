@@ -1,0 +1,43 @@
+\doxysection{CM7/\+\+Core/\+\+Inc/\+\+App/\+\+Tasks/\+subsystem\+Control\+\_\+task.h File Reference}
+\hypertarget{subsystem_control__task_8h}{}\label{subsystem_control__task_8h}\index{CM7/Core/Inc/App/Tasks/subsystemControl\_task.h@{CM7/Core/Inc/App/Tasks/subsystemControl\_task.h}}
+
+
+This file contains all the function prototypes for the \doxylink{subsystem_control__task_8c}{subsystem\+Control\+\_\+task.\+c} file.  
+
+
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \doxymbox{\hyperlink{subsystem_control__task_8h_a462adf5807f82c54c2ec34daea519f82}{Subsystem\+Control\+\_\+\+Init}} (void)
+\begin{DoxyCompactList}\small\item\em Task\textquotesingle{}s initialization function. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This file contains all the function prototypes for the \doxylink{subsystem_control__task_8c}{subsystem\+Control\+\_\+task.\+c} file. 
+
+Implementation of the subsystem control logic. For more details look into \doxylink{subsystem_control__task_8c_a4dd4c116c224a39828863a131f899404}{Subsystem\+Control\+\_\+\+Handler()}. 
+
+\label{subsystem_control__task_8h_doc-func-members}
+\Hypertarget{subsystem_control__task_8h_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{subsystem_control__task_8h_a462adf5807f82c54c2ec34daea519f82}\index{subsystemControl\_task.h@{subsystemControl\_task.h}!SubsystemControl\_Init@{SubsystemControl\_Init}}
+\index{SubsystemControl\_Init@{SubsystemControl\_Init}!subsystemControl\_task.h@{subsystemControl\_task.h}}
+\doxysubsubsection{\texorpdfstring{SubsystemControl\_Init()}{SubsystemControl\_Init()}}
+{\footnotesize\ttfamily \label{subsystem_control__task_8h_a462adf5807f82c54c2ec34daea519f82} 
+void Subsystem\+Control\+\_\+\+Init (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Task\textquotesingle{}s initialization function. 
+
+First local queue is created. Then the task itself is created and the queue handle is passed as a task parameter. \begin{DoxyNote}{Note}
+Check \doxylink{app__config_8h}{app\+\_\+config.\+h} for stack configurations 
+\end{DoxyNote}
+
+
+References \doxymbox{\hyperlink{app__config_8h_a843595a59955f4e62f3d0d2e328e38a2}{LOCAL\+\_\+\+QUEUE\+\_\+\+LENGTH}}, \doxymbox{\hyperlink{app__config_8h_ad4d025ecf1bdbf8b244ca688df8e478d}{MSG\+\_\+\+SIZE}}, \doxymbox{\hyperlink{app__config_8h_a200c2c21eb5510aa388dc932a76e830d}{NORMAL\+\_\+\+TASK\+\_\+\+STACK\+\_\+\+SIZE}}, \doxymbox{\hyperlink{app__config_8h_acd35480f6bf1574471b4d5e62bfefa53}{SUBC\+\_\+\+PR}}, and \doxymbox{\hyperlink{subsystem_control__task_8c_a4dd4c116c224a39828863a131f899404}{Subsystem\+Control\+\_\+\+Handler()}}.
+
+
+
+Referenced by \doxymbox{\hyperlink{root__task_8c_aca2c7d8f6d456d7fba6e583b40a7c40a}{Root\+\_\+\+Task\+\_\+\+Handler()}}.
+

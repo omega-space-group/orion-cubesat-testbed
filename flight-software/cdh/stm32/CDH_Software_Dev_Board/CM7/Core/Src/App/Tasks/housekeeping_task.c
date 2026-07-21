@@ -25,6 +25,11 @@ static uint8_t ucTaskQueueStorageArea[LOCAL_QUEUE_LENGTH * MSG_SIZE];
 static QueueHandle_t xTaskQueue;
 
 /* Task sync bit (if used) and task priority defined in app_config.h */
+/**
+ * @brief Task's Handler where main logic is executed inside an infinite loop.
+ * @param argument  Pointer to task's local queue handle
+ * @note Pending implementation! However task sets its health bit periodically so it doesn't cause any problems.
+ */
 static void Housekeeping_Handler(void *argument){
 	Subscribe("Housekeeping_Handler",(QueueHandle_t)argument);
 	TaskSync_SetAndWait(HK_BIT);
@@ -44,6 +49,11 @@ static void Housekeeping_Handler(void *argument){
 	}
 }
 
+/**
+ * @brief Task's initialization function.
+ * @details First local queue is created. Then the task itself is created and the queue handle is passed as a task parameter.
+ * @note Check app_config.h for stack configurations
+ */
 void HousekeepingHandler_Init(void) {
 	xTaskQueue = xQueueCreateStatic(LOCAL_QUEUE_LENGTH, MSG_SIZE, ucTaskQueueStorageArea, &xTaskQueueData);
 	xTaskCreateStatic(Housekeeping_Handler,"Housekeeping_Handler",NORMAL_TASK_STACK_SIZE

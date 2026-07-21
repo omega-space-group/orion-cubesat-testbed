@@ -1,5 +1,10 @@
 \doxysection{CM7/\+\+Core/\+\+Src/\+\+App/\+\+Tasks/\+subsystem\+Control\+\_\+task.c File Reference}
 \hypertarget{subsystem_control__task_8c}{}\label{subsystem_control__task_8c}\index{CM7/Core/Src/App/Tasks/subsystemControl\_task.c@{CM7/Core/Src/App/Tasks/subsystemControl\_task.c}}
+
+
+Implementation of the subsystem control logic.  
+
+
 {\ttfamily \+\#include "{}Free\+RTOS.\+h"{}}\newline
 {\ttfamily \+\#include "{}task.\+h"{}}\newline
 {\ttfamily \+\#include $<$App/\+app\+\_\+config.\+h$>$}\newline
@@ -8,8 +13,74 @@
 {\ttfamily \+\#include $<$App/\+\+Tasks/\+subsystem\+Control\+\_\+task.\+h$>$}\newline
 {\ttfamily \+\#include "{}usbd\+\_\+cdc\+\_\+if.\+h"{}}\newline
 {\ttfamily \+\#include $<$stdio.\+h$>$}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \doxymbox{\hyperlink{subsystem_control__task_8c_a4dd4c116c224a39828863a131f899404}{Subsystem\+Control\+\_\+\+Handler}} (void \texorpdfstring{$\ast$}{*}argument)
+\begin{DoxyCompactList}\small\item\em Task\textquotesingle{}s Handler where main logic is executed inside an infinite loop. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{subsystem_control__task_8c_a462adf5807f82c54c2ec34daea519f82}{Subsystem\+Control\+\_\+\+Init}} (void)
+\begin{DoxyCompactList}\small\item\em Task\textquotesingle{}s initialization function. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
+Implementation of the subsystem control logic. 
 
+
+
+\label{subsystem_control__task_8c_doc-func-members}
+\Hypertarget{subsystem_control__task_8c_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{subsystem_control__task_8c_a4dd4c116c224a39828863a131f899404}\index{subsystemControl\_task.c@{subsystemControl\_task.c}!SubsystemControl\_Handler@{SubsystemControl\_Handler}}
+\index{SubsystemControl\_Handler@{SubsystemControl\_Handler}!subsystemControl\_task.c@{subsystemControl\_task.c}}
+\doxysubsubsection{\texorpdfstring{SubsystemControl\_Handler()}{SubsystemControl\_Handler()}}
+{\footnotesize\ttfamily \label{subsystem_control__task_8c_a4dd4c116c224a39828863a131f899404} 
+void Subsystem\+Control\+\_\+\+Handler (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{argument}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Task\textquotesingle{}s Handler where main logic is executed inside an infinite loop. 
+
+Subsystem Control Logic:\+
+\begin{DoxyEnumerate}
+\item Subscribe to topics defined in \doxylink{subscriptions_8c}{subscriptions.\+c}
+\item Set your own sync bit and block until all other tasks have finished initialization before continuing.
+\item Enter infinite loop and set health bit (since task is not periodic).
+\item Block indefinitely until a new message is pushed in the local queue.
+\item Wake up and clear the health bit and begin execution.
+\item Decode the message.
+\item If ERROR MSG and same ERROR MSG has occurred over 3 times, send reset command on the relative subsystem.
+\item Set health bit to 1 again and finish. 
+\begin{DoxyParams}{Parameters}
+{\em argument} & Pointer to task\textquotesingle{}s local queue handle \\
+\hline
+\end{DoxyParams}
+
+\end{DoxyEnumerate}
+
+References \doxymbox{\hyperlink{app__config_8h_a0560169ed6717811a19ca28c11256293abc777eb98dc283307dad9d57db9802a6}{CHANGE\+\_\+\+SYSTEM\+\_\+\+STATE}}, \doxymbox{\hyperlink{subscriptions_8c_ad3332b1450087d0a68dd470140d74a47}{Publish()}}, \doxymbox{\hyperlink{app__config_8h_ae2946618e700f814e6147195c808f4c8aa3a9adacc85c180950255762543c88ac}{SAFE}}, \doxymbox{\hyperlink{subscriptions_8c_a195e703619f15d910cc26b4e17e10850}{Sleep\+Until()}}, \doxymbox{\hyperlink{app__config_8h_ab0af60e8248527f8131652b2fee1db11}{SUBC\+\_\+\+BIT}}, \doxymbox{\hyperlink{subscriptions_8c_adb8a7e8cec223ef73534f0d14094c79a}{Subscribe()}}, \doxymbox{\hyperlink{app__events_8c_a174333602856420f67c1fa54affc5af5}{Task\+Health\+\_\+\+Clear\+Bit()}}, \doxymbox{\hyperlink{app__events_8c_a384c29a086f7e2d03af1568fb5bdf761}{Task\+Health\+\_\+\+Set\+Bit()}}, and \doxymbox{\hyperlink{app__events_8c_a07ff4defe7033e21ccfbb62159df4313}{Task\+Sync\+\_\+\+Set\+And\+Wait()}}.
+
+
+
+Referenced by \doxymbox{\hyperlink{subsystem_control__task_8c_a462adf5807f82c54c2ec34daea519f82}{Subsystem\+Control\+\_\+\+Init()}}.
+
+\Hypertarget{subsystem_control__task_8c_a462adf5807f82c54c2ec34daea519f82}\index{subsystemControl\_task.c@{subsystemControl\_task.c}!SubsystemControl\_Init@{SubsystemControl\_Init}}
+\index{SubsystemControl\_Init@{SubsystemControl\_Init}!subsystemControl\_task.c@{subsystemControl\_task.c}}
+\doxysubsubsection{\texorpdfstring{SubsystemControl\_Init()}{SubsystemControl\_Init()}}
+{\footnotesize\ttfamily \label{subsystem_control__task_8c_a462adf5807f82c54c2ec34daea519f82} 
+void Subsystem\+Control\+\_\+\+Init (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Task\textquotesingle{}s initialization function. 
+
+First local queue is created. Then the task itself is created and the queue handle is passed as a task parameter. \begin{DoxyNote}{Note}
+Check \doxylink{app__config_8h}{app\+\_\+config.\+h} for stack configurations 
+\end{DoxyNote}
+
+
+References \doxymbox{\hyperlink{app__config_8h_a843595a59955f4e62f3d0d2e328e38a2}{LOCAL\+\_\+\+QUEUE\+\_\+\+LENGTH}}, \doxymbox{\hyperlink{app__config_8h_ad4d025ecf1bdbf8b244ca688df8e478d}{MSG\+\_\+\+SIZE}}, \doxymbox{\hyperlink{app__config_8h_a200c2c21eb5510aa388dc932a76e830d}{NORMAL\+\_\+\+TASK\+\_\+\+STACK\+\_\+\+SIZE}}, \doxymbox{\hyperlink{app__config_8h_acd35480f6bf1574471b4d5e62bfefa53}{SUBC\+\_\+\+PR}}, and \doxymbox{\hyperlink{subsystem_control__task_8c_a4dd4c116c224a39828863a131f899404}{Subsystem\+Control\+\_\+\+Handler()}}.
+
+
+
+Referenced by \doxymbox{\hyperlink{root__task_8c_aca2c7d8f6d456d7fba6e583b40a7c40a}{Root\+\_\+\+Task\+\_\+\+Handler()}}.
 

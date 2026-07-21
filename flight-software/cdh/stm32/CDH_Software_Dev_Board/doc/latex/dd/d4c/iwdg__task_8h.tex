@@ -1,0 +1,46 @@
+\doxysection{CM7/\+\+Core/\+\+Inc/\+\+App/\+\+Tasks/\+iwdg\+\_\+task.h File Reference}
+\hypertarget{iwdg__task_8h}{}\label{iwdg__task_8h}\index{CM7/Core/Inc/App/Tasks/iwdg\_task.h@{CM7/Core/Inc/App/Tasks/iwdg\_task.h}}
+
+
+This file contains all the function prototypes for the \doxylink{iwdg__task_8c}{iwdg\+\_\+task.\+c} file.  
+
+
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \doxymbox{\hyperlink{iwdg__task_8h_afd834f61c4ad2072f3ec90c806333edd}{IWDG\+\_\+\+Task\+\_\+\+Init}} (void)
+\begin{DoxyCompactList}\small\item\em Task\textquotesingle{}s initialization function. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This file contains all the function prototypes for the \doxylink{iwdg__task_8c}{iwdg\+\_\+task.\+c} file. 
+
+Implementation of the internal watchdog handler. For more details look into \doxylink{iwdg__task_8c_a0a68ffa4170393dd15895d0b9fdb7f92}{IWDG\+\_\+\+Task\+\_\+\+Handler()}. 
+
+\label{iwdg__task_8h_doc-func-members}
+\Hypertarget{iwdg__task_8h_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{iwdg__task_8h_afd834f61c4ad2072f3ec90c806333edd}\index{iwdg\_task.h@{iwdg\_task.h}!IWDG\_Task\_Init@{IWDG\_Task\_Init}}
+\index{IWDG\_Task\_Init@{IWDG\_Task\_Init}!iwdg\_task.h@{iwdg\_task.h}}
+\doxysubsubsection{\texorpdfstring{IWDG\_Task\_Init()}{IWDG\_Task\_Init()}}
+{\footnotesize\ttfamily \label{iwdg__task_8h_afd834f61c4ad2072f3ec90c806333edd} 
+void IWDG\+\_\+\+Task\+\_\+\+Init (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Task\textquotesingle{}s initialization function. 
+
+\begin{DoxyNote}{Note}
+Check \doxylink{app__config_8h}{app\+\_\+config.\+h} for stack configurations 
+\end{DoxyNote}
+\begin{DoxyWarning}{Warning}
+IWDG Task has no local queue since its not meant to interact with the application. 
+\end{DoxyWarning}
+
+
+References \doxymbox{\hyperlink{iwdg__task_8c_a0a68ffa4170393dd15895d0b9fdb7f92}{IWDG\+\_\+\+Task\+\_\+\+Handler()}}, and \doxymbox{\hyperlink{app__config_8h_a200c2c21eb5510aa388dc932a76e830d}{NORMAL\+\_\+\+TASK\+\_\+\+STACK\+\_\+\+SIZE}}.
+
+
+
+Referenced by \doxymbox{\hyperlink{root__task_8c_aca2c7d8f6d456d7fba6e583b40a7c40a}{Root\+\_\+\+Task\+\_\+\+Handler()}}.
+

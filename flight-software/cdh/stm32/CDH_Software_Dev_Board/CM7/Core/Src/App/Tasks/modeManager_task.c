@@ -42,7 +42,6 @@ State_t CurrentMode = SAFE;
  * 8. Set health bit to 1 again and finish.
  *
  * @note On boot system enters SAFE mode.
- * @note Task runs every 100ms!
  * @param argument  Pointer to task's local queue handle
  */
 static void ModeManager_Handler(void *argument){

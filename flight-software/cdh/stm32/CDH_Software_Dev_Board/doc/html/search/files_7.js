@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['subscriptions_2ec_0',['subscriptions.c',['../d9/df6/subscriptions_8c.html',1,'']]],
-  ['subscriptions_2eh_1',['subscriptions.h',['../d5/d95/subscriptions_8h.html',1,'']]],
-  ['subsystemcontrol_5ftask_2ec_2',['subsystemControl_task.c',['../de/d54/subsystem_control__task_8c.html',1,'']]]
+  ['root_5ftask_2ec_0',['root_task.c',['../d4/d93/root__task_8c.html',1,'']]],
+  ['root_5ftask_2eh_1',['root_task.h',['../d8/dee/root__task_8h.html',1,'']]]
 ];

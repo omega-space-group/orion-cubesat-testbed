@@ -29,9 +29,16 @@ var searchData=
   ['subscriptions_2eh_26',['subscriptions.h',['../d5/d95/subscriptions_8h.html',1,'']]],
   ['subsystem_20control_27',['Subsystem Control',['../db/d9d/group__subsystems__module.html',1,'']]],
   ['subsystem_5fmsg_5fparser_28',['Subsystem_Msg_Parser',['../df/dba/can__rx__task_8c.html#a3ac22077410fb91a154296c96a380a12',1,'can_rx_task.c']]],
-  ['subsystemcontrol_5ftask_2ec_29',['subsystemControl_task.c',['../de/d54/subsystem_control__task_8c.html',1,'']]],
-  ['subsystemname_30',['subsystemName',['../d9/d55/can__rx__task_8h.html#a8f963b5a6361565c648237bcc3fc40d5',1,'can_rx_task.h']]],
-  ['sync_31',['4. Task Sync',['../d1/d35/api_references.html#autotoc_md12',1,'']]],
-  ['system_20requirements_32',['System Requirements',['../index.html#autotoc_md40',1,'']]],
-  ['system_5fstate_33',['SYSTEM_STATE',['../da/d88/app__config_8h.html#a0560169ed6717811a19ca28c11256293afa331522f1b1dda554d1c65e5a0e6061',1,'app_config.h']]]
+  ['subsystemcontrol_5fhandler_29',['SubsystemControl_Handler',['../de/d54/subsystem_control__task_8c.html#a4dd4c116c224a39828863a131f899404',1,'subsystemControl_task.c']]],
+  ['subsystemcontrol_5finit_30',['SubsystemControl_Init',['../de/d54/subsystem_control__task_8c.html#a462adf5807f82c54c2ec34daea519f82',1,'SubsystemControl_Init(void):&#160;subsystemControl_task.c'],['../d4/db3/subsystem_control__task_8h.html#a462adf5807f82c54c2ec34daea519f82',1,'SubsystemControl_Init(void):&#160;subsystemControl_task.c']]],
+  ['subsystemcontrol_5ftask_2ec_31',['subsystemControl_task.c',['../de/d54/subsystem_control__task_8c.html',1,'']]],
+  ['subsystemcontrol_5ftask_2eh_32',['subsystemControl_task.h',['../d4/db3/subsystem_control__task_8h.html',1,'']]],
+  ['subsystemmonitor_5fhandler_33',['SubsystemMonitor_Handler',['../d9/d6a/subsystem_monitoring__task_8c.html#a7a4c1928fe5fba455c0d7d91f8e0f468',1,'subsystemMonitoring_task.c']]],
+  ['subsystemmonitor_5finit_34',['SubsystemMonitor_Init',['../d9/d6a/subsystem_monitoring__task_8c.html#a486f50a679fc22114fc67e8eca45805b',1,'SubsystemMonitor_Init(void):&#160;subsystemMonitoring_task.c'],['../d7/d49/subsystem_monitoring__task_8h.html#a486f50a679fc22114fc67e8eca45805b',1,'SubsystemMonitor_Init(void):&#160;subsystemMonitoring_task.c']]],
+  ['subsystemmonitoring_5ftask_2ec_35',['subsystemMonitoring_task.c',['../d9/d6a/subsystem_monitoring__task_8c.html',1,'']]],
+  ['subsystemmonitoring_5ftask_2eh_36',['subsystemMonitoring_task.h',['../d7/d49/subsystem_monitoring__task_8h.html',1,'']]],
+  ['subsystemname_37',['subsystemName',['../d9/d55/can__rx__task_8h.html#a8f963b5a6361565c648237bcc3fc40d5',1,'can_rx_task.h']]],
+  ['sync_38',['4. Task Sync',['../d1/d35/api_references.html#autotoc_md12',1,'']]],
+  ['system_20requirements_39',['System Requirements',['../index.html#autotoc_md40',1,'']]],
+  ['system_5fstate_40',['SYSTEM_STATE',['../da/d88/app__config_8h.html#a0560169ed6717811a19ca28c11256293afa331522f1b1dda554d1c65e5a0e6061',1,'app_config.h']]]
 ];

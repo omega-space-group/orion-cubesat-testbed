@@ -7,26 +7,32 @@
 /**
  * @defgroup fdir_module Fault Detection, Isolation, and Recovery (FDIR)
  * @brief High-level flight safety, health monitoring, and watchdog tasks.
+ * @details Based on Mission Requirements MIS-REL[01..08] found in Cubesat Testbed Project Overview.pdf
  */
 
 /**
  * @defgroup telemetry_module Housekeeping & Telemetry
  * @brief Serializing, buffering, and transmitting space-to-ground health matrices.
+ * @details Based on Mission Requirement MIS-TM-01 found in Cubesat Testbed Project Overview.pdf
+ *
  */
 
 /**
  * @defgroup telecommand_module Ground Command Execution
  * @brief Handling of Telecommands
+ * @details Based on Mission Requirement MIS-TC-01 found in Cubesat Testbed Project Overview.pdf
  */
 
 /**
  * @defgroup sys_state_module Satellite Modes
  * @brief Run the System State FSM
+ * @details Based on Mission Requirement MIS-OPS-01 found in Cubesat Testbed Project Overview.pdf
  */
 
 /**
  * @defgroup subsystems_module Subsystem Control
  * @brief Something
+ * @details Based on Mission Requirement MIS-CTRL-01 found in Cubesat Testbed Project Overview.pdf
  */
 
 /**

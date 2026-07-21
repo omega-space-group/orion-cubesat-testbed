@@ -1,0 +1,87 @@
+\doxysection{CM7/\+\+Core/\+\+Src/\+\+App/\+\+Tasks/\+telecommand\+Handler\+\_\+task.c File Reference}
+\hypertarget{telecommand_handler__task_8c}{}\label{telecommand_handler__task_8c}\index{CM7/Core/Src/App/Tasks/telecommandHandler\_task.c@{CM7/Core/Src/App/Tasks/telecommandHandler\_task.c}}
+
+
+Implementation of the parsing and handling of Telecommands received from ground.  
+
+
+{\ttfamily \+\#include "{}Free\+RTOS.\+h"{}}\newline
+{\ttfamily \+\#include "{}task.\+h"{}}\newline
+{\ttfamily \+\#include $<$App/\+app\+\_\+config.\+h$>$}\newline
+{\ttfamily \+\#include $<$App/\+\+Services/\+subscriptions.\+h$>$}\newline
+{\ttfamily \+\#include $<$App/\+\+Services/\+app\+\_\+events.\+h$>$}\newline
+{\ttfamily \+\#include $<$App/\+\+Tasks/\+telecommand\+Handler\+\_\+task.\+h$>$}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \doxymbox{\hyperlink{telecommand_handler__task_8c_a67d95f43199d79cb9f84199b955c70df}{Telecommand\+\_\+\+Handler}} (void \texorpdfstring{$\ast$}{*}argument)
+\begin{DoxyCompactList}\small\item\em Task\textquotesingle{}s Handler where main logic is executed inside an infinite loop. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{telecommand_handler__task_8c_a8b884546bdcc9aa24f45e8efd2a2d5df}{Telecommand\+Handler\+\_\+\+Init}} (void)
+\begin{DoxyCompactList}\small\item\em Task\textquotesingle{}s initialization function. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Implementation of the parsing and handling of Telecommands received from ground. 
+
+
+
+\label{telecommand_handler__task_8c_doc-func-members}
+\Hypertarget{telecommand_handler__task_8c_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{telecommand_handler__task_8c_a67d95f43199d79cb9f84199b955c70df}\index{telecommandHandler\_task.c@{telecommandHandler\_task.c}!Telecommand\_Handler@{Telecommand\_Handler}}
+\index{Telecommand\_Handler@{Telecommand\_Handler}!telecommandHandler\_task.c@{telecommandHandler\_task.c}}
+\doxysubsubsection{\texorpdfstring{Telecommand\_Handler()}{Telecommand\_Handler()}}
+{\footnotesize\ttfamily \label{telecommand_handler__task_8c_a67d95f43199d79cb9f84199b955c70df} 
+void Telecommand\+\_\+\+Handler (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{argument}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Task\textquotesingle{}s Handler where main logic is executed inside an infinite loop. 
+
+Telecommand Handling Logic:\+
+\begin{DoxyEnumerate}
+\item Subscribe to topics defined in \doxylink{subscriptions_8c}{subscriptions.\+c}
+\item Set your own sync bit and block until all other tasks have finished initialization before continuing.
+\item Enter infinite loop and set health bit (since task is not periodic).
+\item Block indefinitely until a new message is pushed in the local queue.
+\item Wake up and clear the health bit and begin execution.
+\item Parse the command (Authenticate -\/\texorpdfstring{$>$}{>} Decode (Package then PUS))
+\item Execute TC if valid.
+\item Set health bit to 1 again and finish. \begin{DoxyNote}{Note}
+For testing purposes, the handler responds only to TC to change state to SAFE or NOMINAL at the moment. 
+\end{DoxyNote}
+
+\begin{DoxyParams}{Parameters}
+{\em argument} & Pointer to task\textquotesingle{}s local queue handle \\
+\hline
+\end{DoxyParams}
+
+\end{DoxyEnumerate}
+
+References \doxymbox{\hyperlink{app__config_8h_a0560169ed6717811a19ca28c11256293abc777eb98dc283307dad9d57db9802a6}{CHANGE\+\_\+\+SYSTEM\+\_\+\+STATE}}, \doxymbox{\hyperlink{app__config_8h_ae2946618e700f814e6147195c808f4c8ae2bd7b57b3f0bb02e66e42dbacc5c7fc}{NOMINAL}}, \doxymbox{\hyperlink{subscriptions_8c_ad3332b1450087d0a68dd470140d74a47}{Publish()}}, \doxymbox{\hyperlink{app__config_8h_ae2946618e700f814e6147195c808f4c8aa3a9adacc85c180950255762543c88ac}{SAFE}}, \doxymbox{\hyperlink{subscriptions_8c_a195e703619f15d910cc26b4e17e10850}{Sleep\+Until()}}, \doxymbox{\hyperlink{subscriptions_8c_adb8a7e8cec223ef73534f0d14094c79a}{Subscribe()}}, \doxymbox{\hyperlink{app__events_8c_a174333602856420f67c1fa54affc5af5}{Task\+Health\+\_\+\+Clear\+Bit()}}, \doxymbox{\hyperlink{app__events_8c_a384c29a086f7e2d03af1568fb5bdf761}{Task\+Health\+\_\+\+Set\+Bit()}}, \doxymbox{\hyperlink{app__events_8c_a07ff4defe7033e21ccfbb62159df4313}{Task\+Sync\+\_\+\+Set\+And\+Wait()}}, and \doxymbox{\hyperlink{app__config_8h_a7777db792b63724d39c9c7ea68b6b03a}{TC\+\_\+\+BIT}}.
+
+
+
+Referenced by \doxymbox{\hyperlink{telecommand_handler__task_8c_a8b884546bdcc9aa24f45e8efd2a2d5df}{Telecommand\+Handler\+\_\+\+Init()}}.
+
+\Hypertarget{telecommand_handler__task_8c_a8b884546bdcc9aa24f45e8efd2a2d5df}\index{telecommandHandler\_task.c@{telecommandHandler\_task.c}!TelecommandHandler\_Init@{TelecommandHandler\_Init}}
+\index{TelecommandHandler\_Init@{TelecommandHandler\_Init}!telecommandHandler\_task.c@{telecommandHandler\_task.c}}
+\doxysubsubsection{\texorpdfstring{TelecommandHandler\_Init()}{TelecommandHandler\_Init()}}
+{\footnotesize\ttfamily \label{telecommand_handler__task_8c_a8b884546bdcc9aa24f45e8efd2a2d5df} 
+void Telecommand\+Handler\+\_\+\+Init (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Task\textquotesingle{}s initialization function. 
+
+First local queue is created. Then the task itself is created and the queue handle is passed as a task parameter. \begin{DoxyNote}{Note}
+Check \doxylink{app__config_8h}{app\+\_\+config.\+h} for stack configurations 
+\end{DoxyNote}
+
+
+References \doxymbox{\hyperlink{app__config_8h_a843595a59955f4e62f3d0d2e328e38a2}{LOCAL\+\_\+\+QUEUE\+\_\+\+LENGTH}}, \doxymbox{\hyperlink{app__config_8h_ad4d025ecf1bdbf8b244ca688df8e478d}{MSG\+\_\+\+SIZE}}, \doxymbox{\hyperlink{app__config_8h_a200c2c21eb5510aa388dc932a76e830d}{NORMAL\+\_\+\+TASK\+\_\+\+STACK\+\_\+\+SIZE}}, \doxymbox{\hyperlink{app__config_8h_a7cc550f1475a6f83dbc54d2ec940be71}{TC\+\_\+\+PR}}, and \doxymbox{\hyperlink{telecommand_handler__task_8c_a67d95f43199d79cb9f84199b955c70df}{Telecommand\+\_\+\+Handler()}}.
+
+
+
+Referenced by \doxymbox{\hyperlink{root__task_8c_aca2c7d8f6d456d7fba6e583b40a7c40a}{Root\+\_\+\+Task\+\_\+\+Handler()}}.
+

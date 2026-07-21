@@ -1,0 +1,72 @@
+\doxysection{CM7/\+\+Core/\+\+Src/\+\+App/\+\+Tasks/\+iwdg\+\_\+task.c File Reference}
+\hypertarget{iwdg__task_8c}{}\label{iwdg__task_8c}\index{CM7/Core/Src/App/Tasks/iwdg\_task.c@{CM7/Core/Src/App/Tasks/iwdg\_task.c}}
+
+
+Implementation of the internal watchdog handler.  
+
+
+{\ttfamily \+\#include "{}Free\+RTOS.\+h"{}}\newline
+{\ttfamily \+\#include "{}task.\+h"{}}\newline
+{\ttfamily \+\#include "{}iwdg.\+h"{}}\newline
+{\ttfamily \+\#include $<$App/\+app\+\_\+config.\+h$>$}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \doxymbox{\hyperlink{iwdg__task_8c_a0a68ffa4170393dd15895d0b9fdb7f92}{IWDG\+\_\+\+Task\+\_\+\+Handler}} (void \texorpdfstring{$\ast$}{*}argument)
+\begin{DoxyCompactList}\small\item\em Task\textquotesingle{}s Handler where main logic is executed inside an infinite loop. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{iwdg__task_8c_afd834f61c4ad2072f3ec90c806333edd}{IWDG\+\_\+\+Task\+\_\+\+Init}} (void)
+\begin{DoxyCompactList}\small\item\em Task\textquotesingle{}s initialization function. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Implementation of the internal watchdog handler. 
+
+
+
+\label{iwdg__task_8c_doc-func-members}
+\Hypertarget{iwdg__task_8c_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{iwdg__task_8c_a0a68ffa4170393dd15895d0b9fdb7f92}\index{iwdg\_task.c@{iwdg\_task.c}!IWDG\_Task\_Handler@{IWDG\_Task\_Handler}}
+\index{IWDG\_Task\_Handler@{IWDG\_Task\_Handler}!iwdg\_task.c@{iwdg\_task.c}}
+\doxysubsubsection{\texorpdfstring{IWDG\_Task\_Handler()}{IWDG\_Task\_Handler()}}
+{\footnotesize\ttfamily \label{iwdg__task_8c_a0a68ffa4170393dd15895d0b9fdb7f92} 
+void IWDG\+\_\+\+Task\+\_\+\+Handler (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{argument}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Task\textquotesingle{}s Handler where main logic is executed inside an infinite loop. 
+
+Task kicks the watchdog every 300ms. \begin{DoxyNote}{Note}
+Task runs every 300ms. 
+\end{DoxyNote}
+\begin{DoxyWarning}{Warning}
+IWDG will be replaced by an external watchdog IC on the custom OBC. 
+\end{DoxyWarning}
+
+
+Referenced by \doxymbox{\hyperlink{iwdg__task_8c_afd834f61c4ad2072f3ec90c806333edd}{IWDG\+\_\+\+Task\+\_\+\+Init()}}.
+
+\Hypertarget{iwdg__task_8c_afd834f61c4ad2072f3ec90c806333edd}\index{iwdg\_task.c@{iwdg\_task.c}!IWDG\_Task\_Init@{IWDG\_Task\_Init}}
+\index{IWDG\_Task\_Init@{IWDG\_Task\_Init}!iwdg\_task.c@{iwdg\_task.c}}
+\doxysubsubsection{\texorpdfstring{IWDG\_Task\_Init()}{IWDG\_Task\_Init()}}
+{\footnotesize\ttfamily \label{iwdg__task_8c_afd834f61c4ad2072f3ec90c806333edd} 
+void IWDG\+\_\+\+Task\+\_\+\+Init (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Task\textquotesingle{}s initialization function. 
+
+\begin{DoxyNote}{Note}
+Check \doxylink{app__config_8h}{app\+\_\+config.\+h} for stack configurations 
+\end{DoxyNote}
+\begin{DoxyWarning}{Warning}
+IWDG Task has no local queue since its not meant to interact with the application. 
+\end{DoxyWarning}
+
+
+References \doxymbox{\hyperlink{iwdg__task_8c_a0a68ffa4170393dd15895d0b9fdb7f92}{IWDG\+\_\+\+Task\+\_\+\+Handler()}}, and \doxymbox{\hyperlink{app__config_8h_a200c2c21eb5510aa388dc932a76e830d}{NORMAL\+\_\+\+TASK\+\_\+\+STACK\+\_\+\+SIZE}}.
+
+
+
+Referenced by \doxymbox{\hyperlink{root__task_8c_aca2c7d8f6d456d7fba6e583b40a7c40a}{Root\+\_\+\+Task\+\_\+\+Handler()}}.
+

@@ -5,9 +5,39 @@
 This file contains all the function prototypes for the \doxylink{housekeeping__task_8c}{housekeeping\+\_\+task.\+c} file.  
 
 
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \doxymbox{\hyperlink{housekeeping__task_8h_ade6a9a41e6fdb411ece45a8adef9308f}{Housekeeping\+Handler\+\_\+\+Init}} (void)
+\begin{DoxyCompactList}\small\item\em Task\textquotesingle{}s initialization function. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
 This file contains all the function prototypes for the \doxylink{housekeeping__task_8c}{housekeeping\+\_\+task.\+c} file. 
 
-This module manages the data request and acquisition from itself and the subsystems and also the logging and downlink when possible. 
+This module manages the data request and acquisition from itself and the subsystems and also the logging and downlink when possible. For more information look into \doxylink{housekeeping__task_8c_af66a7d4fbff590f988caf66da2869a25}{Housekeeping\+\_\+\+Handler()}. 
+
+\label{housekeeping__task_8h_doc-func-members}
+\Hypertarget{housekeeping__task_8h_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{housekeeping__task_8h_ade6a9a41e6fdb411ece45a8adef9308f}\index{housekeeping\_task.h@{housekeeping\_task.h}!HousekeepingHandler\_Init@{HousekeepingHandler\_Init}}
+\index{HousekeepingHandler\_Init@{HousekeepingHandler\_Init}!housekeeping\_task.h@{housekeeping\_task.h}}
+\doxysubsubsection{\texorpdfstring{HousekeepingHandler\_Init()}{HousekeepingHandler\_Init()}}
+{\footnotesize\ttfamily \label{housekeeping__task_8h_ade6a9a41e6fdb411ece45a8adef9308f} 
+void Housekeeping\+Handler\+\_\+\+Init (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Task\textquotesingle{}s initialization function. 
+
+First local queue is created. Then the task itself is created and the queue handle is passed as a task parameter. \begin{DoxyNote}{Note}
+Check \doxylink{app__config_8h}{app\+\_\+config.\+h} for stack configurations 
+\end{DoxyNote}
+
+
+References \doxymbox{\hyperlink{app__config_8h_a86ffc6dd953ae37e24aa838bc836cee8}{HK\+\_\+\+PR}}, \doxymbox{\hyperlink{housekeeping__task_8c_af66a7d4fbff590f988caf66da2869a25}{Housekeeping\+\_\+\+Handler()}}, \doxymbox{\hyperlink{app__config_8h_a843595a59955f4e62f3d0d2e328e38a2}{LOCAL\+\_\+\+QUEUE\+\_\+\+LENGTH}}, \doxymbox{\hyperlink{app__config_8h_ad4d025ecf1bdbf8b244ca688df8e478d}{MSG\+\_\+\+SIZE}}, and \doxymbox{\hyperlink{app__config_8h_a200c2c21eb5510aa388dc932a76e830d}{NORMAL\+\_\+\+TASK\+\_\+\+STACK\+\_\+\+SIZE}}.
+
+
+
+Referenced by \doxymbox{\hyperlink{root__task_8c_aca2c7d8f6d456d7fba6e583b40a7c40a}{Root\+\_\+\+Task\+\_\+\+Handler()}}.
+
