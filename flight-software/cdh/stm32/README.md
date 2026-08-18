@@ -1,53 +1,69 @@
-# Google Summer of Code 2026 Work Product Submission
+# Orion CubeSat Testbed: CDH Flight Software
+**Google Summer of Code 2026 Work Product Submission**
 
-**Student:** [Archontia (Ada) Roufogali]  
-**Organization:** [Omega Space Group / National Technical University of Athens]
-**Project:** [Message-Based Flight Software Architecture for CubeSats]  
-**Mentors:** [Simon Vellas]
+**Student:** Ada Roufogali 
+**Organization:** Omega Space Group  
+**Project:** Message-Based Flight Software Architecture for CubeSats  
+**Mentors:** Simon Vellas 
 
-## 🚀 Project Overview
+---
 
-The objective of this project was to develop, optimize, and document the Command and Data Handling (CDH) flight software for the Orion CubeSat Testbed, specifically targeting the STM32 Development Board. 
+## 🚀 Technical Overview
 
-Over the course of GSoC, my work focused on establishing a robust software architecture, implementing the software bus, handling task creation, and ensuring the system is thoroughly documented for future contributors.
+This repository contains the Command and Data Handling (CDH) flight software for the Orion CubeSat Testbed, developed specifically for the STM32 Development Board (Nucleo-H755ZI-Q). The system is built on **FreeRTOS v10.3.1** (CMSIS-RTOS V2 wrapper) and targets the **STM32H755ZI Dual-Core MCU** (Cortex-M7 & Cortex-M4 running at 64 MHz).
 
-## 📖 Documentation & Manuals
+### Core Architecture: Publish/Subscribe Software Bus
+At the heart of the flight software is a lightweight, message-based **Publish/Subscribe (Pub/Sub) Software Bus**, heavily inspired by NASA’s Core Flight System (cFS). This architecture guarantees decoupled, highly modular communication between critical software components such as telemetry, power management, and ADCS.
 
-A major component of my deliverables was the creation of a comprehensive developer manual. This documentation serves as the foundation for the CDH Software Development Board and includes detailed guides on system architecture and API usage. 
+**Key Technical Highlights:**
+*   **Static Allocation:** Every task is instantiated using statically allocated memory, pairing a thread with its own local queue.
+*   **Bus Dispatching:** Publishers push messages to a central Master Queue. A high-priority Dispatcher Task then references a static Subscription Table and copies messages into the local queues of subscribed tasks.
+*   **Event Groups & Synchronization:** Implemented native FreeRTOS Event Groups acting as Thread Sync Barriers (`TaskSync_SetAndWait`) and comprehensive Health Checks (`TaskHealth_SetBit`), ensuring safe boot sequences and runtime stability.
+*   **Dual-Core Execution:** The boot sequence is orchestrated by the primary Cortex-M7 core, which configures system clocks and peripherals before waking the Cortex-M4. Debugging relies on independent GDB servers synchronized via the Cross-Trigger Interface (CTI).
 
-You can explore the generated manuals here:
+---
 
-*   **[Software Bus Architecture](https://omega-space-group.github.io/orion-cubesat-testbed/flight-software/cdh/stm32/CDH_Software_Dev_Board/doc/html/d8/ded/software_bus.html)**: Details the message-passing system and how different software components communicate within the CDH module.
-*   **[API References](https://omega-space-group.github.io/orion-cubesat-testbed/flight-software/cdh/stm32/CDH_Software_Dev_Board/doc/html/d1/d35/api_references.html)**: Complete documentation of the functions, structures, and interfaces developed for the flight software.
-*   **[Task Creation Guide](https://omega-space-group.github.io/orion-cubesat-testbed/flight-software/cdh/stm32/CDH_Software_Dev_Board/doc/html/de/d28/task_creation.html)**: Instructions and standards for defining, spawning, and managing RTOS tasks on the STM32 board.
-*   **[Flash and Debugging](https://omega-space-group.github.io/orion-cubesat-testbed/flight-software/cdh/stm32/CDH_Software_Dev_Board/doc/html/d4/d87/flash_and_debug.html)**: A step-by-step guide for flashing the compiled firmware onto the hardware and setting up the debugging environment.
+## 📖 Developer Manuals & API Reference
+
+Comprehensive documentation for the CDH subsystem has been generated via Doxygen and deployed to GitHub Pages. Here is the documentation for the core framework and setup:
+
+*   **[Software Bus Architecture](https://omega-space-group.github.io/orion-cubesat-testbed/flight-software/cdh/stm32/CDH_Software_Dev_Board/doc/html/d8/ded/software_bus.html)**
+    *   Details the Pub/Sub model, Master Queue vs. Local Queue routing, and message dispatching timelines.
+*   **[API References](https://omega-space-group.github.io/orion-cubesat-testbed/flight-software/cdh/stm32/CDH_Software_Dev_Board/doc/html/d1/d35/api_references.html)**
+    *   Complete API specifications including `Subscribe()`, `Publish()`, `SleepUntil()`, and the Task Health/Sync macros.
+*   **[Task Creation Guide](https://omega-space-group.github.io/orion-cubesat-testbed/flight-software/cdh/stm32/CDH_Software_Dev_Board/doc/html/de/d28/task_creation.html)**
+    *   Architectural templates for initializing periodic and non-periodic (event-driven) tasks using FreeRTOS static allocation.
+*   **[Flash and Debugging Guide](https://omega-space-group.github.io/orion-cubesat-testbed/flight-software/cdh/stm32/CDH_Software_Dev_Board/doc/html/d4/d87/flash_and_debug.html)**
+    *   Configuration steps for compiling, single-click dual-core flashing, and establishing CTI synchronization in STM32CubeIDE. Includes vital workarounds for internal watchdog (IWDG1) auto-generation issues.
+
+---
 
 ## 💻 Code Contributions
 
-*All code written during this period was merged into the dev organization repository. Below is a summary of my contributions:*
+All developed code has been reviewed and merged into the main organization repository. Below is a direct mapping of the changes introduced during this period:
 
-*   **Primary Repository:** [Link to the main repo, e.g., omega-space-group/orion-cubesat-testbed]
-*   **My Commits:** [Link to a filtered view of your commits, e.g., GitHub commit search `author:yourusername`]
+*   **Target Repository:** https://omega-space-group.github.io/orion-cubesat-testbed/
+*   **Commit History:** https://github.com/omega-space-group/orion-cubesat-testbed/commits/main?author=Ada-Roufogali
 
 ### Key Pull Requests
-1.  **[Title of PR 1](#)** - *Merged* - Implemented the core Software Bus mechanics.
-2.  **[Title of PR 2](#)** - *Merged* - Refactored Task Creation and integrated RTOS standards.
-3.  **[Title of PR 3](#)** - *Open/Under Review* - Added complete Doxygen documentation pipeline.
-*(Add or remove PRs as necessary, keeping descriptions to one brief sentence).*
+1.  **[Title of PR 1: Core Pub/Sub Software Bus Implementation](#)** - *Merged* - Established the Master Queue, Dispatcher thread, and local task routing logic.
+2.  **[Title of PR 2: FreeRTOS Task Synchronization & Health Event Groups](#)** - *Merged* - Built robust startup barriers and runtime watchdog tracking logic.
+3.  **[Title of PR 3: Hardware Peripherals & Dual-Core Boot Sequence](#)** - *Merged* - Boot configuration for CM7/CM4, FDCAN1 setup for payloads, and Systick/TIM6 priority assignments.
 
-## 🏁 Current State & What's Left
+---
 
-**What works:**
-*   The software bus successfully routes messages between core subsystems.
-*   RTOS tasks can be created and scheduled according to the newly documented standards.
-*   The API is fully documented, and the Doxygen pipeline generates the manual automatically.
-*   Flashing and debugging workflows are verified on the STM32 hardware.
+## 🏁 Current State
 
-**What's left / Future Work:**
-*   [e.g., Implementing specific sensor drivers to communicate over the software bus.]
-*   [e.g., Expanding hardware-in-the-loop (HIL) testing.]
-*   [e.g., Optimizing power consumption during idle RTOS tasks.]
+*   **Software Bus Routing:** Fully operational. Messages are reliably dispatched from publishers to multiple subscribers without deadlocks.
+*   **Task Management:** Standardized templates for periodic and message-driven (non-periodic) tasks are successfully integrated.
+*   **Dual-Core Integration:** Flashing, hardware booting, and CTI debugging between the M7 and M4 cores are fully stable in the testing environment.
+
+## 🚀 Future Work
+*   **Zero-Copy Optimization:** Transition the Dispatcher's message delivery mechanism to a zero-copy pointer-passing approach to save MCU cycles and memory overhead.
+*   **Error Handling:** Implement robust bus error handlers (e.g., checking for saturated local queues, crash recovery during push/pop operations).
+*   **Watchdog Integration:** Finalize hardware timing specifications to safely re-enable the MCU internal watchdog (`IWDG1`) without interrupting standard testing loops.
+
+---
 
 ## 🙏 Acknowledgments
-
-I want to extend a huge thank you to my mentors, [Mentor Names], for their guidance, patience, and expertise throughout the summer. Working on the Orion CubeSat Testbed has been an incredible learning experience in embedded systems and flight software engineering!
+A massive thank you to my mentors, [Mentor Names], for their invaluable technical guidance and support. Working within the STM32 hardware ecosystem and developing scalable RTOS flight software for the Orion CubeSat has been an exceptionally rewarding engineering journey!
