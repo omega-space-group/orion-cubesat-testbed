@@ -43,7 +43,7 @@ Comprehensive documentation for the CDH subsystem has been generated via Doxygen
 All developed code has been reviewed and merged into the main organization repository. Below is a direct mapping of the changes introduced during this period:
 
 *   **Target Repository:** https://omega-space-group.github.io/orion-cubesat-testbed/
-*   **Commit History:** https://github.com/omega-space-group/orion-cubesat-testbed/commits/gsoc?author=Ada-Roufogali
+*   **Commit History:** https://github.com/omega-space-group/orion-cubesat-testbed/commits/gsoc?author=adaroufogali
 
 ### Key Pull Requests
 1.  **[Title of PR 1: Core Pub/Sub Software Bus Implementation](#)** - *Merged* - Established the Master Queue, Dispatcher thread, and local task routing logic.
