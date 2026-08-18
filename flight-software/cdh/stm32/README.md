@@ -40,23 +40,47 @@ Comprehensive documentation for the CDH subsystem has been generated via Doxygen
 
 ## 💻 Code Contributions
 
-All developed code has been reviewed and merged into the main organization repository. Below is a direct mapping of the changes introduced during this period:
+All developed code has been reviewed and merged into the dev organization repository. Below is a direct mapping of the changes introduced during this period:
 
 *   **Target Repository:** https://omega-space-group.github.io/orion-cubesat-testbed/
 *   **Commit History:** https://github.com/omega-space-group/orion-cubesat-testbed/commits/gsoc?author=adaroufogali
 
-### Key Pull Requests
-1.  **[Title of PR 1: Core Pub/Sub Software Bus Implementation](#)** - *Merged* - Established the Master Queue, Dispatcher thread, and local task routing logic.
-2.  **[Title of PR 2: FreeRTOS Task Synchronization & Health Event Groups](#)** - *Merged* - Built robust startup barriers and runtime watchdog tracking logic.
-3.  **[Title of PR 3: Hardware Peripherals & Dual-Core Boot Sequence](#)** - *Merged* - Boot configuration for CM7/CM4, FDCAN1 setup for payloads, and Systick/TIM6 priority assignments.
-
 ---
 
-## 🏁 Current State
+# Flight Software Core
 
-*   **Software Bus Routing:** Fully operational. Messages are reliably dispatched from publishers to multiple subscribers without deadlocks.
-*   **Task Management:** Standardized templates for periodic and message-driven (non-periodic) tasks are successfully integrated.
-*   **Dual-Core Integration:** Flashing, hardware booting, and CTI debugging between the M7 and M4 cores are fully stable in the testing environment.
+This project serves as the **heart of the flight software**. It is designed with modularity in mind: you can easily port this architecture by dropping the `/App` directory into your own STM32 project. Doing so provides you with an instant, robust, message-based flight software foundation, allowing you to focus entirely on building your custom application tasks.
+
+## Core Capabilities
+
+*   **Software Bus Routing:** Fully operational. Messages are reliably dispatched from publishers to multiple subscribers without deadlocks. The subscription table is highly adaptable and can be easily customized to fit the specific needs of your application.
+*   **Task Management:** Successfully integrates standardized templates for both periodic and message-driven (non-periodic) tasks. This streamlines the development of new custom tasks tailored to your specific mission requirements.
+
+## Implemented Tasks
+
+The following core tasks have been fully implemented and can be used directly. *Note: Detailed explanations of their functionality can be found in the user manual.*
+
+| Task File | Description | Status |
+| :--- | :--- | :--- |
+| `can_rx_task.c` | Parses FDCAN messages received over the CAN bus. | **TESTED** |
+| `dispatcher_task.c` | Handles the dispatcher and master queue logic. | **TESTED** |
+| `healthMonitor_task.c` | Performs background execution checks and task accounting. | **TESTED** |
+| `modeManager_task.c` | Manages the System State/Mode Finite State Machine (FSM). | **TESTED** |
+| `root_task.c` | Starts all peripherals and spawns (initializes) every other task. | **TESTED** |
+| `subsystemControl_task.c` | Manages subsystem control logic. | **TESTED** |
+| `subsystemMonitoring_task.c`| Handles subsystem monitoring logic. | **TESTED** |
+| `telecommandHandler_task.c` | Parses and handles Telecommands received from the ground station. | **TESTED** |
+| `housekeeping_task.c` | Acquires telemetry data and manages logging/downlinking. | *NOT TESTED* |
+| `iwdg_task.c` | Handles the internal watchdog (IWDG). | *NOT TESTED* |
+
+## Shared Services
+
+Services are centralized utility functions that tasks share to perform specific operations efficiently:
+
+*   **`app_events.c`**: Implements all application-level events necessary for event triggering and task synchronization.
+*   **`subscriptions.c`**: Implements the core Publisher/Subscriber message routing logic. *For a comprehensive breakdown of how this routing system works, please refer to our [Documentation](link-to-docs).*
+
+---
 
 ## 🚀 Future Work
 *   **Zero-Copy Optimization:** Transition the Dispatcher's message delivery mechanism to a zero-copy pointer-passing approach to save MCU cycles and memory overhead.
