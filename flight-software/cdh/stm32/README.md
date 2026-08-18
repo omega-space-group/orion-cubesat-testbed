@@ -2,7 +2,7 @@
 **Google Summer of Code 2026 Work Product Submission**
 
 **Student:** Ada Roufogali
-**Organization:** Omega Space Group  
+**Organization:** Orion Space Group | National Technical University of Athens
 **Project:** Message-Based Flight Software Architecture for CubeSats  
 **Mentors:** Simon Vellas 
 
@@ -47,16 +47,16 @@ All developed code has been reviewed and merged into the dev organization reposi
 
 ---
 
-# Flight Software Core
+## Flight Software Core
 
 This project serves as the **heart of the flight software**. It is designed with modularity in mind: you can easily port this architecture by dropping the `/App` directory into your own STM32 project. Doing so provides you with an instant, robust, message-based flight software foundation, allowing you to focus entirely on building your custom application tasks.
 
-## Core Capabilities
+### Core Capabilities
 
 *   **Software Bus Routing:** Fully operational. Messages are reliably dispatched from publishers to multiple subscribers without deadlocks. The subscription table is highly adaptable and can be easily customized to fit the specific needs of your application.
 *   **Task Management:** Successfully integrates standardized templates for both periodic and message-driven (non-periodic) tasks. This streamlines the development of new custom tasks tailored to your specific mission requirements.
 
-## Implemented Tasks
+### Implemented Tasks
 
 The following core tasks have been fully implemented and can be used directly. *Note: Detailed explanations of their functionality can be found in the user manual.*
 
@@ -73,7 +73,7 @@ The following core tasks have been fully implemented and can be used directly. *
 | `housekeeping_task.c` | Acquires telemetry data and manages logging/downlinking. | *NOT TESTED* |
 | `iwdg_task.c` | Handles the internal watchdog (IWDG). | *NOT TESTED* |
 
-## Shared Services
+### Shared Services
 
 Services are centralized utility functions that tasks share to perform specific operations efficiently:
 
