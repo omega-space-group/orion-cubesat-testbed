@@ -25,7 +25,7 @@ At the heart of the flight software is a lightweight, message-based **Publish/Su
 
 ## 📖 Developer Manuals & API Reference
 
-Comprehensive documentation for the CDH subsystem has been generated via Doxygen and deployed to GitHub Pages. Here is the documentation for the core framework and setup:
+Comprehensive [documentation](https://omega-space-group.github.io/orion-cubesat-testbed/flight-software/cdh/stm32/CDH_Software_Dev_Board/doc/html/index.html) for the CDH subsystem has been generated via Doxygen and deployed to GitHub Pages. Here is the documentation for the core framework and setup:
 
 *   **[Software Bus Architecture](https://omega-space-group.github.io/orion-cubesat-testbed/flight-software/cdh/stm32/CDH_Software_Dev_Board/doc/html/d8/ded/software_bus.html)**
     *   Details the Pub/Sub model, Master Queue vs. Local Queue routing, and message dispatching timelines.
