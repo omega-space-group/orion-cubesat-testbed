@@ -2,7 +2,6 @@
 **Google Summer of Code 2026 Work Product Submission**
 
 **Student:** Ada Roufogali
-
 **Organization:** Omega Space Group  
 **Project:** Message-Based Flight Software Architecture for CubeSats  
 **Mentors:** Simon Vellas 
