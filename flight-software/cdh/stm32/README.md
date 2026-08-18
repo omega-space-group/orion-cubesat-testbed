@@ -1,9 +1,9 @@
 # Google Summer of Code 2026 Work Product Submission
 
-**Student:** [Your Name]  
-**Organization:** [Omega Space Group / Organization Name]  
-**Project:** [Exact Project Title, e.g., Flight Software Development for Orion CubeSat CDH]  
-**Mentors:** [Mentor 1 Name], [Mentor 2 Name]  
+**Student:** [Archontia (Ada) Roufogali]  
+**Organization:** [Omega Space Group / National Technical University of Athens]
+**Project:** [Message-Based Flight Software Architecture for CubeSats]  
+**Mentors:** [Simon Vellas]
 
 ## 🚀 Project Overview
 
@@ -24,7 +24,7 @@ You can explore the generated manuals here:
 
 ## 💻 Code Contributions
 
-*All code written during this period was merged into the main organization repository. Below is a summary of my contributions:*
+*All code written during this period was merged into the dev organization repository. Below is a summary of my contributions:*
 
 *   **Primary Repository:** [Link to the main repo, e.g., omega-space-group/orion-cubesat-testbed]
 *   **My Commits:** [Link to a filtered view of your commits, e.g., GitHub commit search `author:yourusername`]
