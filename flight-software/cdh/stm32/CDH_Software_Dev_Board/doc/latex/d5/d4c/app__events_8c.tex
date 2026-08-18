@@ -1,0 +1,142 @@
+\doxysection{CM7/\+\+Core/\+\+Src/\+\+App/\+\+Services/\+app\+\_\+events.c File Reference}
+\hypertarget{app__events_8c}{}\label{app__events_8c}\index{CM7/Core/Src/App/Services/app\_events.c@{CM7/Core/Src/App/Services/app\_events.c}}
+
+
+Implementation of all application events.  
+
+
+{\ttfamily \+\#include "{}Free\+RTOS.\+h"{}}\newline
+{\ttfamily \+\#include "{}event\+\_\+groups.\+h"{}}\newline
+{\ttfamily \+\#include $<$App/\+\+Services/\+app\+\_\+events.\+h$>$}\newline
+{\ttfamily \+\#include $<$App/\+app\+\_\+config.\+h$>$}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{app__events_8c_a3f95efb0848f050e56b5840715d56c7c}\label{app__events_8c_a3f95efb0848f050e56b5840715d56c7c} 
+void {\bfseries Task\+Sync\+\_\+\+Init} (void)
+\begin{DoxyCompactList}\small\item\em Initialization of task synchronization event group. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{app__events_8c_a07ff4defe7033e21ccfbb62159df4313}{Task\+Sync\+\_\+\+Set\+And\+Wait}} (Event\+Bits\+\_\+t task\+Bit)
+\begin{DoxyCompactList}\small\item\em Acts as a Thread Sync Barrier. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{app__events_8c_a786e32b482933fe78a16a27a49a9b2e2}{Task\+Sync\+\_\+\+Wait\+For\+All}} (void)
+\begin{DoxyCompactList}\small\item\em Acts as a Thread Sync Barrier. \end{DoxyCompactList}\item 
+\Hypertarget{app__events_8c_a78aceff648bff00067552c1ae95e89fc}\label{app__events_8c_a78aceff648bff00067552c1ae95e89fc} 
+void {\bfseries Task\+Health\+\_\+\+Init} (void)
+\begin{DoxyCompactList}\small\item\em Initializes task health check event group. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{app__events_8c_a384c29a086f7e2d03af1568fb5bdf761}{Task\+Health\+\_\+\+Set\+Bit}} (Event\+Bits\+\_\+t bit)
+\begin{DoxyCompactList}\small\item\em Sets task bit to health check event group. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{app__events_8c_a174333602856420f67c1fa54affc5af5}{Task\+Health\+\_\+\+Clear\+Bit}} (Event\+Bits\+\_\+t bit)
+\begin{DoxyCompactList}\small\item\em Clears task bit to health check event group. \end{DoxyCompactList}\item 
+\Hypertarget{app__events_8c_acb0cb16b39bae1effdef4b84e2007e0f}\label{app__events_8c_acb0cb16b39bae1effdef4b84e2007e0f} 
+void {\bfseries Task\+Health\+\_\+\+Clear\+All} (void)
+\begin{DoxyCompactList}\small\item\em Clears health check event mask. \end{DoxyCompactList}\item 
+Event\+Bits\+\_\+t \doxymbox{\hyperlink{app__events_8c_a5cc34f3b8c4e2100404eca52a1a02453}{Task\+Health\+\_\+\+Read}} (void)
+\begin{DoxyCompactList}\small\item\em Returns the value of the health check event mask. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Implementation of all application events. 
+
+
+
+\label{app__events_8c_doc-func-members}
+\Hypertarget{app__events_8c_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{app__events_8c_a174333602856420f67c1fa54affc5af5}\index{app\_events.c@{app\_events.c}!TaskHealth\_ClearBit@{TaskHealth\_ClearBit}}
+\index{TaskHealth\_ClearBit@{TaskHealth\_ClearBit}!app\_events.c@{app\_events.c}}
+\doxysubsubsection{\texorpdfstring{TaskHealth\_ClearBit()}{TaskHealth\_ClearBit()}}
+{\footnotesize\ttfamily \label{app__events_8c_a174333602856420f67c1fa54affc5af5} 
+void Task\+Health\+\_\+\+Clear\+Bit (\begin{DoxyParamCaption}\item[{Event\+Bits\+\_\+t}]{bit}{}\end{DoxyParamCaption})}
+
+
+
+Clears task bit to health check event group. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em bit} & Task bit defined in \doxylink{app__config_8h}{app\+\_\+config.\+h} \\
+\hline
+\end{DoxyParams}
+
+
+Referenced by \doxymbox{\hyperlink{dispatcher__task_8c_a471a79b618b429dac39b0ffd0c77049e}{Dispatcher\+\_\+\+Task\+\_\+\+Handler()}}, \doxymbox{\hyperlink{mode_manager__task_8c_ae5180377d2e4e13d2b0f1344658df6d4}{Mode\+Manager\+\_\+\+Handler()}}, \doxymbox{\hyperlink{subsystem_control__task_8c_a4dd4c116c224a39828863a131f899404}{Subsystem\+Control\+\_\+\+Handler()}}, and \doxymbox{\hyperlink{telecommand_handler__task_8c_a67d95f43199d79cb9f84199b955c70df}{Telecommand\+\_\+\+Handler()}}.
+
+\Hypertarget{app__events_8c_a5cc34f3b8c4e2100404eca52a1a02453}\index{app\_events.c@{app\_events.c}!TaskHealth\_Read@{TaskHealth\_Read}}
+\index{TaskHealth\_Read@{TaskHealth\_Read}!app\_events.c@{app\_events.c}}
+\doxysubsubsection{\texorpdfstring{TaskHealth\_Read()}{TaskHealth\_Read()}}
+{\footnotesize\ttfamily \label{app__events_8c_a5cc34f3b8c4e2100404eca52a1a02453} 
+Event\+Bits\+\_\+t Task\+Health\+\_\+\+Read (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Returns the value of the health check event mask. 
+
+\begin{DoxyReturn}{Returns}
+Event\+Bits\+\_\+t 
+\end{DoxyReturn}
+
+
+Referenced by \doxymbox{\hyperlink{health_monitor__task_8c_afdddd09b1c8d74d470776489ec452cc7}{Health\+Monitor\+\_\+\+Handler()}}.
+
+\Hypertarget{app__events_8c_a384c29a086f7e2d03af1568fb5bdf761}\index{app\_events.c@{app\_events.c}!TaskHealth\_SetBit@{TaskHealth\_SetBit}}
+\index{TaskHealth\_SetBit@{TaskHealth\_SetBit}!app\_events.c@{app\_events.c}}
+\doxysubsubsection{\texorpdfstring{TaskHealth\_SetBit()}{TaskHealth\_SetBit()}}
+{\footnotesize\ttfamily \label{app__events_8c_a384c29a086f7e2d03af1568fb5bdf761} 
+void Task\+Health\+\_\+\+Set\+Bit (\begin{DoxyParamCaption}\item[{Event\+Bits\+\_\+t}]{bit}{}\end{DoxyParamCaption})}
+
+
+
+Sets task bit to health check event group. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em bit} & Task bit defined in \doxylink{app__config_8h}{app\+\_\+config.\+h} \\
+\hline
+\end{DoxyParams}
+
+
+Referenced by \doxymbox{\hyperlink{dispatcher__task_8c_a471a79b618b429dac39b0ffd0c77049e}{Dispatcher\+\_\+\+Task\+\_\+\+Handler()}}, \doxymbox{\hyperlink{health_monitor__task_8c_afdddd09b1c8d74d470776489ec452cc7}{Health\+Monitor\+\_\+\+Handler()}}, \doxymbox{\hyperlink{housekeeping__task_8c_af66a7d4fbff590f988caf66da2869a25}{Housekeeping\+\_\+\+Handler()}}, \doxymbox{\hyperlink{mode_manager__task_8c_ae5180377d2e4e13d2b0f1344658df6d4}{Mode\+Manager\+\_\+\+Handler()}}, \doxymbox{\hyperlink{subsystem_control__task_8c_a4dd4c116c224a39828863a131f899404}{Subsystem\+Control\+\_\+\+Handler()}}, \doxymbox{\hyperlink{subsystem_monitoring__task_8c_a7a4c1928fe5fba455c0d7d91f8e0f468}{Subsystem\+Monitor\+\_\+\+Handler()}}, and \doxymbox{\hyperlink{telecommand_handler__task_8c_a67d95f43199d79cb9f84199b955c70df}{Telecommand\+\_\+\+Handler()}}.
+
+\Hypertarget{app__events_8c_a07ff4defe7033e21ccfbb62159df4313}\index{app\_events.c@{app\_events.c}!TaskSync\_SetAndWait@{TaskSync\_SetAndWait}}
+\index{TaskSync\_SetAndWait@{TaskSync\_SetAndWait}!app\_events.c@{app\_events.c}}
+\doxysubsubsection{\texorpdfstring{TaskSync\_SetAndWait()}{TaskSync\_SetAndWait()}}
+{\footnotesize\ttfamily \label{app__events_8c_a07ff4defe7033e21ccfbb62159df4313} 
+void Task\+Sync\+\_\+\+Set\+And\+Wait (\begin{DoxyParamCaption}\item[{Event\+Bits\+\_\+t}]{task\+Bit}{}\end{DoxyParamCaption})}
+
+
+
+Acts as a Thread Sync Barrier. 
+
+Task sets its own bit to 1 in the event mask and blocks until every other task has done so too to continue. 
+\begin{DoxyParams}{Parameters}
+{\em task\+Bit} & Task bit defined in \doxylink{app__config_8h}{app\+\_\+config.\+h} \\
+\hline
+\end{DoxyParams}
+
+
+References \doxymbox{\hyperlink{app__config_8h_a552b8b30bb8cf4c54f1d62980e0d7b13}{ALL\+\_\+\+TASKS\+\_\+\+READY}}.
+
+
+
+Referenced by \doxymbox{\hyperlink{health_monitor__task_8c_afdddd09b1c8d74d470776489ec452cc7}{Health\+Monitor\+\_\+\+Handler()}}, \doxymbox{\hyperlink{housekeeping__task_8c_af66a7d4fbff590f988caf66da2869a25}{Housekeeping\+\_\+\+Handler()}}, \doxymbox{\hyperlink{mode_manager__task_8c_ae5180377d2e4e13d2b0f1344658df6d4}{Mode\+Manager\+\_\+\+Handler()}}, \doxymbox{\hyperlink{subsystem_control__task_8c_a4dd4c116c224a39828863a131f899404}{Subsystem\+Control\+\_\+\+Handler()}}, \doxymbox{\hyperlink{subsystem_monitoring__task_8c_a7a4c1928fe5fba455c0d7d91f8e0f468}{Subsystem\+Monitor\+\_\+\+Handler()}}, and \doxymbox{\hyperlink{telecommand_handler__task_8c_a67d95f43199d79cb9f84199b955c70df}{Telecommand\+\_\+\+Handler()}}.
+
+\Hypertarget{app__events_8c_a786e32b482933fe78a16a27a49a9b2e2}\index{app\_events.c@{app\_events.c}!TaskSync\_WaitForAll@{TaskSync\_WaitForAll}}
+\index{TaskSync\_WaitForAll@{TaskSync\_WaitForAll}!app\_events.c@{app\_events.c}}
+\doxysubsubsection{\texorpdfstring{TaskSync\_WaitForAll()}{TaskSync\_WaitForAll()}}
+{\footnotesize\ttfamily \label{app__events_8c_a786e32b482933fe78a16a27a49a9b2e2} 
+void Task\+Sync\+\_\+\+Wait\+For\+All (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Acts as a Thread Sync Barrier. 
+
+Block until event mask becomes 1, which means all tasks are synced, and then continue. \begin{DoxyNote}{Note}
+At the moment, this is only used by the dispatcher task thats needs to have the overview. 
+\end{DoxyNote}
+
+
+References \doxymbox{\hyperlink{app__config_8h_a552b8b30bb8cf4c54f1d62980e0d7b13}{ALL\+\_\+\+TASKS\+\_\+\+READY}}.
+
+
+
+Referenced by \doxymbox{\hyperlink{dispatcher__task_8c_a471a79b618b429dac39b0ffd0c77049e}{Dispatcher\+\_\+\+Task\+\_\+\+Handler()}}.
+

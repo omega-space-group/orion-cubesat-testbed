@@ -1,0 +1,43 @@
+\doxysection{CM7/\+\+Core/\+\+Inc/\+\+App/\+\+Tasks/\+telecommand\+Handler\+\_\+task.h File Reference}
+\hypertarget{telecommand_handler__task_8h}{}\label{telecommand_handler__task_8h}\index{CM7/Core/Inc/App/Tasks/telecommandHandler\_task.h@{CM7/Core/Inc/App/Tasks/telecommandHandler\_task.h}}
+
+
+This file contains all the function prototypes for the \doxylink{telecommand_handler__task_8c}{telecommand\+Handler\+\_\+task.\+c} file.  
+
+
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \doxymbox{\hyperlink{telecommand_handler__task_8h_a8b884546bdcc9aa24f45e8efd2a2d5df}{Telecommand\+Handler\+\_\+\+Init}} (void)
+\begin{DoxyCompactList}\small\item\em Task\textquotesingle{}s initialization function. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This file contains all the function prototypes for the \doxylink{telecommand_handler__task_8c}{telecommand\+Handler\+\_\+task.\+c} file. 
+
+Implementation of the telecommand handling logic. For more details look into \doxylink{telecommand_handler__task_8c_a67d95f43199d79cb9f84199b955c70df}{Telecommand\+\_\+\+Handler()}. 
+
+\label{telecommand_handler__task_8h_doc-func-members}
+\Hypertarget{telecommand_handler__task_8h_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{telecommand_handler__task_8h_a8b884546bdcc9aa24f45e8efd2a2d5df}\index{telecommandHandler\_task.h@{telecommandHandler\_task.h}!TelecommandHandler\_Init@{TelecommandHandler\_Init}}
+\index{TelecommandHandler\_Init@{TelecommandHandler\_Init}!telecommandHandler\_task.h@{telecommandHandler\_task.h}}
+\doxysubsubsection{\texorpdfstring{TelecommandHandler\_Init()}{TelecommandHandler\_Init()}}
+{\footnotesize\ttfamily \label{telecommand_handler__task_8h_a8b884546bdcc9aa24f45e8efd2a2d5df} 
+void Telecommand\+Handler\+\_\+\+Init (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Task\textquotesingle{}s initialization function. 
+
+First local queue is created. Then the task itself is created and the queue handle is passed as a task parameter. \begin{DoxyNote}{Note}
+Check \doxylink{app__config_8h}{app\+\_\+config.\+h} for stack configurations 
+\end{DoxyNote}
+
+
+References \doxymbox{\hyperlink{app__config_8h_a843595a59955f4e62f3d0d2e328e38a2}{LOCAL\+\_\+\+QUEUE\+\_\+\+LENGTH}}, \doxymbox{\hyperlink{app__config_8h_ad4d025ecf1bdbf8b244ca688df8e478d}{MSG\+\_\+\+SIZE}}, \doxymbox{\hyperlink{app__config_8h_a200c2c21eb5510aa388dc932a76e830d}{NORMAL\+\_\+\+TASK\+\_\+\+STACK\+\_\+\+SIZE}}, \doxymbox{\hyperlink{app__config_8h_a7cc550f1475a6f83dbc54d2ec940be71}{TC\+\_\+\+PR}}, and \doxymbox{\hyperlink{telecommand_handler__task_8c_a67d95f43199d79cb9f84199b955c70df}{Telecommand\+\_\+\+Handler()}}.
+
+
+
+Referenced by \doxymbox{\hyperlink{root__task_8c_aca2c7d8f6d456d7fba6e583b40a7c40a}{Root\+\_\+\+Task\+\_\+\+Handler()}}.
+

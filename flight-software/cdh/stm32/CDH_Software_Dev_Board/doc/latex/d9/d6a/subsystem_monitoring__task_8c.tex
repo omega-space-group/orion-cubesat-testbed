@@ -1,0 +1,91 @@
+\doxysection{CM7/\+\+Core/\+\+Src/\+\+App/\+\+Tasks/\+subsystem\+Monitoring\+\_\+task.c File Reference}
+\hypertarget{subsystem_monitoring__task_8c}{}\label{subsystem_monitoring__task_8c}\index{CM7/Core/Src/App/Tasks/subsystemMonitoring\_task.c@{CM7/Core/Src/App/Tasks/subsystemMonitoring\_task.c}}
+
+
+Implementation of the subsystem monitoring logic.  
+
+
+{\ttfamily \+\#include "{}Free\+RTOS.\+h"{}}\newline
+{\ttfamily \+\#include "{}task.\+h"{}}\newline
+{\ttfamily \+\#include $<$App/\+app\+\_\+config.\+h$>$}\newline
+{\ttfamily \+\#include $<$App/\+\+Services/\+app\+\_\+events.\+h$>$}\newline
+{\ttfamily \+\#include $<$App/\+\+Tasks/\+subsystem\+Monitoring\+\_\+task.\+h$>$}\newline
+{\ttfamily \+\#include $<$App/\+\+Tasks/\+can\+\_\+rx\+\_\+task.\+h$>$}\newline
+{\ttfamily \+\#include "{}usbd\+\_\+cdc\+\_\+if.\+h"{}}\newline
+{\ttfamily \+\#include $<$stdio.\+h$>$}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \doxymbox{\hyperlink{subsystem_monitoring__task_8c_a7a4c1928fe5fba455c0d7d91f8e0f468}{Subsystem\+Monitor\+\_\+\+Handler}} (void \texorpdfstring{$\ast$}{*}argument)
+\begin{DoxyCompactList}\small\item\em Task\textquotesingle{}s Handler where main logic is executed inside an infinite loop. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{subsystem_monitoring__task_8c_a486f50a679fc22114fc67e8eca45805b}{Subsystem\+Monitor\+\_\+\+Init}} (void)
+\begin{DoxyCompactList}\small\item\em Task\textquotesingle{}s initialization function. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Implementation of the subsystem monitoring logic. 
+
+
+
+\label{subsystem_monitoring__task_8c_doc-func-members}
+\Hypertarget{subsystem_monitoring__task_8c_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{subsystem_monitoring__task_8c_a7a4c1928fe5fba455c0d7d91f8e0f468}\index{subsystemMonitoring\_task.c@{subsystemMonitoring\_task.c}!SubsystemMonitor\_Handler@{SubsystemMonitor\_Handler}}
+\index{SubsystemMonitor\_Handler@{SubsystemMonitor\_Handler}!subsystemMonitoring\_task.c@{subsystemMonitoring\_task.c}}
+\doxysubsubsection{\texorpdfstring{SubsystemMonitor\_Handler()}{SubsystemMonitor\_Handler()}}
+{\footnotesize\ttfamily \label{subsystem_monitoring__task_8c_a7a4c1928fe5fba455c0d7d91f8e0f468} 
+void Subsystem\+Monitor\+\_\+\+Handler (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{argument}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Task\textquotesingle{}s Handler where main logic is executed inside an infinite loop. 
+
+The idea is to have every subsystem broadcast a Heartbeat MSG via FDCAN periodically. This message is caught by the OBC (\doxylink{can__rx__task_8c_afec88a1503ea8a29a78df4d4b9abbb43}{CAN\+\_\+\+RX\+\_\+\+Handler()}) and is recognized as a HB MSG. The status of every subsystem is locally stored inside can\+\_\+rx\+\_\+tasl.\+c and updated on every HB MSG. The Subsystem Monitor Task periodically checks the status of every subsystem and resets it effectively forcing the subsystem to toggle it if its alive and indicate an ERROR if the status is not toggled on the next check. If this occurs over 3 times, a subsystem reset command is send over FDCAN to the subsystem.
+
+Subsystem Monitoring Task logic:\+
+\begin{DoxyEnumerate}
+\item Set your own sync bit and block until all other tasks have finished initialization before continuing.
+\item Periodically and for every subsystem separately:\+
+\end{DoxyEnumerate}
+\begin{DoxyItemize}
+\item Check Status
+\item If Status 1, HB has been received so reset it and continue.
+\item If Status 0, assume no new HB and increase error counter. If counter \texorpdfstring{$>$}{>} 3 reset subsystem.
+\item Lastly, set your own health bit and finish. \begin{DoxyNote}{Note}
+Heartbeat MSG structure could/\+should change to include more information. 
+\end{DoxyNote}
+
+\begin{DoxyParams}{Parameters}
+{\em argument} & Pointer to task\textquotesingle{}s local queue handle \\
+\hline
+\end{DoxyParams}
+
+\end{DoxyItemize}
+
+References \doxymbox{\hyperlink{can__rx__task_8h_a8f963b5a6361565c648237bcc3fc40d5a38142277e48b191b563491ebe4affd29}{ADCS}}, \doxymbox{\hyperlink{can__rx__task_8h_a8f963b5a6361565c648237bcc3fc40d5a576ecfc33e74ec9e89b3b0f9bc5d49c5}{COMMS}}, \doxymbox{\hyperlink{can__rx__task_8h_a8f963b5a6361565c648237bcc3fc40d5a7fe95fbd95752a82e28a74b8abf4e8e7}{EPS}}, \doxymbox{\hyperlink{can__rx__task_8c_aef0f76469910e502ceadd705438488e5}{Get\+Subsystem\+Status()}}, \doxymbox{\hyperlink{can__rx__task_8h_a8f963b5a6361565c648237bcc3fc40d5a4a0f7dc7bc13b4de9dcaf52874286bd9}{PL}}, \doxymbox{\hyperlink{can__rx__task_8c_a87ba64831485881ce0726b85cf48a439}{Set\+Subsystem\+Status()}}, \doxymbox{\hyperlink{app__config_8h_a0d46bc03efdec2cb55867268bc3b4462}{SUBM\+\_\+\+BIT}}, \doxymbox{\hyperlink{app__events_8c_a384c29a086f7e2d03af1568fb5bdf761}{Task\+Health\+\_\+\+Set\+Bit()}}, and \doxymbox{\hyperlink{app__events_8c_a07ff4defe7033e21ccfbb62159df4313}{Task\+Sync\+\_\+\+Set\+And\+Wait()}}.
+
+
+
+Referenced by \doxymbox{\hyperlink{subsystem_monitoring__task_8c_a486f50a679fc22114fc67e8eca45805b}{Subsystem\+Monitor\+\_\+\+Init()}}.
+
+\Hypertarget{subsystem_monitoring__task_8c_a486f50a679fc22114fc67e8eca45805b}\index{subsystemMonitoring\_task.c@{subsystemMonitoring\_task.c}!SubsystemMonitor\_Init@{SubsystemMonitor\_Init}}
+\index{SubsystemMonitor\_Init@{SubsystemMonitor\_Init}!subsystemMonitoring\_task.c@{subsystemMonitoring\_task.c}}
+\doxysubsubsection{\texorpdfstring{SubsystemMonitor\_Init()}{SubsystemMonitor\_Init()}}
+{\footnotesize\ttfamily \label{subsystem_monitoring__task_8c_a486f50a679fc22114fc67e8eca45805b} 
+void Subsystem\+Monitor\+\_\+\+Init (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Task\textquotesingle{}s initialization function. 
+
+First local queue is created. Then the task itself is created and the queue handle is passed as a task parameter. \begin{DoxyNote}{Note}
+Check \doxylink{app__config_8h}{app\+\_\+config.\+h} for stack configurations 
+\end{DoxyNote}
+
+
+References \doxymbox{\hyperlink{app__config_8h_a843595a59955f4e62f3d0d2e328e38a2}{LOCAL\+\_\+\+QUEUE\+\_\+\+LENGTH}}, \doxymbox{\hyperlink{app__config_8h_ad4d025ecf1bdbf8b244ca688df8e478d}{MSG\+\_\+\+SIZE}}, \doxymbox{\hyperlink{app__config_8h_a200c2c21eb5510aa388dc932a76e830d}{NORMAL\+\_\+\+TASK\+\_\+\+STACK\+\_\+\+SIZE}}, \doxymbox{\hyperlink{app__config_8h_a5018529b484b92b7b4c0d6a4082b901d}{SUBM\+\_\+\+PR}}, and \doxymbox{\hyperlink{subsystem_monitoring__task_8c_a7a4c1928fe5fba455c0d7d91f8e0f468}{Subsystem\+Monitor\+\_\+\+Handler()}}.
+
+
+
+Referenced by \doxymbox{\hyperlink{root__task_8c_aca2c7d8f6d456d7fba6e583b40a7c40a}{Root\+\_\+\+Task\+\_\+\+Handler()}}.
+

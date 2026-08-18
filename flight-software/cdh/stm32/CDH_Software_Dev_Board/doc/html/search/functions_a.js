@@ -1,5 +1,13 @@
 var searchData=
 [
-  ['tim6_5fdac_5firqhandler_0',['TIM6_DAC_IRQHandler',['../stm32h7xx__it_8c.html#a0839a45f331c4c067939b9c4533bbf4d',1,'stm32h7xx_it.c']]],
-  ['tim7_5firqhandler_1',['TIM7_IRQHandler',['../stm32h7xx__it_8c.html#a98cff83252098363b2dbca9608df964e',1,'stm32h7xx_it.c']]]
+  ['taskhealth_5fclearall_0',['TaskHealth_ClearAll',['../d5/d4c/app__events_8c.html#acb0cb16b39bae1effdef4b84e2007e0f',1,'TaskHealth_ClearAll(void):&#160;app_events.c'],['../d7/d23/app__events_8h.html#acb0cb16b39bae1effdef4b84e2007e0f',1,'TaskHealth_ClearAll(void):&#160;app_events.c']]],
+  ['taskhealth_5fclearbit_1',['TaskHealth_ClearBit',['../d5/d4c/app__events_8c.html#a174333602856420f67c1fa54affc5af5',1,'TaskHealth_ClearBit(EventBits_t bit):&#160;app_events.c'],['../d7/d23/app__events_8h.html#a174333602856420f67c1fa54affc5af5',1,'TaskHealth_ClearBit(EventBits_t bit):&#160;app_events.c']]],
+  ['taskhealth_5finit_2',['TaskHealth_Init',['../d5/d4c/app__events_8c.html#a78aceff648bff00067552c1ae95e89fc',1,'TaskHealth_Init(void):&#160;app_events.c'],['../d7/d23/app__events_8h.html#a78aceff648bff00067552c1ae95e89fc',1,'TaskHealth_Init(void):&#160;app_events.c']]],
+  ['taskhealth_5fread_3',['TaskHealth_Read',['../d5/d4c/app__events_8c.html#a5cc34f3b8c4e2100404eca52a1a02453',1,'TaskHealth_Read(void):&#160;app_events.c'],['../d7/d23/app__events_8h.html#a5cc34f3b8c4e2100404eca52a1a02453',1,'TaskHealth_Read(void):&#160;app_events.c']]],
+  ['taskhealth_5fsetbit_4',['TaskHealth_SetBit',['../d5/d4c/app__events_8c.html#a384c29a086f7e2d03af1568fb5bdf761',1,'TaskHealth_SetBit(EventBits_t bit):&#160;app_events.c'],['../d7/d23/app__events_8h.html#a384c29a086f7e2d03af1568fb5bdf761',1,'TaskHealth_SetBit(EventBits_t bit):&#160;app_events.c']]],
+  ['tasksync_5finit_5',['TaskSync_Init',['../d5/d4c/app__events_8c.html#a3f95efb0848f050e56b5840715d56c7c',1,'TaskSync_Init(void):&#160;app_events.c'],['../d7/d23/app__events_8h.html#a3f95efb0848f050e56b5840715d56c7c',1,'TaskSync_Init(void):&#160;app_events.c']]],
+  ['tasksync_5fsetandwait_6',['TaskSync_SetAndWait',['../d5/d4c/app__events_8c.html#a07ff4defe7033e21ccfbb62159df4313',1,'TaskSync_SetAndWait(EventBits_t taskBit):&#160;app_events.c'],['../d7/d23/app__events_8h.html#a07ff4defe7033e21ccfbb62159df4313',1,'TaskSync_SetAndWait(EventBits_t taskBit):&#160;app_events.c']]],
+  ['tasksync_5fwaitforall_7',['TaskSync_WaitForAll',['../d5/d4c/app__events_8c.html#a786e32b482933fe78a16a27a49a9b2e2',1,'TaskSync_WaitForAll(void):&#160;app_events.c'],['../d7/d23/app__events_8h.html#a786e32b482933fe78a16a27a49a9b2e2',1,'TaskSync_WaitForAll(void):&#160;app_events.c']]],
+  ['telecommand_5fhandler_8',['Telecommand_Handler',['../d1/d1e/telecommand_handler__task_8c.html#a67d95f43199d79cb9f84199b955c70df',1,'telecommandHandler_task.c']]],
+  ['telecommandhandler_5finit_9',['TelecommandHandler_Init',['../d1/d1e/telecommand_handler__task_8c.html#a8b884546bdcc9aa24f45e8efd2a2d5df',1,'TelecommandHandler_Init(void):&#160;telecommandHandler_task.c'],['../db/df9/telecommand_handler__task_8h.html#a8b884546bdcc9aa24f45e8efd2a2d5df',1,'TelecommandHandler_Init(void):&#160;telecommandHandler_task.c']]]
 ];

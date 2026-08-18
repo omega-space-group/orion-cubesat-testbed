@@ -1,0 +1,143 @@
+\doxysection{CM7/\+\+Core/\+\+Inc/\+\+App/\+\+Services/\+subscriptions.h File Reference}
+\hypertarget{subscriptions_8h}{}\label{subscriptions_8h}\index{CM7/Core/Inc/App/Services/subscriptions.h@{CM7/Core/Inc/App/Services/subscriptions.h}}
+
+
+This file contains all the function prototypes for the \doxylink{subscriptions_8c}{subscriptions.\+c} file.  
+
+
+{\ttfamily \+\#include "{}Free\+RTOS.\+h"{}}\newline
+{\ttfamily \+\#include "{}queue.\+h"{}}\newline
+{\ttfamily \+\#include $<$App/\+app\+\_\+config.\+h$>$}\newline
+\doxysubsubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \doxymbox{\hyperlink{subscriptions_8h_a937e0a39ee2588df48e8d90bee76358c}{Wakeup\+Reason\+\_\+t}} \{ \doxymbox{\hyperlink{subscriptions_8h_a937e0a39ee2588df48e8d90bee76358ca32f7e035625e4a405aefe7401e8c327d}{NEW\+\_\+\+MSG}}
+, \doxymbox{\hyperlink{subscriptions_8h_a937e0a39ee2588df48e8d90bee76358caad9dee005a3d0f9137b2ac1e0869f89b}{TIMEOUT}}
+ \}
+\begin{DoxyCompactList}\small\item\em Wake up reason used in \doxylink{subscriptions_8h_a195e703619f15d910cc26b4e17e10850}{Sleep\+Until()}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \doxymbox{\hyperlink{subscriptions_8h_adb8a7e8cec223ef73534f0d14094c79a}{Subscribe}} (const char \texorpdfstring{$\ast$}{*}name, Queue\+Handle\+\_\+t queue)
+\begin{DoxyCompactList}\small\item\em Subscribes a task to predefined topics. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{subscriptions_8h_ad3332b1450087d0a68dd470140d74a47}{Publish}} (\doxymbox{\hyperlink{struct_message__t}{Message\+\_\+t}} new\+Msg)
+\begin{DoxyCompactList}\small\item\em Publishes a message via the software bus. \end{DoxyCompactList}\item 
+\doxymbox{\hyperlink{subscriptions_8h_a937e0a39ee2588df48e8d90bee76358c}{Wakeup\+Reason\+\_\+t}} \doxymbox{\hyperlink{subscriptions_8h_a195e703619f15d910cc26b4e17e10850}{Sleep\+Until}} (Queue\+Handle\+\_\+t queue, \doxymbox{\hyperlink{struct_message__t}{Message\+\_\+t}} \texorpdfstring{$\ast$}{*}new\+Msg\+Rsc, Tick\+Type\+\_\+t x\+Ticks\+To\+Wait)
+\begin{DoxyCompactList}\small\item\em Task blocks (sleeps) until a new message is received in its local queue. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This file contains all the function prototypes for the \doxylink{subscriptions_8c}{subscriptions.\+c} file. 
+
+Implementation of the Subscriber/\+\+Publisher logic. 
+
+\label{subscriptions_8h_doc-enum-members}
+\Hypertarget{subscriptions_8h_doc-enum-members}
+\doxysubsection{Enumeration Type Documentation}
+\Hypertarget{subscriptions_8h_a937e0a39ee2588df48e8d90bee76358c}\index{subscriptions.h@{subscriptions.h}!WakeupReason\_t@{WakeupReason\_t}}
+\index{WakeupReason\_t@{WakeupReason\_t}!subscriptions.h@{subscriptions.h}}
+\doxysubsubsection{\texorpdfstring{WakeupReason\_t}{WakeupReason\_t}}
+{\footnotesize\ttfamily \label{subscriptions_8h_a937e0a39ee2588df48e8d90bee76358c} 
+enum \doxymbox{\hyperlink{subscriptions_8h_a937e0a39ee2588df48e8d90bee76358c}{Wakeup\+Reason\+\_\+t}}}
+
+
+
+Wake up reason used in \doxylink{subscriptions_8h_a195e703619f15d910cc26b4e17e10850}{Sleep\+Until()}. 
+
+\begin{DoxyEnumFields}[2]{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{NEW\_MSG@{NEW\_MSG}!subscriptions.h@{subscriptions.h}}
+\index{subscriptions.h@{subscriptions.h}!NEW\_MSG@{NEW\_MSG}}
+}\Hypertarget{subscriptions_8h_a937e0a39ee2588df48e8d90bee76358ca32f7e035625e4a405aefe7401e8c327d}\label{subscriptions_8h_a937e0a39ee2588df48e8d90bee76358ca32f7e035625e4a405aefe7401e8c327d} 
+NEW\+\_\+\+MSG&New Message Received \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TIMEOUT@{TIMEOUT}!subscriptions.h@{subscriptions.h}}
+\index{subscriptions.h@{subscriptions.h}!TIMEOUT@{TIMEOUT}}
+}\Hypertarget{subscriptions_8h_a937e0a39ee2588df48e8d90bee76358caad9dee005a3d0f9137b2ac1e0869f89b}\label{subscriptions_8h_a937e0a39ee2588df48e8d90bee76358caad9dee005a3d0f9137b2ac1e0869f89b} 
+TIMEOUT&Set Time Expired \\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\label{subscriptions_8h_doc-func-members}
+\Hypertarget{subscriptions_8h_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{subscriptions_8h_ad3332b1450087d0a68dd470140d74a47}\index{subscriptions.h@{subscriptions.h}!Publish@{Publish}}
+\index{Publish@{Publish}!subscriptions.h@{subscriptions.h}}
+\doxysubsubsection{\texorpdfstring{Publish()}{Publish()}}
+{\footnotesize\ttfamily \label{subscriptions_8h_ad3332b1450087d0a68dd470140d74a47} 
+void Publish (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{struct_message__t}{Message\+\_\+t}}}]{new\+Msg}{}\end{DoxyParamCaption})}
+
+
+
+Publishes a message via the software bus. 
+
+Message \textquotesingle{}new\+Msg\textquotesingle{} is being pushed to dispatcher master queue which effectively publishes the message to anyone interested 
+\begin{DoxyParams}{Parameters}
+{\em new\+Msg} & The message you want to publish \\
+\hline
+\end{DoxyParams}
+
+
+References \doxymbox{\hyperlink{dispatcher__task_8c_a3152510efb79418f53cd53cc7dd0ba51}{Dispatcher\+Task\+\_\+\+Get\+Queue()}}.
+
+
+
+Referenced by \doxymbox{\hyperlink{mode_manager__task_8c_ae5180377d2e4e13d2b0f1344658df6d4}{Mode\+Manager\+\_\+\+Handler()}}, \doxymbox{\hyperlink{can__rx__task_8c_a3ac22077410fb91a154296c96a380a12}{Subsystem\+\_\+\+Msg\+\_\+\+Parser()}}, \doxymbox{\hyperlink{subsystem_control__task_8c_a4dd4c116c224a39828863a131f899404}{Subsystem\+Control\+\_\+\+Handler()}}, and \doxymbox{\hyperlink{telecommand_handler__task_8c_a67d95f43199d79cb9f84199b955c70df}{Telecommand\+\_\+\+Handler()}}.
+
+\Hypertarget{subscriptions_8h_a195e703619f15d910cc26b4e17e10850}\index{subscriptions.h@{subscriptions.h}!SleepUntil@{SleepUntil}}
+\index{SleepUntil@{SleepUntil}!subscriptions.h@{subscriptions.h}}
+\doxysubsubsection{\texorpdfstring{SleepUntil()}{SleepUntil()}}
+{\footnotesize\ttfamily \label{subscriptions_8h_a195e703619f15d910cc26b4e17e10850} 
+\doxymbox{\hyperlink{subscriptions_8h_a937e0a39ee2588df48e8d90bee76358c}{Wakeup\+Reason\+\_\+t}} Sleep\+Until (\begin{DoxyParamCaption}\item[{Queue\+Handle\+\_\+t}]{queue}{, }\item[{\doxymbox{\hyperlink{struct_message__t}{Message\+\_\+t}} \texorpdfstring{$\ast$}{*}}]{new\+Msg\+Rsc}{, }\item[{Tick\+Type\+\_\+t}]{x\+Ticks\+To\+Wait}{}\end{DoxyParamCaption})}
+
+
+
+Task blocks (sleeps) until a new message is received in its local queue. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em queue} & The task\textquotesingle{}s own local queue \\
+\hline
+{\em new\+Msg\+Rsc} & The structure where the incoming message will be stored \\
+\hline
+{\em x\+Ticks\+To\+Wait} & How long the task can stay blocked waiting for a message \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+NEW\+\_\+\+MSG :\+ if new msg is received, TIMEOUT :\+ if time (x\+Ticks\+To\+Wait) expired 
+\end{DoxyReturn}
+
+
+References \doxymbox{\hyperlink{subscriptions_8h_a937e0a39ee2588df48e8d90bee76358ca32f7e035625e4a405aefe7401e8c327d}{NEW\+\_\+\+MSG}}, and \doxymbox{\hyperlink{subscriptions_8h_a937e0a39ee2588df48e8d90bee76358caad9dee005a3d0f9137b2ac1e0869f89b}{TIMEOUT}}.
+
+
+
+Referenced by \doxymbox{\hyperlink{dispatcher__task_8c_a471a79b618b429dac39b0ffd0c77049e}{Dispatcher\+\_\+\+Task\+\_\+\+Handler()}}, \doxymbox{\hyperlink{mode_manager__task_8c_ae5180377d2e4e13d2b0f1344658df6d4}{Mode\+Manager\+\_\+\+Handler()}}, \doxymbox{\hyperlink{subsystem_control__task_8c_a4dd4c116c224a39828863a131f899404}{Subsystem\+Control\+\_\+\+Handler()}}, and \doxymbox{\hyperlink{telecommand_handler__task_8c_a67d95f43199d79cb9f84199b955c70df}{Telecommand\+\_\+\+Handler()}}.
+
+\Hypertarget{subscriptions_8h_adb8a7e8cec223ef73534f0d14094c79a}\index{subscriptions.h@{subscriptions.h}!Subscribe@{Subscribe}}
+\index{Subscribe@{Subscribe}!subscriptions.h@{subscriptions.h}}
+\doxysubsubsection{\texorpdfstring{Subscribe()}{Subscribe()}}
+{\footnotesize\ttfamily \label{subscriptions_8h_adb8a7e8cec223ef73534f0d14094c79a} 
+void Subscribe (\begin{DoxyParamCaption}\item[{const char \texorpdfstring{$\ast$}{*}}]{name}{, }\item[{Queue\+Handle\+\_\+t}]{queue}{}\end{DoxyParamCaption})}
+
+
+
+Subscribes a task to predefined topics. 
+
+Task with handle name \textquotesingle{}name\textquotesingle{} and local queue handle \textquotesingle{}queue\textquotesingle{} subscribes to topics defined in the subscription table 
+\begin{DoxyParams}{Parameters}
+{\em name} & The task handler name as a string \\
+\hline
+{\em queue} & The task\textquotesingle{}s local queue handle (passed via the task\textquotesingle{}s argument) \\
+\hline
+\end{DoxyParams}
+
+
+References \doxymbox{\hyperlink{app__config_8h_a4cecb71b936e9c443f548540fb7a54ff}{MAX\+\_\+\+SUBS}}, and \doxymbox{\hyperlink{app__config_8h_ae039b6dcd703089e83fa3e1b3fc896c8}{MAX\+\_\+\+SUBSCRIBERS\+\_\+\+PER\+\_\+\+TOPIC}}.
+
+
+
+Referenced by \doxymbox{\hyperlink{housekeeping__task_8c_af66a7d4fbff590f988caf66da2869a25}{Housekeeping\+\_\+\+Handler()}}, \doxymbox{\hyperlink{mode_manager__task_8c_ae5180377d2e4e13d2b0f1344658df6d4}{Mode\+Manager\+\_\+\+Handler()}}, \doxymbox{\hyperlink{subsystem_control__task_8c_a4dd4c116c224a39828863a131f899404}{Subsystem\+Control\+\_\+\+Handler()}}, and \doxymbox{\hyperlink{telecommand_handler__task_8c_a67d95f43199d79cb9f84199b955c70df}{Telecommand\+\_\+\+Handler()}}.
+

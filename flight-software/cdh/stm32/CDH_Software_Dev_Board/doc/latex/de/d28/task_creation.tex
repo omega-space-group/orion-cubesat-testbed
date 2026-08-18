@@ -1,0 +1,112 @@
+\doxysubsection{Task Creation and Initialization }
+\hypertarget{task_creation}{}\label{task_creation}\index{Task Creation and Initialization@{Task Creation and Initialization}}
+Every new task is defined inside a pair of task\+Name\+\_\+task.\+c/\+task\+Name\+\_\+task.h files inside the Src/\+\+Core/\+\+App/\+\+Tasks and Inc/\+\+Core/\+\+App/\+\+Tasks directories respectively.\hypertarget{task_creation_autotoc_md52}{}\doxysubsubsubsection{\texorpdfstring{Source File Template:\+}{Source File Template:\+}}\label{task_creation_autotoc_md52}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include\ "{}FreeRTOS.h"{}}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include\ "{}task.h"{}}}
+\DoxyCodeLine{\ }
+\DoxyCodeLine{\textcolor{preprocessor}{\#include\ <\doxymbox{\hyperlink{app__config_8h}{App/app\_config.h}}>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include\ <\doxymbox{\hyperlink{subscriptions_8h}{App/Services/subscriptions.h}}>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include\ <\doxymbox{\hyperlink{app__events_8h}{App/Services/app\_events.h}}>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include\ <App/Tasks/taskName\_task.h>}}
+\DoxyCodeLine{\ }
+\DoxyCodeLine{\textcolor{keyword}{static}\ StackType\_t\ xTaskStack[\doxymbox{\hyperlink{app__config_8h_a200c2c21eb5510aa388dc932a76e830d}{NORMAL\_TASK\_STACK\_SIZE}}];}
+\DoxyCodeLine{\textcolor{keyword}{static}\ StaticTask\_t\ xTaskBuffer;}
+\DoxyCodeLine{\ }
+\DoxyCodeLine{\textcolor{keyword}{static}\ StaticQueue\_t\ xTaskQueueData;}
+\DoxyCodeLine{\textcolor{keyword}{static}\ uint8\_t\ ucTaskQueueStorageArea[\doxymbox{\hyperlink{app__config_8h_a843595a59955f4e62f3d0d2e328e38a2}{LOCAL\_QUEUE\_LENGTH}}\ *\ \doxymbox{\hyperlink{app__config_8h_ad4d025ecf1bdbf8b244ca688df8e478d}{MSG\_SIZE}}];}
+\DoxyCodeLine{\textcolor{keyword}{static}\ QueueHandle\_t\ xTaskQueue;}
+
+\end{DoxyCode}
+\hypertarget{task_creation_autotoc_md53}{}\doxysubsubsubsubsection{\texorpdfstring{-\/\texorpdfstring{$>$}{>} Handler Template for periodic tasks:\+}{-\/\texorpdfstring{$>$}{>} Handler Template for periodic tasks:\+}}\label{task_creation_autotoc_md53}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ TaskName\_Handler(\textcolor{keywordtype}{void}\ *argument)\{}
+\DoxyCodeLine{\ \ \ \doxymbox{\hyperlink{app__events_8c_a07ff4defe7033e21ccfbb62159df4313}{TaskSync\_SetAndWait}}(TASK\_BIT);}
+\DoxyCodeLine{\ \ \ \textcolor{keywordflow}{while}(1)\{}
+\DoxyCodeLine{\ \ \ \ \ \ \ vTaskDelay(period\_in\_ms);}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \textcolor{comment}{//Task\ logic\ goes\ here...}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \doxymbox{\hyperlink{app__events_8c_a384c29a086f7e2d03af1568fb5bdf761}{TaskHealth\_SetBit}}(TASK\_BIT);}
+\DoxyCodeLine{\ \ \ \}}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+\hypertarget{task_creation_autotoc_md54}{}\doxysubsubsubsubsection{\texorpdfstring{-\/\texorpdfstring{$>$}{>} Handler Template for non-\/periodic tasks:\+}{-\/\texorpdfstring{$>$}{>} Handler Template for non-\/periodic tasks:\+}}\label{task_creation_autotoc_md54}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ TaskName\_Handler(\textcolor{keywordtype}{void}\ *argument)\{}
+\DoxyCodeLine{\ \ \ \doxymbox{\hyperlink{subscriptions_8c_adb8a7e8cec223ef73534f0d14094c79a}{Subscribe}}(\textcolor{stringliteral}{"{}TaskName\_Handler"{}},(QueueHandle\_t)argument);}
+\DoxyCodeLine{\ \ \ \doxymbox{\hyperlink{app__events_8c_a07ff4defe7033e21ccfbb62159df4313}{TaskSync\_SetAndWait}}(TASK\_BIT);}
+\DoxyCodeLine{\ \ \ \doxymbox{\hyperlink{struct_message__t}{Message\_t}}\ newMsgRsc;}
+\DoxyCodeLine{\ \ \ \textcolor{keywordflow}{while}(1)\{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \doxymbox{\hyperlink{app__events_8c_a384c29a086f7e2d03af1568fb5bdf761}{TaskHealth\_SetBit}}(TASK\_BIT);}
+\DoxyCodeLine{\ \ \ \ \ \ \ \doxymbox{\hyperlink{subscriptions_8c_a195e703619f15d910cc26b4e17e10850}{SleepUntil}}((QueueHandle\_t)argument,\&newMsgRsc,portMAX\_DELAY);}
+\DoxyCodeLine{\ \ \ \ \ \ \ \doxymbox{\hyperlink{app__events_8c_a174333602856420f67c1fa54affc5af5}{TaskHealth\_ClearBit}}(TASK\_BIT);}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \textcolor{comment}{//Task\ logic\ goes\ here...}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \doxymbox{\hyperlink{app__events_8c_a384c29a086f7e2d03af1568fb5bdf761}{TaskHealth\_SetBit}}(TASK\_BIT);}
+\DoxyCodeLine{\ \ \ \}}
+
+\end{DoxyCode}
+ \begin{DoxyNote}{Note}
+New task subscriptions need to be manually added in the Subscription Table in \doxylink{subscriptions_8c}{subscriptions.\+c} before calling \doxylink{subscriptions_8c_adb8a7e8cec223ef73534f0d14094c79a}{Subscribe()}
+\end{DoxyNote}
+\hypertarget{task_creation_autotoc_md55}{}\doxysubsubsubsubsection{\texorpdfstring{-\/\texorpdfstring{$>$}{>} Task initialization without a local queue:\+}{-\/\texorpdfstring{$>$}{>} Task initialization without a local queue:\+}}\label{task_creation_autotoc_md55}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keywordtype}{void}\ TaskName\_Init(\textcolor{keywordtype}{void})\ \{}
+\DoxyCodeLine{\ \ \ \ xTaskCreateStatic(TaskName\_Handler,\textcolor{stringliteral}{"{}TaskName\_Handler"{}},\doxymbox{\hyperlink{app__config_8h_a200c2c21eb5510aa388dc932a76e830d}{NORMAL\_TASK\_STACK\_SIZE}},NULL,TASK\_PR,xTaskStack,\&xTaskBuffer);}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+\hypertarget{task_creation_autotoc_md56}{}\doxysubsubsubsubsection{\texorpdfstring{-\/\texorpdfstring{$>$}{>} Task initialization with a local queue:\+}{-\/\texorpdfstring{$>$}{>} Task initialization with a local queue:\+}}\label{task_creation_autotoc_md56}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include\ "{}queue.h"{}}}
+\DoxyCodeLine{\ }
+\DoxyCodeLine{\textcolor{keyword}{static}\ StaticQueue\_t\ xTaskQueueData;}
+\DoxyCodeLine{\textcolor{keyword}{static}\ uint8\_t\ ucTaskQueueStorageArea[\doxymbox{\hyperlink{app__config_8h_a843595a59955f4e62f3d0d2e328e38a2}{LOCAL\_QUEUE\_LENGTH}}\ *\ \doxymbox{\hyperlink{app__config_8h_ad4d025ecf1bdbf8b244ca688df8e478d}{MSG\_SIZE}}];}
+\DoxyCodeLine{\textcolor{keyword}{static}\ QueueHandle\_t\ xTaskQueue;}
+\DoxyCodeLine{\ }
+\DoxyCodeLine{\textcolor{keywordtype}{void}\ TaskNameHandler\_Init(\textcolor{keywordtype}{void})\ \{}
+\DoxyCodeLine{\ \ \ \ xTaskQueue\ =\ xQueueCreateStatic(\doxymbox{\hyperlink{app__config_8h_a843595a59955f4e62f3d0d2e328e38a2}{LOCAL\_QUEUE\_LENGTH}},\ \doxymbox{\hyperlink{app__config_8h_ad4d025ecf1bdbf8b244ca688df8e478d}{MSG\_SIZE}},\ ucTaskQueueStorageArea,\ \&xTaskQueueData);}
+\DoxyCodeLine{\ \ \ \ xTaskCreateStatic(TaskNameHandler\_Init,\textcolor{stringliteral}{"{}TaskNameHandler\_Init"{}},\doxymbox{\hyperlink{app__config_8h_a200c2c21eb5510aa388dc932a76e830d}{NORMAL\_TASK\_STACK\_SIZE}}}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ ,(\textcolor{keywordtype}{void}*)xTaskQueue,TASK\_PR,xTaskStack,\&xTaskBuffer);}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+\hypertarget{task_creation_autotoc_md57}{}\doxysubsubsubsubsection{\texorpdfstring{-\/\texorpdfstring{$>$}{>} Optional function to get global access to local queue:\+}{-\/\texorpdfstring{$>$}{>} Optional function to get global access to local queue:\+}}\label{task_creation_autotoc_md57}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keyword}{static}\ QueueHandle\_t\ xLocal\_Queue;}
+\DoxyCodeLine{\ }
+\DoxyCodeLine{QueueHandle\_t\ TaskName\_GetQueue(\textcolor{keywordtype}{void})\ \{}
+\DoxyCodeLine{\ \ \ \ \textcolor{keywordflow}{return}\ xLocal\_Queue;}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+
+
+\begin{DoxyNote}{Note}
+TASK\+\_\+\+PR, TASK\+\_\+\+BIT should be defined inside \doxylink{app__config_8h}{app\+\_\+config.\+h}
+\end{DoxyNote}
+\hypertarget{task_creation_autotoc_md58}{}\doxysubsubsubsection{\texorpdfstring{Header File Template:\+}{Header File Template:\+}}\label{task_creation_autotoc_md58}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include\ "{}FreeRTOS.h"{}}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include\ "{}queue.h"{}}}
+\DoxyCodeLine{\ }
+\DoxyCodeLine{\textcolor{keywordtype}{void}\ TaskName\_Init(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{QueueHandle\_t\ TaskName\_GetQueue(\textcolor{keywordtype}{void});\ \textcolor{comment}{//If\ used}}
+
+\end{DoxyCode}
+
+
+\begin{DoxyNote}{Note}
+Finally to get the task scheduled for execution you need to call Task\+Name\+Handler\+\_\+\+Init(void) inside the \doxylink{root__task_8c_aca2c7d8f6d456d7fba6e583b40a7c40a}{Root\+\_\+\+Task\+\_\+\+Handler(void \texorpdfstring{$\ast$}{*}argument)} before the infite loop.
+\end{DoxyNote}
+\hypertarget{task_creation_autotoc_md59}{}\doxysubsubsubsection{\texorpdfstring{Header File Template:\+}{Header File Template:\+}}\label{task_creation_autotoc_md59}

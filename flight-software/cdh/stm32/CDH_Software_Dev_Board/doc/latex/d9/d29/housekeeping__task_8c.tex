@@ -1,0 +1,77 @@
+\doxysection{CM7/\+\+Core/\+\+Src/\+\+App/\+\+Tasks/\+housekeeping\+\_\+task.c File Reference}
+\hypertarget{housekeeping__task_8c}{}\label{housekeeping__task_8c}\index{CM7/Core/Src/App/Tasks/housekeeping\_task.c@{CM7/Core/Src/App/Tasks/housekeeping\_task.c}}
+
+
+Implementation of the telemetry data acquisition and log/\+downlink.  
+
+
+{\ttfamily \+\#include "{}Free\+RTOS.\+h"{}}\newline
+{\ttfamily \+\#include "{}task.\+h"{}}\newline
+{\ttfamily \+\#include $<$App/\+app\+\_\+config.\+h$>$}\newline
+{\ttfamily \+\#include $<$App/\+\+Services/\+subscriptions.\+h$>$}\newline
+{\ttfamily \+\#include $<$App/\+\+Services/\+app\+\_\+events.\+h$>$}\newline
+{\ttfamily \+\#include $<$App/\+\+Tasks/\+housekeeping\+\_\+task.\+h$>$}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \doxymbox{\hyperlink{housekeeping__task_8c_af66a7d4fbff590f988caf66da2869a25}{Housekeeping\+\_\+\+Handler}} (void \texorpdfstring{$\ast$}{*}argument)
+\begin{DoxyCompactList}\small\item\em Task\textquotesingle{}s Handler where main logic is executed inside an infinite loop. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{housekeeping__task_8c_ade6a9a41e6fdb411ece45a8adef9308f}{Housekeeping\+Handler\+\_\+\+Init}} (void)
+\begin{DoxyCompactList}\small\item\em Task\textquotesingle{}s initialization function. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Implementation of the telemetry data acquisition and log/\+downlink. 
+
+
+
+\label{housekeeping__task_8c_doc-func-members}
+\Hypertarget{housekeeping__task_8c_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{housekeeping__task_8c_af66a7d4fbff590f988caf66da2869a25}\index{housekeeping\_task.c@{housekeeping\_task.c}!Housekeeping\_Handler@{Housekeeping\_Handler}}
+\index{Housekeeping\_Handler@{Housekeeping\_Handler}!housekeeping\_task.c@{housekeeping\_task.c}}
+\doxysubsubsection{\texorpdfstring{Housekeeping\_Handler()}{Housekeeping\_Handler()}}
+{\footnotesize\ttfamily \label{housekeeping__task_8c_af66a7d4fbff590f988caf66da2869a25} 
+void Housekeeping\+\_\+\+Handler (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{argument}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Task\textquotesingle{}s Handler where main logic is executed inside an infinite loop. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em argument} & Pointer to task\textquotesingle{}s local queue handle \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+Pending implementation! However task sets its health bit periodically so it doesn\textquotesingle{}t cause any problems. 
+\end{DoxyNote}
+
+
+References \doxymbox{\hyperlink{app__config_8h_a6389953d7894249585c0caffa8675180}{HK\+\_\+\+BIT}}, \doxymbox{\hyperlink{subscriptions_8c_adb8a7e8cec223ef73534f0d14094c79a}{Subscribe()}}, \doxymbox{\hyperlink{app__events_8c_a384c29a086f7e2d03af1568fb5bdf761}{Task\+Health\+\_\+\+Set\+Bit()}}, and \doxymbox{\hyperlink{app__events_8c_a07ff4defe7033e21ccfbb62159df4313}{Task\+Sync\+\_\+\+Set\+And\+Wait()}}.
+
+
+
+Referenced by \doxymbox{\hyperlink{housekeeping__task_8c_ade6a9a41e6fdb411ece45a8adef9308f}{Housekeeping\+Handler\+\_\+\+Init()}}.
+
+\Hypertarget{housekeeping__task_8c_ade6a9a41e6fdb411ece45a8adef9308f}\index{housekeeping\_task.c@{housekeeping\_task.c}!HousekeepingHandler\_Init@{HousekeepingHandler\_Init}}
+\index{HousekeepingHandler\_Init@{HousekeepingHandler\_Init}!housekeeping\_task.c@{housekeeping\_task.c}}
+\doxysubsubsection{\texorpdfstring{HousekeepingHandler\_Init()}{HousekeepingHandler\_Init()}}
+{\footnotesize\ttfamily \label{housekeeping__task_8c_ade6a9a41e6fdb411ece45a8adef9308f} 
+void Housekeeping\+Handler\+\_\+\+Init (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Task\textquotesingle{}s initialization function. 
+
+First local queue is created. Then the task itself is created and the queue handle is passed as a task parameter. \begin{DoxyNote}{Note}
+Check \doxylink{app__config_8h}{app\+\_\+config.\+h} for stack configurations 
+\end{DoxyNote}
+
+
+References \doxymbox{\hyperlink{app__config_8h_a86ffc6dd953ae37e24aa838bc836cee8}{HK\+\_\+\+PR}}, \doxymbox{\hyperlink{housekeeping__task_8c_af66a7d4fbff590f988caf66da2869a25}{Housekeeping\+\_\+\+Handler()}}, \doxymbox{\hyperlink{app__config_8h_a843595a59955f4e62f3d0d2e328e38a2}{LOCAL\+\_\+\+QUEUE\+\_\+\+LENGTH}}, \doxymbox{\hyperlink{app__config_8h_ad4d025ecf1bdbf8b244ca688df8e478d}{MSG\+\_\+\+SIZE}}, and \doxymbox{\hyperlink{app__config_8h_a200c2c21eb5510aa388dc932a76e830d}{NORMAL\+\_\+\+TASK\+\_\+\+STACK\+\_\+\+SIZE}}.
+
+
+
+Referenced by \doxymbox{\hyperlink{root__task_8c_aca2c7d8f6d456d7fba6e583b40a7c40a}{Root\+\_\+\+Task\+\_\+\+Handler()}}.
+

@@ -1,0 +1,94 @@
+\doxysection{CM7/\+\+Core/\+\+Src/\+\+App/\+\+Tasks/\+root\+\_\+task.c File Reference}
+\hypertarget{root__task_8c}{}\label{root__task_8c}\index{CM7/Core/Src/App/Tasks/root\_task.c@{CM7/Core/Src/App/Tasks/root\_task.c}}
+
+
+Implementation of the Root Task responsible for starting all peripherals and spawn (initialize) every task.  
+
+
+{\ttfamily \+\#include $<$App/\+\+Tasks/\+root\+\_\+task.\+h$>$}\newline
+{\ttfamily \+\#include "{}Free\+RTOS.\+h"{}}\newline
+{\ttfamily \+\#include "{}task.\+h"{}}\newline
+{\ttfamily \+\#include "{}fdcan.\+h"{}}\newline
+{\ttfamily \+\#include "{}usbd\+\_\+cdc\+\_\+if.\+h"{}}\newline
+{\ttfamily \+\#include $<$stdio.\+h$>$}\newline
+{\ttfamily \+\#include $<$App/\+app\+\_\+config.\+h$>$}\newline
+{\ttfamily \+\#include $<$App/\+\+Services/\+app\+\_\+events.\+h$>$}\newline
+{\ttfamily \+\#include $<$App/\+\+Tasks/\+iwdg\+\_\+task.\+h$>$}\newline
+{\ttfamily \+\#include $<$App/\+\+Tasks/\+dummy\+\_\+task.\+h$>$}\newline
+{\ttfamily \+\#include $<$App/\+\+Tasks/\+dispatcher\+\_\+task.\+h$>$}\newline
+{\ttfamily \+\#include $<$App/\+\+Tasks/\+mode\+Manager\+\_\+task.\+h$>$}\newline
+{\ttfamily \+\#include $<$App/\+\+Tasks/\+health\+Monitor\+\_\+task.\+h$>$}\newline
+{\ttfamily \+\#include $<$App/\+\+Tasks/\+subsystem\+Monitoring\+\_\+task.\+h$>$}\newline
+{\ttfamily \+\#include $<$App/\+\+Tasks/\+subsystem\+Control\+\_\+task.\+h$>$}\newline
+{\ttfamily \+\#include $<$App/\+\+Tasks/\+can\+\_\+rx\+\_\+task.\+h$>$}\newline
+{\ttfamily \+\#include $<$App/\+\+Tasks/\+telecommand\+Handler\+\_\+task.\+h$>$}\newline
+{\ttfamily \+\#include $<$App/\+\+Tasks/\+housekeeping\+\_\+task.\+h$>$}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \doxymbox{\hyperlink{root__task_8c_aca2c7d8f6d456d7fba6e583b40a7c40a}{Root\+\_\+\+Task\+\_\+\+Handler}} (void \texorpdfstring{$\ast$}{*}argument)
+\begin{DoxyCompactList}\small\item\em Task\textquotesingle{}s Handler where main logic is executed inside an infinite loop. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{root__task_8c_a20ccc1f58e4eec886f512b3dbc3829ce}{Root\+\_\+\+Task\+\_\+\+Init}} (void)
+\begin{DoxyCompactList}\small\item\em Task\textquotesingle{}s initialization function. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Implementation of the Root Task responsible for starting all peripherals and spawn (initialize) every task. 
+
+
+
+\label{root__task_8c_doc-func-members}
+\Hypertarget{root__task_8c_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{root__task_8c_aca2c7d8f6d456d7fba6e583b40a7c40a}\index{root\_task.c@{root\_task.c}!Root\_Task\_Handler@{Root\_Task\_Handler}}
+\index{Root\_Task\_Handler@{Root\_Task\_Handler}!root\_task.c@{root\_task.c}}
+\doxysubsubsection{\texorpdfstring{Root\_Task\_Handler()}{Root\_Task\_Handler()}}
+{\footnotesize\ttfamily \label{root__task_8c_aca2c7d8f6d456d7fba6e583b40a7c40a} 
+void Root\+\_\+\+Task\+\_\+\+Handler (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{argument}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Task\textquotesingle{}s Handler where main logic is executed inside an infinite loop. 
+
+
+\begin{DoxyEnumerate}
+\item All peripherals are started.
+\item Task sync event is initialized.
+\item Task health event is initialized.
+\item Each task is initialized.
+\item Task blocks forever. \begin{DoxyWarning}{Warning}
+To create a task.\+c/\+.h file with an init() and a handler() function does NOT mean the task will execute. Only tasks that are initialized in the Root Task are scheduled by the scheduler for execution. 
+\end{DoxyWarning}
+
+\end{DoxyEnumerate}
+
+References \doxymbox{\hyperlink{can__rx__task_8c_aaa74b795083e75b34efb78dd249faf77}{CAN\+\_\+\+RX\+\_\+\+Task\+\_\+\+Init()}}, \doxymbox{\hyperlink{dispatcher__task_8c_a1f06ad247a1eebe18b5b98888a598b82}{Dispatcher\+\_\+\+Task\+\_\+\+Init()}}, \doxymbox{\hyperlink{fdcan_8c_a52b806723c5e7d7675e615c1764bf03b}{FDCAN\+\_\+\+Start()}}, \doxymbox{\hyperlink{health_monitor__task_8c_a9bf16be0fb6926c77cff31b234b642fa}{Health\+Monitor\+\_\+\+Init()}}, \doxymbox{\hyperlink{housekeeping__task_8c_ade6a9a41e6fdb411ece45a8adef9308f}{Housekeeping\+Handler\+\_\+\+Init()}}, \doxymbox{\hyperlink{iwdg__task_8c_afd834f61c4ad2072f3ec90c806333edd}{IWDG\+\_\+\+Task\+\_\+\+Init()}}, \doxymbox{\hyperlink{mode_manager__task_8c_a1d3500502fc4fd3697e8b87290e7d997}{Mode\+Manager\+\_\+\+Task\+\_\+\+Init()}}, \doxymbox{\hyperlink{subsystem_control__task_8c_a462adf5807f82c54c2ec34daea519f82}{Subsystem\+Control\+\_\+\+Init()}}, \doxymbox{\hyperlink{subsystem_monitoring__task_8c_a486f50a679fc22114fc67e8eca45805b}{Subsystem\+Monitor\+\_\+\+Init()}}, \doxymbox{\hyperlink{app__events_8c_a78aceff648bff00067552c1ae95e89fc}{Task\+Health\+\_\+\+Init()}}, \doxymbox{\hyperlink{app__events_8c_a3f95efb0848f050e56b5840715d56c7c}{Task\+Sync\+\_\+\+Init()}}, and \doxymbox{\hyperlink{telecommand_handler__task_8c_a8b884546bdcc9aa24f45e8efd2a2d5df}{Telecommand\+Handler\+\_\+\+Init()}}.
+
+
+
+Referenced by \doxymbox{\hyperlink{root__task_8c_a20ccc1f58e4eec886f512b3dbc3829ce}{Root\+\_\+\+Task\+\_\+\+Init()}}.
+
+\Hypertarget{root__task_8c_a20ccc1f58e4eec886f512b3dbc3829ce}\index{root\_task.c@{root\_task.c}!Root\_Task\_Init@{Root\_Task\_Init}}
+\index{Root\_Task\_Init@{Root\_Task\_Init}!root\_task.c@{root\_task.c}}
+\doxysubsubsection{\texorpdfstring{Root\_Task\_Init()}{Root\_Task\_Init()}}
+{\footnotesize\ttfamily \label{root__task_8c_a20ccc1f58e4eec886f512b3dbc3829ce} 
+void Root\+\_\+\+Task\+\_\+\+Init (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Task\textquotesingle{}s initialization function. 
+
+\begin{DoxyNote}{Note}
+Check \doxylink{app__config_8h}{app\+\_\+config.\+h} for stack configurations 
+\end{DoxyNote}
+\begin{DoxyWarning}{Warning}
+Root Task has no local queue since its only meant to execute once and block forever. 
+\end{DoxyWarning}
+
+
+References \doxymbox{\hyperlink{app__config_8h_a200c2c21eb5510aa388dc932a76e830d}{NORMAL\+\_\+\+TASK\+\_\+\+STACK\+\_\+\+SIZE}}, \doxymbox{\hyperlink{app__config_8h_a5c02af385cb9256e1e1bbb76e3a04184}{ROOT\+\_\+\+PR}}, and \doxymbox{\hyperlink{root__task_8c_aca2c7d8f6d456d7fba6e583b40a7c40a}{Root\+\_\+\+Task\+\_\+\+Handler()}}.
+
+
+
+Referenced by \doxymbox{\hyperlink{main_8c_abade755e13d07c10889ae83143656158}{MX\+\_\+\+FREERTOS\+\_\+\+Init()}}.
+

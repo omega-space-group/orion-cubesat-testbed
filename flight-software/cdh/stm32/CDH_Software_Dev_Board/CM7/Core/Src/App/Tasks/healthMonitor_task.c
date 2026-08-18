@@ -66,7 +66,7 @@ static void HealthMonitor_Handler(void *argument){
 
 /**
  * @brief Task's initialization function.
- * @details First master queue is created. Then the task itself is created and the queue handle is passed as a task parameter.
+ * @details First local queue is created. Then the task itself is created and the queue handle is passed as a task parameter.
  * @note Check app_config.h for stack configurations
  */
 void HealthMonitor_Init(void) {

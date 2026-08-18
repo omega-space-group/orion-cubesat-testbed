@@ -1,0 +1,43 @@
+\doxysection{CM7/\+\+Core/\+\+Inc/\+\+App/\+\+Tasks/\+subsystem\+Monitoring\+\_\+task.h File Reference}
+\hypertarget{subsystem_monitoring__task_8h}{}\label{subsystem_monitoring__task_8h}\index{CM7/Core/Inc/App/Tasks/subsystemMonitoring\_task.h@{CM7/Core/Inc/App/Tasks/subsystemMonitoring\_task.h}}
+
+
+This file contains all the function prototypes for the \doxylink{subsystem_monitoring__task_8c}{subsystem\+Monitoring\+\_\+task.\+c} file.  
+
+
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \doxymbox{\hyperlink{subsystem_monitoring__task_8h_a486f50a679fc22114fc67e8eca45805b}{Subsystem\+Monitor\+\_\+\+Init}} (void)
+\begin{DoxyCompactList}\small\item\em Task\textquotesingle{}s initialization function. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This file contains all the function prototypes for the \doxylink{subsystem_monitoring__task_8c}{subsystem\+Monitoring\+\_\+task.\+c} file. 
+
+Implementation of the subsystem monitoring logic. For more details look into \doxylink{subsystem_monitoring__task_8c_a7a4c1928fe5fba455c0d7d91f8e0f468}{Subsystem\+Monitor\+\_\+\+Handler()}. 
+
+\label{subsystem_monitoring__task_8h_doc-func-members}
+\Hypertarget{subsystem_monitoring__task_8h_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{subsystem_monitoring__task_8h_a486f50a679fc22114fc67e8eca45805b}\index{subsystemMonitoring\_task.h@{subsystemMonitoring\_task.h}!SubsystemMonitor\_Init@{SubsystemMonitor\_Init}}
+\index{SubsystemMonitor\_Init@{SubsystemMonitor\_Init}!subsystemMonitoring\_task.h@{subsystemMonitoring\_task.h}}
+\doxysubsubsection{\texorpdfstring{SubsystemMonitor\_Init()}{SubsystemMonitor\_Init()}}
+{\footnotesize\ttfamily \label{subsystem_monitoring__task_8h_a486f50a679fc22114fc67e8eca45805b} 
+void Subsystem\+Monitor\+\_\+\+Init (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Task\textquotesingle{}s initialization function. 
+
+First local queue is created. Then the task itself is created and the queue handle is passed as a task parameter. \begin{DoxyNote}{Note}
+Check \doxylink{app__config_8h}{app\+\_\+config.\+h} for stack configurations 
+\end{DoxyNote}
+
+
+References \doxymbox{\hyperlink{app__config_8h_a843595a59955f4e62f3d0d2e328e38a2}{LOCAL\+\_\+\+QUEUE\+\_\+\+LENGTH}}, \doxymbox{\hyperlink{app__config_8h_ad4d025ecf1bdbf8b244ca688df8e478d}{MSG\+\_\+\+SIZE}}, \doxymbox{\hyperlink{app__config_8h_a200c2c21eb5510aa388dc932a76e830d}{NORMAL\+\_\+\+TASK\+\_\+\+STACK\+\_\+\+SIZE}}, \doxymbox{\hyperlink{app__config_8h_a5018529b484b92b7b4c0d6a4082b901d}{SUBM\+\_\+\+PR}}, and \doxymbox{\hyperlink{subsystem_monitoring__task_8c_a7a4c1928fe5fba455c0d7d91f8e0f468}{Subsystem\+Monitor\+\_\+\+Handler()}}.
+
+
+
+Referenced by \doxymbox{\hyperlink{root__task_8c_aca2c7d8f6d456d7fba6e583b40a7c40a}{Root\+\_\+\+Task\+\_\+\+Handler()}}.
+

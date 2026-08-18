@@ -4,7 +4,10 @@
  *  Created on: Jun 23, 2026
  *      Author: adaro
  */
-
+/**
+ * @file subsystemMonitoring_task.c
+ * @brief Implementation of the subsystem monitoring logic.
+ */
 #include "FreeRTOS.h"
 #include "task.h"
 
@@ -26,9 +29,25 @@ static QueueHandle_t xTaskQueue;
 /* 0: comms, 1: eps, 2: pl, 3: adcs */
 static uint8_t comms_cnt, eps_cnt, pl_cnt, adcs_cnt = 0;
 
-/* --- SYS-OBC-REL-04 ---*/
-
 /* Task sync bit (if used) and task priority defined in app_config.h */
+/**
+ * @brief Task's Handler where main logic is executed inside an infinite loop.
+ * @details The idea is to have every subsystem broadcast a Heartbeat MSG via FDCAN periodically. This message is caught
+ * by the OBC (CAN_RX_Handler()) and is recognized as a HB MSG. The status of every subsystem is locally stored inside
+ * can_rx_tasl.c and updated on every HB MSG. The Subsystem Monitor Task periodically checks the status of every subsystem
+ * and resets it effectively forcing the subsystem to toggle it if its alive and indicate an ERROR if the status is not
+ * toggled on the next check. If this occurs over 3 times, a subsystem reset command is send over FDCAN to the subsystem.
+ *
+ * Subsystem Monitoring Task logic:
+ * 1. Set your own sync bit and block until all other tasks have finished initialization before continuing.
+ * 2. Periodically and for every subsystem separately:
+ * - Check Status
+ * - If Status 1, HB has been received so reset it and continue.
+ * - If Status 0, assume no new HB and increase error counter. If counter > 3 reset subsystem.
+ * - Lastly, set your own health bit and finish.
+ * @note Heartbeat MSG structure could/should change to include more information.
+ * @param argument  Pointer to task's local queue handle
+ */
 static void SubsystemMonitor_Handler(void *argument){
 	TaskSync_SetAndWait(SUBM_BIT);
 	while(1){
@@ -86,6 +105,11 @@ static void SubsystemMonitor_Handler(void *argument){
 	}
 }
 
+/**
+ * @brief Task's initialization function.
+ * @details First local queue is created. Then the task itself is created and the queue handle is passed as a task parameter.
+ * @note Check app_config.h for stack configurations
+ */
 void SubsystemMonitor_Init(void) {
 	xTaskQueue = xQueueCreateStatic(LOCAL_QUEUE_LENGTH, MSG_SIZE, ucTaskQueueStorageArea, &xTaskQueueData);
 	xTaskCreateStatic(SubsystemMonitor_Handler,"SubsystemMonitor_Handler",NORMAL_TASK_STACK_SIZE

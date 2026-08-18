@@ -9,6 +9,7 @@
  * @brief This file contains all the function prototypes for the housekeeping_task.c file
  * @details This module manages the data request and acquisition from itself and the subsystems
  * and also the logging and downlink when possible.
+ * For more information look into Housekeeping_Handler().
  * @ingroup telemetry_module
  */
 #ifndef INC_APP_TASKS_HOUSEKEEPING_TASK_H_

@@ -1,0 +1,483 @@
+\doxysection{CM7/\+\+Core/\+\+Inc/\+\+App/\+app\+\_\+config.h File Reference}
+\hypertarget{app__config_8h}{}\label{app__config_8h}\index{CM7/Core/Inc/App/app\_config.h@{CM7/Core/Inc/App/app\_config.h}}
+
+
+Configuration file for current application.  
+
+
+{\ttfamily \+\#include "{}Free\+RTOS.\+h"{}}\newline
+{\ttfamily \+\#include "{}queue.\+h"{}}\newline
+{\ttfamily \+\#include "{}fdcan.\+h"{}}\newline
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \doxymbox{\hyperlink{struct_message__t}{Message\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Software Bus Message Structure. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{app__config_8h_a200c2c21eb5510aa388dc932a76e830d}\label{app__config_8h_a200c2c21eb5510aa388dc932a76e830d} 
+\+\#define {\bfseries NORMAL\+\_\+\+TASK\+\_\+\+STACK\+\_\+\+SIZE}~256\texorpdfstring{$\ast$}{*}15
+\begin{DoxyCompactList}\small\item\em Normal task stack size. \end{DoxyCompactList}\item 
+\Hypertarget{app__config_8h_a225d14042fa83623029d9bf491a4f5f2}\label{app__config_8h_a225d14042fa83623029d9bf491a4f5f2} 
+\+\#define {\bfseries LARGE\+\_\+\+TASK\+\_\+\+STACK\+\_\+\+SIZE}~256\texorpdfstring{$\ast$}{*}10
+\begin{DoxyCompactList}\small\item\em Large task stack size. \end{DoxyCompactList}\item 
+\Hypertarget{app__config_8h_af04bc000259721bc839efbe4879a4630}\label{app__config_8h_af04bc000259721bc839efbe4879a4630} 
+\+\#define {\bfseries MASTER\+\_\+\+QUEUE\+\_\+\+LENGTH}~10
+\begin{DoxyCompactList}\small\item\em Master queue length. \end{DoxyCompactList}\item 
+\Hypertarget{app__config_8h_a843595a59955f4e62f3d0d2e328e38a2}\label{app__config_8h_a843595a59955f4e62f3d0d2e328e38a2} 
+\+\#define {\bfseries LOCAL\+\_\+\+QUEUE\+\_\+\+LENGTH}~5
+\begin{DoxyCompactList}\small\item\em Local queue length. \end{DoxyCompactList}\item 
+\+\#define \doxymbox{\hyperlink{app__config_8h_ad92056533d94e7a5cbc443e4f40ee9a7}{PERIODIC\+\_\+\+TASKS}}~(\doxymbox{\hyperlink{app__config_8h_a000410b4e381df0e2479e769176ddb1b}{DUMMY\+\_\+\+BIT}} \texorpdfstring{$\vert$}{|} \doxymbox{\hyperlink{app__config_8h_a3cdc67f59a4e9aa04dcb6860007364b4}{HM\+\_\+\+BIT}} \texorpdfstring{$\vert$}{|} \doxymbox{\hyperlink{app__config_8h_a0d46bc03efdec2cb55867268bc3b4462}{SUBM\+\_\+\+BIT}} \texorpdfstring{$\vert$}{|} \doxymbox{\hyperlink{app__config_8h_a6389953d7894249585c0caffa8675180}{HK\+\_\+\+BIT}})
+\begin{DoxyCompactList}\small\item\em This define is used to group all periodic tasks together. More info in \doxylink{health_monitor__task_8c}{health\+Monitor\+\_\+task.\+c}. \end{DoxyCompactList}\item 
+\+\#define \doxymbox{\hyperlink{app__config_8h_a552b8b30bb8cf4c54f1d62980e0d7b13}{ALL\+\_\+\+TASKS\+\_\+\+READY}}~(\doxymbox{\hyperlink{app__config_8h_a000410b4e381df0e2479e769176ddb1b}{DUMMY\+\_\+\+BIT}} \texorpdfstring{$\vert$}{|} \doxymbox{\hyperlink{app__config_8h_acfde02c445d4aba6bc99ab7d79814cb4}{MODE\+\_\+\+BIT}} \texorpdfstring{$\vert$}{|} \doxymbox{\hyperlink{app__config_8h_a3cdc67f59a4e9aa04dcb6860007364b4}{HM\+\_\+\+BIT}} \texorpdfstring{$\vert$}{|} \doxymbox{\hyperlink{app__config_8h_a0d46bc03efdec2cb55867268bc3b4462}{SUBM\+\_\+\+BIT}} \texorpdfstring{$\vert$}{|} \doxymbox{\hyperlink{app__config_8h_ab0af60e8248527f8131652b2fee1db11}{SUBC\+\_\+\+BIT}} \texorpdfstring{$\vert$}{|} \doxymbox{\hyperlink{app__config_8h_a7777db792b63724d39c9c7ea68b6b03a}{TC\+\_\+\+BIT}} \texorpdfstring{$\vert$}{|} \doxymbox{\hyperlink{app__config_8h_a6389953d7894249585c0caffa8675180}{HK\+\_\+\+BIT}})
+\begin{DoxyCompactList}\small\item\em This define is used for sync purposes. More info in \doxylink{dispatcher__task_8c}{dispatcher\+\_\+task.\+c}. \end{DoxyCompactList}\item 
+\+\#define \doxymbox{\hyperlink{app__config_8h_a7d092bb0ccbe33b8392266f030f034ac}{ALL\+\_\+\+TASKS\+\_\+\+OK}}~(\doxymbox{\hyperlink{app__config_8h_a2318625f96819d1c1c71f21ef45c005b}{DISPATCHER\+\_\+\+BIT}} \texorpdfstring{$\vert$}{|} \doxymbox{\hyperlink{app__config_8h_a000410b4e381df0e2479e769176ddb1b}{DUMMY\+\_\+\+BIT}} \texorpdfstring{$\vert$}{|} \doxymbox{\hyperlink{app__config_8h_acfde02c445d4aba6bc99ab7d79814cb4}{MODE\+\_\+\+BIT}} \texorpdfstring{$\vert$}{|} \doxymbox{\hyperlink{app__config_8h_a3cdc67f59a4e9aa04dcb6860007364b4}{HM\+\_\+\+BIT}} \texorpdfstring{$\vert$}{|} \doxymbox{\hyperlink{app__config_8h_a0d46bc03efdec2cb55867268bc3b4462}{SUBM\+\_\+\+BIT}} \texorpdfstring{$\vert$}{|} \doxymbox{\hyperlink{app__config_8h_ab0af60e8248527f8131652b2fee1db11}{SUBC\+\_\+\+BIT}} \texorpdfstring{$\vert$}{|} \doxymbox{\hyperlink{app__config_8h_a7777db792b63724d39c9c7ea68b6b03a}{TC\+\_\+\+BIT}} \texorpdfstring{$\vert$}{|} \doxymbox{\hyperlink{app__config_8h_a6389953d7894249585c0caffa8675180}{HK\+\_\+\+BIT}})
+\begin{DoxyCompactList}\small\item\em This define is used for health monitoring purposes in \doxylink{health_monitor__task_8c}{health\+Monitor\+\_\+task.\+c}. \end{DoxyCompactList}\item 
+\Hypertarget{app__config_8h_a4cecb71b936e9c443f548540fb7a54ff}\label{app__config_8h_a4cecb71b936e9c443f548540fb7a54ff} 
+\+\#define {\bfseries MAX\+\_\+\+SUBS}~20
+\begin{DoxyCompactList}\small\item\em Maximum number of subscribers (i.\+e. tasks that have subscribed to at least one topic) allowed. \end{DoxyCompactList}\item 
+\Hypertarget{app__config_8h_ae039b6dcd703089e83fa3e1b3fc896c8}\label{app__config_8h_ae039b6dcd703089e83fa3e1b3fc896c8} 
+\+\#define {\bfseries MAX\+\_\+\+SUBSCRIBERS\+\_\+\+PER\+\_\+\+TOPIC}~15
+\begin{DoxyCompactList}\small\item\em Maximum number of subscribers per topic allowed. \end{DoxyCompactList}\item 
+\Hypertarget{app__config_8h_ad4d025ecf1bdbf8b244ca688df8e478d}\label{app__config_8h_ad4d025ecf1bdbf8b244ca688df8e478d} 
+\+\#define {\bfseries MSG\+\_\+\+SIZE}~sizeof(\doxymbox{\hyperlink{struct_message__t}{Message\+\_\+t}})
+\begin{DoxyCompactList}\small\item\em Message Size. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{Indent}\textbf{ Task priorities}\par
+{\em RTOS priorities go from high to low. Meaning highest priority task will execute before a lower priority task.
+
+This application uses preemption with time slicing, meaning a Round-\/\+Robin scheduling policy. \begin{DoxyNote}{Note}
+A new task\textquotesingle{}s priority should be added here! 
+\end{DoxyNote}
+\begin{DoxyWarning}{Warning}
+PR = 24 is being used by the auto-\/generated default task in \doxylink{freertos_8c}{freertos.\+c} which blocks indefinitely. 
+\end{DoxyWarning}
+}\begin{DoxyCompactItemize}
+\item 
+\+\#define \doxymbox{\hyperlink{app__config_8h_a5c02af385cb9256e1e1bbb76e3a04184}{ROOT\+\_\+\+PR}}~35
+\item 
+\+\#define \doxymbox{\hyperlink{app__config_8h_ad9f540d4c21cc489d88a531e7e6dcf9e}{DISPATCHER\+\_\+\+PR}}~33
+\item 
+\+\#define \doxymbox{\hyperlink{app__config_8h_ad1ed0ea73c4459cd52a8fe09d5931b1d}{MODE\+\_\+\+PR}}~32
+\item 
+\+\#define \doxymbox{\hyperlink{app__config_8h_a16d794c91d2fcbf7dac7710b4658263f}{CANRX\+\_\+\+PR}}~31
+\item 
+\+\#define \doxymbox{\hyperlink{app__config_8h_a4488c8879c96e6bda7400c1b7c60bf35}{DUMMY\+\_\+\+PR}}~29
+\item 
+\+\#define \doxymbox{\hyperlink{app__config_8h_a5018529b484b92b7b4c0d6a4082b901d}{SUBM\+\_\+\+PR}}~26
+\item 
+\+\#define \doxymbox{\hyperlink{app__config_8h_acd35480f6bf1574471b4d5e62bfefa53}{SUBC\+\_\+\+PR}}~25
+\item 
+\+\#define \doxymbox{\hyperlink{app__config_8h_a7cc550f1475a6f83dbc54d2ec940be71}{TC\+\_\+\+PR}}~24
+\item 
+\+\#define \doxymbox{\hyperlink{app__config_8h_a86ffc6dd953ae37e24aa838bc836cee8}{HK\+\_\+\+PR}}~27
+\item 
+\+\#define \doxymbox{\hyperlink{app__config_8h_a89edd2c3ccb497e752853757dc7d5137}{HM\+\_\+\+PR}}~23
+\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}\textbf{ Task Health and Sync Bits}\par
+{\em \begin{DoxyNote}{Note}
+A new task\textquotesingle{}s bit should be added at the end! 
+\end{DoxyNote}
+}\begin{DoxyCompactItemize}
+\item 
+\+\#define \doxymbox{\hyperlink{app__config_8h_a2318625f96819d1c1c71f21ef45c005b}{DISPATCHER\+\_\+\+BIT}}~(0 $<$$<$ 0)
+\item 
+\+\#define \doxymbox{\hyperlink{app__config_8h_a000410b4e381df0e2479e769176ddb1b}{DUMMY\+\_\+\+BIT}}~(1 $<$$<$ 1)
+\item 
+\+\#define \doxymbox{\hyperlink{app__config_8h_acfde02c445d4aba6bc99ab7d79814cb4}{MODE\+\_\+\+BIT}}~(1 $<$$<$ 2)
+\item 
+\+\#define \doxymbox{\hyperlink{app__config_8h_a3cdc67f59a4e9aa04dcb6860007364b4}{HM\+\_\+\+BIT}}~(1 $<$$<$ 3)
+\item 
+\+\#define \doxymbox{\hyperlink{app__config_8h_a0d46bc03efdec2cb55867268bc3b4462}{SUBM\+\_\+\+BIT}}~(1 $<$$<$ 4)
+\item 
+\+\#define \doxymbox{\hyperlink{app__config_8h_ab0af60e8248527f8131652b2fee1db11}{SUBC\+\_\+\+BIT}}~(1 $<$$<$ 5)
+\item 
+\+\#define \doxymbox{\hyperlink{app__config_8h_a7777db792b63724d39c9c7ea68b6b03a}{TC\+\_\+\+BIT}}~(1 $<$$<$ 6)
+\item 
+\+\#define \doxymbox{\hyperlink{app__config_8h_a6389953d7894249585c0caffa8675180}{HK\+\_\+\+BIT}}~(1 $<$$<$ 7)
+\end{DoxyCompactItemize}
+\end{Indent}
+\doxysubsubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \doxymbox{\hyperlink{app__config_8h_ae2946618e700f814e6147195c808f4c8}{State\+\_\+t}} \{ \doxymbox{\hyperlink{app__config_8h_ae2946618e700f814e6147195c808f4c8aa3a9adacc85c180950255762543c88ac}{SAFE}} = 1
+, \doxymbox{\hyperlink{app__config_8h_ae2946618e700f814e6147195c808f4c8a04ef9c54bf8fecf6499edcc41b7281d7}{LOW\+\_\+\+POWER}} = 2
+, \doxymbox{\hyperlink{app__config_8h_ae2946618e700f814e6147195c808f4c8ae2bd7b57b3f0bb02e66e42dbacc5c7fc}{NOMINAL}} = 3
+, \doxymbox{\hyperlink{app__config_8h_ae2946618e700f814e6147195c808f4c8a14aa1c5c4852ea2d61eef4d73772ea65}{PAYLOAD}} = 4
+ \}
+\begin{DoxyCompactList}\small\item\em All available system states. More info in mode\+Manager.\+c. \end{DoxyCompactList}\item 
+enum \doxymbox{\hyperlink{app__config_8h_a0560169ed6717811a19ca28c11256293}{Topic\+\_\+t}} \{ \newline
+\doxymbox{\hyperlink{app__config_8h_a0560169ed6717811a19ca28c11256293afa331522f1b1dda554d1c65e5a0e6061}{SYSTEM\+\_\+\+STATE}} = 1
+, \doxymbox{\hyperlink{app__config_8h_a0560169ed6717811a19ca28c11256293abc777eb98dc283307dad9d57db9802a6}{CHANGE\+\_\+\+SYSTEM\+\_\+\+STATE}} = 2
+, \doxymbox{\hyperlink{app__config_8h_a0560169ed6717811a19ca28c11256293a005b78a0f65bacff527f3a3d9017b784}{TELECOMMAND}}
+, \doxymbox{\hyperlink{app__config_8h_a0560169ed6717811a19ca28c11256293afa43490df86bfb0721adeaee47931f82}{EPS\+\_\+\+MSG}}
+, \newline
+\doxymbox{\hyperlink{app__config_8h_a0560169ed6717811a19ca28c11256293a69c003c6fdbe7509b650aca6ef67ef32}{EPS\+\_\+\+TM}}
+, \doxymbox{\hyperlink{app__config_8h_a0560169ed6717811a19ca28c11256293a30639ec93dd54c88c981586c683b6e88}{COMMS\+\_\+\+MSG}}
+, \doxymbox{\hyperlink{app__config_8h_a0560169ed6717811a19ca28c11256293a68e62d53d0d8c95cb88d291304dc545f}{COMMS\+\_\+\+TM}}
+, \doxymbox{\hyperlink{app__config_8h_a0560169ed6717811a19ca28c11256293afe326f665e0a838aba9651c9c15e2529}{ADCS\+\_\+\+MSG}}
+, \newline
+\doxymbox{\hyperlink{app__config_8h_a0560169ed6717811a19ca28c11256293a9094f588f878fc46759a85296ca8baf9}{ADCS\+\_\+\+TM}}
+, \doxymbox{\hyperlink{app__config_8h_a0560169ed6717811a19ca28c11256293ac9595ffe7de871bf39e7c56d77c97af0}{PL\+\_\+\+MSG}}
+, \doxymbox{\hyperlink{app__config_8h_a0560169ed6717811a19ca28c11256293af888eed9813ef34f565b30e10381ecea}{PL\+\_\+\+TM}}
+ \}
+\begin{DoxyCompactList}\small\item\em All available TOPICS. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Configuration file for current application. 
+
+
+
+\label{app__config_8h_doc-define-members}
+\Hypertarget{app__config_8h_doc-define-members}
+\doxysubsection{Macro Definition Documentation}
+\Hypertarget{app__config_8h_a7d092bb0ccbe33b8392266f030f034ac}\index{app\_config.h@{app\_config.h}!ALL\_TASKS\_OK@{ALL\_TASKS\_OK}}
+\index{ALL\_TASKS\_OK@{ALL\_TASKS\_OK}!app\_config.h@{app\_config.h}}
+\doxysubsubsection{\texorpdfstring{ALL\_TASKS\_OK}{ALL\_TASKS\_OK}}
+{\footnotesize\ttfamily \label{app__config_8h_a7d092bb0ccbe33b8392266f030f034ac} 
+\+\#define ALL\+\_\+\+TASKS\+\_\+\+OK~(\doxymbox{\hyperlink{app__config_8h_a2318625f96819d1c1c71f21ef45c005b}{DISPATCHER\+\_\+\+BIT}} \texorpdfstring{$\vert$}{|} \doxymbox{\hyperlink{app__config_8h_a000410b4e381df0e2479e769176ddb1b}{DUMMY\+\_\+\+BIT}} \texorpdfstring{$\vert$}{|} \doxymbox{\hyperlink{app__config_8h_acfde02c445d4aba6bc99ab7d79814cb4}{MODE\+\_\+\+BIT}} \texorpdfstring{$\vert$}{|} \doxymbox{\hyperlink{app__config_8h_a3cdc67f59a4e9aa04dcb6860007364b4}{HM\+\_\+\+BIT}} \texorpdfstring{$\vert$}{|} \doxymbox{\hyperlink{app__config_8h_a0d46bc03efdec2cb55867268bc3b4462}{SUBM\+\_\+\+BIT}} \texorpdfstring{$\vert$}{|} \doxymbox{\hyperlink{app__config_8h_ab0af60e8248527f8131652b2fee1db11}{SUBC\+\_\+\+BIT}} \texorpdfstring{$\vert$}{|} \doxymbox{\hyperlink{app__config_8h_a7777db792b63724d39c9c7ea68b6b03a}{TC\+\_\+\+BIT}} \texorpdfstring{$\vert$}{|} \doxymbox{\hyperlink{app__config_8h_a6389953d7894249585c0caffa8675180}{HK\+\_\+\+BIT}})}
+
+
+
+This define is used for health monitoring purposes in \doxylink{health_monitor__task_8c}{health\+Monitor\+\_\+task.\+c}. 
+
+\begin{DoxyNote}{Note}
+Any new initialized tasks should be added! 
+\end{DoxyNote}
+
+
+Referenced by \doxymbox{\hyperlink{health_monitor__task_8c_afdddd09b1c8d74d470776489ec452cc7}{Health\+Monitor\+\_\+\+Handler()}}.
+
+\Hypertarget{app__config_8h_a552b8b30bb8cf4c54f1d62980e0d7b13}\index{app\_config.h@{app\_config.h}!ALL\_TASKS\_READY@{ALL\_TASKS\_READY}}
+\index{ALL\_TASKS\_READY@{ALL\_TASKS\_READY}!app\_config.h@{app\_config.h}}
+\doxysubsubsection{\texorpdfstring{ALL\_TASKS\_READY}{ALL\_TASKS\_READY}}
+{\footnotesize\ttfamily \label{app__config_8h_a552b8b30bb8cf4c54f1d62980e0d7b13} 
+\+\#define ALL\+\_\+\+TASKS\+\_\+\+READY~(\doxymbox{\hyperlink{app__config_8h_a000410b4e381df0e2479e769176ddb1b}{DUMMY\+\_\+\+BIT}} \texorpdfstring{$\vert$}{|} \doxymbox{\hyperlink{app__config_8h_acfde02c445d4aba6bc99ab7d79814cb4}{MODE\+\_\+\+BIT}} \texorpdfstring{$\vert$}{|} \doxymbox{\hyperlink{app__config_8h_a3cdc67f59a4e9aa04dcb6860007364b4}{HM\+\_\+\+BIT}} \texorpdfstring{$\vert$}{|} \doxymbox{\hyperlink{app__config_8h_a0d46bc03efdec2cb55867268bc3b4462}{SUBM\+\_\+\+BIT}} \texorpdfstring{$\vert$}{|} \doxymbox{\hyperlink{app__config_8h_ab0af60e8248527f8131652b2fee1db11}{SUBC\+\_\+\+BIT}} \texorpdfstring{$\vert$}{|} \doxymbox{\hyperlink{app__config_8h_a7777db792b63724d39c9c7ea68b6b03a}{TC\+\_\+\+BIT}} \texorpdfstring{$\vert$}{|} \doxymbox{\hyperlink{app__config_8h_a6389953d7894249585c0caffa8675180}{HK\+\_\+\+BIT}})}
+
+
+
+This define is used for sync purposes. More info in \doxylink{dispatcher__task_8c}{dispatcher\+\_\+task.\+c}. 
+
+\begin{DoxyNote}{Note}
+Any new initialized tasks should be added! 
+\end{DoxyNote}
+
+
+Referenced by \doxymbox{\hyperlink{app__events_8c_a07ff4defe7033e21ccfbb62159df4313}{Task\+Sync\+\_\+\+Set\+And\+Wait()}}, and \doxymbox{\hyperlink{app__events_8c_a786e32b482933fe78a16a27a49a9b2e2}{Task\+Sync\+\_\+\+Wait\+For\+All()}}.
+
+\Hypertarget{app__config_8h_a16d794c91d2fcbf7dac7710b4658263f}\index{app\_config.h@{app\_config.h}!CANRX\_PR@{CANRX\_PR}}
+\index{CANRX\_PR@{CANRX\_PR}!app\_config.h@{app\_config.h}}
+\doxysubsubsection{\texorpdfstring{CANRX\_PR}{CANRX\_PR}}
+{\footnotesize\ttfamily \label{app__config_8h_a16d794c91d2fcbf7dac7710b4658263f} 
+\+\#define CANRX\+\_\+\+PR~31}
+
+~ 
+
+Referenced by \doxymbox{\hyperlink{can__rx__task_8c_aaa74b795083e75b34efb78dd249faf77}{CAN\+\_\+\+RX\+\_\+\+Task\+\_\+\+Init()}}.
+
+\Hypertarget{app__config_8h_a2318625f96819d1c1c71f21ef45c005b}\index{app\_config.h@{app\_config.h}!DISPATCHER\_BIT@{DISPATCHER\_BIT}}
+\index{DISPATCHER\_BIT@{DISPATCHER\_BIT}!app\_config.h@{app\_config.h}}
+\doxysubsubsection{\texorpdfstring{DISPATCHER\_BIT}{DISPATCHER\_BIT}}
+{\footnotesize\ttfamily \label{app__config_8h_a2318625f96819d1c1c71f21ef45c005b} 
+\+\#define DISPATCHER\+\_\+\+BIT~(0 $<$$<$ 0)}
+
+~ 
+
+Referenced by \doxymbox{\hyperlink{dispatcher__task_8c_a471a79b618b429dac39b0ffd0c77049e}{Dispatcher\+\_\+\+Task\+\_\+\+Handler()}}.
+
+\Hypertarget{app__config_8h_ad9f540d4c21cc489d88a531e7e6dcf9e}\index{app\_config.h@{app\_config.h}!DISPATCHER\_PR@{DISPATCHER\_PR}}
+\index{DISPATCHER\_PR@{DISPATCHER\_PR}!app\_config.h@{app\_config.h}}
+\doxysubsubsection{\texorpdfstring{DISPATCHER\_PR}{DISPATCHER\_PR}}
+{\footnotesize\ttfamily \label{app__config_8h_ad9f540d4c21cc489d88a531e7e6dcf9e} 
+\+\#define DISPATCHER\+\_\+\+PR~33}
+
+~ 
+
+Referenced by \doxymbox{\hyperlink{dispatcher__task_8c_a1f06ad247a1eebe18b5b98888a598b82}{Dispatcher\+\_\+\+Task\+\_\+\+Init()}}.
+
+\Hypertarget{app__config_8h_a000410b4e381df0e2479e769176ddb1b}\index{app\_config.h@{app\_config.h}!DUMMY\_BIT@{DUMMY\_BIT}}
+\index{DUMMY\_BIT@{DUMMY\_BIT}!app\_config.h@{app\_config.h}}
+\doxysubsubsection{\texorpdfstring{DUMMY\_BIT}{DUMMY\_BIT}}
+{\footnotesize\ttfamily \label{app__config_8h_a000410b4e381df0e2479e769176ddb1b} 
+\+\#define DUMMY\+\_\+\+BIT~(1 $<$$<$ 1)}
+
+~ \Hypertarget{app__config_8h_a4488c8879c96e6bda7400c1b7c60bf35}\index{app\_config.h@{app\_config.h}!DUMMY\_PR@{DUMMY\_PR}}
+\index{DUMMY\_PR@{DUMMY\_PR}!app\_config.h@{app\_config.h}}
+\doxysubsubsection{\texorpdfstring{DUMMY\_PR}{DUMMY\_PR}}
+{\footnotesize\ttfamily \label{app__config_8h_a4488c8879c96e6bda7400c1b7c60bf35} 
+\+\#define DUMMY\+\_\+\+PR~29}
+
+~ \Hypertarget{app__config_8h_a6389953d7894249585c0caffa8675180}\index{app\_config.h@{app\_config.h}!HK\_BIT@{HK\_BIT}}
+\index{HK\_BIT@{HK\_BIT}!app\_config.h@{app\_config.h}}
+\doxysubsubsection{\texorpdfstring{HK\_BIT}{HK\_BIT}}
+{\footnotesize\ttfamily \label{app__config_8h_a6389953d7894249585c0caffa8675180} 
+\+\#define HK\+\_\+\+BIT~(1 $<$$<$ 7)}
+
+~ 
+
+Referenced by \doxymbox{\hyperlink{housekeeping__task_8c_af66a7d4fbff590f988caf66da2869a25}{Housekeeping\+\_\+\+Handler()}}.
+
+\Hypertarget{app__config_8h_a86ffc6dd953ae37e24aa838bc836cee8}\index{app\_config.h@{app\_config.h}!HK\_PR@{HK\_PR}}
+\index{HK\_PR@{HK\_PR}!app\_config.h@{app\_config.h}}
+\doxysubsubsection{\texorpdfstring{HK\_PR}{HK\_PR}}
+{\footnotesize\ttfamily \label{app__config_8h_a86ffc6dd953ae37e24aa838bc836cee8} 
+\+\#define HK\+\_\+\+PR~27}
+
+~ 
+
+Referenced by \doxymbox{\hyperlink{housekeeping__task_8c_ade6a9a41e6fdb411ece45a8adef9308f}{Housekeeping\+Handler\+\_\+\+Init()}}.
+
+\Hypertarget{app__config_8h_a3cdc67f59a4e9aa04dcb6860007364b4}\index{app\_config.h@{app\_config.h}!HM\_BIT@{HM\_BIT}}
+\index{HM\_BIT@{HM\_BIT}!app\_config.h@{app\_config.h}}
+\doxysubsubsection{\texorpdfstring{HM\_BIT}{HM\_BIT}}
+{\footnotesize\ttfamily \label{app__config_8h_a3cdc67f59a4e9aa04dcb6860007364b4} 
+\+\#define HM\+\_\+\+BIT~(1 $<$$<$ 3)}
+
+~ 
+
+Referenced by \doxymbox{\hyperlink{health_monitor__task_8c_afdddd09b1c8d74d470776489ec452cc7}{Health\+Monitor\+\_\+\+Handler()}}.
+
+\Hypertarget{app__config_8h_a89edd2c3ccb497e752853757dc7d5137}\index{app\_config.h@{app\_config.h}!HM\_PR@{HM\_PR}}
+\index{HM\_PR@{HM\_PR}!app\_config.h@{app\_config.h}}
+\doxysubsubsection{\texorpdfstring{HM\_PR}{HM\_PR}}
+{\footnotesize\ttfamily \label{app__config_8h_a89edd2c3ccb497e752853757dc7d5137} 
+\+\#define HM\+\_\+\+PR~23}
+
+~ 
+
+Referenced by \doxymbox{\hyperlink{health_monitor__task_8c_a9bf16be0fb6926c77cff31b234b642fa}{Health\+Monitor\+\_\+\+Init()}}.
+
+\Hypertarget{app__config_8h_acfde02c445d4aba6bc99ab7d79814cb4}\index{app\_config.h@{app\_config.h}!MODE\_BIT@{MODE\_BIT}}
+\index{MODE\_BIT@{MODE\_BIT}!app\_config.h@{app\_config.h}}
+\doxysubsubsection{\texorpdfstring{MODE\_BIT}{MODE\_BIT}}
+{\footnotesize\ttfamily \label{app__config_8h_acfde02c445d4aba6bc99ab7d79814cb4} 
+\+\#define MODE\+\_\+\+BIT~(1 $<$$<$ 2)}
+
+~ 
+
+Referenced by \doxymbox{\hyperlink{mode_manager__task_8c_ae5180377d2e4e13d2b0f1344658df6d4}{Mode\+Manager\+\_\+\+Handler()}}.
+
+\Hypertarget{app__config_8h_ad1ed0ea73c4459cd52a8fe09d5931b1d}\index{app\_config.h@{app\_config.h}!MODE\_PR@{MODE\_PR}}
+\index{MODE\_PR@{MODE\_PR}!app\_config.h@{app\_config.h}}
+\doxysubsubsection{\texorpdfstring{MODE\_PR}{MODE\_PR}}
+{\footnotesize\ttfamily \label{app__config_8h_ad1ed0ea73c4459cd52a8fe09d5931b1d} 
+\+\#define MODE\+\_\+\+PR~32}
+
+~ 
+
+Referenced by \doxymbox{\hyperlink{mode_manager__task_8c_a1d3500502fc4fd3697e8b87290e7d997}{Mode\+Manager\+\_\+\+Task\+\_\+\+Init()}}.
+
+\Hypertarget{app__config_8h_ad92056533d94e7a5cbc443e4f40ee9a7}\index{app\_config.h@{app\_config.h}!PERIODIC\_TASKS@{PERIODIC\_TASKS}}
+\index{PERIODIC\_TASKS@{PERIODIC\_TASKS}!app\_config.h@{app\_config.h}}
+\doxysubsubsection{\texorpdfstring{PERIODIC\_TASKS}{PERIODIC\_TASKS}}
+{\footnotesize\ttfamily \label{app__config_8h_ad92056533d94e7a5cbc443e4f40ee9a7} 
+\+\#define PERIODIC\+\_\+\+TASKS~(\doxymbox{\hyperlink{app__config_8h_a000410b4e381df0e2479e769176ddb1b}{DUMMY\+\_\+\+BIT}} \texorpdfstring{$\vert$}{|} \doxymbox{\hyperlink{app__config_8h_a3cdc67f59a4e9aa04dcb6860007364b4}{HM\+\_\+\+BIT}} \texorpdfstring{$\vert$}{|} \doxymbox{\hyperlink{app__config_8h_a0d46bc03efdec2cb55867268bc3b4462}{SUBM\+\_\+\+BIT}} \texorpdfstring{$\vert$}{|} \doxymbox{\hyperlink{app__config_8h_a6389953d7894249585c0caffa8675180}{HK\+\_\+\+BIT}})}
+
+
+
+This define is used to group all periodic tasks together. More info in \doxylink{health_monitor__task_8c}{health\+Monitor\+\_\+task.\+c}. 
+
+\begin{DoxyNote}{Note}
+Any new initialized PERIODIC tasks should be added! 
+\end{DoxyNote}
+
+
+Referenced by \doxymbox{\hyperlink{app__events_8c_acb0cb16b39bae1effdef4b84e2007e0f}{Task\+Health\+\_\+\+Clear\+All()}}.
+
+\Hypertarget{app__config_8h_a5c02af385cb9256e1e1bbb76e3a04184}\index{app\_config.h@{app\_config.h}!ROOT\_PR@{ROOT\_PR}}
+\index{ROOT\_PR@{ROOT\_PR}!app\_config.h@{app\_config.h}}
+\doxysubsubsection{\texorpdfstring{ROOT\_PR}{ROOT\_PR}}
+{\footnotesize\ttfamily \label{app__config_8h_a5c02af385cb9256e1e1bbb76e3a04184} 
+\+\#define ROOT\+\_\+\+PR~35}
+
+~ 
+
+Referenced by \doxymbox{\hyperlink{root__task_8c_a20ccc1f58e4eec886f512b3dbc3829ce}{Root\+\_\+\+Task\+\_\+\+Init()}}.
+
+\Hypertarget{app__config_8h_ab0af60e8248527f8131652b2fee1db11}\index{app\_config.h@{app\_config.h}!SUBC\_BIT@{SUBC\_BIT}}
+\index{SUBC\_BIT@{SUBC\_BIT}!app\_config.h@{app\_config.h}}
+\doxysubsubsection{\texorpdfstring{SUBC\_BIT}{SUBC\_BIT}}
+{\footnotesize\ttfamily \label{app__config_8h_ab0af60e8248527f8131652b2fee1db11} 
+\+\#define SUBC\+\_\+\+BIT~(1 $<$$<$ 5)}
+
+~ 
+
+Referenced by \doxymbox{\hyperlink{subsystem_control__task_8c_a4dd4c116c224a39828863a131f899404}{Subsystem\+Control\+\_\+\+Handler()}}.
+
+\Hypertarget{app__config_8h_acd35480f6bf1574471b4d5e62bfefa53}\index{app\_config.h@{app\_config.h}!SUBC\_PR@{SUBC\_PR}}
+\index{SUBC\_PR@{SUBC\_PR}!app\_config.h@{app\_config.h}}
+\doxysubsubsection{\texorpdfstring{SUBC\_PR}{SUBC\_PR}}
+{\footnotesize\ttfamily \label{app__config_8h_acd35480f6bf1574471b4d5e62bfefa53} 
+\+\#define SUBC\+\_\+\+PR~25}
+
+~ 
+
+Referenced by \doxymbox{\hyperlink{subsystem_control__task_8c_a462adf5807f82c54c2ec34daea519f82}{Subsystem\+Control\+\_\+\+Init()}}.
+
+\Hypertarget{app__config_8h_a0d46bc03efdec2cb55867268bc3b4462}\index{app\_config.h@{app\_config.h}!SUBM\_BIT@{SUBM\_BIT}}
+\index{SUBM\_BIT@{SUBM\_BIT}!app\_config.h@{app\_config.h}}
+\doxysubsubsection{\texorpdfstring{SUBM\_BIT}{SUBM\_BIT}}
+{\footnotesize\ttfamily \label{app__config_8h_a0d46bc03efdec2cb55867268bc3b4462} 
+\+\#define SUBM\+\_\+\+BIT~(1 $<$$<$ 4)}
+
+~ 
+
+Referenced by \doxymbox{\hyperlink{subsystem_monitoring__task_8c_a7a4c1928fe5fba455c0d7d91f8e0f468}{Subsystem\+Monitor\+\_\+\+Handler()}}.
+
+\Hypertarget{app__config_8h_a5018529b484b92b7b4c0d6a4082b901d}\index{app\_config.h@{app\_config.h}!SUBM\_PR@{SUBM\_PR}}
+\index{SUBM\_PR@{SUBM\_PR}!app\_config.h@{app\_config.h}}
+\doxysubsubsection{\texorpdfstring{SUBM\_PR}{SUBM\_PR}}
+{\footnotesize\ttfamily \label{app__config_8h_a5018529b484b92b7b4c0d6a4082b901d} 
+\+\#define SUBM\+\_\+\+PR~26}
+
+~ 
+
+Referenced by \doxymbox{\hyperlink{subsystem_monitoring__task_8c_a486f50a679fc22114fc67e8eca45805b}{Subsystem\+Monitor\+\_\+\+Init()}}.
+
+\Hypertarget{app__config_8h_a7777db792b63724d39c9c7ea68b6b03a}\index{app\_config.h@{app\_config.h}!TC\_BIT@{TC\_BIT}}
+\index{TC\_BIT@{TC\_BIT}!app\_config.h@{app\_config.h}}
+\doxysubsubsection{\texorpdfstring{TC\_BIT}{TC\_BIT}}
+{\footnotesize\ttfamily \label{app__config_8h_a7777db792b63724d39c9c7ea68b6b03a} 
+\+\#define TC\+\_\+\+BIT~(1 $<$$<$ 6)}
+
+~ 
+
+Referenced by \doxymbox{\hyperlink{telecommand_handler__task_8c_a67d95f43199d79cb9f84199b955c70df}{Telecommand\+\_\+\+Handler()}}.
+
+\Hypertarget{app__config_8h_a7cc550f1475a6f83dbc54d2ec940be71}\index{app\_config.h@{app\_config.h}!TC\_PR@{TC\_PR}}
+\index{TC\_PR@{TC\_PR}!app\_config.h@{app\_config.h}}
+\doxysubsubsection{\texorpdfstring{TC\_PR}{TC\_PR}}
+{\footnotesize\ttfamily \label{app__config_8h_a7cc550f1475a6f83dbc54d2ec940be71} 
+\+\#define TC\+\_\+\+PR~24}
+
+~ 
+
+Referenced by \doxymbox{\hyperlink{telecommand_handler__task_8c_a8b884546bdcc9aa24f45e8efd2a2d5df}{Telecommand\+Handler\+\_\+\+Init()}}.
+
+
+
+\label{app__config_8h_doc-enum-members}
+\Hypertarget{app__config_8h_doc-enum-members}
+\doxysubsection{Enumeration Type Documentation}
+\Hypertarget{app__config_8h_ae2946618e700f814e6147195c808f4c8}\index{app\_config.h@{app\_config.h}!State\_t@{State\_t}}
+\index{State\_t@{State\_t}!app\_config.h@{app\_config.h}}
+\doxysubsubsection{\texorpdfstring{State\_t}{State\_t}}
+{\footnotesize\ttfamily \label{app__config_8h_ae2946618e700f814e6147195c808f4c8} 
+enum \doxymbox{\hyperlink{app__config_8h_ae2946618e700f814e6147195c808f4c8}{State\+\_\+t}}}
+
+
+
+All available system states. More info in mode\+Manager.\+c. 
+
+\begin{DoxyNote}{Note}
+Any extra states should be added here! 
+\end{DoxyNote}
+\begin{DoxyEnumFields}[2]{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{SAFE@{SAFE}!app\_config.h@{app\_config.h}}
+\index{app\_config.h@{app\_config.h}!SAFE@{SAFE}}
+}\Hypertarget{app__config_8h_ae2946618e700f814e6147195c808f4c8aa3a9adacc85c180950255762543c88ac}\label{app__config_8h_ae2946618e700f814e6147195c808f4c8aa3a9adacc85c180950255762543c88ac} 
+SAFE&Safe Mode \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{LOW\_POWER@{LOW\_POWER}!app\_config.h@{app\_config.h}}
+\index{app\_config.h@{app\_config.h}!LOW\_POWER@{LOW\_POWER}}
+}\Hypertarget{app__config_8h_ae2946618e700f814e6147195c808f4c8a04ef9c54bf8fecf6499edcc41b7281d7}\label{app__config_8h_ae2946618e700f814e6147195c808f4c8a04ef9c54bf8fecf6499edcc41b7281d7} 
+LOW\+\_\+\+POWER&Low Power Mode \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{NOMINAL@{NOMINAL}!app\_config.h@{app\_config.h}}
+\index{app\_config.h@{app\_config.h}!NOMINAL@{NOMINAL}}
+}\Hypertarget{app__config_8h_ae2946618e700f814e6147195c808f4c8ae2bd7b57b3f0bb02e66e42dbacc5c7fc}\label{app__config_8h_ae2946618e700f814e6147195c808f4c8ae2bd7b57b3f0bb02e66e42dbacc5c7fc} 
+NOMINAL&Nominal Mode \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{PAYLOAD@{PAYLOAD}!app\_config.h@{app\_config.h}}
+\index{app\_config.h@{app\_config.h}!PAYLOAD@{PAYLOAD}}
+}\Hypertarget{app__config_8h_ae2946618e700f814e6147195c808f4c8a14aa1c5c4852ea2d61eef4d73772ea65}\label{app__config_8h_ae2946618e700f814e6147195c808f4c8a14aa1c5c4852ea2d61eef4d73772ea65} 
+PAYLOAD&Payload Mode \\
+\hline
+
+\end{DoxyEnumFields}
+\Hypertarget{app__config_8h_a0560169ed6717811a19ca28c11256293}\index{app\_config.h@{app\_config.h}!Topic\_t@{Topic\_t}}
+\index{Topic\_t@{Topic\_t}!app\_config.h@{app\_config.h}}
+\doxysubsubsection{\texorpdfstring{Topic\_t}{Topic\_t}}
+{\footnotesize\ttfamily \label{app__config_8h_a0560169ed6717811a19ca28c11256293} 
+enum \doxymbox{\hyperlink{app__config_8h_a0560169ed6717811a19ca28c11256293}{Topic\+\_\+t}}}
+
+
+
+All available TOPICS. 
+
+\begin{DoxyNote}{Note}
+Any extra topics should be added here! 
+\end{DoxyNote}
+\begin{DoxyEnumFields}[2]{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{SYSTEM\_STATE@{SYSTEM\_STATE}!app\_config.h@{app\_config.h}}
+\index{app\_config.h@{app\_config.h}!SYSTEM\_STATE@{SYSTEM\_STATE}}
+}\Hypertarget{app__config_8h_a0560169ed6717811a19ca28c11256293afa331522f1b1dda554d1c65e5a0e6061}\label{app__config_8h_a0560169ed6717811a19ca28c11256293afa331522f1b1dda554d1c65e5a0e6061} 
+SYSTEM\+\_\+\+STATE&Current System State/\+\+Mode \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{CHANGE\_SYSTEM\_STATE@{CHANGE\_SYSTEM\_STATE}!app\_config.h@{app\_config.h}}
+\index{app\_config.h@{app\_config.h}!CHANGE\_SYSTEM\_STATE@{CHANGE\_SYSTEM\_STATE}}
+}\Hypertarget{app__config_8h_a0560169ed6717811a19ca28c11256293abc777eb98dc283307dad9d57db9802a6}\label{app__config_8h_a0560169ed6717811a19ca28c11256293abc777eb98dc283307dad9d57db9802a6} 
+CHANGE\+\_\+\+SYSTEM\+\_\+\+STATE&System State Change Request \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TELECOMMAND@{TELECOMMAND}!app\_config.h@{app\_config.h}}
+\index{app\_config.h@{app\_config.h}!TELECOMMAND@{TELECOMMAND}}
+}\Hypertarget{app__config_8h_a0560169ed6717811a19ca28c11256293a005b78a0f65bacff527f3a3d9017b784}\label{app__config_8h_a0560169ed6717811a19ca28c11256293a005b78a0f65bacff527f3a3d9017b784} 
+TELECOMMAND&Telecommand Received \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{EPS\_MSG@{EPS\_MSG}!app\_config.h@{app\_config.h}}
+\index{app\_config.h@{app\_config.h}!EPS\_MSG@{EPS\_MSG}}
+}\Hypertarget{app__config_8h_a0560169ed6717811a19ca28c11256293afa43490df86bfb0721adeaee47931f82}\label{app__config_8h_a0560169ed6717811a19ca28c11256293afa43490df86bfb0721adeaee47931f82} 
+EPS\+\_\+\+MSG&EPS Message \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{EPS\_TM@{EPS\_TM}!app\_config.h@{app\_config.h}}
+\index{app\_config.h@{app\_config.h}!EPS\_TM@{EPS\_TM}}
+}\Hypertarget{app__config_8h_a0560169ed6717811a19ca28c11256293a69c003c6fdbe7509b650aca6ef67ef32}\label{app__config_8h_a0560169ed6717811a19ca28c11256293a69c003c6fdbe7509b650aca6ef67ef32} 
+EPS\+\_\+\+TM&EPS Telemetry \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{COMMS\_MSG@{COMMS\_MSG}!app\_config.h@{app\_config.h}}
+\index{app\_config.h@{app\_config.h}!COMMS\_MSG@{COMMS\_MSG}}
+}\Hypertarget{app__config_8h_a0560169ed6717811a19ca28c11256293a30639ec93dd54c88c981586c683b6e88}\label{app__config_8h_a0560169ed6717811a19ca28c11256293a30639ec93dd54c88c981586c683b6e88} 
+COMMS\+\_\+\+MSG&COMMS Message \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{COMMS\_TM@{COMMS\_TM}!app\_config.h@{app\_config.h}}
+\index{app\_config.h@{app\_config.h}!COMMS\_TM@{COMMS\_TM}}
+}\Hypertarget{app__config_8h_a0560169ed6717811a19ca28c11256293a68e62d53d0d8c95cb88d291304dc545f}\label{app__config_8h_a0560169ed6717811a19ca28c11256293a68e62d53d0d8c95cb88d291304dc545f} 
+COMMS\+\_\+\+TM&COMMS Telemetry \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{ADCS\_MSG@{ADCS\_MSG}!app\_config.h@{app\_config.h}}
+\index{app\_config.h@{app\_config.h}!ADCS\_MSG@{ADCS\_MSG}}
+}\Hypertarget{app__config_8h_a0560169ed6717811a19ca28c11256293afe326f665e0a838aba9651c9c15e2529}\label{app__config_8h_a0560169ed6717811a19ca28c11256293afe326f665e0a838aba9651c9c15e2529} 
+ADCS\+\_\+\+MSG&ADCS Message \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{ADCS\_TM@{ADCS\_TM}!app\_config.h@{app\_config.h}}
+\index{app\_config.h@{app\_config.h}!ADCS\_TM@{ADCS\_TM}}
+}\Hypertarget{app__config_8h_a0560169ed6717811a19ca28c11256293a9094f588f878fc46759a85296ca8baf9}\label{app__config_8h_a0560169ed6717811a19ca28c11256293a9094f588f878fc46759a85296ca8baf9} 
+ADCS\+\_\+\+TM&ADCS Telemetry \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{PL\_MSG@{PL\_MSG}!app\_config.h@{app\_config.h}}
+\index{app\_config.h@{app\_config.h}!PL\_MSG@{PL\_MSG}}
+}\Hypertarget{app__config_8h_a0560169ed6717811a19ca28c11256293ac9595ffe7de871bf39e7c56d77c97af0}\label{app__config_8h_a0560169ed6717811a19ca28c11256293ac9595ffe7de871bf39e7c56d77c97af0} 
+PL\+\_\+\+MSG&Payload Message \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{PL\_TM@{PL\_TM}!app\_config.h@{app\_config.h}}
+\index{app\_config.h@{app\_config.h}!PL\_TM@{PL\_TM}}
+}\Hypertarget{app__config_8h_a0560169ed6717811a19ca28c11256293af888eed9813ef34f565b30e10381ecea}\label{app__config_8h_a0560169ed6717811a19ca28c11256293af888eed9813ef34f565b30e10381ecea} 
+PL\+\_\+\+TM&Payload Telemetry \\
+\hline
+
+\end{DoxyEnumFields}

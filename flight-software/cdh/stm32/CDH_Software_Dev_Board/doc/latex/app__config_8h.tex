@@ -17,7 +17,7 @@ struct \doxymbox{\hyperlink{struct_message__t}{Message\+\_\+t}}
 \begin{DoxyCompactItemize}
 \item 
 \Hypertarget{app__config_8h_a200c2c21eb5510aa388dc932a76e830d}\label{app__config_8h_a200c2c21eb5510aa388dc932a76e830d} 
-\+\#define {\bfseries NORMAL\+\_\+\+TASK\+\_\+\+STACK\+\_\+\+SIZE}~256\texorpdfstring{$\ast$}{*}10
+\+\#define {\bfseries NORMAL\+\_\+\+TASK\+\_\+\+STACK\+\_\+\+SIZE}~256\texorpdfstring{$\ast$}{*}15
 \begin{DoxyCompactList}\small\item\em Normal task stack size. \end{DoxyCompactList}\item 
 \Hypertarget{app__config_8h_a225d14042fa83623029d9bf491a4f5f2}\label{app__config_8h_a225d14042fa83623029d9bf491a4f5f2} 
 \+\#define {\bfseries LARGE\+\_\+\+TASK\+\_\+\+STACK\+\_\+\+SIZE}~256\texorpdfstring{$\ast$}{*}10
@@ -35,10 +35,10 @@ struct \doxymbox{\hyperlink{struct_message__t}{Message\+\_\+t}}
 \+\#define \doxymbox{\hyperlink{app__config_8h_a7d092bb0ccbe33b8392266f030f034ac}{ALL\+\_\+\+TASKS\+\_\+\+OK}}~(\doxymbox{\hyperlink{app__config_8h_a2318625f96819d1c1c71f21ef45c005b}{DISPATCHER\+\_\+\+BIT}} \texorpdfstring{$\vert$}{|} \doxymbox{\hyperlink{app__config_8h_a000410b4e381df0e2479e769176ddb1b}{DUMMY\+\_\+\+BIT}} \texorpdfstring{$\vert$}{|} \doxymbox{\hyperlink{app__config_8h_acfde02c445d4aba6bc99ab7d79814cb4}{MODE\+\_\+\+BIT}} \texorpdfstring{$\vert$}{|} \doxymbox{\hyperlink{app__config_8h_a3cdc67f59a4e9aa04dcb6860007364b4}{HM\+\_\+\+BIT}} \texorpdfstring{$\vert$}{|} \doxymbox{\hyperlink{app__config_8h_a0d46bc03efdec2cb55867268bc3b4462}{SUBM\+\_\+\+BIT}} \texorpdfstring{$\vert$}{|} \doxymbox{\hyperlink{app__config_8h_ab0af60e8248527f8131652b2fee1db11}{SUBC\+\_\+\+BIT}} \texorpdfstring{$\vert$}{|} \doxymbox{\hyperlink{app__config_8h_a7777db792b63724d39c9c7ea68b6b03a}{TC\+\_\+\+BIT}} \texorpdfstring{$\vert$}{|} \doxymbox{\hyperlink{app__config_8h_a6389953d7894249585c0caffa8675180}{HK\+\_\+\+BIT}})
 \begin{DoxyCompactList}\small\item\em This define is used for health monitoring purposes in \doxylink{health_monitor__task_8c}{health\+Monitor\+\_\+task.\+c}. \end{DoxyCompactList}\item 
 \Hypertarget{app__config_8h_a4cecb71b936e9c443f548540fb7a54ff}\label{app__config_8h_a4cecb71b936e9c443f548540fb7a54ff} 
-\+\#define {\bfseries MAX\+\_\+\+SUBS}~10
+\+\#define {\bfseries MAX\+\_\+\+SUBS}~20
 \begin{DoxyCompactList}\small\item\em Maximum number of subscribers (i.\+e. tasks that have subscribed to at least one topic) allowed. \end{DoxyCompactList}\item 
 \Hypertarget{app__config_8h_ae039b6dcd703089e83fa3e1b3fc896c8}\label{app__config_8h_ae039b6dcd703089e83fa3e1b3fc896c8} 
-\+\#define {\bfseries MAX\+\_\+\+SUBSCRIBERS\+\_\+\+PER\+\_\+\+TOPIC}~10
+\+\#define {\bfseries MAX\+\_\+\+SUBSCRIBERS\+\_\+\+PER\+\_\+\+TOPIC}~15
 \begin{DoxyCompactList}\small\item\em Maximum number of subscribers per topic allowed. \end{DoxyCompactList}\item 
 \Hypertarget{app__config_8h_ad4d025ecf1bdbf8b244ca688df8e478d}\label{app__config_8h_ad4d025ecf1bdbf8b244ca688df8e478d} 
 \+\#define {\bfseries MSG\+\_\+\+SIZE}~sizeof(\doxymbox{\hyperlink{struct_message__t}{Message\+\_\+t}})
@@ -64,15 +64,15 @@ PR = 24 is being used by the auto-\/generated default task in \doxylink{freertos
 \item 
 \+\#define \doxymbox{\hyperlink{app__config_8h_a4488c8879c96e6bda7400c1b7c60bf35}{DUMMY\+\_\+\+PR}}~29
 \item 
-\+\#define \doxymbox{\hyperlink{app__config_8h_a89edd2c3ccb497e752853757dc7d5137}{HM\+\_\+\+PR}}~27
-\item 
 \+\#define \doxymbox{\hyperlink{app__config_8h_a5018529b484b92b7b4c0d6a4082b901d}{SUBM\+\_\+\+PR}}~26
 \item 
 \+\#define \doxymbox{\hyperlink{app__config_8h_acd35480f6bf1574471b4d5e62bfefa53}{SUBC\+\_\+\+PR}}~25
 \item 
 \+\#define \doxymbox{\hyperlink{app__config_8h_a7cc550f1475a6f83dbc54d2ec940be71}{TC\+\_\+\+PR}}~24
 \item 
-\+\#define \doxymbox{\hyperlink{app__config_8h_a86ffc6dd953ae37e24aa838bc836cee8}{HK\+\_\+\+PR}}~23
+\+\#define \doxymbox{\hyperlink{app__config_8h_a86ffc6dd953ae37e24aa838bc836cee8}{HK\+\_\+\+PR}}~27
+\item 
+\+\#define \doxymbox{\hyperlink{app__config_8h_a89edd2c3ccb497e752853757dc7d5137}{HM\+\_\+\+PR}}~23
 \end{DoxyCompactItemize}
 \end{Indent}
 \begin{Indent}\textbf{ Task Health and Sync Bits}\par
@@ -219,7 +219,7 @@ Referenced by \doxymbox{\hyperlink{dispatcher__task_8c_a1f06ad247a1eebe18b5b9888
 \index{HK\_PR@{HK\_PR}!app\_config.h@{app\_config.h}}
 \doxysubsubsection{\texorpdfstring{HK\_PR}{HK\_PR}}
 {\footnotesize\ttfamily \label{app__config_8h_a86ffc6dd953ae37e24aa838bc836cee8} 
-\+\#define HK\+\_\+\+PR~23}
+\+\#define HK\+\_\+\+PR~27}
 
 ~ \Hypertarget{app__config_8h_a3cdc67f59a4e9aa04dcb6860007364b4}\index{app\_config.h@{app\_config.h}!HM\_BIT@{HM\_BIT}}
 \index{HM\_BIT@{HM\_BIT}!app\_config.h@{app\_config.h}}
@@ -235,7 +235,7 @@ Referenced by \doxymbox{\hyperlink{health_monitor__task_8c_afdddd09b1c8d74d47077
 \index{HM\_PR@{HM\_PR}!app\_config.h@{app\_config.h}}
 \doxysubsubsection{\texorpdfstring{HM\_PR}{HM\_PR}}
 {\footnotesize\ttfamily \label{app__config_8h_a89edd2c3ccb497e752853757dc7d5137} 
-\+\#define HM\+\_\+\+PR~27}
+\+\#define HM\+\_\+\+PR~23}
 
 ~ 
 

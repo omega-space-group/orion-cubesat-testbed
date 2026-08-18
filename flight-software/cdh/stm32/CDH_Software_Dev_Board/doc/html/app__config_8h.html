@@ -133,7 +133,7 @@ Classes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 id="header-define-members" class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
 <tr class="memitem:a200c2c21eb5510aa388dc932a76e830d" id="r_a200c2c21eb5510aa388dc932a76e830d"><td class="memItemLeft"><a id="a200c2c21eb5510aa388dc932a76e830d" name="a200c2c21eb5510aa388dc932a76e830d"></a>
-#define&#160;</td><td class="memItemRight"><b>NORMAL_TASK_STACK_SIZE</b>&#160;&#160;&#160;256*10</td></tr>
+#define&#160;</td><td class="memItemRight"><b>NORMAL_TASK_STACK_SIZE</b>&#160;&#160;&#160;256*15</td></tr>
 <tr class="memdesc:a200c2c21eb5510aa388dc932a76e830d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Normal task stack size. <br /></td></tr>
 <tr class="memitem:a225d14042fa83623029d9bf491a4f5f2" id="r_a225d14042fa83623029d9bf491a4f5f2"><td class="memItemLeft"><a id="a225d14042fa83623029d9bf491a4f5f2" name="a225d14042fa83623029d9bf491a4f5f2"></a>
 #define&#160;</td><td class="memItemRight"><b>LARGE_TASK_STACK_SIZE</b>&#160;&#160;&#160;256*10</td></tr>
@@ -151,10 +151,10 @@ Macros</h2></td></tr>
 <tr class="memitem:a7d092bb0ccbe33b8392266f030f034ac" id="r_a7d092bb0ccbe33b8392266f030f034ac"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a7d092bb0ccbe33b8392266f030f034ac">ALL_TASKS_OK</a>&#160;&#160;&#160;(<a class="el" href="#a2318625f96819d1c1c71f21ef45c005b">DISPATCHER_BIT</a> | <a class="el" href="#a000410b4e381df0e2479e769176ddb1b">DUMMY_BIT</a> | <a class="el" href="#acfde02c445d4aba6bc99ab7d79814cb4">MODE_BIT</a> | <a class="el" href="#a3cdc67f59a4e9aa04dcb6860007364b4">HM_BIT</a> | <a class="el" href="#a0d46bc03efdec2cb55867268bc3b4462">SUBM_BIT</a> | <a class="el" href="#ab0af60e8248527f8131652b2fee1db11">SUBC_BIT</a> | <a class="el" href="#a7777db792b63724d39c9c7ea68b6b03a">TC_BIT</a> | <a class="el" href="#a6389953d7894249585c0caffa8675180">HK_BIT</a>)</td></tr>
 <tr class="memdesc:a7d092bb0ccbe33b8392266f030f034ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">This define is used for health monitoring purposes in <a class="el" href="health_monitor__task_8c.html" title="Implementation of the background execution check and task accounting.">healthMonitor_task.c</a>.  <br /></td></tr>
 <tr class="memitem:a4cecb71b936e9c443f548540fb7a54ff" id="r_a4cecb71b936e9c443f548540fb7a54ff"><td class="memItemLeft"><a id="a4cecb71b936e9c443f548540fb7a54ff" name="a4cecb71b936e9c443f548540fb7a54ff"></a>
-#define&#160;</td><td class="memItemRight"><b>MAX_SUBS</b>&#160;&#160;&#160;10</td></tr>
+#define&#160;</td><td class="memItemRight"><b>MAX_SUBS</b>&#160;&#160;&#160;20</td></tr>
 <tr class="memdesc:a4cecb71b936e9c443f548540fb7a54ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum number of subscribers (i.e. tasks that have subscribed to at least one topic) allowed. <br /></td></tr>
 <tr class="memitem:ae039b6dcd703089e83fa3e1b3fc896c8" id="r_ae039b6dcd703089e83fa3e1b3fc896c8"><td class="memItemLeft"><a id="ae039b6dcd703089e83fa3e1b3fc896c8" name="ae039b6dcd703089e83fa3e1b3fc896c8"></a>
-#define&#160;</td><td class="memItemRight"><b>MAX_SUBSCRIBERS_PER_TOPIC</b>&#160;&#160;&#160;10</td></tr>
+#define&#160;</td><td class="memItemRight"><b>MAX_SUBSCRIBERS_PER_TOPIC</b>&#160;&#160;&#160;15</td></tr>
 <tr class="memdesc:ae039b6dcd703089e83fa3e1b3fc896c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum number of subscribers per topic allowed. <br /></td></tr>
 <tr class="memitem:ad4d025ecf1bdbf8b244ca688df8e478d" id="r_ad4d025ecf1bdbf8b244ca688df8e478d"><td class="memItemLeft"><a id="ad4d025ecf1bdbf8b244ca688df8e478d" name="ad4d025ecf1bdbf8b244ca688df8e478d"></a>
 #define&#160;</td><td class="memItemRight"><b>MSG_SIZE</b>&#160;&#160;&#160;sizeof(<a class="el" href="struct_message__t.html">Message_t</a>)</td></tr>
@@ -169,11 +169,11 @@ Macros</h2></td></tr>
 <tr class="memitem:ad1ed0ea73c4459cd52a8fe09d5931b1d" id="r_ad1ed0ea73c4459cd52a8fe09d5931b1d"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#ad1ed0ea73c4459cd52a8fe09d5931b1d">MODE_PR</a>&#160;&#160;&#160;32</td></tr>
 <tr class="memitem:a16d794c91d2fcbf7dac7710b4658263f" id="r_a16d794c91d2fcbf7dac7710b4658263f"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a16d794c91d2fcbf7dac7710b4658263f">CANRX_PR</a>&#160;&#160;&#160;31</td></tr>
 <tr class="memitem:a4488c8879c96e6bda7400c1b7c60bf35" id="r_a4488c8879c96e6bda7400c1b7c60bf35"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a4488c8879c96e6bda7400c1b7c60bf35">DUMMY_PR</a>&#160;&#160;&#160;29</td></tr>
-<tr class="memitem:a89edd2c3ccb497e752853757dc7d5137" id="r_a89edd2c3ccb497e752853757dc7d5137"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a89edd2c3ccb497e752853757dc7d5137">HM_PR</a>&#160;&#160;&#160;27</td></tr>
 <tr class="memitem:a5018529b484b92b7b4c0d6a4082b901d" id="r_a5018529b484b92b7b4c0d6a4082b901d"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a5018529b484b92b7b4c0d6a4082b901d">SUBM_PR</a>&#160;&#160;&#160;26</td></tr>
 <tr class="memitem:acd35480f6bf1574471b4d5e62bfefa53" id="r_acd35480f6bf1574471b4d5e62bfefa53"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#acd35480f6bf1574471b4d5e62bfefa53">SUBC_PR</a>&#160;&#160;&#160;25</td></tr>
 <tr class="memitem:a7cc550f1475a6f83dbc54d2ec940be71" id="r_a7cc550f1475a6f83dbc54d2ec940be71"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a7cc550f1475a6f83dbc54d2ec940be71">TC_PR</a>&#160;&#160;&#160;24</td></tr>
-<tr class="memitem:a86ffc6dd953ae37e24aa838bc836cee8" id="r_a86ffc6dd953ae37e24aa838bc836cee8"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a86ffc6dd953ae37e24aa838bc836cee8">HK_PR</a>&#160;&#160;&#160;23</td></tr>
+<tr class="memitem:a86ffc6dd953ae37e24aa838bc836cee8" id="r_a86ffc6dd953ae37e24aa838bc836cee8"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a86ffc6dd953ae37e24aa838bc836cee8">HK_PR</a>&#160;&#160;&#160;27</td></tr>
+<tr class="memitem:a89edd2c3ccb497e752853757dc7d5137" id="r_a89edd2c3ccb497e752853757dc7d5137"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a89edd2c3ccb497e752853757dc7d5137">HM_PR</a>&#160;&#160;&#160;23</td></tr>
 <tr id="define-members-1" class="groupHeader"><td colspan="2"><div class="groupHeader">Task Health and Sync Bits</div></td></tr>
 <tr><td colspan="2" class="ititle"><div class="groupText"><dl class="section note"><dt>Note</dt><dd>A new task's bit should be added at the end! </dd></dl>
 </div></td></tr>
@@ -356,7 +356,7 @@ Enumerations</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define HK_PR&#160;&#160;&#160;23</td>
+          <td class="memname">#define HK_PR&#160;&#160;&#160;27</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -388,7 +388,7 @@ Enumerations</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define HM_PR&#160;&#160;&#160;27</td>
+          <td class="memname">#define HM_PR&#160;&#160;&#160;23</td>
         </tr>
       </table>
 </div><div class="memdoc">

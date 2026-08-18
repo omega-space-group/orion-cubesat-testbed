@@ -1,0 +1,46 @@
+\doxysection{CM7/\+\+Core/\+\+Inc/\+\+App/\+\+Tasks/\+root\+\_\+task.h File Reference}
+\hypertarget{root__task_8h}{}\label{root__task_8h}\index{CM7/Core/Inc/App/Tasks/root\_task.h@{CM7/Core/Inc/App/Tasks/root\_task.h}}
+
+
+This file contains all the function prototypes for the \doxylink{root__task_8c}{root\+\_\+task.\+c} file.  
+
+
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \doxymbox{\hyperlink{root__task_8h_a20ccc1f58e4eec886f512b3dbc3829ce}{Root\+\_\+\+Task\+\_\+\+Init}} (void)
+\begin{DoxyCompactList}\small\item\em Task\textquotesingle{}s initialization function. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This file contains all the function prototypes for the \doxylink{root__task_8c}{root\+\_\+task.\+c} file. 
+
+Implementation of the Root Task responsible for starting all peripherals and spawn (initialize) every task. For more details look into \doxylink{root__task_8c_aca2c7d8f6d456d7fba6e583b40a7c40a}{Root\+\_\+\+Task\+\_\+\+Handler()}. 
+
+\label{root__task_8h_doc-func-members}
+\Hypertarget{root__task_8h_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{root__task_8h_a20ccc1f58e4eec886f512b3dbc3829ce}\index{root\_task.h@{root\_task.h}!Root\_Task\_Init@{Root\_Task\_Init}}
+\index{Root\_Task\_Init@{Root\_Task\_Init}!root\_task.h@{root\_task.h}}
+\doxysubsubsection{\texorpdfstring{Root\_Task\_Init()}{Root\_Task\_Init()}}
+{\footnotesize\ttfamily \label{root__task_8h_a20ccc1f58e4eec886f512b3dbc3829ce} 
+void Root\+\_\+\+Task\+\_\+\+Init (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Task\textquotesingle{}s initialization function. 
+
+\begin{DoxyNote}{Note}
+Check \doxylink{app__config_8h}{app\+\_\+config.\+h} for stack configurations 
+\end{DoxyNote}
+\begin{DoxyWarning}{Warning}
+Root Task has no local queue since its only meant to execute once and block forever. 
+\end{DoxyWarning}
+
+
+References \doxymbox{\hyperlink{app__config_8h_a200c2c21eb5510aa388dc932a76e830d}{NORMAL\+\_\+\+TASK\+\_\+\+STACK\+\_\+\+SIZE}}, \doxymbox{\hyperlink{app__config_8h_a5c02af385cb9256e1e1bbb76e3a04184}{ROOT\+\_\+\+PR}}, and \doxymbox{\hyperlink{root__task_8c_aca2c7d8f6d456d7fba6e583b40a7c40a}{Root\+\_\+\+Task\+\_\+\+Handler()}}.
+
+
+
+Referenced by \doxymbox{\hyperlink{main_8c_abade755e13d07c10889ae83143656158}{MX\+\_\+\+FREERTOS\+\_\+\+Init()}}.
+
