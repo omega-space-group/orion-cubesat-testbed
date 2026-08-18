@@ -17,4 +17,4 @@ Flight-relevant implementation optimized for real-time performance, low power co
 ## Development Status
 
 **Coming Soon**
-📖 [Click here to view the live Doxygen Documentation](https://github.com/omega-space-group/orion-cubesat-testbed/tree/gsoc/flight-software/cdh/stm32/CDH_Software_Dev_Board/documentation.html)
+📖 [Click here to view the live Doxygen Documentation](https://htmlpreview.github.io/?https://raw.githubusercontent.com/omega-space-group/orion-cubesat-testbed/gsoc/flight-software/cdh/stm32/CDH_Software_Dev_Board/documentation.html)
