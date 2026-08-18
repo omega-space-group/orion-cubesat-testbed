@@ -47,7 +47,7 @@ All developed code has been reviewed and merged into the dev organization reposi
 
 ---
 
-## Flight Software Core
+## ⭐ Flight Software Core
 
 This project serves as the **heart of the flight software**. It is designed with modularity in mind: you can easily port this architecture by dropping the `/App` directory into your own STM32 project. Doing so provides you with an instant, robust, message-based flight software foundation, allowing you to focus entirely on building your custom application tasks.
 
