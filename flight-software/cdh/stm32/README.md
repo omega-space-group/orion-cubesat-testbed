@@ -1,8 +1,8 @@
 # Orion CubeSat Testbed: CDH Flight Software
 **Google Summer of Code 2026 Work Product Submission**
 
-**Student:** Ada Roufogali
-**Organization:** Orion Space Group | National Technical University of Athens
+**Student:** Ada Roufogali  
+**Organization:** Orion Space Group | National Technical University of Athens  
 **Project:** Message-Based Flight Software Architecture for CubeSats  
 **Mentors:** Simon Vellas 
 
