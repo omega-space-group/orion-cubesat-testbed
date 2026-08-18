@@ -2,6 +2,7 @@
 **Google Summer of Code 2026 Work Product Submission**
 
 **Student:** Ada Roufogali
+
 **Organization:** Omega Space Group  
 **Project:** Message-Based Flight Software Architecture for CubeSats  
 **Mentors:** Simon Vellas 
@@ -78,7 +79,7 @@ The following core tasks have been fully implemented and can be used directly. *
 Services are centralized utility functions that tasks share to perform specific operations efficiently:
 
 *   **`app_events.c`**: Implements all application-level events necessary for event triggering and task synchronization.
-*   **`subscriptions.c`**: Implements the core Publisher/Subscriber message routing logic. *For a comprehensive breakdown of how this routing system works, please refer to our [Documentation](link-to-docs).*
+*   **`subscriptions.c`**: Implements the core Publisher/Subscriber message routing logic. *For a comprehensive breakdown of how this routing system works, please refer to our [API References](https://omega-space-group.github.io/orion-cubesat-testbed/flight-software/cdh/stm32/CDH_Software_Dev_Board/doc/html/d1/d35/api_references.html).*
 
 ---
 
@@ -86,8 +87,3 @@ Services are centralized utility functions that tasks share to perform specific 
 *   **Zero-Copy Optimization:** Transition the Dispatcher's message delivery mechanism to a zero-copy pointer-passing approach to save MCU cycles and memory overhead.
 *   **Error Handling:** Implement robust bus error handlers (e.g., checking for saturated local queues, crash recovery during push/pop operations).
 *   **Watchdog Integration:** Finalize hardware timing specifications to safely re-enable the MCU internal watchdog (`IWDG1`) without interrupting standard testing loops.
-
----
-
-## 🙏 Acknowledgments
-A massive thank you to my mentors, [Mentor Names], for their invaluable technical guidance and support. Working within the STM32 hardware ecosystem and developing scalable RTOS flight software for the Orion CubeSat has been an exceptionally rewarding engineering journey!
