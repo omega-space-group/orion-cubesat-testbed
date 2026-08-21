@@ -22,23 +22,13 @@ This C&DH implementation follows a **hybrid approach**:
   - Event services
 - **Communication Protocol**: CubeSat Space Protocol (CSP) over CAN bus
   - Primary interface for all subsystem communication (EPS, Payload)
-  - Proven flight heritage in CubeSat missions
-
 
 ## 🖥️ Hardware Platforms
 
-### Raspberry Pi 4 (Phase 1) (TBD)
-- **Purpose**: Initial development and functional validation
-- **OS**: Ubuntu 22.04
-- **Software**: Python 3.10+ with cFS-inspired architecture
-- **Benefits**: Rapid prototyping, full Linux environment, ease of development
-
-### STM32 Nucleo (Phase 2)
+### STM32 Nucleo
 - **Purpose**: Flight-ready system with RTOS
 - **OS**: FreeRTOS
-- **Software**: C/C++ port of Phase 1 Python implementation
-- **Benefits**: Real-time performance, lower power consumption, flight heritage
-
+- **Software**: C/C++
 
 ## 🔌 Interfaces
 
@@ -51,33 +41,15 @@ This C&DH implementation follows a **hybrid approach**:
 - Commands: start, stop, reset, etc
 - Telemetry: Application status, resource usage, AI result summaries
 
-**From Ground (via Comms subsystem):**
+**From Ground:**
 - Telecommands for satellite operations
 - Configuration updates
 
 ### Output to Ground
 - Telemetry downlink via Comms subsystem
 
-## 🏗️ Software Architecture
-
-
-## 🔧 Build Instructions
-
-```bash
-TBD
-```
-
-## 🧪 Testing
-
-```bash
-TBD
-```
-
-## ⚙️ Configuration
-
-```bash
-TBD
-```
+## 🏗️ C&DH Flight Software Manual
+- TBA
 
 ## 📖 Related Documentation
 
